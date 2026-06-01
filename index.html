@@ -285,6 +285,9 @@
     /* roadmap → swap to vertical mobile version */
     .roadmap-img--desktop { display: none; }
     .roadmap-img--mobile { display: block; }
+    /* trim the roadmap section's own bottom padding on mobile so the road meets the blue */
+    .section--roadmap { padding-bottom: 0; }
+    .roadmap-img { margin-bottom: -1px; }
 
     /* videos → portrait (vertical mobile version) on phones */
     .video-frame { aspect-ratio: 9 / 16; max-width: 330px; }
