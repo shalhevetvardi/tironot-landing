@@ -317,6 +317,20 @@
     .jrn-here::after { right: 30px; left: auto; transform: rotate(45deg); }
     .jrn-card.is-in .jrn-here { animation: none; }
   }
+  /* ---------- HERO BRAND LOCKUP (לוגו טירונות + שם הקורס) ---------- */
+  .hero__brand { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; }
+  .hero__logo { width: 66px; height: 66px; flex: 0 0 auto; filter: drop-shadow(0 6px 16px rgba(0,0,0,.28)); }
+  .hero__brandname { font-weight: 900; font-size: clamp(30px, 5vw, 46px); color: #fff; letter-spacing: -.5px; line-height: 1; }
+
+  /* ---------- הדגשת "עכשיו" בתת-כותרת ההוכחות ---------- */
+  .now-underline { font-weight: 800; color: var(--blue-deep); text-decoration: underline; text-decoration-color: var(--blue); text-decoration-thickness: 3px; text-underline-offset: 5px; }
+
+  /* ---------- PROOFS — רקע מעט גוונן כדי שהכרטיסים הלבנים יקפצו ---------- */
+  .section--proofs { background: #EDF2F9; }
+  .section--proofs .proof { box-shadow: 0 16px 40px rgba(20,9,59,.13); border-color: #DCE5F1; }
+
+  /* ---------- STORY — פסקאות הנרטיב המשוחזר (לא ה-payoff) ---------- */
+  .story p:not(.story__payoff) { font-size: clamp(16.5px, 1.8vw, 19px); line-height: 1.78; color: rgba(255,255,255,.9); margin-bottom: 18px; }
 </style>
 </head>
 <body>
@@ -326,7 +340,8 @@
   <nav class="nav"><div class="nav__brand">אִימפּרוּב</div></nav>
   <div class="hero__inner">
     <div class="hero__text">
-      <span class="eyebrow">התוכנית המקיפה בישראל לבניית סוכני AI</span>
+      <div class="hero__brand"><img class="hero__logo" src="tironot-logo-white.png" alt="טירונות סוכנים" /><span class="hero__brandname">טירונות סוכנים</span></div>
+      <span class="eyebrow">הופכים אתכם למי שבונה סוכני AI לבד.</span>
       <h1>אחרי 5 שבועות —<br><span class="accent">יש לכם צוות AI</span> שעובד בשבילכם.</h1>
       <p class="hero__sub">ואת השיטה והכלים לבנות כל סוכן, מערכת ותהליך שתצטרכו — לבד, בלי להיתקע.</p>
       <a href="#intro" class="btn btn--gold">איך זה עובד</a>
@@ -412,40 +427,19 @@
   <div class="container">
     <div class="story">
       <h2>תארו לכם שמישהו לוקח אתכם <span class="accent-gold">ביד.</span></h2>
-      <p class="story__lead">לא עוד קורס מצולם שתעברו לבד "מתישהו". לא הצפה בכלים. צעד אחרי צעד — אתם בונים משהו אמיתי משלכם.</p>
-      <div class="story-steps">
-        <div class="story-step" style="--c:var(--blue)">
-          <div class="story-step__ic"><svg viewBox="0 0 24 24"><path d="M9 11V5.5a1.5 1.5 0 0 1 3 0V11"/><path d="M12 10.5V4a1.5 1.5 0 0 1 3 0v7"/><path d="M15 11V6.5a1.5 1.5 0 0 1 3 0V15a6 6 0 0 1-6 6h-1.5a6 6 0 0 1-4.6-2.2L4 15.5a1.6 1.6 0 0 1 2.5-2L9 16"/><path d="M9 11V8.5a1.5 1.5 0 0 0-3 0V14"/></svg></div>
-          <div class="story-step__body">
-            <h3>לוקחים אתכם <span class="hl">ביד</span></h3>
-            <p>חומר לימודי ברור ומשימות מדויקות. לא נתקעים לבד באף שלב.</p>
-          </div>
-        </div>
-        <div class="story-step" style="--c:var(--purple)">
-          <div class="story-step__ic"><svg viewBox="0 0 24 24"><path d="M4 21V8l8-5 8 5v13"/><path d="M3 21h18"/><path d="M8 21v-5h3v5M14 12h2M14 16h2"/></svg></div>
-          <div class="story-step__body">
-            <h3>בונים את <span class="hl">משרד ה-AI שלכם</span></h3>
-            <p>סוכנים שעושים את העבודה שהכי שנאתם, תהליכים שרצים לבד — צוות שלם שעובד בשבילכם, ואתם בניתם אותו.</p>
-          </div>
-        </div>
-        <div class="story-step" style="--c:var(--gold)">
-          <div class="story-step__ic" style="--c:var(--gold)"><svg viewBox="0 0 24 24" stroke="#14093B"><path d="M14.5 9.5 21 3M18 6l2 2M11 12a4 4 0 1 1-5.7 5.7A4 4 0 0 1 11 12Z"/></svg></div>
-          <div class="story-step__body">
-            <h3>ויוצאים עם <span class="hl">השיטה</span></h3>
-            <p>לא "איך מפעילים כלי" — איך בונים כל סוכן, כל תהליך, כל דבר שתצטרכו. גם בעוד שנה, גם משהו שעוד לא קיים.</p>
-          </div>
-        </div>
-      </div>
+      <p>לא זורק עליכם עוד קורס מצולם שתעברו לבד "מתישהו". לא מציף אתכם בכלים. לוקח אתכם ביד — עם חומר לימודי ברור ומשימות מדויקות — וצעד אחרי צעד, אתם בונים משהו אמיתי משלכם.</p>
+      <p><span class="hl">משרד ה-AI שלכם.</span> סוכנים שעושים את העבודה שאתם הכי שונאים לעשות. תהליכים שרצים בלי שאתם נוגעים בהם. צוות שלם שעובד בשבילכם — ואתם אלה שבניתם אותו.</p>
+      <p>ותוך כדי, קורה הדבר הכי חשוב: <span class="hl">אתם לומדים את השיטה.</span> לא "איך מפעילים את הכלי הזה". את השיטה השלמה — לבנות כל סוכן, כל תהליך, כל דבר שרץ אוטומטית. כל מה שתצטרכו, גם בעוד שנה, גם משהו שעוד לא קיים.</p>
       <p class="story__payoff">ופתאום אתם שוב האדם שיודע.<br>שלא תקוע, שלא תלוי באף אחד — שיכול לבנות לעצמו כל דבר.</p>
     </div>
   </div>
 </section>
 
-<!-- ====================== PROOFS — WHAT PEOPLE BUILT (WHITE) ====================== -->
-<section class="section section--white center">
+<!-- ====================== PROOFS — WHAT PEOPLE BUILT (tinted) ====================== -->
+<section class="section section--white section--proofs center">
   <div class="container">
     <h2>וזה כבר קורה.<br>אנשים כמוכם <span class="accent-blue">כבר בנו את זה.</span></h2>
-    <p class="lead center">רובם לא הגיעו מרקע טכני. אלה אנשים שעוברים את הקורס עכשיו — וזה מה שהם כבר בנו.</p>
+    <p class="lead center">רובם לא הגיעו מרקע טכני. אלה אנשים שעוברים את הקורס <span class="now-underline">עכשיו</span> — וזה מה שהם כבר בנו.</p>
     <div class="proofs">
       <div class="proof">
         <div class="proof__head">
@@ -488,12 +482,12 @@
         <p class="proof__quote">"הבדיקה שהכי פחדתי ממנה — נסגרת לבד."</p>
       </div>
     </div>
-    <p class="proof__ceiling">ואפילו יש תלמידים שכבר בנו <span class="accent-blue">משרד שלם של סוכנים</span>. זה בדיוק לאן שאתם הולכים.</p>
+    <p class="proof__ceiling">בניית <span class="accent-blue">משרד AI שלם</span> זה בדיוק לאן שכולכם הולכים. ויש מי שכבר לקח את זה צעד אחד רחוק יותר —</p>
     <div class="proof-ceiling-card">
       <div class="proof-ceiling-card__ic"><svg viewBox="0 0 24 24" stroke="#9A7B00"><path d="M4 21V8l8-5 8 5v13M3 21h18M9 21v-5h6v5M8 11h.01M12 11h.01M16 11h.01"/></svg></div>
       <div class="proof-ceiling-card__body">
-        <span class="proof__role" style="color:#9A7B00">רון · משרד AI שלם</span>
-        <p>לא עצר בסוכן אחד. בנה משרד שלם של סוכנים מחולק למחלקות — פיתוח, שיווק, מחקר, תפעול — שמדברים זה עם זה ועובדים יחד.</p>
+        <span class="proof__role" style="color:#9A7B00">רון · יזם</span>
+        <p>בנה צוות סוכנים שמנהל לו סטארטאפ שלם — מחולק למחלקות: פיתוח, שיווק, מחקר ותפעול, שמדברות זו עם זו ועובדות יחד גם כשהוא ישֵן.</p>
         <p class="proof__quote">"זה כבר לא כלי. זה ארגון שלם שעובד בשבילי."</p>
       </div>
     </div>
@@ -503,8 +497,8 @@
 <!-- ====================== ROADMAP — COURSE JOURNEY (infographic) ====================== -->
 <section class="section section--roadmap center">
   <div class="container">
-    <h2>מה יקרה <span class="accent-blue">אחרי שתרשמו</span> לטירונות?</h2>
-    <p class="lead center">משרד ה-AI שלכם גדל — שבוע אחרי שבוע.</p>
+    <h2>אז מה יקרה <span class="accent-blue">אחרי שתרשמו</span> לטירונות?</h2>
+    <p class="lead center">בואו תראו איך משרד ה-AI שיש לכם יגדל שבוע אחר שבוע.</p>
   </div>
   <img class="roadmap-img roadmap-img--desktop" src="roadmap-desktop.png" alt="מפת המסע של טירונות סוכנים — מה לומדים ובונים בכל שבוע, מההכנה ועד משרד AI שלם" loading="lazy" />
   <img class="roadmap-img roadmap-img--mobile" src="roadmap-mobile.png" alt="מפת המסע של טירונות סוכנים — מה לומדים ובונים בכל שבוע, מההכנה ועד משרד AI שלם" loading="lazy" />
@@ -514,7 +508,6 @@
 <section class="section section--blue center">
   <div class="container">
     <h2>אז הגעתם עד לכאן. <span class="accent-gold">בואו אספר לכם מה הצעד הבא.</span></h2>
-    <p class="lead center">לחצו פליי — אספר לכם בקצרה איך ממשיכים מכאן.</p>
     <div class="video-frame" data-vimeo-mobile="1197103172" data-vimeo-desktop="1197103174">
       <!-- Vimeo: data-vimeo-mobile = גרסה אנכית (9:16, מובייל), data-vimeo-desktop = גרסה לרוחב (16:9, דסקטופ). -->
       <div class="video-frame__ph">
@@ -557,7 +550,7 @@
 <section class="section section--gold center final">
   <div class="container">
     <div class="cta-story">
-      <div class="cta-story__hook">את הסוכן הזה — נועם — בניתי בעצמי.</div>
+      <div class="cta-story__hook">את הסוכן שאתם הולכים לדבר איתו — נועם — בניתי בעצמי.</div>
       <p>האמת? אני לא יודעת לבנות בוטים של שירות לקוחות. זה לא התחום שלי. ובכל זאת, במקום לשלם בין 15,000 ל-30,000 ש"ח למישהו שיבנה — בניתי אותו לבד, בפחות משבוע.</p>
       <p>לא כי אני טכנית — כי יש לי שיטה שמאפשרת לבנות כל דבר, גם מה שמעולם לא בניתי. בדיוק את השיטה הזאת אתם לומדים לעומק בטירונות.</p>
       <p><strong>ואחריה גם לכם יהיה הקסם הזה בידיים</strong> — היכולת לבנות כל דבר שרק תחלמו עליו: כל סוכן, כל מערכת, כל כלי.</p>
@@ -572,7 +565,7 @@
 <footer class="footer">
   <div class="container">
     <span class="brand">אִימפּרוּב</span>
-    טירונות סוכנים — התוכנית המקיפה בישראל לבניית סוכני AI
+    טירונות סוכנים — הופכים אתכם למי שבונה סוכני AI לבד
   </div>
 </footer>
 
@@ -625,35 +618,11 @@
         if (ph) ph.style.display = 'none';
         var iframe = document.createElement('iframe');
         iframe.src = 'https://player.vimeo.com/video/' + id +
-          '?title=0&byline=0&portrait=0&dnt=1&badge=0&autoplay=1&muted=1&loop=1&playsinline=1&controls=0&color=FFD747';
+          '?title=0&byline=0&portrait=0&dnt=1&badge=0&autoplay=1&muted=1&loop=1&playsinline=1&controls=1&color=FFD747';
         iframe.allow = 'autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media';
         iframe.setAttribute('allowfullscreen', '');
         frame.appendChild(iframe);
-
-        // overlay: tap to unmute
-        var sound = document.createElement('div');
-        sound.className = 'video-frame__sound';
-        sound.innerHTML = soundIcon();
-        frame.appendChild(sound);
-
-        withApi(function () {
-          try { player = new Vimeo.Player(iframe); } catch (e) { player = null; }
-        });
-
-        sound.addEventListener('click', function () {
-          sound.remove();
-          // swap to a controlled, unmuted player
-          if (player && player.setMuted) {
-            player.setVolume(1); player.setMuted(false); player.play();
-            // bring controls: reload iframe with controls=1
-          }
-          var ctrl = document.createElement('iframe');
-          ctrl.src = 'https://player.vimeo.com/video/' + id +
-            '?title=0&byline=0&portrait=0&dnt=1&badge=0&autoplay=1&muted=0&loop=1&playsinline=1&controls=1&color=FFD747';
-          ctrl.allow = 'autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media';
-          ctrl.setAttribute('allowfullscreen', '');
-          frame.replaceChild(ctrl, iframe);
-        });
+        // Autoplays muted with NATIVE controls visible — viewers unmute in place via the player, no restart.
       }
 
       // autoplay (muted) when the video scrolls into view
