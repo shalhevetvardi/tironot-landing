@@ -40,6 +40,9 @@
   .section--blue  { background: var(--blue);  color: #fff; }
   .section--gold  { background: var(--gold);  color: var(--navy); }
   .section--white { background: #fff;         color: var(--navy); }
+  .section--roadmap { background: #FFFFFF;     color: var(--navy); padding-bottom: 0; position: relative; z-index: 2; }
+  .roadmap-img { display: block; width: 100%; height: auto; margin: 30px 0 -2px; position: relative; z-index: 3; pointer-events: none; }
+  .roadmap-img--mobile { display: none; }
 
   /* ---------- FLOATING SQUARES (subtle texture) ---------- */
   .deco { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
@@ -238,6 +241,10 @@
     .float--chat { bottom: -14px; right: -14px; }
     .proofs { grid-template-columns: 1fr; }
 
+    /* roadmap → swap to vertical mobile version */
+    .roadmap-img--desktop { display: none; }
+    .roadmap-img--mobile { display: block; }
+
     /* videos → portrait (vertical mobile version) on phones */
     .video-frame { aspect-ratio: 9 / 16; max-width: 330px; }
     /* …unless the clip only has a landscape version — keep it 16:9 */
@@ -393,6 +400,16 @@
     </div>
     <p class="proof__ceiling">ואפילו יש תלמידים שכבר בנו <span class="accent-blue">משרד שלם של סוכנים</span>. זה בדיוק לאן שאתם הולכים.</p>
   </div>
+</section>
+
+<!-- ====================== ROADMAP — COURSE JOURNEY (infographic) ====================== -->
+<section class="section section--roadmap center">
+  <div class="container">
+    <h2>מה יקרה <span class="accent-blue">אחרי שתרשמו</span> לטירונות?</h2>
+    <p class="lead center">המשרד ה-AI שלכם גדל — שבוע אחרי שבוע.</p>
+  </div>
+  <img class="roadmap-img roadmap-img--desktop" src="roadmap-desktop.png" alt="מפת המסע של טירונות סוכנים — מה לומדים ובונים בכל שבוע, מההכנה ועד משרד AI שלם" loading="lazy" />
+  <img class="roadmap-img roadmap-img--mobile" src="roadmap-mobile.png" alt="מפת המסע של טירונות סוכנים — מה לומדים ובונים בכל שבוע, מההכנה ועד משרד AI שלם" loading="lazy" />
 </section>
 
 <!-- ====================== JOURNEY MAP — "אתם כאן" (BLUE) ====================== -->
