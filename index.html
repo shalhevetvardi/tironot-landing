@@ -217,6 +217,15 @@
   .video-frame__note { font-size: 14px; font-weight: 600; color: rgba(255,255,255,.62); }
   .video-frame.is-playable { cursor: pointer; }
   .video-frame.is-playable:hover .video-frame__play { transform: scale(1.06); }
+  /* autoplay-muted state: invisible click layer + "tap for sound" badge */
+  .video-frame__sound { position: absolute; inset: 0; z-index: 4; cursor: pointer;
+    display: flex; align-items: flex-end; justify-content: center; background: transparent; }
+  .video-frame__sound-badge { margin-bottom: 16px; display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(20,9,59,.72); color: #fff; font-size: 14px; font-weight: 600;
+    padding: 9px 16px; border-radius: 50px; box-shadow: 0 6px 18px rgba(0,0,0,.32);
+    transition: transform .15s ease; }
+  .video-frame__sound:hover .video-frame__sound-badge { transform: scale(1.05); }
+  .video-frame__sound-badge svg { width: 18px; height: 18px; fill: #fff; }
   .jrn-bridge { margin-top: 42px; font-size: clamp(15px, 1.6vw, 17px); font-weight: 600; color: rgba(255,255,255,.82); }
 
   /* ---------- FINAL CTA (GOLD) ---------- */
@@ -486,30 +495,78 @@
     io.observe(card);
   })();
 
-  /* Vimeo facade — keep our designed poster + gold play button; load the player only on click,
-     in brand colors, no tracking/branding. Picks the mobile (vertical) or desktop (landscape) version per viewport. */
+  /* Vimeo videos — autoplay MUTED + loop the moment they scroll into view (browsers allow muted autoplay),
+     so it's clearly a live video. Tap anywhere on it to turn sound on + show controls.
+     Picks the mobile (vertical 9:16) or desktop (landscape 16:9) version per viewport. */
   (function () {
     var mq = window.matchMedia('(max-width: 680px)');
-    document.querySelectorAll('.video-frame').forEach(function (frame) {
+    var apiLoaded = false, apiLoading = false, apiCallbacks = [];
+    function withApi(cb) {
+      if (apiLoaded) return cb();
+      apiCallbacks.push(cb);
+      if (apiLoading) return;
+      apiLoading = true;
+      var s = document.createElement('script');
+      s.src = 'https://player.vimeo.com/api/player.js';
+      s.onload = function () { apiLoaded = true; apiCallbacks.forEach(function (f) { f(); }); apiCallbacks = []; };
+      document.head.appendChild(s);
+    }
+    function soundIcon() {
+      return '<span class="video-frame__sound-badge">' +
+        '<svg viewBox="0 0 24 24"><path d="M3 10v4a1 1 0 0 0 1 1h2l4 4V5L6 9H4a1 1 0 0 0-1 1zm13.5 2a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a6.8 6.8 0 0 1 0 13.4v2.1a8.9 8.9 0 0 0 0-17.6z"/></svg>' +
+        'לחצו להפעלת קול</span>';
+    }
+
+    document.querySelectorAll('.video-frame[data-vimeo-mobile], .video-frame[data-vimeo-desktop]').forEach(function (frame) {
       var idMobile = (frame.getAttribute('data-vimeo-mobile') || '').trim();
       var idDesktop = (frame.getAttribute('data-vimeo-desktop') || '').trim();
       if (!idMobile && !idDesktop) return;
-      var trigger = frame.querySelector('.video-frame__ph');
-      if (!trigger) return;
-      function currentId() { return mq.matches ? idMobile : idDesktop; }
-      function refresh() { frame.classList.toggle('is-playable', !!currentId()); }
-      refresh();
-      if (mq.addEventListener) mq.addEventListener('change', refresh);
-      trigger.addEventListener('click', function () {
-        var id = currentId();
-        if (!id) return;
+      var ph = frame.querySelector('.video-frame__ph');
+      var id = (mq.matches ? idMobile : idDesktop) || idDesktop || idMobile;
+      var started = false, player = null;
+
+      function start() {
+        if (started) return; started = true;
+        if (ph) ph.style.display = 'none';
         var iframe = document.createElement('iframe');
-        iframe.src = 'https://player.vimeo.com/video/' + id + '?title=0&byline=0&portrait=0&dnt=1&autoplay=1&color=FFD747&badge=0';
-        iframe.allow = 'autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share';
+        iframe.src = 'https://player.vimeo.com/video/' + id +
+          '?title=0&byline=0&portrait=0&dnt=1&badge=0&autoplay=1&muted=1&loop=1&playsinline=1&controls=0&color=FFD747';
+        iframe.allow = 'autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media';
         iframe.setAttribute('allowfullscreen', '');
         frame.appendChild(iframe);
-        trigger.remove();
-      });
+
+        // overlay: tap to unmute
+        var sound = document.createElement('div');
+        sound.className = 'video-frame__sound';
+        sound.innerHTML = soundIcon();
+        frame.appendChild(sound);
+
+        withApi(function () {
+          try { player = new Vimeo.Player(iframe); } catch (e) { player = null; }
+        });
+
+        sound.addEventListener('click', function () {
+          sound.remove();
+          // swap to a controlled, unmuted player
+          if (player && player.setMuted) {
+            player.setVolume(1); player.setMuted(false); player.play();
+            // bring controls: reload iframe with controls=1
+          }
+          var ctrl = document.createElement('iframe');
+          ctrl.src = 'https://player.vimeo.com/video/' + id +
+            '?title=0&byline=0&portrait=0&dnt=1&badge=0&autoplay=1&muted=0&playsinline=1&controls=1&color=FFD747';
+          ctrl.allow = 'autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media';
+          ctrl.setAttribute('allowfullscreen', '');
+          frame.replaceChild(ctrl, iframe);
+        });
+      }
+
+      // autoplay (muted) when the video scrolls into view
+      if (!('IntersectionObserver' in window)) { start(); return; }
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) { if (e.isIntersecting) { start(); io.unobserve(e.target); } });
+      }, { threshold: 0.35 });
+      io.observe(frame);
     });
   })();
 </script>
