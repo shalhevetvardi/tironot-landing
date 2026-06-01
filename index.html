@@ -226,7 +226,8 @@
   @keyframes jrnBob { 0%,100% { transform: translateX(50%) translateY(0); } 50% { transform: translateX(50%) translateY(-4px); } }
 
   /* ---------- VIDEO FRAME (Shalhevet, inside journey section) ---------- */
-  .video-frame { position: relative; max-width: 1000px; margin: 32px auto 0; aspect-ratio: 16 / 9;
+  .intro__cred { font-size: clamp(17px, 2vw, 22px); font-weight: 700; color: var(--navy); max-width: 640px; margin: 0 auto; line-height: 1.5; }
+  .video-frame { position: relative; max-width: 1000px; margin: 28px auto 0; aspect-ratio: 16 / 9;
     background: #0C1530; border-radius: 22px; overflow: hidden; border: 1px solid rgba(255,255,255,.14);
     box-shadow: 0 34px 66px -24px rgba(7,3,28,.6), 0 12px 26px rgba(7,3,28,.28); }
   .video-frame iframe, .video-frame video { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; }
@@ -366,6 +367,7 @@
 <section class="section section--white center" id="intro">
   <div class="container">
     <h2>נעים להכיר. <span class="accent-blue">אני שלהבת.</span></h2>
+    <p class="intro__cred">אני מנהלת חברה שלמה — <span class="accent-blue">בלי עובדים.</span> רק אני וצוות ה-AI שבניתי.</p>
     <div class="video-frame" data-vimeo-mobile="1197103171" data-vimeo-desktop="1197103173">
       <!-- Vimeo: data-vimeo-mobile = גרסה אנכית (9:16, מובייל), data-vimeo-desktop = גרסה לרוחב (16:9, דסקטופ). הנגן ייטען בלחיצה, בצבעי המותג. -->
       <div class="video-frame__ph">
