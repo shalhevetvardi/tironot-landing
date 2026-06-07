@@ -177,6 +177,8 @@
   .proof__head { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
   .proof__ic { flex: 0 0 auto; width: 46px; height: 46px; border-radius: 13px; display: flex; align-items: center; justify-content: center; }
   .proof__ic svg { width: 24px; height: 24px; fill: none; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+  .proof__photo { flex: 0 0 auto; width: 56px; height: 56px; border-radius: 50%; object-fit: cover; box-shadow: 0 4px 14px rgba(20,9,59,.15); border: 2px solid #fff; }
+  .proof-ceiling-card__photo { flex: 0 0 auto; width: 72px; height: 72px; border-radius: 50%; object-fit: cover; box-shadow: 0 6px 18px rgba(20,9,59,.18); border: 3px solid #fff; }
   .proof__role { display: inline-block; font-weight: 800; font-size: 14.5px; }
   .proof p { font-size: 16px; color: var(--body); line-height: 1.6; }
   .proof__quote { margin-top: auto; padding-top: 14px; font-weight: 600; color: var(--navy); font-size: 15.5px; border-right: 3px solid var(--gold); padding-right: 12px; }
@@ -598,50 +600,50 @@
     <div class="proofs">
       <div class="proof">
         <div class="proof__head">
-          <span class="proof__ic" style="background:rgba(36,115,200,.12)"><svg viewBox="0 0 24 24" stroke="var(--blue-deep)"><path d="M12 3a4 4 0 0 1 4 4c0 1.5-.8 2.6-1.8 3.3 2.2.9 3.8 3 3.8 5.7v3H6v-3c0-2.6 1.6-4.8 3.8-5.7C8.8 9.6 8 8.5 8 7a4 4 0 0 1 4-4Z"/></svg></span>
-          <span class="proof__role" style="color:var(--blue-deep)">אילנה · מטפלת</span>
+          <img class="proof__photo" src="students/ilana.jpg" alt="אילנה וייס" loading="lazy">
+          <span class="proof__role" style="color:var(--blue-deep)">אילנה וייס · מטפלת בחרדות</span>
         </div>
         <p>ניהלה מחלקה שלמה של ארבע מזכירות. הסוכן שבנתה כבר עושה את רוב עבודתן — עורך לה מסמכים, מנהל משימות, ומטפל בדברים שעלו לה עשרות אלפי שקלים בחודש.</p>
         <p class="proof__quote">"הייתה לי מחלקה שלמה של מזכירות — ארבע. אני לא אצטרך את זה יותר."</p>
       </div>
       <div class="proof">
         <div class="proof__head">
-          <span class="proof__ic" style="background:rgba(165,39,86,.12)"><svg viewBox="0 0 24 24" stroke="var(--wine)"><path d="M12 3v18M5 7h14M6 7l-2 6a3 3 0 0 0 6 0L8 7M18 7l-2 6a3 3 0 0 0 6 0l-2-6"/></svg></span>
-          <span class="proof__role" style="color:var(--wine)">ליטל · עורכת דין</span>
+          <img class="proof__photo" src="students/lital.jpg" alt="ליטל יעקובוביץ" loading="lazy">
+          <span class="proof__role" style="color:var(--wine)">ליטל יעקובוביץ · עורכת דין</span>
         </div>
         <p>בנתה עוזר משפטי שמלווה אותה במשרד, וגם סוכן פיננסי שקרא וניתח דפי אשראי וחשבונות בנק, יצר לעצמו את הכלים, ותיעד הכול — בלי שורת קוד.</p>
         <p class="proof__quote">"זה הצוות שאין לי."</p>
       </div>
       <div class="proof">
         <div class="proof__head">
-          <span class="proof__ic" style="background:rgba(103,98,255,.12)"><svg viewBox="0 0 24 24" stroke="var(--purple)"><path d="M9 12h6M9 16h6M9 8h2M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg></span>
-          <span class="proof__role" style="color:var(--purple)">ענת · מנהלת בחברת רפואה</span>
+          <img class="proof__photo" src="students/anat.jpg" alt="ענת מנור" loading="lazy">
+          <span class="proof__role" style="color:var(--purple)">ענת מנור · סמנכ"לית פיתוח עסקי, שירותי רפואה</span>
         </div>
         <p>בנתה סוכנת אישית, וגם סוכן שקורא מכרז שלם, מסכם את תנאי הסף, ומחליט בשבילה אם בכלל כדאי לגשת אליו.</p>
         <p class="proof__quote">"היא קוראת מכרז מהר ממני — ויודעת להגיד לי 'לא שווה'."</p>
       </div>
       <div class="proof">
         <div class="proof__head">
-          <span class="proof__ic" style="background:rgba(107,210,43,.16)"><svg viewBox="0 0 24 24" stroke="#3F7E16"><path d="M12 3 4 7v6c0 5 3.5 7.5 8 9 4.5-1.5 8-4 8-9V7z"/><path d="M9.5 12l1.8 1.8 3.5-3.6"/></svg></span>
-          <span class="proof__role" style="color:#3F7E16">נחמה · חינוך מיוחד</span>
+          <img class="proof__photo" src="students/dolev.jpg" alt="דולב דרי" loading="lazy">
+          <span class="proof__role" style="color:#3F7E16">דולב דרי · בעל משרד פרסום</span>
         </div>
-        <p>בנתה מנוע שמתאים אוטומטית טקסטים לימודיים לתלמידים עם צרכים מיוחדים, וסוכן שממיין לבד את הקבצים של כל ילד לתיקייה אישית.</p>
-        <p class="proof__quote">"מה שלקח לי שעות על כל תלמיד — קורה עכשיו לבד."</p>
+        <p>בנה צוות סוכנים שמנהלים לו לקוחות — מקבלים פניות, מתאמים פגישות, מזמינים גרפיקות וניהול קמפיינים. הכול בלי שהוא נוגע.</p>
+        <p class="proof__quote">"הסוכנים שלי מנהלים לקוחות במקומי."</p>
       </div>
       <div class="proof">
         <div class="proof__head">
-          <span class="proof__ic" style="background:rgba(36,115,200,.12)"><svg viewBox="0 0 24 24" stroke="var(--blue-deep)"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18M7 13l2 2 3-3"/></svg></span>
-          <span class="proof__role" style="color:var(--blue-deep)">אור · חשבת שכר</span>
+          <img class="proof__photo" src="students/batchen.jpg" alt="בת חן לוי" loading="lazy">
+          <span class="proof__role" style="color:var(--blue-deep)">בת חן לוי · סמנכ"לית, חברה בינלאומית</span>
         </div>
-        <p>בנתה סוכן שמקבל את תלושי השכר מלשכת השירות ובודק כל נתון מול נתוני הבסיס — תופס טעויות לפני שהן מגיעות לעובדים.</p>
-        <p class="proof__quote">"הבדיקה שהכי פחדתי ממנה — נסגרת לבד."</p>
+        <p>בנתה סוכני AI שלוקחים על עצמם משימות שחזרו על עצמן יום אחרי יום — והעבירה אליהם 50% מהעבודה שלה.</p>
+        <p class="proof__quote">"חצי מהיום שלי כבר רץ לבד."</p>
       </div>
     </div>
     <p class="proof__ceiling">בניית <span class="accent-blue">משרד AI שלם</span> זה בדיוק לאן שכולכם הולכים. ויש מי שכבר לקח את זה צעד אחד רחוק יותר —</p>
     <div class="proof-ceiling-card">
-      <div class="proof-ceiling-card__ic"><svg viewBox="0 0 24 24" stroke="#9A7B00"><path d="M4 21V8l8-5 8 5v13M3 21h18M9 21v-5h6v5M8 11h.01M12 11h.01M16 11h.01"/></svg></div>
+      <img class="proof-ceiling-card__photo" src="students/ron.jpg" alt="רון אלון" loading="lazy">
       <div class="proof-ceiling-card__body">
-        <span class="proof__role" style="color:#9A7B00">רון · יזם</span>
+        <span class="proof__role" style="color:#9A7B00">רון אלון · יזם</span>
         <p>בנה צוות סוכנים שמנהל לו סטארטאפ שלם — מחולק למחלקות: פיתוח, שיווק, מחקר ותפעול, שמדברות זו עם זו ועובדות יחד גם כשהוא ישֵן.</p>
         <p class="proof__quote">"זה כבר לא כלי. זה ארגון שלם שעובד בשבילי."</p>
       </div>
