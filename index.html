@@ -569,7 +569,6 @@
       <!-- Vimeo: data-vimeo-mobile = גרסה אנכית (9:16, מובייל), data-vimeo-desktop = גרסה לרוחב (16:9, דסקטופ). הנגן ייטען בלחיצה, בצבעי המותג. -->
       <div class="video-frame__ph">
         <div class="video-frame__play"><svg width="30" height="30" viewBox="0 0 24 24"><polygon points="7,4 20,12 7,20"/></svg></div>
-        <span class="video-frame__note">סרטון הפתיחה שלך ייכנס כאן</span>
       </div>
     </div>
   </div>
@@ -694,7 +693,6 @@
       <!-- Vimeo: data-vimeo-mobile = גרסה אנכית (9:16, מובייל), data-vimeo-desktop = גרסה לרוחב (16:9, דסקטופ). -->
       <div class="video-frame__ph">
         <div class="video-frame__play"><svg width="30" height="30" viewBox="0 0 24 24"><polygon points="7,4 20,12 7,20"/></svg></div>
-        <span class="video-frame__note">הסרטון שלך ייכנס כאן</span>
       </div>
     </div>
     <p class="jrn-bridge">ובמבט אחד — הנה איפה אתם עכשיו, ומה הצעדים הבאים:</p>
@@ -834,7 +832,7 @@
       if (!('IntersectionObserver' in window)) { start(); return; }
       var io = new IntersectionObserver(function (entries) {
         entries.forEach(function (e) { if (e.isIntersecting) { start(); io.unobserve(e.target); } });
-      }, { threshold: 0.35 });
+      }, { threshold: 0, rootMargin: '800px 0px' });
       io.observe(frame);
     });
   })();
