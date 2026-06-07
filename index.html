@@ -196,12 +196,17 @@
   .proof-ceiling-card__body p { font-size: 16px; color: var(--body); line-height: 1.6; margin-top: 6px; }
   .proof-ceiling-card__body .proof__quote { margin-top: 12px; }
 
-  /* ---------- PRICE SECTION (סקשן עצמאי לבן, בין סרטון 2 ל-CTA הזהב) ---------- */
+  /* ---------- PRICE SECTION (סקשן עצמאי לבן, אחרי מפת המסע) ---------- */
   .price-promise {
     font-size: clamp(24px, 3.2vw, 38px);
-    font-weight: 800; line-height: 1.28;
+    font-weight: 800; line-height: 1.32;
     color: var(--navy);
-    max-width: 820px; margin: 0 auto 40px;
+    max-width: 860px; margin: 0 auto 40px;
+  }
+  .price-promise__kicker {
+    display: block; font-size: clamp(28px, 3.8vw, 44px);
+    font-weight: 900; color: var(--navy);
+    margin-bottom: 10px; letter-spacing: -.5px;
   }
   .price-includes {
     list-style: none; padding: 0;
@@ -225,9 +230,9 @@
   .price-includes strong { color: var(--navy); font-weight: 800; }
 
   .price-card {
-    max-width: 460px; margin: 0 auto 18px;
+    max-width: 480px; margin: 0 auto;
     background: var(--navy-mid); color: #fff;
-    border-radius: 22px; padding: 36px 28px 30px;
+    border-radius: 22px; padding: 30px 30px 26px;
     box-shadow: 0 26px 60px rgba(20,9,59,.34);
     text-align: center;
     position: relative; overflow: hidden;
@@ -238,37 +243,53 @@
     background: radial-gradient(circle, rgba(255,215,71,.20), transparent 70%);
     pointer-events: none;
   }
-  .price-card__original {
-    font-size: 26px; font-weight: 700;
-    color: rgba(255,255,255,.55);
-    text-decoration: line-through; text-decoration-thickness: 2px;
-    margin-bottom: 6px;
-    position: relative; z-index: 1;
+  .price-card__label {
+    font-size: 14px; font-weight: 700; letter-spacing: .3px;
+    color: rgba(255,255,255,.60); text-transform: uppercase;
+    margin-bottom: 6px; position: relative; z-index: 1;
   }
   .price-card__main {
     display: flex; align-items: baseline; justify-content: center;
-    gap: 10px; margin: 4px 0 12px;
+    gap: 10px; margin: 0 0 10px;
     position: relative; z-index: 1;
   }
   .price-card__main .num {
     font-weight: 900;
-    font-size: clamp(64px, 8vw, 84px);
-    color: var(--gold); line-height: 1;
-    letter-spacing: -1.5px;
+    font-size: clamp(72px, 9vw, 96px);
+    color: #fff; line-height: 1;
+    letter-spacing: -2px;
   }
   .price-card__main .nis {
-    font-weight: 800; font-size: 36px; color: var(--gold);
+    font-weight: 800; font-size: 42px; color: #fff;
   }
   .price-card__sub {
-    font-size: 15px; color: rgba(255,255,255,.78);
+    font-size: 15px; color: rgba(255,255,255,.72);
     font-weight: 500; position: relative; z-index: 1;
   }
-
-  .price-note {
-    font-size: 14.5px; color: rgba(20,9,59,.62);
-    max-width: 520px; margin: 0 auto;
-    font-style: italic;
+  .price-card__divider {
+    height: 1px; background: rgba(255,255,255,.16);
+    margin: 22px -6px 20px; position: relative; z-index: 1;
   }
+  .price-card__offer {
+    font-size: clamp(19px, 2.2vw, 24px); font-weight: 800;
+    color: var(--gold); margin-bottom: 14px;
+    position: relative; z-index: 1;
+  }
+  .price-card__cta {
+    display: inline-block; color: #fff; text-decoration: none;
+    font-weight: 700; font-size: 16px;
+    padding: 12px 26px; border-radius: 50px;
+    border: 1.5px solid rgba(255,255,255,.40);
+    background: rgba(255,255,255,.06);
+    transition: background .15s, border-color .15s, transform .15s;
+    position: relative; z-index: 1;
+  }
+  .price-card__cta:hover {
+    background: rgba(255,215,71,.18);
+    border-color: var(--gold);
+    transform: translateY(-1px);
+  }
+  .price-card__cta span { display: inline-block; margin-inline-start: 6px; }
 
   /* ---------- ESCAPE HATCH (קישור עדין מתחת לכפתור) ---------- */
   .cta-escape { display: block; margin-top: 18px; font-size: 14.5px; color: rgba(20,9,59,.65); }
@@ -635,8 +656,32 @@
   <img class="roadmap-img roadmap-img--mobile" src="roadmap-mobile.png" alt="מפת המסע של טירונות סוכנים — מה לומדים ובונים בכל שבוע, מההכנה ועד משרד AI שלם" loading="lazy" />
 </section>
 
-<!-- ====================== JOURNEY MAP — "אתם כאן" (BLUE) ====================== -->
-<section class="section section--blue center">
+<!-- ====================== PRICE SECTION (WHITE) — אחרי מפת המסע, לפני סרטון נועם ====================== -->
+<section class="section section--white center" id="price">
+  <div class="container">
+    <h2 class="price-promise"><span class="price-promise__kicker">זה לא קורס.</span>זה לקבל בידיים את היכולת לברוא <span class="accent-blue">כל סוכן, כל מערכת, כל אוטומציה</span> — ולגרום להם לעבוד מקצה לקצה.</h2>
+
+    <ul class="price-includes">
+      <li><span><strong>5 מפגשי לייב</strong> — כל מפגש 3 שעות של למידה ובנייה משותפת</span></li>
+      <li><span><strong>שלב הכנה לפני שמתחילים</strong> — סוכן ליווי שלוקח אתכם צעד-צעד</span></li>
+      <li><span><strong>מעטפת פדגוגית מלאה</strong> — יד ביד, ליווי צמוד לאורך כל הדרך</span></li>
+      <li><span><strong>מפגש חידוד שבועי בזום</strong></span></li>
+      <li><span><strong>הקלטות + אתר חומרים</strong> — ללא הגבלת זמן</span></li>
+    </ul>
+
+    <div class="price-card">
+      <div class="price-card__label">המחיר</div>
+      <div class="price-card__main"><span class="num">9,300</span><span class="nis">₪</span></div>
+      <div class="price-card__sub">ניתן לפרוס עד 12 תשלומים</div>
+      <div class="price-card__divider"></div>
+      <div class="price-card__offer">רוצים הטבה של 1,400 ₪?</div>
+      <a href="#video-noam" class="price-card__cta">צפו בסרטון למטה <span aria-hidden="true">↓</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== JOURNEY MAP — "אתם כאן" (BLUE) — אחרי המחיר ====================== -->
+<section class="section section--blue center" id="video-noam">
   <div class="container">
     <h2>אז הגעתם עד לכאן. <span class="accent-gold">בואו אספר לכם מה הצעד הבא.</span></h2>
     <div class="video-frame" data-vimeo-mobile="1197103172" data-vimeo-desktop="1197103174">
@@ -674,29 +719,6 @@
         </div>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- ====================== PRICE SECTION (WHITE) — ההבטחה, מה כלול, מחיר ====================== -->
-<section class="section section--white center" id="price">
-  <div class="container">
-    <h2 class="price-promise">תוך 5 שבועות יש לכם משרד AI שעובד בשבילכם —<br><span class="accent-blue">והיכולת לבנות כל סוכן, כל מערכת, כל דבר שתחלמו עליו.</span></h2>
-
-    <ul class="price-includes">
-      <li><span><strong>5 מפגשי לייב</strong> — כל מפגש 3 שעות של למידה ובנייה משותפת</span></li>
-      <li><span><strong>שלב הכנה לפני שמתחילים</strong> — סוכן ליווי שלוקח אתכם צעד-צעד</span></li>
-      <li><span><strong>מעטפת פדגוגית מלאה</strong> — יד ביד, ליווי צמוד לאורך כל הדרך</span></li>
-      <li><span><strong>מפגש חידוד שבועי בזום</strong></span></li>
-      <li><span><strong>הקלטות + אתר חומרים</strong> — ללא הגבלת זמן</span></li>
-    </ul>
-
-    <div class="price-card">
-      <div class="price-card__original">9,300 ₪</div>
-      <div class="price-card__main"><span class="num">7,900</span><span class="nis">₪</span></div>
-      <div class="price-card__sub">בהרשמה דרך נועם · ניתן לפרוס עד 12 תשלומים</div>
-    </div>
-
-    <p class="price-note">את הקוד מקבלים בשיחה עם נועם בוואטסאפ. תקף 72 שעות מהשיחה.</p>
   </div>
 </section>
 
