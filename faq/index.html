@@ -416,6 +416,18 @@
     .modal-btn-primary svg { width: 22px; height: 22px; flex: 0 0 auto; }
     .modal-btn-secondary { text-align: center; color: var(--navy); font-weight: 600; font-size: 15px; text-decoration: underline; text-decoration-color: rgba(20,9,59,.3); text-underline-offset: 3px; padding: 4px 8px; }
     .modal-btn-secondary:hover { color: var(--blue); text-decoration-color: var(--blue); }
+
+    /* ───── Timeline (5-week story — like the PDF) ───── */
+    .timeline { position:relative; margin:20px 0 8px; }
+    .tl-step { position:relative; display:flex; gap:15px; padding-bottom:16px; }
+    .tl-step::before { content:''; position:absolute; top:46px; bottom:-2px; right:21px; width:2px; background:#E0DCEF; }
+    .tl-step:last-child::before { display:none; }
+    .tl-num { position:relative; z-index:1; flex:0 0 auto; width:44px; height:44px; border-radius:50%; background:var(--navy); color:#fff; font-weight:800; font-size:18px; display:flex; align-items:center; justify-content:center; box-shadow:0 0 0 4px #fff; }
+    .tl-num.pre { background:var(--gold); color:var(--navy); }
+    .tl-body { flex:1; background:#fff; border:1px solid #E9ECF5; border-radius:14px; padding:14px 18px; box-shadow:0 6px 18px rgba(20,9,59,.05); }
+    .tl-body p { margin:0; font-size:16px; line-height:1.7; }
+    .tl-body .tl-title { display:block; font-weight:800; color:var(--navy); font-size:16.5px; margin-bottom:4px; }
+    .tl-body em { color:var(--blue); font-style:italic; }
   </style>
 </head>
 <body>
@@ -480,7 +492,7 @@
             <div class="jrn-conn"></div>
             <div class="jrn-step">
               <div class="jrn-circle"><div class="jrn-base">3</div></div>
-              <div class="jrn-label">פגישת Welcome<br>+ הרשמה</div>
+              <div class="jrn-label">פגישת וולקאם<br>+ הרשמה</div>
             </div>
             <div class="jrn-conn"></div>
             <div class="jrn-step">
@@ -490,7 +502,7 @@
           </div>
         </div>
         <div class="welcome-details">
-          <p class="welcome-details__hook">הצעד הבא: <strong>פגישת Welcome קצרה עם שלהבת</strong>. מה קורה בה?</p>
+          <p class="welcome-details__hook">הצעד הבא: <strong>פגישת וולקאם קצרה עם שלהבת</strong>. מה קורה בה?</p>
           <ul class="welcome-details__list">
             <li>מתייעצים על <strong>שאלות אחרונות</strong> לפני הרשמה.</li>
             <li>נרשמים, משלמים, ו<strong>מממשים את ההטבה</strong> שקיבלתם מנועם.</li>
@@ -499,8 +511,8 @@
           </ul>
         </div>
         <div class="welcome-cta">
-          <p class="welcome-cta__line">קיבלתם מנועם את <strong>הטבת חברי טירונות</strong> — תוכלו לממש אותה בפגישת ה-Welcome.</p>
-          <a class="welcome-cta__button" href="https://calendly.com/shalhevet-aimprove/meet-with-me-6" target="_blank" rel="noopener noreferrer">לקביעת פגישת Welcome ←</a>
+          <p class="welcome-cta__line">קיבלתם מנועם <strong>הטבה</strong> — תוכלו לממש אותה בפגישת הוולקאם עם שלהבת.</p>
+          <a class="welcome-cta__button" href="https://calendly.com/shalhevet-aimprove/meet-with-me-6" target="_blank" rel="noopener noreferrer">לקביעת פגישת וולקאם ←</a>
           <p class="welcome-cta__alt">או — <a href="https://agent-course.aimprove.co.il/bogrim/" target="_blank" rel="noopener noreferrer">לדבר קודם עם בוגרים שכבר עברו את זה</a></p>
         </div>
       </div>
@@ -526,7 +538,7 @@
           </div>
         </details>
         <details>
-          <summary>מה ההבדל בין התוכנית לקורס "לומדים AI"?<span class="arrow">⌄</span></summary>
+          <summary>מה ההבדל בין טירונות סוכנים לקורס "לומדים AI"?<span class="arrow">⌄</span></summary>
           <div class="answer">
             <p>בקורס "לומדים AI" למדתם <strong>להשתמש</strong> ב-AI: פרומפטים טובים יותר, תוצאות טובות יותר, עבודה חכמה יותר.</p>
             <p>בטירונות סוכנים אתם כבר <strong>בונים</strong>: משרד AI שלם, צוות סוכנים שמחוברים לכלים שלכם, מכירים את העסק, ועובדים יחד גם כשאתם לא מול המסך.</p>
@@ -612,12 +624,14 @@
             <p>יש רמה אחרת לגמרי:<br>הרמה שבה אתם כבר לא <em>משתמשים</em> ב-AI — אלא <strong>מנהלים</strong> אותו.</p>
             <p>בונים סוכנים שעובדים בשבילכם.<br>ולאט-לאט מרכיבים מהם <strong>משרד AI שלם</strong> — שעובד גם כשאתם ישנים.</p>
             <p>וככה זה נראה — שבוע אחרי שבוע:</p>
-            <p><strong>עוד לפני המפגש הראשון</strong> — אתם כבר נכנסים פנימה.<br>מקבלים הכנה מסודרת ובונים את הסוכן הראשון שלכם. ככה ביום הראשון אתם לא יושבים בצד ומסתכלים — אתם כבר בונים.</p>
-            <p><strong>בשבוע הראשון</strong> — הכל מתחבר.<br>כל המילים ששמעתם — סקילים, פלאגינים, סוכנים — סוף סוף יושבות במקום, ואתם מבינים <em>איך</em> הדברים נבנים. זה ירגיש קצת לא נוח: פתאום קבצים, טרמינל, מילים שנראות כמו שפה של מפתחים. זה בסדר גמור — ככה נראה לבנות משהו אמיתי. ובסוף השבוע כבר יש לכם <strong>יכולת ראשונה שעובדת</strong> על משהו אמיתי שלכם.</p>
-            <p><strong>בשבוע השני</strong> — אתם מאצילים עבודה.<br>לוקחים תהליך שאתם שונאים לעשות ידנית, ובונים אותו שירוץ לבד. מעלים אותו לענן, והוא עובד <strong>גם כשהמחשב כבוי</strong>. כאן כבר תרגישו את הקפיצה. אחת התלמידות סיפרה שהסוכן שלה עצר אותה באמצע: <em>"את עובדת יותר מדי, קחי הפסקה."</em></p>
-            <p><strong>בשבוע השלישי</strong> — אתם בונים שותף.<br>סוכן עם אופי — כזה שמכיר אתכם ואת העסק, שאתם מתייעצים איתו ולא רק מפעילים. הרגע שבו הוא עונה לכם "כמוכם" הוא רגע קטן ומרגש. הוא כבר לא כלי. <strong>הוא חבר צוות.</strong></p>
-            <p><strong>בשבוע הרביעי</strong> — זה הופך לצוות.<br>סוכן-על שמנהל תתי-סוכנים, מאציל להם עבודה ומריץ אותה <strong>בלילה</strong>. אתם מסבירים לו כמה דקות מה אתם רוצים — וקמים בבוקר כשהכל מוכן. כמו שאמרה תלמידה: <em>"תוך פחות מ-24 שעות הוא בנה לי את כל המערכת."</em></p>
-            <p><strong>בשבוע החמישי</strong> — אתם אורזים ויוצאים לעצמאות.<br>בונים את סוכן החלומות שלכם, אורזים אותו, ומוודאים שהוא עובד לאורך זמן. אבל הדבר הכי חשוב שתיקחו מפה הוא לא הסוכן הזה — זו <strong>הידיעה שאת הבא תדעו לבנות לבד.</strong></p>
+            <div class="timeline">
+              <div class="tl-step"><div class="tl-num pre">0</div><div class="tl-body"><p><span class="tl-title">עוד לפני המפגש הראשון — אתם כבר נכנסים פנימה</span>מקבלים הכנה מסודרת ובונים את הסוכן הראשון שלכם. ככה ביום הראשון אתם לא יושבים בצד ומסתכלים — אתם כבר בונים.</p></div></div>
+              <div class="tl-step"><div class="tl-num">1</div><div class="tl-body"><p><span class="tl-title">בשבוע הראשון — הכל מתחבר</span>כל המילים ששמעתם — סקילים, פלאגינים, סוכנים — סוף סוף יושבות במקום, ואתם מבינים <em>איך</em> הדברים נבנים. זה ירגיש קצת לא נוח: פתאום קבצים, טרמינל, מילים שנראות כמו שפה של מפתחים. זה בסדר גמור — ככה נראה לבנות משהו אמיתי. ובסוף השבוע כבר יש לכם <strong>יכולת ראשונה שעובדת</strong> על משהו אמיתי שלכם.</p></div></div>
+              <div class="tl-step"><div class="tl-num">2</div><div class="tl-body"><p><span class="tl-title">בשבוע השני — אתם מאצילים עבודה</span>לוקחים תהליך שאתם שונאים לעשות ידנית, ובונים אותו שירוץ לבד. מעלים אותו לענן, והוא עובד <strong>גם כשהמחשב כבוי</strong>. כאן כבר תרגישו את הקפיצה. אחת התלמידות סיפרה שהסוכן שלה עצר אותה באמצע: <em>"את עובדת יותר מדי, קחי הפסקה."</em></p></div></div>
+              <div class="tl-step"><div class="tl-num">3</div><div class="tl-body"><p><span class="tl-title">בשבוע השלישי — אתם בונים שותף</span>סוכן עם אופי — כזה שמכיר אתכם ואת העסק, שאתם מתייעצים איתו ולא רק מפעילים. הרגע שבו הוא עונה לכם "כמוכם" הוא רגע קטן ומרגש. הוא כבר לא כלי. <strong>הוא חבר צוות.</strong></p></div></div>
+              <div class="tl-step"><div class="tl-num">4</div><div class="tl-body"><p><span class="tl-title">בשבוע הרביעי — זה הופך לצוות</span>סוכן-על שמנהל תתי-סוכנים, מאציל להם עבודה ומריץ אותה <strong>בלילה</strong>. אתם מסבירים לו כמה דקות מה אתם רוצים — וקמים בבוקר כשהכל מוכן. כמו שאמרה תלמידה: <em>"תוך פחות מ-24 שעות הוא בנה לי את כל המערכת."</em></p></div></div>
+              <div class="tl-step"><div class="tl-num">5</div><div class="tl-body"><p><span class="tl-title">בשבוע החמישי — אתם אורזים ויוצאים לעצמאות</span>בונים את סוכן החלומות שלכם, אורזים אותו, ומוודאים שהוא עובד לאורך זמן. אבל הדבר הכי חשוב שתיקחו מפה הוא לא הסוכן הזה — זו <strong>הידיעה שאת הבא תדעו לבנות לבד.</strong></p></div></div>
+            </div>
           </div>
         </details>
         <details>
@@ -787,7 +801,7 @@
           <summary>מי המשתתפים בתוכנית?<span class="arrow">⌄</span></summary>
           <div class="answer">
             <p>הקבוצה מגוונת: שכירים, בעלי עסקים, עצמאיים ואנשי מקצוע מתחומים שונים.</p>
-            <p>המשותף לכולם — כבר עובדים עם AI ורוצים לעלות שלב לבנייה. יש סינון בכניסה כדי לשמור על רמה אחידה. הקבוצה מוגבלת (עד 20 משתתפים).</p>
+            <p>המשותף לכולם — כבר עובדים עם AI ורוצים לעלות שלב לבנייה. יש סינון בכניסה כדי לשמור על רמה אחידה. הקבוצה מוגבלת (כ-20 משתתפים).</p>
           </div>
         </details>
         <details>
@@ -809,7 +823,7 @@
           <summary>כמה עולה התוכנית?<span class="arrow">⌄</span></summary>
           <div class="answer">
             <p>9,300₪ כולל מע"מ, עם אפשרות לפרוס עד 12 תשלומים.</p>
-            <p>מי שמגיע דרך נועם ומחליט — מקבל <strong>הטבת חברי טירונות</strong>: 8,300₪ במקום 9,300₪ (חיסכון 1,000₪). ההטבה היא הכרת תודה למי שעשה את עבודת ההחלטה בעצמו, עם הסוכן.</p>
+            <p>מי שמגיע דרך נועם ומחליט — מקבל <strong>הטבה</strong>: 8,300₪ במקום 9,300₪ (חיסכון 1,000₪). ההטבה היא הכרת תודה למי שעשה את עבודת ההחלטה בעצמו, עם הסוכן.</p>
           </div>
         </details>
         <details>
@@ -823,20 +837,21 @@
           <summary>המחיר מרגיש גבוה — איך אדע שזה מחזיר את עצמו?<span class="arrow">⌄</span></summary>
           <div class="answer">
             <p>תחשבו כמה שעות ביום הולכות על עבודה שסוכן יכול לעשות במקומכם. גם אם זה שעתיים — זה מחזיר את עצמו תוך חודשים.</p>
+            <p>ובטירונות אתם לא בונים סוכן אחד — כל אחד בונה כמה סוכנים לאורך הדרך. מהמחזורים הקודמים ומהניסיון שלנו אנחנו רואים שתלמידים בנו כבר בשבוע-השבועיים הראשונים סוכן שמחזיר להם את ההשקעה.</p>
             <p>ומעבר לחיסכון: אתם יוצאים עם כישור לכל החיים — היכולת לבנות כל סוכן, אוטומציה או מערכת שתצטרכו, בעצמכם, לתמיד.</p>
+            <p>רוצים לשמוע מבוגרת אמיתית? מורן טאובר עברה את הטירונות וזינקה איתה — אתם מוזמנים <a href="https://wa.me/972549574690?text=היי מורן! ראיתי שעברת את טירונות סוכנים ושלהבת הציעה לדבר איתך. אפשר לשאול כמה שאלות?" target="_blank" rel="noopener noreferrer">לדבר איתה ישירות בוואטסאפ</a> ולשמוע מהיד הראשונה.</p>
           </div>
         </details>
         <details>
           <summary>מה אם אני משלם/ת ומתחרט/ת?<span class="arrow">⌄</span></summary>
           <div class="answer">
-            <p>יש מדיניות החזרים: אפשר לקבל החזר עד אחרי המפגש הראשון, בניכוי עלות המפגש הראשון.</p>
-            <p>אחרי המפגש הראשון — אין החזרים. לכן חשוב להגיע למפגש הראשון ולהרגיש אם זה מתאים.</p>
+            <p>החזרים כספיים וביטולי עסקה — בהתאם למפורט ב<a href="https://aimprove.co.il/terms-of-use/" target="_blank" rel="noopener noreferrer">תקנון</a>.</p>
           </div>
         </details>
         <details>
           <summary>עד מתי הקוד תקף?<span class="arrow">⌄</span></summary>
           <div class="answer">
-            <p>קוד ההטבה (חברי טירונות) תקף 72 שעות מרגע השיחה עם נועם, וממומש בפגישת הוולקאם עם שלהבת יחד עם ההרשמה.</p>
+            <p>קוד ההטבה (שנועם נותן) תקף 72 שעות מרגע השיחה עם נועם, וממומש בפגישת הוולקאם עם שלהבת יחד עם ההרשמה.</p>
             <p>עבר הזמן? דברו עם נועם ונראה מה אפשר לעשות.</p>
           </div>
         </details>
