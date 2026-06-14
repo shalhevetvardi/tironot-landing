@@ -25,7 +25,7 @@
       --light-blue: #F1F8FF;
 
       --cat1: var(--blue);
-      --cat2: var(--green);
+      --cat2: var(--gold);
       --cat3: var(--pink);
       --cat4: var(--purple);
       --cat5: var(--wine);
@@ -41,11 +41,16 @@
     }
 
     .hero {
-      background: var(--gold);
+      background: var(--green);
       padding: 70px 20px 96px;
       position: relative;
       overflow: hidden;
     }
+    .hero h1 { color: #FFFFFF; }
+    .hero .hero-sub { color: rgba(255, 255, 255, 0.92); }
+    .hero__brand { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; }
+    .hero__logo { width: 56px; height: 56px; flex: 0 0 auto; filter: drop-shadow(0 4px 12px rgba(0,0,0,.25)); }
+    .hero__brandname { font-weight: 900; font-size: clamp(22px,3.5vw,30px); color: #FFFFFF; letter-spacing: -0.3px; line-height: 1; }
 
     .hero::after {
       content: "";
@@ -112,10 +117,11 @@
     }
 
     .cat-card[data-cat="fit"]    { background: var(--cat1); }
-    .cat-card[data-cat="learn"]  { background: var(--cat2); }
+    .cat-card[data-cat="learn"]  { background: var(--cat2); color: var(--navy); }
     .cat-card[data-cat="how"]    { background: var(--cat3); }
     .cat-card[data-cat="whatif"] { background: var(--cat4); }
     .cat-card[data-cat="dates"]  { background: var(--cat5); }
+    .cat-card[data-cat="learn"] .card-desc { opacity: 0.82; }
 
     .cat-card .card-title {
       font-size: 24px;
@@ -347,8 +353,26 @@
     .jrn-active { position:absolute; inset:0; border-radius:50%; background:linear-gradient(135deg,var(--blue),#1B5B9E); border:3px solid #fff; display:flex; align-items:center; justify-content:center; font-size:26px; color:#fff; font-weight:800; box-shadow:0 0 0 5px rgba(36,115,200,.2),0 10px 28px rgba(36,115,200,.45); }
     .jrn-label { margin-top:14px; font-size:14px; font-weight:500; color:#5a7a9a; text-align:center; line-height:1.35; }
     #jrn1 .jrn-label { color:var(--navy); font-weight:700; }
+    .jrn-step--done .jrn-base { background: var(--green); border-color: var(--green); color: #fff; font-size: 22px; }
+    .jrn-step--done .jrn-label { color: var(--green); font-weight: 600; }
     .jrn-here { position:absolute; top:-30px; right:50%; transform:translateX(50%); background:var(--bright-green); color:#fff; font-size:13px; font-weight:700; padding:6px 14px; border-radius:16px; white-space:nowrap; box-shadow:0 5px 14px rgba(107,210,43,.4); }
     .jrn-here::after { content:''; position:absolute; bottom:-5px; right:50%; transform:translateX(50%) rotate(45deg); width:11px; height:11px; background:var(--bright-green); }
+
+    .welcome-details { max-width: 640px; margin: 32px auto 0; background: #FFFFFF; border: 1px solid #E4E9F3; border-right: 5px solid var(--bright-green); border-radius: 12px; padding: 22px 28px 18px; text-align: right; box-shadow: 0 8px 24px rgba(20,9,59,.06); }
+    .welcome-details__hook { font-size: clamp(16px,1.9vw,18px); font-weight: 700; color: var(--navy); margin: 0 0 12px 0; line-height: 1.4; }
+    .welcome-details__list { list-style: none; padding: 0; margin: 0; }
+    .welcome-details__list li { position: relative; padding: 6px 26px 6px 0; font-size: 15.5px; line-height: 1.6; color: var(--body); }
+    .welcome-details__list li::before { content: "✓"; position: absolute; right: 0; top: 6px; color: var(--bright-green); font-weight: 800; font-size: 16px; }
+    .welcome-details__list strong { color: var(--navy); font-weight: 700; }
+
+    .welcome-cta { max-width: 600px; margin: 36px auto 0; background: var(--mid-navy); color: #fff; border-radius: 22px; padding: 32px 30px 28px; box-shadow: 0 22px 50px rgba(20,9,59,.30); text-align: center; }
+    .welcome-cta__line { font-size: clamp(16px,1.9vw,18px); font-weight: 500; color: rgba(255,255,255,.88); margin: 0 0 22px 0; line-height: 1.6; }
+    .welcome-cta__line strong { color: var(--gold); font-weight: 800; }
+    .welcome-cta__button { display: inline-block; background: var(--gold); color: var(--navy); text-decoration: none; padding: 16px 36px; border-radius: 50px; font-size: clamp(17px,2vw,20px); font-weight: 800; letter-spacing: .2px; transition: transform .15s, box-shadow .15s; }
+    .welcome-cta__button:hover { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(255,215,71,.45); }
+    .welcome-cta__alt { margin: 18px 0 0; font-size: 14px; color: rgba(255,255,255,.65); }
+    .welcome-cta__alt a { color: rgba(255,255,255,.85); text-decoration: underline; text-underline-offset: 3px; font-weight: 600; }
+    .welcome-cta__alt a:hover { color: var(--gold); }
 
     .price-card { max-width: 460px; margin: 36px auto 0; background: var(--mid-navy); color:#fff; border-radius:22px; padding:28px 30px 24px; box-shadow:0 22px 50px rgba(20,9,59,.30); text-align:center; }
     .price-card__label { font-size:13px; font-weight:700; letter-spacing:.3px; color:rgba(255,255,255,.6); margin-bottom:6px; }
@@ -397,7 +421,11 @@
 <body>
   <header class="hero">
     <div class="container">
-      <h1>שאלות נפוצות — תוכנית "טירונות סוכנים"</h1>
+      <div class="hero__brand">
+        <img class="hero__logo" src="/tironot-logo-white.png" alt="טירונות סוכנים">
+        <span class="hero__brandname">טירונות סוכנים</span>
+      </div>
+      <h1>שאלות נפוצות</h1>
       <p class="hero-sub">בחרו נושא, ותמצאו את התשובה.</p>
     </div>
   </header>
@@ -439,20 +467,20 @@
         <p class="jrn-bridge">ובמבט אחד — הנה איפה אתם עכשיו, ומה הצעדים הבאים:</p>
         <div class="jrn-stage">
           <div class="jrn-card">
-            <div class="jrn-step" id="jrn1">
-              <span class="jrn-here">אתם כאן</span>
-              <div class="jrn-circle"><div class="jrn-base">1</div><div class="jrn-active">1</div></div>
-              <div class="jrn-label">התעניינות<br>ראשונית</div>
+            <div class="jrn-step jrn-step--done">
+              <div class="jrn-circle"><div class="jrn-base">✓</div></div>
+              <div class="jrn-label">שיחה<br>עם נועם</div>
             </div>
             <div class="jrn-conn"></div>
-            <div class="jrn-step">
-              <div class="jrn-circle"><div class="jrn-base">2</div></div>
-              <div class="jrn-label">שיחה<br>עם נועם</div>
+            <div class="jrn-step" id="jrn1">
+              <span class="jrn-here">אתם כאן</span>
+              <div class="jrn-circle"><div class="jrn-base">2</div><div class="jrn-active">2</div></div>
+              <div class="jrn-label">החלטה<br>+ שאלות אחרונות</div>
             </div>
             <div class="jrn-conn"></div>
             <div class="jrn-step">
               <div class="jrn-circle"><div class="jrn-base">3</div></div>
-              <div class="jrn-label">פגישה עם שלהבת<br>+ הרשמה</div>
+              <div class="jrn-label">פגישת Welcome<br>+ הרשמה</div>
             </div>
             <div class="jrn-conn"></div>
             <div class="jrn-step">
@@ -461,18 +489,20 @@
             </div>
           </div>
         </div>
-        <div class="price-card">
-          <div class="price-card__label">עלות ההשקעה בעצמכם</div>
-          <div class="price-card__main"><span class="num">9,300</span><span class="nis">₪</span></div>
-          <div class="price-card__sub">ניתן לפרוס עד 12 תשלומים</div>
-          <div class="price-card__divider"></div>
-          <div class="price-card__offer">דרך נועם — הטבת חברי טירונות:<br>חיסכון של 1,400&nbsp;₪</div>
+        <div class="welcome-details">
+          <p class="welcome-details__hook">הצעד הבא: <strong>פגישת Welcome קצרה עם שלהבת</strong>. מה קורה בה?</p>
+          <ul class="welcome-details__list">
+            <li>מתייעצים על <strong>שאלות אחרונות</strong> לפני הרשמה.</li>
+            <li>נרשמים, משלמים, ו<strong>מממשים את ההטבה</strong> שקיבלתם מנועם.</li>
+            <li>מקבלים את <strong>ערכת הוולקאם</strong>, המשימה הראשונה, וההוראות לבנות את הסוכן הראשון שלכם.</li>
+            <li>וזו כבר ההכנה שלכם לטירונות — <strong>מתחילים לבנות עוד לפני שהיא נפתחת.</strong></li>
+          </ul>
         </div>
-        <div class="cta-row" style="justify-content:center">
-          <a class="section-cta cta-noam" href="https://wa.me/972559397247?text=%D7%A9%D7%9C%D7%97%D7%95%20%D7%90%D7%AA%20%D7%94%D7%94%D7%95%D7%93%D7%A2%D7%94%20%D7%94%D7%96%D7%95%20%D7%9B%D7%93%D7%99%20%D7%9C%D7%94%D7%AA%D7%97%D7%99%D7%9C%20%D7%9C%D7%93%D7%91%D7%A8%20%D7%A2%D7%9D%20%D7%A0%D7%95%D7%A2%D7%9D" target="_blank" rel="noopener noreferrer">דברו עם נועם</a>
-          <a class="section-cta cta-alumni" href="https://agent-course.aimprove.co.il/bogrim/" target="_blank" rel="noopener noreferrer">לדבר עם בוגרים שכבר עברו את זה</a>
+        <div class="welcome-cta">
+          <p class="welcome-cta__line">קיבלתם מנועם את <strong>הטבת חברי טירונות</strong> — תוכלו לממש אותה בפגישת ה-Welcome.</p>
+          <a class="welcome-cta__button" href="https://calendly.com/shalhevet-aimprove/meet-with-me-6" target="_blank" rel="noopener noreferrer">לקביעת פגישת Welcome ←</a>
+          <p class="welcome-cta__alt">או — <a href="https://agent-course.aimprove.co.il/bogrim/" target="_blank" rel="noopener noreferrer">לדבר קודם עם בוגרים שכבר עברו את זה</a></p>
         </div>
-        <p class="cta-escape">מעדיפים שיחה לבירור פרטים ישירות עם שלהבת? <a href="#" id="escapeLink">אפשר לקבוע שיחה כאן</a></p>
       </div>
     </div>
   </section>
@@ -577,13 +607,28 @@
         <details open>
           <summary>מה המבנה של התוכנית?<span class="arrow">⌄</span></summary>
           <div class="answer">
-            <p>התוכנית היא <strong>מסע</strong>, לא סדרת הרצאות — וכל שבוע אתם קופצים מדרגה:</p>
-            <p><strong>עוד לפני המפגש הראשון</strong> אתם כבר נכנסים פנימה: מקבלים הכנה מסודרת ובונים את הסוכן הראשון שלכם. ככה ביום הראשון אתם לא יושבים בצד ומסתכלים — אתם כבר בונים.</p>
-            <p><strong>בשבוע הראשון</strong> הכל מתחבר. כל המילים ששמעתם — סקילים, פלאגינים, סוכנים — סוף סוף יושבות במקום, ואתם מבינים איך הדברים נבנים. זה ירגיש קצת לא נוח: פתאום קבצים, טרמינל, מילים שנראות כמו שפה של מפתחים. זה בסדר גמור — ככה נראה לבנות משהו אמיתי, ואין קיצורי דרך. ובסוף השבוע כבר יש לכם יכולת ראשונה שעובדת על משהו אמיתי שלכם.</p>
-            <p><strong>בשבוע השני</strong> אתם לוקחים תהליך שאתם שונאים לעשות ידנית — ובונים אותו שירוץ לבד. מעלים אותו לענן, והוא עובד גם כשהמחשב כבוי. כאן כבר תרגישו את הקפיצה. אחת התלמידות סיפרה שהסוכן שלה עצר אותה באמצע: "את עובדת יותר מדי, קחי הפסקה."</p>
-            <p><strong>בשבוע השלישי</strong> אתם בונים שותף. סוכן עם אופי — כזה שמכיר אתכם ואת העסק, שאתם מתייעצים איתו ולא רק מפעילים. הרגע שבו הוא עונה לכם "כמוכם" הוא רגע קטן ומרגש. הוא כבר לא כלי. הוא חבר צוות.</p>
-            <p><strong>בשבוע הרביעי</strong> זה הופך לצוות. סוכן-על שמנהל תתי-סוכנים, מאציל להם עבודה ומריץ אותה בלילה. אתם מסבירים לו כמה דקות מה אתם רוצים — וקמים בבוקר כשהכל מוכן. כמו שאמרה תלמידה: "תוך פחות מ-24 שעות הוא בנה לי את כל המערכת."</p>
-            <p><strong>בשבוע החמישי</strong> אתם בונים את סוכן החלומות שלכם, אורזים אותו, ומוודאים שהוא עובד לאורך זמן. אבל הדבר הכי חשוב שתיקחו מפה הוא לא הסוכן הזה — זו <strong>הידיעה שאת הבא תדעו לבנות לבד.</strong></p>
+            <p style="font-size: 19px; font-weight: 600; color: var(--navy); margin-bottom: 14px;">תארו לעצמכם שאתם בונים לעצמכם <strong>עובדים דיגיטליים</strong> — סוכני AI שעושים את העבודה במקומכם. בקלות מפתיעה.</p>
+            <p>אתם כבר עובדים עם AI ברצינות. משתמשים בו כל יום.<br>זה נחמד — אבל עדיין <strong>אתם</strong> אלה שעושים את העבודה.</p>
+            <p>יש רמה אחרת לגמרי:<br>הרמה שבה אתם כבר לא <em>משתמשים</em> ב-AI — אלא <strong>מנהלים</strong> אותו.</p>
+            <p>בונים סוכנים שעובדים בשבילכם.<br>ולאט-לאט מרכיבים מהם <strong>משרד AI שלם</strong> — שעובד גם כשאתם ישנים.</p>
+            <p>וככה זה נראה — שבוע אחרי שבוע:</p>
+            <p><strong>עוד לפני המפגש הראשון</strong> — אתם כבר נכנסים פנימה.<br>מקבלים הכנה מסודרת ובונים את הסוכן הראשון שלכם. ככה ביום הראשון אתם לא יושבים בצד ומסתכלים — אתם כבר בונים.</p>
+            <p><strong>בשבוע הראשון</strong> — הכל מתחבר.<br>כל המילים ששמעתם — סקילים, פלאגינים, סוכנים — סוף סוף יושבות במקום, ואתם מבינים <em>איך</em> הדברים נבנים. זה ירגיש קצת לא נוח: פתאום קבצים, טרמינל, מילים שנראות כמו שפה של מפתחים. זה בסדר גמור — ככה נראה לבנות משהו אמיתי. ובסוף השבוע כבר יש לכם <strong>יכולת ראשונה שעובדת</strong> על משהו אמיתי שלכם.</p>
+            <p><strong>בשבוע השני</strong> — אתם מאצילים עבודה.<br>לוקחים תהליך שאתם שונאים לעשות ידנית, ובונים אותו שירוץ לבד. מעלים אותו לענן, והוא עובד <strong>גם כשהמחשב כבוי</strong>. כאן כבר תרגישו את הקפיצה. אחת התלמידות סיפרה שהסוכן שלה עצר אותה באמצע: <em>"את עובדת יותר מדי, קחי הפסקה."</em></p>
+            <p><strong>בשבוע השלישי</strong> — אתם בונים שותף.<br>סוכן עם אופי — כזה שמכיר אתכם ואת העסק, שאתם מתייעצים איתו ולא רק מפעילים. הרגע שבו הוא עונה לכם "כמוכם" הוא רגע קטן ומרגש. הוא כבר לא כלי. <strong>הוא חבר צוות.</strong></p>
+            <p><strong>בשבוע הרביעי</strong> — זה הופך לצוות.<br>סוכן-על שמנהל תתי-סוכנים, מאציל להם עבודה ומריץ אותה <strong>בלילה</strong>. אתם מסבירים לו כמה דקות מה אתם רוצים — וקמים בבוקר כשהכל מוכן. כמו שאמרה תלמידה: <em>"תוך פחות מ-24 שעות הוא בנה לי את כל המערכת."</em></p>
+            <p><strong>בשבוע החמישי</strong> — אתם אורזים ויוצאים לעצמאות.<br>בונים את סוכן החלומות שלכם, אורזים אותו, ומוודאים שהוא עובד לאורך זמן. אבל הדבר הכי חשוב שתיקחו מפה הוא לא הסוכן הזה — זו <strong>הידיעה שאת הבא תדעו לבנות לבד.</strong></p>
+          </div>
+        </details>
+        <details>
+          <summary>איך זה שכל תלמיד אצלנו חווה קפיצה מטאורית?<span class="arrow">⌄</span></summary>
+          <div class="answer">
+            <p>אם כבר ניסיתם לבד והגעתם לחומה — זה לא במקרה.<br>לבד נכנסים ללופ אינסופי: רודפים אחרי הזנב, משהו נשבר, ולא מבינים למה. <strong>ככה זה בלי שיטה.</strong></p>
+            <p>וזה בדיוק ההבדל פה — אנחנו לא נותנים לכם עוד טריקים, אלא <strong>שיטה</strong>. הנה מה שגורם לה לעבוד:</p>
+            <p>✦ <strong>שיטה, לא פיצ'רים.</strong><br>אתם מבינים <em>למה</em> דברים עובדים — וזה מה שמאפשר לכם לתקן ולבנות לבד מכאן והלאה.</p>
+            <p>✦ <strong>כלי אחד, לעומק.</strong><br>רק Claude. לא עשרה כלים ולא אוטומציות מסובכות. בלי לנפח לכם את המוח.</p>
+            <p>✦ <strong>בלי קוד.</strong><br>שלהבת עצמה לא כותבת קוד. אם אתם יודעים לנהל — אתם יודעים לבנות סוכן.</p>
+            <p>ומילה כנה: זאת תוכנית <strong>עמוקה ומקיפה</strong>. לא סתם קוראים לזה טירונות — אלה חמישה שבועות אינטנסיביים, שאחריהם אתם כבר לא צריכים ללמוד כלום. אבל זה דורש עבודה. אם אין לכם זמן להשקיע בין המפגשים — עדיף להמתין למחזור אחר.</p>
           </div>
         </details>
         <details>
@@ -683,8 +728,9 @@
         <details open>
           <summary>מה אם הכלים ישתנו עד שאסיים?<span class="arrow">⌄</span></summary>
           <div class="answer">
-            <p>הכלים ישתנו — זה בטוח. אבל מה שאתם לומדים כאן הוא <strong>שיטה, לא כלי</strong> — והשיטה הזאת נצחית: איך חושבים על סוכן, איך בונים אותו נכון, איך מארגנים ידע ומחברים חלקים שעובדים יחד. העקרונות האלה לא משתנים.</p>
-            <p>לא משנה אם זה Claude היום או כלי אחר מחר — <strong>הדרך לבנות נשארת אותה דרך.</strong> אתם לא לומדים "איך ללחוץ על הכפתורים של 2026"; אתם רוכשים יכולת לבנות שנשארת אתכם לתמיד ומתאימה את עצמה לכל כלי שיבוא.</p>
+            <p>תדמיינו שיש לכם משרד סוכנים שעובד בשבילכם.<br>ואנחנו מבטיחים לכם את <strong>היכולת לבנות סוכנים ולברוא כל דבר שתדמיינו</strong> — לא רק היום.</p>
+            <p>כי אנחנו לא מלמדים כלי. אנחנו מלמדים <strong>שיטה</strong>.</p>
+            <p>וזה אומר שזה יעבוד לכם בכל גרסה עתידית של Claude, וגם בכל כלי חדש שיבוא אחריו.<br>הטכנולוגיה משתנה כל הזמן — <strong>היכולת שלכם לבנות, נשארת.</strong></p>
             <p>זה ההבדל בין מי שתלוי בטרנד הבא, לבין מי שיודע לבנות — ויודע להישאר רלוונטי תמיד.</p>
           </div>
         </details>
@@ -801,21 +847,6 @@
       </div>
     </div>
   </section>
-
-  <!-- ═══════ Escape modal (חיכוך לפני שיחה ישירה עם שלהבת — מיובא מדף הנחיתה) ═══════ -->
-  <div class="modal-overlay" id="escapeModal" role="dialog" aria-modal="true" aria-labelledby="escapeModalTitle">
-    <div class="modal-card">
-      <button class="modal-close" id="escapeClose" aria-label="סגירה">×</button>
-      <h3 id="escapeModalTitle">חשוב שתדעו</h3>
-      <p><strong>ההטבה — חיסכון של 1,400&nbsp;₪</strong> — ניתנת רק דרך השיחה עם נועם בוואטסאפ.</p>
-      <p>אם תקבעו שיחה ישירות איתי לבירור פרטים, המחיר יהיה <strong>9,300&nbsp;₪</strong>.</p>
-      <div class="modal-divider"></div>
-      <div class="modal-actions">
-        <a href="https://wa.me/972559397247?text=%D7%A9%D7%9C%D7%97%D7%95%20%D7%90%D7%AA%20%D7%94%D7%94%D7%95%D7%93%D7%A2%D7%94%20%D7%94%D7%96%D7%95%20%D7%9B%D7%93%D7%99%20%D7%9C%D7%94%D7%AA%D7%97%D7%99%D7%9C%20%D7%9C%D7%93%D7%91%D7%A8%20%D7%A2%D7%9D%20%D7%A0%D7%95%D7%A2%D7%9D" target="_blank" rel="noopener noreferrer" class="modal-btn-primary"><svg viewBox="0 0 24 24" fill="#25D366" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.999-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>דברו עם נועם וקבלו את ההטבה</a>
-        <a href="https://calendly.com/shalhevet-aimprove/10min" target="_blank" rel="noopener noreferrer" class="modal-btn-secondary">קביעת שיחה לבירור פרטים — שלהבת</a>
-      </div>
-    </div>
-  </div>
 
   <script>
     function showCategory(cat) {
