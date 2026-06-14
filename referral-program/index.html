@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="תוכנית הממליצים של טירונות סוכנים — תרוויחו על כל חבר שתביאו לקורס.">
+  <meta name="robots" content="noindex">
+  <title>תוכנית הממליצים · טירונות סוכנים</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #14093B;
+      --gold: #FFD747;
+      --green: #05905D;
+      --green-light: #E7F4EF;
+      --blue: #2473C8;
+      --pink: #FF6DB3;
+      --pink-light: #FFEDF6;
+      --gold-light: #FFFBEC;
+      --bg: #F4F6FB;
+      --card: #FFFFFF;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: 'Rubik', sans-serif;
+      background: var(--bg);
+      color: var(--navy);
+      line-height: 1.65;
+      direction: rtl;
+    }
+
+    /* ───── Hero ───── */
+    .hero {
+      background: var(--green);
+      color: #fff;
+      padding: 64px 22px 90px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero__brand {
+      color: var(--gold);
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.6px;
+      margin-bottom: 18px;
+    }
+    .hero h1 {
+      font-size: 42px;
+      font-weight: 800;
+      line-height: 1.18;
+      margin: 0 0 16px;
+      max-width: 760px;
+      margin-inline: auto;
+    }
+    .hero h1 .accent { color: var(--gold); }
+    .hero__sub {
+      font-size: 19px;
+      font-weight: 500;
+      color: #D6F0E5;
+      max-width: 620px;
+      margin: 0 auto;
+    }
+    .wave-down {
+      display: block;
+      margin-top: -1px;
+      line-height: 0;
+      background: var(--green);
+    }
+    .wave-down svg { width: 100%; height: 60px; display: block; }
+
+    /* ───── Container layout ───── */
+    .wrap { max-width: 880px; margin: 0 auto; padding: 0 22px; }
+    section { padding: 56px 0 12px; }
+    section.tight { padding-top: 28px; }
+    h2.section-title {
+      text-align: center;
+      font-size: 30px;
+      font-weight: 800;
+      margin: 0 0 14px;
+      color: var(--navy);
+    }
+    p.section-lead {
+      text-align: center;
+      font-size: 17px;
+      color: #4A4566;
+      max-width: 620px;
+      margin: 0 auto 38px;
+    }
+
+    /* ───── Money box ───── */
+    .money-card {
+      background: var(--gold-light);
+      border: 2px solid var(--gold);
+      border-radius: 22px;
+      padding: 30px 30px 24px;
+      margin: 0 0 18px;
+      box-shadow: 0 8px 24px rgba(20,9,59,0.05);
+    }
+    .money-card h3 {
+      font-size: 22px;
+      font-weight: 800;
+      margin: 0 0 18px;
+      color: var(--navy);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .money-card h3 .emoji { font-size: 26px; }
+    .money-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 12px 0;
+      border-bottom: 1px dashed rgba(20,9,59,0.12);
+      font-size: 17px;
+    }
+    .money-row:last-child { border-bottom: none; }
+    .money-row .amount {
+      font-weight: 800;
+      color: var(--green);
+      font-size: 19px;
+      min-width: 140px;
+    }
+    .money-row .when {
+      font-weight: 700;
+      color: var(--navy);
+    }
+    .money-row .desc {
+      color: #4A4566;
+      font-size: 15.5px;
+    }
+    .money-note {
+      margin-top: 14px;
+      font-size: 14px;
+      color: #6B5C3C;
+      line-height: 1.65;
+    }
+
+    /* ───── Steps ───── */
+    .steps {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    .step {
+      background: var(--card);
+      border-radius: 18px;
+      padding: 20px 22px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      box-shadow: 0 4px 14px rgba(20,9,59,0.05);
+    }
+    .step__num {
+      flex: 0 0 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--green);
+      color: #fff;
+      font-weight: 800;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .step__num.alt-gold { background: var(--gold); color: var(--navy); }
+    .step__num.alt-blue { background: var(--blue); }
+    .step__num.alt-pink { background: var(--pink); }
+    .step__body h4 {
+      font-size: 18.5px;
+      font-weight: 800;
+      margin: 0 0 6px;
+      color: var(--navy);
+    }
+    .step__body p { margin: 0; color: #4A4566; font-size: 16px; }
+
+    /* ───── How tracking works callout ───── */
+    .callout {
+      background: var(--pink-light);
+      border-radius: 18px;
+      padding: 22px 24px;
+      margin: 22px 0;
+    }
+    .callout h4 {
+      font-size: 19px;
+      font-weight: 800;
+      margin: 0 0 10px;
+      color: var(--navy);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .callout p { margin: 0 0 8px; font-size: 15.5px; color: #4A4566; }
+    .callout p:last-child { margin-bottom: 0; }
+    .callout strong { color: var(--navy); }
+
+    /* ───── CTA section ───── */
+    .cta-section {
+      background: var(--navy);
+      color: #fff;
+      padding: 60px 22px 70px;
+      text-align: center;
+      margin-top: 40px;
+    }
+    .cta-section h2 {
+      font-size: 30px;
+      font-weight: 800;
+      margin: 0 0 14px;
+    }
+    .cta-section h2 .accent { color: var(--gold); }
+    .cta-section p {
+      max-width: 540px;
+      margin: 0 auto 28px;
+      color: rgba(255,255,255,0.85);
+      font-size: 17px;
+    }
+    .cta-big {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--navy);
+      font-weight: 800;
+      font-size: 18px;
+      padding: 16px 36px;
+      border-radius: 32px;
+      text-decoration: none;
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .cta-big:hover { transform: translateY(-2px); box-shadow: 0 8px 26px rgba(255,215,71,0.32); }
+    .cta-section .legal-note {
+      margin-top: 22px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.55);
+    }
+    .cta-section .legal-note a {
+      color: rgba(255,255,255,0.85);
+      text-decoration: underline;
+    }
+
+    /* ───── Form section ───── */
+    .form-section {
+      background: var(--card);
+      border-radius: 22px;
+      padding: 12px;
+      margin: 26px 0 0;
+      box-shadow: 0 6px 22px rgba(20,9,59,0.07);
+    }
+    .form-frame {
+      width: 100%;
+      min-height: 1100px;
+      border: 0;
+      border-radius: 18px;
+      display: block;
+      background: #fafbff;
+    }
+    .form-placeholder {
+      padding: 38px 26px;
+      text-align: center;
+      color: #4A4566;
+      font-size: 15.5px;
+      line-height: 1.7;
+      background: #fafbff;
+      border-radius: 18px;
+    }
+    .form-placeholder code {
+      background: #eef0fa;
+      padding: 2px 7px;
+      border-radius: 6px;
+      font-family: 'SF Mono', Consolas, monospace;
+      font-size: 13.5px;
+    }
+
+    /* ───── Footer ───── */
+    .footer {
+      background: var(--navy);
+      text-align: center;
+      padding: 26px 24px;
+    }
+    .footer p { color: rgba(255,255,255,0.7); font-size: 14px; margin: 0; }
+
+    @media (max-width: 600px) {
+      .hero { padding: 52px 20px 72px; }
+      .hero h1 { font-size: 30px; }
+      .hero__sub { font-size: 16.5px; }
+      .money-row { flex-direction: column; gap: 4px; }
+      .money-row .amount { min-width: auto; }
+      section { padding: 40px 0 6px; }
+      h2.section-title { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ════ HERO ════ -->
+  <header class="hero">
+    <div class="hero__brand">תוכנית הממליצים · אִימפּרוּב</div>
+    <h1>הרוויחו על כל חבר שתביאו<br><span class="accent">לטירונות סוכנים 💚</span></h1>
+    <p class="hero__sub">בנינו רשימת תלמידים-ממליצים שמרוויחים על כל מתעניין שמגיע דרכם ונרשם בפועל. אם עברת את הטירונות — את/ה כבר על המסלול.</p>
+  </header>
+  <div class="wave-down"><svg viewBox="0 0 1440 60" preserveAspectRatio="none"><path fill="#05905D" d="M0,30 C360,0 1080,60 1440,28 L1440,60 L0,60 Z"></path></svg></div>
+
+  <!-- ════ HOW MUCH ════ -->
+  <section class="wrap">
+    <h2 class="section-title">💰 כמה מרוויחים?</h2>
+    <p class="section-lead">המבנה תוכנן כדי שזה ישתלם לכם להתחיל להמליץ עכשיו — אבל גם אחר כך זה נשאר משתלם.</p>
+
+    <div class="money-card">
+      <h3><span class="emoji">🎁</span> על כל אדם שתביאו ושיירשם בפועל:</h3>
+      <div class="money-row">
+        <span class="amount">10% מהמחיר</span>
+        <div>
+          <span class="when">בשני המחזורים הקרובים אחרי המחזור שלכם</span><br>
+          <span class="desc">תלוי בסכום ששילם הנרשם — בד"כ סביב 830 ₪ לכל המלצה.</span>
+        </div>
+      </div>
+      <div class="money-row">
+        <span class="amount">500 ₪</span>
+        <div>
+          <span class="when">מהמחזור השלישי והלאה</span><br>
+          <span class="desc">סכום קבוע על כל המלצה שנרשמת, ללא תלות במחיר.</span>
+        </div>
+      </div>
+      <p class="money-note">💡 העמלה מחושבת לפי המחזור שאתם השתתפתם בו — לא לפי מתי שלחתם את ההמלצה.</p>
+    </div>
+  </section>
+
+  <!-- ════ HOW IT WORKS ════ -->
+  <section class="wrap">
+    <h2 class="section-title">איך זה עובד?</h2>
+    <p class="section-lead">תהליך פשוט בארבעה שלבים — את/ה ממליצים, ואנחנו עוקבים ומשלמים.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step__num alt-gold">1</div>
+        <div class="step__body">
+          <h4>מצטרפים לרשימה</h4>
+          <p>ממלאים את הטופס בתחתית הדף, מסכימים לתקנון, ומעלים תמונה. אנחנו יוצרים לכם כרטיס בדף הבוגרים הציבורי — מתעניינים יוכלו ללחוץ עליו ולדבר אתכם ישירות בוואטסאפ.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step__num">2</div>
+        <div class="step__body">
+          <h4>מתעניינים פונים אליכם</h4>
+          <p>בלחיצה על "לדבר עם [שמכם]" בדף הבוגרים — נפתח להם וואטסאפ ישיר אליכם. אנחנו עוקבים אנונימית מתי לחצו, ופונים אליכם כדי לבדוק אם דיברתם.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step__num alt-blue">3</div>
+        <div class="step__body">
+          <h4>מספרים בכנות על החוויה</h4>
+          <p>אתם שיתוף בניסיון האישי שלכם — מה למדתם, מה בניתם, איך זה שינה לכם. בלי מצגי שווא, רק האמת שלכם.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step__num alt-pink">4</div>
+        <div class="step__body">
+          <h4>הם נרשמים → אתם מקבלים תשלום</h4>
+          <p>אחרי שהם משלימים את ההרשמה ומשלמים (בפגישת וולקאם עם שלהבת) — אתם מקבלים את העמלה לפי הטבלה למעלה.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ TRACKING CALLOUT ════ -->
+  <section class="wrap tight">
+    <div class="callout">
+      <h4>📧 איך נדע שדיברתם איתם?</h4>
+      <p>כשמישהו לוחץ על הלינק שלכם — אנחנו רושמים זאת אנונימית, ופעם ביום-יומיים תקבלו <strong>מייל מ-connect@aimprove.co.il</strong> עם השאלה: "ראינו ש-X אנשים לחצו על הלינק שלך. דיברו איתך? איך קוראים להם?"</p>
+      <p><strong>חשוב מאוד:</strong> כדי שנוכל לקשר אתכם להמלצה ולשלם עמלה, תענו בתשובה למייל עם השם של מי שדיבר איתכם — וצרפו צילום מסך מהשיחה לוואטסאפ של שלהבת. <strong>בלי מענה — אין דרך לקשר את הליד אליכם.</strong></p>
+    </div>
+  </section>
+
+  <!-- ════ FORM ════ -->
+  <section class="wrap" id="join">
+    <h2 class="section-title">להצטרפות לתוכנית</h2>
+    <p class="section-lead">המילוי לוקח 2-3 דקות. אחרי שתאשרו את התקנון, אנחנו מכינים את הכרטיס שלכם בדף הבוגרים.</p>
+
+    <div class="form-section">
+      <!-- ⚠️ TODO: replace this placeholder with the Airtable embedded form iframe.
+           Steps: open Airtable → table "ממליצות" → create a "Form" view → "Share form" → embed link.
+           Replace src with the embed URL (form view should include all the fields from שאלון-הצטרפות-ממליצים.md). -->
+      <!-- <iframe class="form-frame" src="https://airtable.com/embed/<SHARE_ID>?backgroundColor=cyan"></iframe> -->
+      <div class="form-placeholder">
+        🏗️ <strong>הטופס יהיה זמין כאן בקרוב.</strong><br><br>
+        בינתיים, אם בא לכם להצטרף — שלחו לי הודעה בוואטסאפ עם המילים <code>אני רוצה להצטרף לתוכנית הממליצים</code>,<br>
+        ואני אפנה אליכם אישית לסגור פרטים.<br><br>
+        <a href="https://wa.me/972515079762?text=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%9C%D7%94%D7%A6%D7%98%D7%A8%D7%A3%20%D7%9C%D7%AA%D7%95%D7%9B%D7%A0%D7%99%D7%AA%20%D7%94%D7%9E%D7%9E%D7%9C%D7%99%D7%A6%D7%99%D7%9D" style="color: var(--green); font-weight: 700; text-decoration: underline;">לשלוח הודעה לשלהבת ←</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ CTA ════ -->
+  <section class="cta-section">
+    <h2>פתחנו את ההרשמה למחזור הבא.<br><span class="accent">תספרו לחברים — וקחו את החלק שלכם 💚</span></h2>
+    <p>כל חבר שמשתתף בקורס דרככם זה גם מתנה לעצמכם — וגם תשלום אמיתי שמגיע אליכם.</p>
+    <a class="cta-big" href="#join">להצטרפות לתוכנית ↓</a>
+    <div class="legal-note">
+      תוכנית הממליצים כפופה ל<a href="../terms-referral/">תקנון תוכנית הממליצים</a> וכן ל<a href="https://aimprove.co.il/terms-of-use/" target="_blank" rel="noopener">תנאי השימוש הכלליים</a> של אִימפּרוּב. ההצטרפות מותנית בהשלמת הפרופיל ובאישור התקנון.
+    </div>
+  </section>
+
+  <div class="footer">
+    <p>aimprove · טירונות סוכנים</p>
+  </div>
+
+</body>
+</html>
