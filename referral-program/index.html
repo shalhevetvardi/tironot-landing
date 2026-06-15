@@ -271,7 +271,131 @@
       font-size: 13.5px;
     }
 
-    /* ───── Footer ───── */
+    /* ───── Join form ───── */
+    .form-section { padding: 0; }
+    .join-form { padding: 28px 28px 24px; }
+    .field-group { margin-bottom: 20px; }
+    .field-group > label {
+      display: block;
+      font-weight: 700;
+      font-size: 15.5px;
+      color: var(--navy);
+      margin-bottom: 7px;
+    }
+    .field-hint {
+      display: block;
+      font-weight: 400;
+      font-size: 13px;
+      color: #6B7280;
+      margin-top: 3px;
+    }
+    .field-hint strong { color: var(--navy); }
+    .field-group input[type="text"],
+    .field-group input[type="email"],
+    .field-group input[type="tel"],
+    .field-group select,
+    .field-group textarea {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid #D1D5DB;
+      border-radius: 10px;
+      font-family: 'Rubik', sans-serif;
+      font-size: 15.5px;
+      color: var(--navy);
+      background: #fff;
+      direction: rtl;
+      transition: border-color .18s, box-shadow .18s;
+      box-sizing: border-box;
+    }
+    .field-group input:focus,
+    .field-group select:focus,
+    .field-group textarea:focus {
+      outline: none;
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(5,144,93,0.12);
+    }
+    .field-group input.invalid,
+    .field-group textarea.invalid {
+      border-color: #EF4444;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .checkbox-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .check-option {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 15px;
+      color: var(--navy);
+      cursor: pointer;
+      padding: 9px 12px;
+      border: 1.5px solid #E5E7EB;
+      border-radius: 10px;
+      transition: border-color .15s, background .15s;
+      font-weight: 500;
+      user-select: none;
+    }
+    .check-option:has(input:checked) {
+      border-color: var(--green);
+      background: var(--green-light);
+    }
+    .check-option input[type="checkbox"] {
+      accent-color: var(--green);
+      width: 17px;
+      height: 17px;
+      flex-shrink: 0;
+    }
+    .check-terms {
+      border: none;
+      padding: 0;
+      font-size: 15px;
+      color: #4A4566;
+      font-weight: 400;
+    }
+    .check-terms a { color: var(--green); font-weight: 700; }
+    .form-divider {
+      border: none;
+      border-top: 1px dashed #E5E7EB;
+      margin: 24px 0;
+    }
+    .form-msg {
+      padding: 14px 18px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 500;
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+    .form-msg-error { background: #FEF2F2; border: 1.5px solid #FECACA; color: #B91C1C; }
+    .form-msg-success { background: var(--green-light); border: 1.5px solid #6EE7B7; color: #065F46; }
+    .submit-btn {
+      width: 100%;
+      padding: 15px 24px;
+      background: var(--green);
+      color: #fff;
+      border: none;
+      border-radius: 32px;
+      font-family: 'Rubik', sans-serif;
+      font-size: 17px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform .18s, box-shadow .18s;
+      margin-top: 4px;
+    }
+    .submit-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(5,144,93,0.28);
+    }
+    .submit-btn:disabled { opacity: 0.65; cursor: not-allowed; }
+
+    /* ───── Footer ─────
     .footer {
       background: var(--navy);
       text-align: center;
@@ -377,16 +501,132 @@
     <p class="section-lead">המילוי לוקח 2-3 דקות. אחרי שתאשרו את התקנון, אנחנו מכינים את הכרטיס שלכם בדף הבוגרים.</p>
 
     <div class="form-section">
-      <!-- ⚠️ TODO: replace this placeholder with the Airtable embedded form iframe.
-           Steps: open Airtable → table "ממליצות" → create a "Form" view → "Share form" → embed link.
-           Replace src with the embed URL (form view should include all the fields from שאלון-הצטרפות-ממליצים.md). -->
-      <!-- <iframe class="form-frame" src="https://airtable.com/embed/<SHARE_ID>?backgroundColor=cyan"></iframe> -->
-      <div class="form-placeholder">
-        🏗️ <strong>הטופס יהיה זמין כאן בקרוב.</strong><br><br>
-        בינתיים, אם בא לכם להצטרף — שלחו לי הודעה בוואטסאפ עם המילים <code>אני רוצה להצטרף לתוכנית הממליצים</code>,<br>
-        ואני אפנה אליכם אישית לסגור פרטים.<br><br>
-        <a href="https://wa.me/972515079762?text=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%9C%D7%94%D7%A6%D7%98%D7%A8%D7%A3%20%D7%9C%D7%AA%D7%95%D7%9B%D7%A0%D7%99%D7%AA%20%D7%94%D7%9E%D7%9E%D7%9C%D7%99%D7%A6%D7%99%D7%9D" style="color: var(--green); font-weight: 700; text-decoration: underline;">לשלוח הודעה לשלהבת ←</a>
-      </div>
+      <form id="join-form" class="join-form" novalidate>
+
+        <!-- שם + אימייל + טלפון -->
+        <div class="field-group">
+          <label for="f-name">שם מלא *</label>
+          <input type="text" id="f-name" name="name" required autocomplete="name" placeholder="שם פרטי + שם משפחה">
+        </div>
+
+        <div class="form-row">
+          <div class="field-group">
+            <label for="f-email">אימייל *</label>
+            <input type="email" id="f-email" name="email" required autocomplete="email" placeholder="you@example.com">
+          </div>
+          <div class="field-group">
+            <label for="f-phone">טלפון *</label>
+            <input type="tel" id="f-phone" name="phone" required autocomplete="tel" placeholder="050-0000000">
+          </div>
+        </div>
+
+        <!-- Slug -->
+        <div class="field-group">
+          <label for="f-slug">
+            הכינוי שלך בדף הבוגרים *
+            <span class="field-hint">
+              אותיות אנגלית קטנות בלבד — ישמש בקישור
+              r.aimprove.co.il/r/<strong id="slug-preview">...</strong>
+            </span>
+          </label>
+          <input type="text" id="f-slug" name="slug" required
+                 pattern="[a-z0-9_-]+" inputmode="url"
+                 placeholder="לדוגמה: moran · dolev · shahar">
+        </div>
+
+        <hr class="form-divider">
+
+        <!-- עיסוק -->
+        <div class="field-group">
+          <label for="f-occupation">מה את/ה עושה? — במשפט אחד *</label>
+          <input type="text" id="f-occupation" name="occupation" required
+                 placeholder="לדוגמה: מעצבת גרפית · מדריכת יוגה · בעל עסק שיווק">
+        </div>
+
+        <!-- מה בנית -->
+        <div class="field-group">
+          <label>מה בנית בטירונות? (ניתן לסמן כמה) *</label>
+          <div class="checkbox-grid">
+            <label class="check-option">
+              <input type="checkbox" name="builtTypes" value="סוכן AI / בוט">
+              <span>סוכן AI / בוט</span>
+            </label>
+            <label class="check-option">
+              <input type="checkbox" name="builtTypes" value="סקיל">
+              <span>סקיל</span>
+            </label>
+            <label class="check-option">
+              <input type="checkbox" name="builtTypes" value="אוטומציה (pipeline)">
+              <span>אוטומציה (pipeline)</span>
+            </label>
+            <label class="check-option">
+              <input type="checkbox" name="builtTypes" value="חיבור מערכות">
+              <span>חיבור מערכות</span>
+            </label>
+            <label class="check-option">
+              <input type="checkbox" name="builtTypes" value="משרד וירטואלי">
+              <span>משרד וירטואלי</span>
+            </label>
+            <label class="check-option">
+              <input type="checkbox" name="builtTypes" value="אחר">
+              <span>אחר</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- גאה ב- -->
+        <div class="field-group">
+          <label for="f-proud">ספר/י על דבר אחד שבנית ואת/ה הכי גאה בו (1–2 משפטים) *</label>
+          <textarea id="f-proud" name="proudOf" rows="3" required
+                    placeholder="מה הוא עושה? איך הוא עוזר לך ביום-יום?"></textarea>
+        </div>
+
+        <!-- אהבתי -->
+        <div class="field-group">
+          <label for="f-loved">מה הכי אהבת בטירונות, או איך זה שינה לך? <span style="font-weight:400;color:#6B7280">(לא חובה)</span></label>
+          <textarea id="f-loved" name="lovedAboutTironot" rows="2"
+                    placeholder="משפט אחד — נותן חום לכרטיס שלך"></textarea>
+        </div>
+
+        <hr class="form-divider">
+
+        <!-- אמצעי תשלום -->
+        <div class="field-group">
+          <label for="f-payment">אמצעי תשלום לעמלה <span style="font-weight:400;color:#6B7280">(אפשר גם אחר כך)</span></label>
+          <select id="f-payment" name="paymentMethod">
+            <option value="">לא עכשיו</option>
+            <option value="ביט">ביט</option>
+            <option value="פייבוקס">פייבוקס</option>
+            <option value="העברה בנקאית">העברה בנקאית</option>
+          </select>
+        </div>
+
+        <div class="field-group" id="payment-details-group" style="display:none">
+          <label for="f-payment-details">מספר טלפון / פרטי חשבון לתשלום</label>
+          <input type="text" id="f-payment-details" name="paymentMethodDetails"
+                 placeholder="מספר הביט / מספר חשבון + שם בנק">
+        </div>
+
+        <hr class="form-divider">
+
+        <!-- תקנון -->
+        <div class="field-group">
+          <label class="check-option check-terms">
+            <input type="checkbox" id="f-terms" name="termsAccepted" required>
+            <span>קראתי ואני מסכים/ה ל<a href="../terms-referral/" target="_blank" rel="noopener">תקנון תוכנית הממליצים</a> *</span>
+          </label>
+        </div>
+
+        <!-- הודעות -->
+        <div id="form-error" class="form-msg form-msg-error" hidden></div>
+        <div id="form-success" class="form-msg form-msg-success" hidden></div>
+
+        <button type="submit" class="submit-btn" id="submit-btn">
+          <span id="submit-label">להצטרפות לתוכנית 💚</span>
+          <span id="submit-spinner" hidden>שולח...</span>
+        </button>
+
+      </form>
     </div>
   </section>
 
@@ -404,5 +644,132 @@
     <p>aimprove · טירונות סוכנים</p>
   </div>
 
+  <script>
+    // ── Hebrew → Latin slug suggestion ──────────────────────────────────────
+    const HE2EN = {
+      'א':'a','ב':'b','ג':'g','ד':'d','ה':'h','ו':'v','ז':'z','ח':'ch','ט':'t',
+      'י':'y','כ':'k','ך':'k','ל':'l','מ':'m','ם':'m','נ':'n','ן':'n','ס':'s',
+      'ע':'','פ':'p','ף':'f','צ':'tz','ץ':'tz','ק':'k','ר':'r','ש':'sh','ת':'t',
+    };
+    function toSlug(name) {
+      const first = name.trim().split(/\s+/)[0];
+      return first.split('').map(c => HE2EN[c] ?? (c.match(/[a-z0-9]/i) ? c.toLowerCase() : '')).join('');
+    }
+
+    const nameEl          = document.getElementById('f-name');
+    const slugEl          = document.getElementById('f-slug');
+    const slugPreview     = document.getElementById('slug-preview');
+    const paymentEl       = document.getElementById('f-payment');
+    const paymentDetails  = document.getElementById('payment-details-group');
+
+    let slugTouched = false;
+
+    nameEl.addEventListener('input', () => {
+      if (!slugTouched && nameEl.value) {
+        const s = toSlug(nameEl.value);
+        slugEl.value = s;
+        slugPreview.textContent = s || '...';
+      }
+    });
+
+    slugEl.addEventListener('input', () => {
+      slugTouched = true;
+      slugEl.value = slugEl.value.toLowerCase().replace(/[^a-z0-9_-]/g, '');
+      slugPreview.textContent = slugEl.value || '...';
+    });
+
+    paymentEl.addEventListener('change', () => {
+      paymentDetails.style.display = paymentEl.value ? 'block' : 'none';
+    });
+
+    // ── Form submission ──────────────────────────────────────────────────────
+    document.getElementById('join-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const form        = e.target;
+      const errorEl     = document.getElementById('form-error');
+      const successEl   = document.getElementById('form-success');
+      const submitBtn   = document.getElementById('submit-btn');
+      const submitLabel = document.getElementById('submit-label');
+      const submitSpin  = document.getElementById('submit-spinner');
+
+      errorEl.hidden = true;
+      successEl.hidden = true;
+
+      const get = (id) => form.querySelector(id);
+
+      const name               = get('#f-name').value.trim();
+      const email              = get('#f-email').value.trim();
+      const phone              = get('#f-phone').value.trim();
+      const slug               = get('#f-slug').value.trim().toLowerCase();
+      const occupation         = get('#f-occupation').value.trim();
+      const builtTypes         = [...form.querySelectorAll('input[name="builtTypes"]:checked')].map(el => el.value);
+      const proudOf            = get('#f-proud').value.trim();
+      const lovedAboutTironot  = get('#f-loved').value.trim();
+      const paymentMethod      = get('#f-payment').value;
+      const paymentMethodDetails = get('#f-payment-details').value.trim();
+      const termsAccepted      = get('#f-terms').checked;
+
+      // Client-side validation
+      const missing = [];
+      if (!name)                                             missing.push('שם מלא');
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) missing.push('אימייל תקין');
+      if (!phone)                                            missing.push('טלפון');
+      if (!slug || !/^[a-z0-9_-]+$/.test(slug))             missing.push('כינוי (אותיות אנגלית בלבד)');
+      if (!occupation)                                       missing.push('עיסוק');
+      if (!proudOf)                                          missing.push('מה שבנית ואת/ה הכי גאה בו');
+      if (!termsAccepted)                                    missing.push('הסכמה לתקנון');
+
+      if (missing.length) {
+        errorEl.textContent = 'נא למלא: ' + missing.join(' · ');
+        errorEl.hidden = false;
+        errorEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitLabel.hidden = true;
+      submitSpin.hidden  = false;
+
+      try {
+        const res = await fetch('https://r.aimprove.co.il/api/join', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name, email, phone, slug, occupation,
+            builtTypes:          builtTypes.length ? builtTypes : undefined,
+            proudOf,
+            lovedAboutTironot:   lovedAboutTironot  || undefined,
+            paymentMethod:       paymentMethod       || undefined,
+            paymentMethodDetails: paymentMethodDetails || undefined,
+            termsAccepted:       true,
+            termsVersion:        'v1.0',
+          }),
+        });
+
+        const data = await res.json();
+
+        if (data.ok) {
+          form.style.display = 'none';
+          successEl.innerHTML =
+            '✅ <strong>קיבלנו!</strong> הצטרפת לתוכנית הממליצים. ' +
+            'נכין את הכרטיס שלך ונעדכן אותך בקרוב 💚';
+          successEl.hidden = false;
+          successEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+          errorEl.textContent = data.error || 'שגיאה לא צפויה — אנא נסה שוב';
+          errorEl.hidden = false;
+          submitBtn.disabled  = false;
+          submitLabel.hidden  = false;
+          submitSpin.hidden   = true;
+        }
+      } catch {
+        errorEl.textContent = 'שגיאת חיבור — בדוק/י אינטרנט ונסה שוב';
+        errorEl.hidden = false;
+        submitBtn.disabled  = false;
+        submitLabel.hidden  = false;
+        submitSpin.hidden   = true;
+      }
+    });
+  </script>
 </body>
 </html>
