@@ -579,6 +579,23 @@
                     placeholder="משפט אחד — נותן חום לכרטיס שלך"></textarea>
         </div>
 
+        <!-- תמונה -->
+        <div class="field-group">
+          <label for="f-photo">תמונה לכרטיס שלך *</label>
+          <div style="background:#FFFBEC;border:1.5px solid #FFD747;border-radius:10px;padding:14px 16px;margin-bottom:12px;color:#7A4406;font-size:14.5px;line-height:1.6;">
+            ⚠️ <strong>שימי לב:</strong> התמונה תפורסם בכרטיס שלך בדף הבוגרים הפומבי
+            (<code style="background:#fff;padding:2px 6px;border-radius:4px;font-size:13px;">agent-course.aimprove.co.il/bogrim/</code>) ויראו אותה כל מי שנכנסים. בחרי תמונה שאת מסכימה שתהיה ציבורית.
+          </div>
+          <input type="file" id="f-photo" name="photo" accept="image/jpeg,image/png,image/webp" required
+                 style="display:block;width:100%;padding:10px 12px;border:1.5px dashed #D1D5DB;border-radius:10px;background:#F9FAFB;cursor:pointer;font-family:inherit;font-size:14.5px;">
+          <div id="f-photo-preview" style="display:none;margin-top:14px;text-align:center;">
+            <img id="f-photo-img" alt="תצוגה מקדימה"
+                 style="max-width:160px;max-height:160px;border-radius:50%;object-fit:cover;border:3px solid #FFD747;box-shadow:0 4px 12px rgba(20,9,59,.12);">
+            <div id="f-photo-meta" style="margin-top:8px;color:#6B7280;font-size:13px;"></div>
+          </div>
+          <div style="margin-top:8px;color:#6B7280;font-size:13px;">JPEG / PNG / WebP · עד 3MB · עדיף תמונה ריבועית, חיוכית, ברורה</div>
+        </div>
+
         <hr class="form-divider">
 
         <!-- אמצעי תשלום -->
@@ -623,8 +640,8 @@
 
   <!-- ════ CTA ════ -->
   <section class="cta-section">
-    <h2>פתחנו את ההרשמה למחזור הבא.<br><span class="accent">תספרו לחברים — וקחו את החלק שלכם 💚</span></h2>
-    <p>כל חבר שמשתתף בקורס דרככם זה גם מתנה לעצמכם — וגם תשלום אמיתי שמגיע אליכם.</p>
+    <h2>פתחנו את ההרשמה למחזור הבא.<br><span class="accent">מתעניינות יחפשו אותך, את תעני, ותקבלי תשלום 💚</span></h2>
+    <p>בלי מכירה, בלי לרדוף אחרי אף אחת. רק לדבר כשפונים אלייך, ולספר את האמת שלך.</p>
     <a class="cta-big" href="#join">להצטרפות לתוכנית ↓</a>
     <div class="legal-note">
       תוכנית הממליצים כפופה ל<a href="../terms-referral/">תקנון תוכנית הממליצים</a> וכן ל<a href="https://aimprove.co.il/terms-of-use/" target="_blank" rel="noopener">תנאי השימוש הכלליים</a> של אִימפּרוּב. ההצטרפות מותנית בהשלמת הפרופיל ובאישור התקנון.
@@ -673,6 +690,25 @@
       paymentDetails.style.display = paymentEl.value ? 'block' : 'none';
     });
 
+    // ── Photo preview ────────────────────────────────────────────────────────
+    document.getElementById('f-photo').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      const previewBox = document.getElementById('f-photo-preview');
+      const previewImg = document.getElementById('f-photo-img');
+      const meta       = document.getElementById('f-photo-meta');
+      if (!file) {
+        previewBox.style.display = 'none';
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        previewImg.src = ev.target.result;
+        meta.textContent = file.name + ' · ' + Math.round(file.size / 1024) + 'KB';
+        previewBox.style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+    });
+
     // ── Form submission ──────────────────────────────────────────────────────
     document.getElementById('join-form').addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -699,6 +735,7 @@
       const paymentMethod      = get('#f-payment').value;
       const paymentMethodDetails = get('#f-payment-details').value.trim();
       const termsAccepted      = get('#f-terms').checked;
+      const photoFile          = get('#f-photo').files[0];
 
       // Client-side validation
       const missing = [];
@@ -708,7 +745,15 @@
       if (!slug || !/^[a-z0-9_-]+$/.test(slug))             missing.push('כינוי (אותיות אנגלית בלבד)');
       if (!occupation)                                       missing.push('עיסוק');
       if (!proudOf)                                          missing.push('מה שבנית ואת/ה הכי גאה בו');
+      if (!photoFile)                                        missing.push('תמונה לכרטיס');
       if (!termsAccepted)                                    missing.push('הסכמה לתקנון');
+
+      if (photoFile && photoFile.size > 3 * 1024 * 1024) {
+        errorEl.textContent = 'התמונה גדולה מ-3MB. אנא בחרי תמונה קטנה יותר.';
+        errorEl.hidden = false;
+        errorEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
 
       if (missing.length) {
         errorEl.textContent = 'נא למלא: ' + missing.join(' · ');
@@ -720,6 +765,18 @@
       submitBtn.disabled = true;
       submitLabel.hidden = true;
       submitSpin.hidden  = false;
+
+      // Convert photo to base64
+      const photoData = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload  = () => resolve({
+          base64:   reader.result.split(',')[1],
+          filename: photoFile.name,
+          contentType: photoFile.type
+        });
+        reader.onerror = () => reject(new Error('Failed to read photo'));
+        reader.readAsDataURL(photoFile);
+      });
 
       try {
         const res = await fetch('https://r.aimprove.co.il/api/join', {
@@ -734,6 +791,9 @@
             paymentMethodDetails: paymentMethodDetails || undefined,
             termsAccepted:       true,
             termsVersion:        'v1.0',
+            photoBase64:         photoData.base64,
+            photoFilename:       photoData.filename,
+            photoContentType:    photoData.contentType,
           }),
         });
 
