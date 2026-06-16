@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
-  <title>הבוגרים של טירונות סוכנים — מחכים לדבר איתך</title>
+  <title>הבוגרים של טירונות סוכנים - מחכים לדבר איתך</title>
   <meta property="og:title" content="הבוגרים של טירונות סוכנים">
   <meta property="og:description" content="אנשים שכבר עברו את זה, ובנו לעצמם צוות AI. דברו איתם.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -61,23 +61,23 @@
     .grid {
       max-width: 1040px; margin: 0 auto; padding: 22px 16px 50px 16px;
       display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;
+      align-items: start;
     }
     /* ---------- FLIP CARD ---------- */
     .card {
       background: transparent;
       perspective: 1400px;
-      min-height: 470px;
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;
     }
     .card-inner {
-      position: relative; width: 100%; min-height: 470px;
+      display: grid; width: 100%;
       transition: transform 0.6s cubic-bezier(.2,.7,.2,1);
       transform-style: preserve-3d;
     }
     .card.flipped .card-inner { transform: rotateY(180deg); }
     .card-face {
-      position: absolute; inset: 0;
+      grid-area: 1 / 1;
       backface-visibility: hidden; -webkit-backface-visibility: hidden;
       background: #FFFFFF; border-radius: 15px;
       box-shadow: 0 16px 40px rgba(20,9,59,0.13);
@@ -104,9 +104,15 @@
     .quote {
       font-size: 14px; font-style: italic; color: var(--navy);
       background: #F0F3F8; border-radius: 10px; padding: 11px 13px;
-      margin: 0 auto 14px auto; line-height: 1.55; max-width: 290px;
+      margin: 0 auto 10px auto; line-height: 1.55; max-width: 290px;
     }
-    /* ---------- MEDIA SLOT (וידאו / צילום-מסך) — 4:5 אחיד ---------- */
+    .price-note {
+      font-size: 12px; color: var(--muted); line-height: 1.4;
+      max-width: 280px; margin: 0 auto 10px auto;
+      display: flex; align-items: flex-start; gap: 6px; text-align: right;
+    }
+    .price-note .arr { font-size: 15px; color: var(--c, var(--gold)); font-weight: 800; line-height: 1.3; flex-shrink: 0; }
+    /* ---------- MEDIA SLOT (וידאו / צילום-מסך) - 4:5 אחיד ---------- */
     .media {
       width: 100%; max-width: 184px; aspect-ratio: 4 / 5;
       margin: 2px auto 12px auto; border-radius: 12px; overflow: hidden;
@@ -121,12 +127,22 @@
     }
     .cta:hover { background: var(--wa-dark); }
     .cta svg { width: 19px; height: 19px; fill: currentColor; flex-shrink: 0; }
-    .card-back .cta { margin-top: auto; }
+    .card-face .cta { margin-top: auto; }
     .flip-hint {
-      margin-top: 12px; font-size: 12.5px; font-weight: 500; color: var(--muted);
-      display: inline-flex; align-items: center; gap: 5px;
+      margin-top: 14px; font-size: 13px; font-weight: 700; color: var(--c, var(--gold));
+      display: inline-flex; align-items: center; gap: 6px;
+      border: 1.5px dashed var(--c, var(--gold)); border-radius: 50px;
+      padding: 7px 16px; background: rgba(255,255,255,0.55);
     }
-    .flip-hint .ico { font-size: 14px; line-height: 1; }
+    .flip-hint .ico { font-size: 15px; line-height: 1; }
+    .card-front .flip-hint { animation: flipPulse 2.4s ease-in-out infinite; }
+    @keyframes flipPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.06); } }
+    .flip-cue {
+      text-align: center; font-size: 15.5px; font-weight: 700; color: var(--navy);
+      max-width: 1040px; margin: 0 auto; padding: 16px 16px 0 16px;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .flip-cue .ico { color: #C99700; font-size: 18px; }
     /* ---------- CTA SECTION ---------- */
     .wave-down { line-height: 0; background: #EDF2F9; }
     .wave-down svg { width: 100%; height: 60px; display: block; }
@@ -166,11 +182,13 @@
     <span class="eyebrow">הבוגרים של טירונות סוכנים</span>
     <h1>הם היו בדיוק במקום שלך</h1>
     <p class="hero-punch">היום יש להם צוות AI שעובד בשבילם.</p>
-    <p>לכל אחד מהם הטירונות שינתה את החיים — ובדיוק בגלל זה הם ישמחו לספר לכם עליה כל מה שתרצו, כדי שתשנה גם לכם. כולם כאן בהסכמה מלאה ומחכים שתפנו אליהם, אז אל תתביישו: בחרו את מי שהכי מדבר אליכם, וכתבו לו ישירות בוואטסאפ.</p>
+    <p>לכל אחד מהם הטירונות שינתה את החיים - ובדיוק בגלל זה הם ישמחו לספר לכם עליה כל מה שתרצו, כדי שתשנה גם לכם. כולם כאן בהסכמה מלאה ומחכים שתפנו אליהם, אז אל תתביישו: בחרו את מי שהכי מדבר אליכם, וכתבו לו ישירות בוואטסאפ.</p>
     <div class="wave">
       <svg viewBox="0 0 1440 60" preserveAspectRatio="none"><path fill="#EDF2F9" d="M0,30 C360,65 1080,5 1440,35 L1440,60 L0,60 Z"></path></svg>
     </div>
   </div>
+
+  <p class="flip-cue"><span class="ico">↻</span> לחצו על כל כרטיס כדי לגלות מה הוא בנה בפועל</p>
 
   <main class="grid">
 
@@ -180,38 +198,22 @@
           <img class="avatar" src="images/ilana.jpg" alt="אילנה וייס">
           <h2>אילנה וייס</h2>
           <p class="role">מטפלת בחרדות</p>
-          <p class="desc">בנתה צוות סוכנים, וביניהם אחד שהחליף לה צוות שלם של ארבע מזכירות שעלו לה עשרות אלפים בחודש.</p>
+          <p class="quote">"אני עדיין בשוק - קלוד עושה את מה ששילמתי למזכירות שלי עשרות אלפי שקלים בחודש. אני מנסה להבין אם אנחנו חיים בסרט מדע בדיוני."</p>
+          <p class="quote">"הייתה לי מחלקה שלמה של מזכירות - 4. אני לא אצטרך את זה יותר. חיסכון כלכלי מטורף."</p>
+          <p class="quote">"הקורס מדהים - ממוקד בלי מיליון שיעורים מיותרים, אבל מקיף את הכל. את גאונה."</p>
           <a class="cta" href="https://aimprove-redirector.shalhevetia.workers.dev/r/ilana"><svg aria-hidden="true"><use href="#wa"></use></svg>לדבר עם אילנה</a>
           <span class="flip-hint"><span class="ico">↻</span> מה היא בנתה בפועל</span>
         </div>
         <div class="card-face card-back">
-          <h3 class="back-title">המשרד של אילנה</h3>
-          <div class="media" data-type="shot"><img src="images/shot-ilana.jpg" alt="המלצה של אילנה בוואטסאפ" loading="lazy"></div>
-          <p class="quote">"הייתה לי מחלקה שלמה של מזכירות - 4. אני לא אצטרך את זה יותר. קלוד כבר עושה לי את רוב המשימות שהן עשו."</p>
-          <a class="cta" href="https://aimprove-redirector.shalhevetia.workers.dev/r/ilana"><svg aria-hidden="true"><use href="#wa"></use></svg>לדבר עם אילנה</a>
-          <span class="flip-hint"><span class="ico">↩</span> חזרה</span>
-        </div>
-      </div>
-    </article>
-
-    <article class="card" style="--c:#05905D">
-      <div class="card-inner">
-        <div class="card-face card-front">
-          <img class="avatar" src="images/or.jpg" alt="אור ברקוביץ'">
-          <h2>אור ברקוביץ'</h2>
-          <p class="role">רואת חשבון</p>
-          <p class="desc">בנתה צוות סוכנים, וביניהם אחד שמעבד לה תלושי שכר אוטומטית, מקצה לקצה.</p>
-          <a class="cta" href="https://aimprove-redirector.shalhevetia.workers.dev/r/or"><svg aria-hidden="true"><use href="#wa"></use></svg>לדבר עם אור</a>
-          <span class="flip-hint"><span class="ico">↻</span> מה היא בנתה בפועל</span>
-        </div>
-        <div class="card-face card-back">
-          <h3 class="back-title">המשרד של אור</h3>
+          <h3 class="back-title">הצוות של אילנה</h3>
           <ul class="builds">
-            <li>סוכן שמעבד תלושי שכר מקצה לקצה</li>
-            <li>סוכן שמנתח שיחות מכירה</li>
-            <li>עבודת רו"ח חוזרת — שרצה לבד</li>
+            <li>סקיל שהעביר את כל ה-ClickUp שלה ל-Notion אוטומטית</li>
+            <li>אוטומציה שמחפשת ומשווה (רופא, מוצר, שירות) - אוספת ביקורות ומסכמת</li>
+            <li>סוכן תמלול שיחות מכירה</li>
+            <li>דף נחיתה אישי שעלה לאוויר</li>
           </ul>
-          <a class="cta" href="https://aimprove-redirector.shalhevetia.workers.dev/r/or"><svg aria-hidden="true"><use href="#wa"></use></svg>לדבר עם אור</a>
+          <div class="media" data-type="shot"><img src="images/shot-ilana.jpg" alt="המלצה של אילנה בוואטסאפ" loading="lazy"></div>
+          <a class="cta" href="https://aimprove-redirector.shalhevetia.workers.dev/r/ilana"><svg aria-hidden="true"><use href="#wa"></use></svg>לדבר עם אילנה</a>
           <span class="flip-hint"><span class="ico">↩</span> חזרה</span>
         </div>
       </div>
@@ -223,14 +225,16 @@
           <img class="avatar" src="images/anat.jpg" alt="ענת מנור">
           <h2>ענת מנור</h2>
           <p class="role">סמנכ"לית פיתוח עסקי, שירותי רפואה</p>
-          <p class="desc">בנתה צוות סוכנים, וביניהם אחד שמנתח לה מכרזים ומחליט אם כדאי לגשת — וחוסך לה עשרות שעות.</p>
+          <p class="desc">בנתה צוות סוכנים, וביניהם "רז" שקורא מכרזים ומסכם את תנאי הסף - וחוסך לה עשרות שעות.</p>
           <a class="cta" href="https://aimprove-redirector.shalhevetia.workers.dev/r/anat"><svg aria-hidden="true"><use href="#wa"></use></svg>לדבר עם ענת</a>
           <span class="flip-hint"><span class="ico">↻</span> מה היא בנתה בפועל</span>
         </div>
         <div class="card-face card-back">
-          <h3 class="back-title">המשרד של ענת</h3>
-          <div class="media" data-type="video"><video src="images/vid-anat.mp4" preload="metadata" playsinline controls></video></div>
-          <p class="quote">"בניתי את רז, שמסכם את המכרז… אני לא יכולה להגיד לך כמה זמן זה חסך לי."</p>
+          <h3 class="back-title">הצוות של ענת</h3>
+          <ul class="builds">
+            <li>"רז" - סוכן שקורא מכרזים ומסכם את תנאי הסף המקצועיים</li>
+            <li>סוכן שותף לאפיון שירותים ומוצרים רפואיים - מפיק מסמך אפיון מלא</li>
+          </ul>
           <a class="cta" href="https://aimprove-redirector.shalhevetia.workers.dev/r/anat"><svg aria-hidden="true"><use href="#wa"></use></svg>לדבר עם ענת</a>
           <span class="flip-hint"><span class="ico">↩</span> חזרה</span>
         </div>
@@ -243,14 +247,21 @@
           <img class="avatar" src="images/dolev.jpg" alt="דולב דרי">
           <h2>דולב דרי</h2>
           <p class="role">בעל משרד פרסום</p>
-          <p class="desc">בנה צוות סוכנים שמנהלים לו לקוחות — מזמינים גרפיקות, מתאמים פרסום ועוד.</p>
+          <p class="quote">"אם מישהו שואל אותי אם שווה להגיע לקורס טירונות סוכנים - שווה של החיים. שווה לעצור הכול ולהגיע."</p>
+          <p class="quote">"החלומות שהיו מורכבים בראש לפני הקורס - היום יכולים לקרום עור וגידים בשעה."</p>
           <a class="cta" href="https://aimprove-redirector.shalhevetia.workers.dev/r/dolev"><svg aria-hidden="true"><use href="#wa"></use></svg>לדבר עם דולב</a>
           <span class="flip-hint"><span class="ico">↻</span> מה הוא בנה בפועל</span>
         </div>
         <div class="card-face card-back">
-          <h3 class="back-title">המשרד של דולב</h3>
-          <div class="media" data-type="video"><video src="images/vid-dolev.mp4" preload="metadata" playsinline controls></video></div>
-          <p class="quote">"בניתי את שון — סוכן וואטסאפ שמתמלל לי את השיעור, מסכם, ושולח לי את הסיכום ישר לוואטסאפ."</p>
+          <h3 class="back-title">הצוות של דולב</h3>
+          <ul class="builds">
+            <li>"שון" - סוכן וואטסאפ שקורא את כל קבוצות הלקוחות, מזהה מה דחוף, ושולח סיכום בוקר</li>
+            <li>מהדק-תוכן - thread, סקריפט לריל וקרוסלה ל-3 לקוחות במקביל</li>
+            <li>בריף יומי אוטומטי - קופי לכל הרשתות + תמונות מג'ונרטות</li>
+            <li>עיבוד פודקאסט - חיתוך ל-Reels, אודיו והעלאה</li>
+            <li>דף אישי עם סוכן שמדבר עם הלקוחות</li>
+          </ul>
+          <div class="media" data-type="shot"><img src="images/shot-dolev.png" alt="המלצה של דולב בוואטסאפ" loading="lazy"></div>
           <a class="cta" href="https://aimprove-redirector.shalhevetia.workers.dev/r/dolev"><svg aria-hidden="true"><use href="#wa"></use></svg>לדבר עם דולב</a>
           <span class="flip-hint"><span class="ico">↩</span> חזרה</span>
         </div>
@@ -263,14 +274,22 @@
           <img class="avatar" src="images/ron.jpg" alt="רון אלון">
           <h2>רון אלון</h2>
           <p class="role">יזם</p>
-          <p class="desc">בנה צוות סוכנים שלם — משרד AI עם מחלקות שמדברות זו עם זו — שמנהל לו את הסטארטאפ.</p>
+          <p class="quote">"שווה את הכסף לא ב-100 אחוז, ב-200 אחוז. לרוץ קדימה."</p>
+          <p class="quote">"זה מהפך של 180 מעלות. יש לי משרד עם 8 מחלקות, 20 סקילים, וסוכן-על שנקרא קפטן אדי."</p>
+          <p class="quote">"עובדים אנושיים שעשו את העבודה - היום כבר לא נמצאים כי אני לא צריך אותם."</p>
           <a class="cta" href="https://aimprove-redirector.shalhevetia.workers.dev/r/ron"><svg aria-hidden="true"><use href="#wa"></use></svg>לדבר עם רון</a>
           <span class="flip-hint"><span class="ico">↻</span> מה הוא בנה בפועל</span>
         </div>
         <div class="card-face card-back">
-          <h3 class="back-title">המשרד של רון</h3>
-          <div class="media" data-type="video"><video src="images/vid-ron.mp4" preload="metadata" playsinline controls></video></div>
-          <p class="quote">"יש לי משרד עם 18 עובדים, נתתי להם שמות — ואפילו אחד אמר לי לקחת הפסקה של 10 דקות, הייתי בשוק."</p>
+          <h3 class="back-title">הצוות של רון</h3>
+          <ul class="builds">
+            <li>משרד וירטואלי מלא - 8 מחלקות, 20 סקילים וסוכן-על "קפטן אדי" שמנווט ביניהם</li>
+            <li>אפליקציית מתכונים מסחרית (20 אלף משתמשים) עם שף דיגיטלי</li>
+            <li>סקיל חיפוש מתחרים מחובר ל-Apify</li>
+            <li>pipeline שהופך הקלטות שיעור למסמכי ידע מנותחים</li>
+            <li>אוטומציה: תמונת מתכון ← סרטון של המנה</li>
+          </ul>
+          <div class="media" data-type="shot"><img src="images/shot-ron.jpg" alt="המלצה של רון בוואטסאפ" loading="lazy"></div>
           <a class="cta" href="https://aimprove-redirector.shalhevetia.workers.dev/r/ron"><svg aria-hidden="true"><use href="#wa"></use></svg>לדבר עם רון</a>
           <span class="flip-hint"><span class="ico">↩</span> חזרה</span>
         </div>
@@ -283,14 +302,20 @@
           <img class="avatar" src="images/batchen.jpg" alt="בת חן לוי">
           <h2>בת חן לוי</h2>
           <p class="role">סמנכ"לית פיתוח עסקי, חברה בינלאומית</p>
-          <p class="desc">הצליחה להעביר 50% מהעבודה שלה לסוכני AI שבנתה לעצמה.</p>
+          <p class="quote">"אני עדיין בשוק... מאז שהצטרפתי לקורס אני לא מוטרדת מ-AI יותר. כל הודעה שקפצה לי בפיד על AI הלחיצה אותי כי חשבתי שכולם יודעים משהו שאני לא."</p>
+          <p class="quote">"הפסקתי לישון, הפסקתי לאכול. אני כל היום מתרגשת מהטירוף הזה... איך לא הכרתי את זה קודם?"</p>
+          <p class="quote">"הצלחתי לתקן סוכן עיקרי שלי. עכשיו הוא רץ כמו נינג'ה."</p>
           <a class="cta" href="https://aimprove-redirector.shalhevetia.workers.dev/r/batchen"><svg aria-hidden="true"><use href="#wa"></use></svg>לדבר עם בת חן</a>
           <span class="flip-hint"><span class="ico">↻</span> מה היא בנתה בפועל</span>
         </div>
         <div class="card-face card-back">
-          <h3 class="back-title">המשרד של בת חן</h3>
-          <div class="media" data-type="shot"><img src="images/shot-batchen.jpg" alt="המלצה של בת חן בוואטסאפ" loading="lazy"></div>
-          <p class="quote">"הצלחתי לתקן סוכן עיקרי שלי… עכשיו הוא רץ כמו נינג'ה. הבנתי איך לשמור את החומר נכון."</p>
+          <h3 class="back-title">הצוות של בת חן</h3>
+          <ul class="builds">
+            <li>סוכן שסורק 10 תיקיות ומזהה תעודות איכות שפג תוקפן</li>
+            <li>סקיל "קריא" - הופך תשובות ארוכות ל-HTML מיושר להעתקה נוחה</li>
+            <li>שדרוג הסוכן הראשי שלה - "רץ כמו נינג'ה"</li>
+            <li>התאמת קוד התמלול לגרסה חינמית, לחיסכון בעלויות</li>
+          </ul>
           <a class="cta" href="https://aimprove-redirector.shalhevetia.workers.dev/r/batchen"><svg aria-hidden="true"><use href="#wa"></use></svg>לדבר עם בת חן</a>
           <span class="flip-hint"><span class="ico">↩</span> חזרה</span>
         </div>
@@ -303,14 +328,21 @@
           <img class="avatar" src="images/moran.jpg" alt="מורן טאובר">
           <h2>מורן טאובר</h2>
           <p class="role">מטפלת ברפואה סינית · עו"ד בעברה</p>
-          <p class="desc">בנתה את Spark — עוזר אישי שמשפר לה פרומפטים, מנתח דאטה ועוזר לה בהחלטות לאורך היום.</p>
+          <p class="quote">"אין גבול למה שאפשר לעשות. אני יכולה לבנות אימפריה. לשם אני הולכת."</p>
+          <p class="price-note"><span class="arr">↓</span> מורן התלבטה מאוד לגבי המחיר - זה מה שאמרה אחרי הטירונות:</p>
+          <p class="quote">"מה את, סתומה?... לקחתי מלא קורסים בחיים, אין מה להשוות את הקפיצה."</p>
           <a class="cta" href="https://aimprove-redirector.shalhevetia.workers.dev/r/moran"><svg aria-hidden="true"><use href="#wa"></use></svg>לדבר עם מורן</a>
           <span class="flip-hint"><span class="ico">↻</span> מה היא בנתה בפועל</span>
         </div>
         <div class="card-face card-back">
-          <h3 class="back-title">המשרד של מורן</h3>
-          <div class="media" data-type="video"><video src="images/vid-moran.mp4" preload="metadata" playsinline controls></video></div>
-          <p class="quote">"בניתי שני סוכנים — אווה, שמנהלת לי את הפיננסים של העסק, וצביקה, שמנהל את התוכן והשיווק."</p>
+          <h3 class="back-title">הצוות של מורן</h3>
+          <ul class="builds">
+            <li>"אווה" - סוכנת שמנהלת את הפיננסים של העסק</li>
+            <li>"צביקה" - מנהל התוכן והשיווק, מחובר לפייפליין הפרסומים</li>
+            <li>כותב פוסטים לאינסטגרם עם תמונה מג'ונרטת, שמפרסם אוטומטית</li>
+            <li>handoffs לעבודת לילה - סוכן שעבד 12 שעות לבד בזמן שישנה</li>
+          </ul>
+          <div class="media" data-type="shot"><img src="images/shot-moran.jpg" alt="המלצה של מורן בוואטסאפ" loading="lazy"></div>
           <a class="cta" href="https://aimprove-redirector.shalhevetia.workers.dev/r/moran"><svg aria-hidden="true"><use href="#wa"></use></svg>לדבר עם מורן</a>
           <span class="flip-hint"><span class="ico">↩</span> חזרה</span>
         </div>
@@ -323,14 +355,20 @@
           <img class="avatar" src="images/shahar.jpg" alt="שחר דיק">
           <h2>שחר דיק</h2>
           <p class="role">מהנדסת · שיווק דיגיטלי וחדשנות בחברה משפחתית</p>
-          <p class="desc">בנתה צוות סוכנים — ביניהם אחד שמרכז את כל ידע המוצרים וממליץ לסוכני המכירות על המוצר הנכון, ועוד אחד שמתרגם מפרטים מקצועיים מאנגלית לעברית.</p>
+          <p class="quote">"זה באמת משנה חיים... יכול אשכרה לחסוך כסף, להכניס כסף. חד משמעית, להירשם אתמול."</p>
+          <p class="quote">"כל העולם נפתח בפנייך... את בונה כמה אג'נטים והם ליטרלי לוקחים לך את העבודה."</p>
+          <p class="quote">"זה שינה לי את כל התפיסה, את כל הפעולות היומיומיות - וזה עוד לפני שסיימנו."</p>
           <a class="cta" href="https://aimprove-redirector.shalhevetia.workers.dev/r/shahar"><svg aria-hidden="true"><use href="#wa"></use></svg>לדבר עם שחר</a>
           <span class="flip-hint"><span class="ico">↻</span> מה היא בנתה בפועל</span>
         </div>
         <div class="card-face card-back">
-          <h3 class="back-title">המשרד של שחר</h3>
-          <div class="media" data-type="video"><video src="images/vid-shahar.mp4" preload="metadata" playsinline controls></video></div>
-          <p class="quote">"ברגע שמקבלים את הכוח הזה בידיים, את הקסם הזה… כל העולם נפתח בפנייך."</p>
+          <h3 class="back-title">הצוות של שחר</h3>
+          <ul class="builds">
+            <li>סוכן ידע למוצרים שממליץ לסוכני המכירות על המוצר הנכון ללקוח</li>
+            <li>סוכן שקורא דוחות יומיים מהמייל ובונה דשבורד להנהלה</li>
+            <li>סוכן שמתרגם מפרטים מקצועיים מאנגלית לעברית</li>
+            <li>סוכן ייעוץ אישי שמכיר אותה ואת הטון שלה</li>
+          </ul>
           <a class="cta" href="https://aimprove-redirector.shalhevetia.workers.dev/r/shahar"><svg aria-hidden="true"><use href="#wa"></use></svg>לדבר עם שחר</a>
           <span class="flip-hint"><span class="ico">↩</span> חזרה</span>
         </div>
@@ -343,18 +381,46 @@
           <img class="avatar" src="images/hani.jpg" alt="חני הופמן">
           <h2>חני הופמן</h2>
           <p class="role">פיתוח עסקי והשקעות נדל"ן · מדריכת AI</p>
-          <p class="desc">מעולם הנדל"ן וההשקעות, ומעבירה הדרכות AI לחברות נדל"ן ולשמאי מקרקעין. בנתה לעצמה סוכנים וסקילים שמייעלים לה את העבודה.</p>
+          <p class="quote">"אני אשמח להיות ממליצה שלך, וכבר המלצתי לחברים."</p>
           <a class="cta" href="https://aimprove-redirector.shalhevetia.workers.dev/r/hani"><svg aria-hidden="true"><use href="#wa"></use></svg>לדבר עם חני</a>
           <span class="flip-hint"><span class="ico">↻</span> מה היא בנתה בפועל</span>
         </div>
         <div class="card-face card-back">
-          <h3 class="back-title">המשרד של חני</h3>
+          <h3 class="back-title">הצוות של חני</h3>
           <ul class="builds">
-            <li>HR Documenter — סקיל לתיעוד</li>
-            <li>סוכן תמלול וסיכום הרצאות</li>
-            <li>סקיל לניתוח טבלאות ב-Claude/Excel</li>
+            <li>"תמר" - סוכנת עוזרת אישית ב-CoWork</li>
+            <li>HR Documenter - סקיל לתיעוד משאבי אנוש</li>
+            <li>pipeline לתמלול וסיכום הרצאות ושיעורים</li>
+            <li>דף נחיתה וסוכן Workflow</li>
           </ul>
           <a class="cta" href="https://aimprove-redirector.shalhevetia.workers.dev/r/hani"><svg aria-hidden="true"><use href="#wa"></use></svg>לדבר עם חני</a>
+          <span class="flip-hint"><span class="ico">↩</span> חזרה</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="card" style="--c:#E07B39">
+      <div class="card-inner">
+        <div class="card-face card-front">
+          <img class="avatar" src="images/lital.jpg" alt="ליטל יעקובוביץ דראי">
+          <h2>ליטל יעקובוביץ דראי</h2>
+          <p class="role">עורכת דין · מדריכת AI לעורכי דין</p>
+          <p class="quote">"למי שמתלבטת - חד משמעית לא להתלבט. זה שווה את זה."</p>
+          <p class="quote">"נרשמתי לקורסים אחרים של Claude Code והתאכזבתי... כאן זה עולם אחר לגמרי."</p>
+          <a class="cta" href="https://aimprove-redirector.shalhevetia.workers.dev/r/lital"><svg aria-hidden="true"><use href="#wa"></use></svg>לדבר עם ליטל</a>
+          <span class="flip-hint"><span class="ico">↻</span> מה היא בנתה בפועל</span>
+        </div>
+        <div class="card-face card-back">
+          <h3 class="back-title">הצוות של ליטל</h3>
+          <ul class="builds">
+            <li>"יוסף" - סוכן שמרכז משרד משפטי שלם, מכתבי טענות ועד פגישות לקוח</li>
+            <li>"טיולון" - סוכן שמתכנן טיולים שלמים מקצה לקצה</li>
+            <li>סוכן פיננסי שקורא ומנתח דפי אשראי וחשבונות בנק</li>
+            <li>סוכן שותף לתקשורת עם הילדים</li>
+            <li>אתר סדנאות AI לעורכי דין</li>
+          </ul>
+          <div class="media" data-type="shot"><img src="images/shot-lital.jpg" alt="המלצה של ליטל בוואטסאפ" loading="lazy"></div>
+          <a class="cta" href="https://aimprove-redirector.shalhevetia.workers.dev/r/lital"><svg aria-hidden="true"><use href="#wa"></use></svg>לדבר עם ליטל</a>
           <span class="flip-hint"><span class="ico">↩</span> חזרה</span>
         </div>
       </div>
@@ -368,7 +434,7 @@
 
   <section class="cta-section">
     <h2>ראית מה הם בנו. עכשיו תורך.</h2>
-    <p>כל אחד מהבוגרים שכאן ישב פעם בדיוק במקום שלך — אותן התלבטויות, אותו "זה בכלל בשבילי?". ההבדל היחיד? הם החליטו. ואם משהו בפנים כבר לחש לך "את זה אני רוצה" — אפשר לקבוע שיחה, להבין מאיפה מתחילים, ולבנות את הצוות הראשון שלך.</p>
+    <p>כל אחד מהבוגרים שכאן ישב פעם בדיוק במקום שלך - אותן התלבטויות, אותו "זה בכלל בשבילי?". ההבדל היחיד? הם החליטו. ואם משהו בפנים כבר לחש לך "את זה אני רוצה" - אפשר לקבוע שיחה, להבין מאיפה מתחילים, ולבנות את הצוות הראשון שלך.</p>
     <a class="cta-big" href="https://calendly.com/shalhevet-aimprove/meet-with-me-6" target="_blank" rel="noopener">לקביעת פגישת Welcome עם שלהבת</a>
   </section>
 
@@ -385,7 +451,7 @@
         if (slot) slot.style.display = 'none';
       });
     });
-    // Flip on tap — but not when interacting with a link or the video player
+    // Flip on tap - but not when interacting with a link or the video player
     document.querySelectorAll('.card').forEach(function (card) {
       card.addEventListener('click', function (e) {
         if (e.target.closest('a') || e.target.closest('.media')) return;
