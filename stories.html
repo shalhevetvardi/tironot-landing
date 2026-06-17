@@ -119,6 +119,9 @@
   .sticker-note{margin-top:40px;font-size:38px;font-weight:700;color:var(--navy);opacity:.85;
     display:flex;align-items:center;justify-content:center;gap:14px}
   .s-gold .lead{color:var(--navy);opacity:.85;font-size:44px;line-height:1.5}
+  /* מצב ייצוא: ?only=N מציג שקופית אחת בלבד, ממלאת 1080x1920, בלי מספר-עזר — לצילום נקי */
+  body.exporting{display:block;padding:0;background:#fff}
+  body.exporting .slide__num{display:none}
 </style>
 </head>
 <body>
@@ -244,5 +247,17 @@
   </div>
 </section>
 
+<script>
+  /* ?only=N → מצב ייצוא: שקופית בודדת, ממלאת מסך, להפקת PNG 1080x1920 */
+  (function(){
+    var only = new URLSearchParams(location.search).get('only');
+    if(!only) return;
+    document.body.classList.add('exporting');
+    document.querySelectorAll('.slide').forEach(function(s){
+      var n = s.querySelector('.slide__num');
+      if(!n || n.textContent.trim() !== String(only)) s.style.display='none';
+    });
+  })();
+</script>
 </body>
 </html>
