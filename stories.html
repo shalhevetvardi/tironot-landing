@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>טירונות סוכנים — סטוריז</title>
+<title>טירונות סוכנים - סטוריז</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
@@ -118,8 +118,22 @@
   .wa-pill svg{width:56px;height:56px}
   .sticker-note{margin-top:40px;font-size:38px;font-weight:700;color:var(--navy);opacity:.85;
     display:flex;align-items:center;justify-content:center;gap:14px}
+  /* "תעברו לסטורי הבא" - איפה שבדף הנחיתה הגלילה הובילה לצעד הבא */
+  .swipe{display:inline-flex;align-items:center;gap:18px;margin-top:54px;
+    font-size:42px;font-weight:800;padding:20px 44px;border-radius:70px;
+    background:rgba(255,255,255,.18);color:#fff}
+  .s-white .swipe,.s-tint .swipe{background:rgba(36,115,200,.12);color:var(--blue-deep)}
+  .s-gold .swipe{background:rgba(20,9,59,.12);color:var(--navy)}
+  .swipe .arr{font-size:50px;line-height:1;font-weight:900}
+  /* CTA אחרון - חלל נקי למדבקת הקישור + אמוג'י וואטסאפ; שלהבת תניח שם את הסטיקר */
+  .cta-link{display:flex;flex-direction:column;align-items:center;gap:24px;margin-top:64px}
+  .cta-link__wa{width:104px;height:104px;border-radius:50%;background:#25D366;
+    display:flex;align-items:center;justify-content:center;box-shadow:0 18px 44px rgba(37,211,102,.4)}
+  .cta-link__wa svg{width:60px;height:60px}
+  .cta-link__txt{font-size:48px;font-weight:800;color:var(--navy);text-align:center;line-height:1.3}
+  .cta-link__arrow{font-size:64px;line-height:1;margin-top:4px}
   .s-gold .lead{color:var(--navy);opacity:.85;font-size:44px;line-height:1.5}
-  /* מצב ייצוא: ?only=N מציג שקופית אחת בלבד, ממלאת 1080x1920, בלי מספר-עזר — לצילום נקי */
+  /* מצב ייצוא: ?only=N מציג שקופית אחת בלבד, ממלאת 1080x1920, בלי מספר-עזר - לצילום נקי */
   body.exporting{display:block;padding:0;background:#fff}
   body.exporting .slide__num{display:none}
 </style>
@@ -135,8 +149,8 @@
   <div class="wrap">
     <div class="brand"><img src="tironot-logo-white.png" alt="טירונות סוכנים"><span>טירונות סוכנים</span></div>
     <span class="eyebrow">הופכים אתכם למי שבונה סוכני AI לבד</span>
-    <h1>אחרי 5 שבועות —<br><span class="accent-gold">יש לכם צוות AI</span><br>שעובד בשבילכם.</h1>
-    <p class="sub">ואת השיטה לבנות כל סוכן, מערכת ותהליך — לבד, בלי להיתקע.</p>
+    <h1>אחרי 5 שבועות -<br><span class="accent-gold">יש לכם צוות AI</span><br>שעובד בשבילכם.</h1>
+    <p class="sub">ואת השיטה לבנות כל סוכן, מערכת ותהליך - לבד, בלי להיתקע.</p>
     <div class="office">
       <div class="office__bar"><span class="ttl">צוות ה-AI שלי</span><span class="live">פעיל</span></div>
       <div class="office__grid">
@@ -169,7 +183,7 @@
   </div>
   <div class="wrap">
     <h2>ותוך כדי, קורה הדבר<br>הכי חשוב:<br><span class="gold">אתם לומדים את השיטה.</span></h2>
-    <p class="lead">לא "איך מפעילים את הכלי הזה". את השיטה השלמה — לבנות כל סוכן, כל תהליך, כל דבר שרץ אוטומטית. גם בעוד שנה, גם משהו שעוד לא קיים.</p>
+    <p class="lead">לא "איך מפעילים את הכלי הזה". את השיטה השלמה - לבנות כל סוכן, כל תהליך, כל דבר שרץ אוטומטית. גם בעוד שנה, גם משהו שעוד לא קיים.</p>
     <p class="payoff">ופתאום אתם שוב<br>האדם שיודע.</p>
   </div>
 </section>
@@ -179,11 +193,12 @@
   <div class="wrap">
     <span class="eyebrow">וזה כבר קורה</span>
     <h2>אנשים כמוכם<br><span class="accent-blue">כבר בנו את זה.</span></h2>
-    <p class="lead">רובם לא הגיעו מרקע טכני. אלה אנשים שעוברים את הקורס <strong style="color:var(--blue-deep);text-decoration:underline;text-decoration-thickness:4px;text-underline-offset:7px">עכשיו</strong> — וזה מה שהם כבר בנו.</p>
+    <p class="lead">רובם לא הגיעו מרקע טכני. אלה אנשים שעוברים את הקורס <strong style="color:var(--blue-deep);text-decoration:underline;text-decoration-thickness:4px;text-underline-offset:7px">עכשיו</strong> - וזה מה שהם כבר בנו.</p>
+    <div class="swipe">תעברו לסטורי הבא לראות <span class="arr">←</span></div>
   </div>
 </section>
 
-<!-- ===== 6 · PROOF — ILANA (tint, card) ===== -->
+<!-- ===== 6 · PROOF - ILANA (tint, card) ===== -->
 <section class="slide s-tint"><span class="slide__num">6</span>
   <div class="wrap">
     <div class="proof">
@@ -191,8 +206,8 @@
         <img class="proof__photo" src="students/ilana.jpg" alt="אילנה וייס">
         <span class="proof__role">אילנה וייס · מטפלת בחרדות</span>
       </div>
-      <p>ניהלה מחלקה שלמה של ארבע מזכירות. הסוכן שבנתה כבר עושה את רוב עבודתן — עורך מסמכים, מנהל משימות, ומטפל בדברים שעלו לה עשרות אלפי שקלים בחודש.</p>
-      <p class="proof__quote">"הייתה לי מחלקה שלמה של מזכירות — ארבע. אני לא אצטרך את זה יותר."</p>
+      <p>ניהלה מחלקה שלמה של ארבע מזכירות. הסוכן שבנתה כבר עושה את רוב עבודתן - עורך מסמכים, מנהל משימות, ומטפל בדברים שעלו לה עשרות אלפי שקלים בחודש.</p>
+      <p class="proof__quote">"הייתה לי מחלקה שלמה של מזכירות - ארבע. אני לא אצטרך את זה יותר."</p>
     </div>
   </div>
 </section>
@@ -203,11 +218,11 @@
     <span class="eyebrow">מה מקבלים</span>
     <h2>זו לא קורס.<br><span class="accent-blue">זו תוכנית הכשרה<br>מעמיקה.</span></h2>
     <ul class="includes">
-      <li><span><strong>5 מפגשי לייב אינטנסיביים</strong> — כל מפגש 3 שעות של למידה ובנייה משותפת</span></li>
-      <li><span><strong>הכנה אישית עוד לפני שמתחילים</strong> — מקימים איתכם את סביבת העבודה ובונים את הסוכן הראשון</span></li>
-      <li><span><strong>מעטפת פדגוגית מלאה</strong> — ליווי צמוד, חומרי למידה, וצוות סוכני AI שעוזר בכל שלב</span></li>
-      <li><span><strong>מפגשי חידוד שבועיים</strong> — לא משאירים אתכם לבד בין השיעורים</span></li>
-      <li><span><strong>הכול נשאר אצלכם לנצח</strong> — הקלטות, חומרים, וכל מה שבניתם</span></li>
+      <li><span><strong>5 מפגשי לייב אינטנסיביים</strong> - כל מפגש 3 שעות של למידה ובנייה משותפת</span></li>
+      <li><span><strong>הכנה אישית עוד לפני שמתחילים</strong> - מקימים איתכם את סביבת העבודה ובונים את הסוכן הראשון</span></li>
+      <li><span><strong>מעטפת פדגוגית מלאה</strong> - ליווי צמוד, חומרי למידה, וצוות סוכני AI שעוזר בכל שלב</span></li>
+      <li><span><strong>מפגשי חידוד שבועיים</strong> - לא משאירים אתכם לבד בין השיעורים</span></li>
+      <li><span><strong>הכול נשאר אצלכם לנצח</strong> - הקלטות, חומרים, וכל מה שבניתם</span></li>
     </ul>
   </div>
 </section>
@@ -221,8 +236,9 @@
       <div class="main"><span class="num">9,300</span><span class="nis">₪</span></div>
       <div class="psub">ניתן לפרוס עד 12 תשלומים</div>
       <div class="divider"></div>
-      <div class="offer">רוצים הטבה<br>של 1,400 ₪? 👇</div>
+      <div class="offer">רוצים הטבה<br>של 1,400 ₪?</div>
     </div>
+    <div class="swipe">תעברו לסטורי הבא <span class="arr">←</span></div>
   </div>
 </section>
 
@@ -230,10 +246,11 @@
 <section class="slide s-gold"><span class="slide__num">13</span>
   <div class="wrap">
     <div class="cta-story">
-      <div class="hook">את נועם — הסוכן שתדברו איתו — בניתי בעצמי.</div>
-      <p>בפחות משבוע. לא כי אני טכנית — כי יש לי <strong>שיטה</strong> שמאפשרת לבנות כל דבר, גם מה שמעולם לא בניתי.</p>
+      <div class="hook">את נועם - הסוכן שתדברו איתו - בניתי בעצמי.</div>
+      <p>בפחות משבוע. לא כי אני טכנית - כי יש לי <strong>שיטה</strong> שמאפשרת לבנות כל דבר, גם מה שמעולם לא בניתי.</p>
       <p>ובדיוק את השיטה הזאת <strong>אתם לומדים בטירונות.</strong> ואחריה גם לכם יהיה הקסם הזה בידיים.</p>
     </div>
+    <div style="text-align:center"><div class="swipe">איך מתחילים? תעברו לסטורי הבא <span class="arr">←</span></div></div>
   </div>
 </section>
 
@@ -241,9 +258,14 @@
 <section class="slide s-gold"><span class="slide__num">14</span>
   <div class="wrap" style="text-align:center">
     <h2>הצעד הבא הוא<br>שיחה אחת עם נועם.</h2>
-    <p class="lead">נועם יודע הכל על הטירונות — בודק התאמה, עונה על כל שאלה, ופותח לכם את הדרך פנימה.</p>
-    <div class="wa-pill"><svg viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.999-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>דברו עם נועם</div>
-    <div class="sticker-note">👆 לחצו על המדבקה למעלה</div>
+    <p class="lead">נועם יודע הכל על הטירונות - בודק התאמה, עונה על כל שאלה, ופותח לכם את הדרך פנימה.</p>
+    <!-- חלל למדבקת הקישור: שלהבת מניחה כאן את סטיקר ה-Link של אינסטגרם. האמוג'י/אייקון
+         הוואטסאפ לידו מסמן שזה וואטסאפ. ה-👇 מצביע למקום שבו תניח את המדבקה (מתחת). -->
+    <div class="cta-link">
+      <div class="cta-link__wa"><svg viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.999-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></div>
+      <div class="cta-link__txt">לדבר עם נועם בוואטסאפ</div>
+      <div class="cta-link__arrow">👇</div>
+    </div>
   </div>
 </section>
 
