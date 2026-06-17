@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>טירונות סוכנים — סטוריז</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --navy:#14093B; --navy-mid:#1F1341; --gold:#FFD747; --blue:#2473C8;
+    --blue-deep:#1B5B9E; --green:#6BD22B; --pink:#FF6DB3; --purple:#6762FF;
+    --wine:#A52756; --body:#333333;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Rubik',Arial,sans-serif;direction:rtl;text-align:right;background:#23202B;
+    display:flex;flex-wrap:wrap;gap:40px;justify-content:center;padding:40px}
+
+  /* ----- story frame: 1080x1920 (9:16) ----- */
+  .slide{position:relative;width:1080px;height:1920px;overflow:hidden;
+    display:flex;flex-direction:column;justify-content:center;
+    /* safe zones: top clear for IG header, bottom clear for the link sticker */
+    padding:230px 96px 300px;color:#fff}
+  .slide__num{position:absolute;top:24px;right:32px;z-index:9;font-size:26px;font-weight:800;
+    color:rgba(255,255,255,.5);background:rgba(0,0,0,.25);border-radius:40px;padding:8px 22px}
+  .s-blue{background:var(--blue)} .s-navy{background:var(--navy)}
+  .s-gold{background:var(--gold);color:var(--navy)} .s-white{background:#fff;color:var(--navy)}
+  .s-tint{background:#EDF2F9;color:var(--navy)}
+
+  .deco{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+  .deco i{position:absolute;display:block;border-radius:34px}
+  .wrap{position:relative;z-index:2}
+
+  .eyebrow{display:inline-block;font-weight:700;font-size:30px;letter-spacing:.2px;
+    padding:13px 30px;border-radius:50px;margin-bottom:40px;background:rgba(255,255,255,.16)}
+  .s-white .eyebrow,.s-tint .eyebrow{background:rgba(36,115,200,.12);color:var(--blue-deep)}
+  .s-gold .eyebrow{background:rgba(20,9,59,.12)}
+
+  h1{font-weight:800;font-size:104px;line-height:1.04;margin-bottom:40px}
+  h2{font-weight:800;font-size:82px;line-height:1.1;margin-bottom:34px}
+  .accent-gold{color:var(--gold)} .accent-blue{color:var(--blue)}
+  .gold{color:var(--gold)} .hl{color:var(--gold);font-weight:700}
+  .lead{font-weight:400;font-size:42px;line-height:1.55;color:var(--body)}
+  .s-navy .lead,.s-blue .lead{color:rgba(255,255,255,.92)}
+  .sub{font-weight:400;font-size:44px;line-height:1.5;opacity:.94;margin-top:8px}
+  .payoff{font-size:62px;font-weight:800;line-height:1.32;margin-top:46px}
+
+  /* brand lockup */
+  .brand{display:flex;align-items:center;gap:24px;margin-bottom:44px}
+  .brand img{width:118px;height:118px;filter:drop-shadow(0 8px 20px rgba(0,0,0,.28))}
+  .brand span{font-weight:900;font-size:74px;color:#fff;letter-spacing:-1px;line-height:1}
+
+  /* office mockup (compact) */
+  .office{margin-top:60px;background:#FBFCFE;border-radius:30px;overflow:hidden;
+    box-shadow:0 50px 90px -30px rgba(7,3,28,.6)}
+  .office__bar{display:flex;align-items:center;gap:14px;padding:24px 30px;background:#fff;border-bottom:2px solid #EEF0F5}
+  .office__bar .ttl{font-size:30px;font-weight:800;color:var(--navy)}
+  .office__bar .live{margin-inline-start:auto;display:inline-flex;align-items:center;gap:10px;font-size:24px;font-weight:700;color:#3F7E16}
+  .office__bar .live::before{content:'';width:14px;height:14px;border-radius:50%;background:var(--green)}
+  .office__grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;padding:24px}
+  .agent{background:#fff;border:2px solid #EEF0F5;border-radius:20px;padding:22px}
+  .agent__top{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+  .agent__ava{width:58px;height:58px;border-radius:16px;flex:0 0 auto}
+  .agent__name{font-size:26px;font-weight:700;color:var(--navy)}
+  .agent__role{font-size:20px;color:#8A8AA0}
+  .agent__status{font-size:23px;font-weight:600;color:#3F7E16;display:flex;align-items:center;gap:10px}
+  .agent.done .agent__status{color:#8A8AA0}
+  .agent__dot{width:13px;height:13px;border-radius:50%;background:var(--green)}
+  .agent.done .agent__dot{background:#C8CBD8}
+  .agent__bar{margin-top:14px;height:9px;border-radius:5px;background:#EEF0F5;overflow:hidden}
+  .agent__bar i{display:block;height:100%;border-radius:5px}
+
+  /* proof card */
+  .proof{background:#fff;border:2px solid var(--gold);border-radius:34px;padding:60px 54px;
+    box-shadow:0 30px 70px rgba(255,183,0,.16);color:var(--navy)}
+  .proof__head{display:flex;align-items:center;gap:30px;margin-bottom:36px}
+  .proof__photo{width:140px;height:140px;border-radius:50%;object-fit:cover;border:5px solid #fff;
+    box-shadow:0 10px 28px rgba(20,9,59,.22)}
+  .proof__role{font-weight:800;font-size:36px;color:var(--blue-deep)}
+  .proof p{font-size:40px;line-height:1.55;color:var(--body)}
+  .proof__quote{margin-top:34px;padding-right:26px;border-right:7px solid var(--gold);
+    font-weight:700;font-size:46px;color:var(--navy);line-height:1.4}
+
+  /* includes list */
+  .includes{list-style:none;display:flex;flex-direction:column;gap:30px;margin-top:14px}
+  .includes li{display:flex;align-items:flex-start;gap:26px;font-size:39px;line-height:1.45;color:var(--body)}
+  .includes li::before{content:"✓";flex:0 0 auto;width:54px;height:54px;border-radius:50%;
+    background:var(--green);color:#fff;font-weight:800;font-size:30px;
+    display:flex;align-items:center;justify-content:center;margin-top:3px}
+  .includes strong{color:var(--navy);font-weight:800}
+
+  /* price card */
+  .price-card{background:var(--navy-mid);color:#fff;border-radius:40px;padding:64px 60px 56px;
+    text-align:center;box-shadow:0 40px 90px rgba(20,9,59,.4);position:relative;overflow:hidden;margin-top:20px}
+  .price-card::after{content:"";position:absolute;bottom:-45%;left:-20%;width:560px;height:560px;
+    background:radial-gradient(circle,rgba(255,215,71,.20),transparent 70%)}
+  .price-card .lbl{font-size:30px;font-weight:700;letter-spacing:.5px;color:rgba(255,255,255,.6);
+    text-transform:uppercase;margin-bottom:14px;position:relative;z-index:1}
+  .price-card .main{display:flex;align-items:baseline;justify-content:center;gap:18px;position:relative;z-index:1}
+  .price-card .num{font-weight:900;font-size:200px;line-height:1;letter-spacing:-4px}
+  .price-card .nis{font-weight:800;font-size:90px}
+  .price-card .psub{font-size:32px;color:rgba(255,255,255,.74);margin-top:14px;position:relative;z-index:1}
+  .price-card .divider{height:2px;background:rgba(255,255,255,.16);margin:42px 0 36px;position:relative;z-index:1}
+  .price-card .offer{font-size:50px;font-weight:800;color:var(--gold);position:relative;z-index:1;line-height:1.3}
+
+  /* cta-story note (noam) */
+  .cta-story{background:#fff;border-radius:40px;padding:72px 64px;color:var(--navy);
+    box-shadow:0 40px 90px rgba(20,9,59,.24);border-right:12px solid #25D366}
+  .cta-story .hook{font-weight:800;font-size:60px;line-height:1.25;margin-bottom:34px}
+  .cta-story p{font-size:42px;line-height:1.6;color:var(--body)}
+  .cta-story strong{color:var(--navy);font-weight:800}
+
+  /* whatsapp cta pill + sticker pointer */
+  .wa-pill{display:inline-flex;align-items:center;gap:20px;background:var(--navy-mid);color:#fff;
+    font-weight:800;font-size:48px;padding:34px 64px;border-radius:80px;margin-top:54px;
+    box-shadow:0 24px 60px rgba(20,9,59,.4)}
+  .wa-pill svg{width:56px;height:56px}
+  .sticker-note{margin-top:40px;font-size:38px;font-weight:700;color:var(--navy);opacity:.85;
+    display:flex;align-items:center;justify-content:center;gap:14px}
+  .s-gold .lead{color:var(--navy);opacity:.85;font-size:44px;line-height:1.5}
+</style>
+</head>
+<body>
+
+<!-- ===== 1 · HOOK (blue) ===== -->
+<section class="slide s-blue"><span class="slide__num">1</span>
+  <div class="deco">
+    <i style="width:360px;height:360px;top:120px;left:-80px;background:#fff;opacity:.06;transform:rotate(16deg)"></i>
+    <i style="width:260px;height:260px;bottom:200px;right:-60px;background:var(--gold);opacity:.12;transform:rotate(-14deg)"></i>
+  </div>
+  <div class="wrap">
+    <div class="brand"><img src="tironot-logo-white.png" alt="טירונות סוכנים"><span>טירונות סוכנים</span></div>
+    <span class="eyebrow">הופכים אתכם למי שבונה סוכני AI לבד</span>
+    <h1>אחרי 5 שבועות —<br><span class="accent-gold">יש לכם צוות AI</span><br>שעובד בשבילכם.</h1>
+    <p class="sub">ואת השיטה לבנות כל סוכן, מערכת ותהליך — לבד, בלי להיתקע.</p>
+    <div class="office">
+      <div class="office__bar"><span class="ttl">צוות ה-AI שלי</span><span class="live">פעיל</span></div>
+      <div class="office__grid">
+        <div class="agent"><div class="agent__top"><span class="agent__ava" style="background:var(--purple)"></span><span><div class="agent__name">סוכן תוכן</div><div class="agent__role">כתיבה</div></span></div><div class="agent__status"><span class="agent__dot"></span> כותב פוסט…</div><div class="agent__bar"><i style="width:72%;background:var(--purple)"></i></div></div>
+        <div class="agent done"><div class="agent__top"><span class="agent__ava" style="background:var(--blue)"></span><span><div class="agent__name">סוכן מחקר</div><div class="agent__role">איסוף מידע</div></span></div><div class="agent__status"><span class="agent__dot"></span> הושלם</div><div class="agent__bar"><i style="width:100%;background:var(--blue)"></i></div></div>
+        <div class="agent"><div class="agent__top"><span class="agent__ava" style="background:#4FB81E"></span><span><div class="agent__name">סוכן כספים</div><div class="agent__role">ניתוח דוחות</div></span></div><div class="agent__status"><span class="agent__dot"></span> מנתח דוח…</div><div class="agent__bar"><i style="width:45%;background:#4FB81E"></i></div></div>
+        <div class="agent done"><div class="agent__top"><span class="agent__ava" style="background:var(--pink)"></span><span><div class="agent__name">סוכן שיווק</div><div class="agent__role">קמפיינים</div></span></div><div class="agent__status"><span class="agent__dot"></span> הושלם</div><div class="agent__bar"><i style="width:100%;background:var(--pink)"></i></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 3 · JOURNEY (navy) ===== -->
+<section class="slide s-navy"><span class="slide__num">3</span>
+  <div class="deco">
+    <i style="width:320px;height:320px;top:160px;left:6%;background:var(--blue);opacity:.1;transform:rotate(18deg)"></i>
+    <i style="width:240px;height:240px;bottom:240px;right:5%;background:var(--purple);opacity:.12;transform:rotate(-12deg)"></i>
+  </div>
+  <div class="wrap">
+    <span class="eyebrow">מה זה בעצם</span>
+    <h2>מישהו לוקח אתכם ביד<br>ובונה איתכם את<br><span class="gold">משרד ה-AI שלכם.</span></h2>
+    <p class="lead">לא עוד קורס מצולם שתעברו לבד "מתישהו". צעד אחרי צעד, אתם בונים משהו אמיתי: סוכנים שעושים את העבודה שאתם הכי שונאים, ותהליכים שרצים בלי שתיגעו בהם.</p>
+  </div>
+</section>
+
+<!-- ===== 4 · METHOD / PAYOFF (navy) ===== -->
+<section class="slide s-navy"><span class="slide__num">4</span>
+  <div class="deco">
+    <i style="width:300px;height:300px;top:200px;right:-70px;background:var(--gold);opacity:.1;transform:rotate(-16deg)"></i>
+  </div>
+  <div class="wrap">
+    <h2>ותוך כדי, קורה הדבר<br>הכי חשוב:<br><span class="gold">אתם לומדים את השיטה.</span></h2>
+    <p class="lead">לא "איך מפעילים את הכלי הזה". את השיטה השלמה — לבנות כל סוכן, כל תהליך, כל דבר שרץ אוטומטית. גם בעוד שנה, גם משהו שעוד לא קיים.</p>
+    <p class="payoff">ופתאום אתם שוב<br>האדם שיודע.</p>
+  </div>
+</section>
+
+<!-- ===== 5 · PROOF INTRO (tint) ===== -->
+<section class="slide s-tint"><span class="slide__num">5</span>
+  <div class="wrap">
+    <span class="eyebrow">וזה כבר קורה</span>
+    <h2>אנשים כמוכם<br><span class="accent-blue">כבר בנו את זה.</span></h2>
+    <p class="lead">רובם לא הגיעו מרקע טכני. אלה אנשים שעוברים את הקורס <strong style="color:var(--blue-deep);text-decoration:underline;text-decoration-thickness:4px;text-underline-offset:7px">עכשיו</strong> — וזה מה שהם כבר בנו.</p>
+  </div>
+</section>
+
+<!-- ===== 6 · PROOF — ILANA (tint, card) ===== -->
+<section class="slide s-tint"><span class="slide__num">6</span>
+  <div class="wrap">
+    <div class="proof">
+      <div class="proof__head">
+        <img class="proof__photo" src="students/ilana.jpg" alt="אילנה וייס">
+        <span class="proof__role">אילנה וייס · מטפלת בחרדות</span>
+      </div>
+      <p>ניהלה מחלקה שלמה של ארבע מזכירות. הסוכן שבנתה כבר עושה את רוב עבודתן — עורך מסמכים, מנהל משימות, ומטפל בדברים שעלו לה עשרות אלפי שקלים בחודש.</p>
+      <p class="proof__quote">"הייתה לי מחלקה שלמה של מזכירות — ארבע. אני לא אצטרך את זה יותר."</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 10 · WHAT'S INCLUDED (white) ===== -->
+<section class="slide s-white"><span class="slide__num">10</span>
+  <div class="wrap">
+    <span class="eyebrow">מה מקבלים</span>
+    <h2>זו לא קורס.<br><span class="accent-blue">זו תוכנית הכשרה<br>מעמיקה.</span></h2>
+    <ul class="includes">
+      <li><span><strong>5 מפגשי לייב אינטנסיביים</strong> — כל מפגש 3 שעות של למידה ובנייה משותפת</span></li>
+      <li><span><strong>הכנה אישית עוד לפני שמתחילים</strong> — מקימים איתכם את סביבת העבודה ובונים את הסוכן הראשון</span></li>
+      <li><span><strong>מעטפת פדגוגית מלאה</strong> — ליווי צמוד, חומרי למידה, וצוות סוכני AI שעוזר בכל שלב</span></li>
+      <li><span><strong>מפגשי חידוד שבועיים</strong> — לא משאירים אתכם לבד בין השיעורים</span></li>
+      <li><span><strong>הכול נשאר אצלכם לנצח</strong> — הקלטות, חומרים, וכל מה שבניתם</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== 11 · PRICE (white) ===== -->
+<section class="slide s-white"><span class="slide__num">11</span>
+  <div class="wrap" style="text-align:center">
+    <h2>עלות ההשקעה<br><span class="accent-blue">בעצמכם.</span></h2>
+    <div class="price-card">
+      <div class="lbl">טירונות סוכנים</div>
+      <div class="main"><span class="num">9,300</span><span class="nis">₪</span></div>
+      <div class="psub">ניתן לפרוס עד 12 תשלומים</div>
+      <div class="divider"></div>
+      <div class="offer">רוצים הטבה<br>של 1,400 ₪? 👇</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 13 · NOAM STORY (gold) ===== -->
+<section class="slide s-gold"><span class="slide__num">13</span>
+  <div class="wrap">
+    <div class="cta-story">
+      <div class="hook">את נועם — הסוכן שתדברו איתו — בניתי בעצמי.</div>
+      <p>בפחות משבוע. לא כי אני טכנית — כי יש לי <strong>שיטה</strong> שמאפשרת לבנות כל דבר, גם מה שמעולם לא בניתי.</p>
+      <p>ובדיוק את השיטה הזאת <strong>אתם לומדים בטירונות.</strong> ואחריה גם לכם יהיה הקסם הזה בידיים.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 14 · FINAL CTA (gold) ===== -->
+<section class="slide s-gold"><span class="slide__num">14</span>
+  <div class="wrap" style="text-align:center">
+    <h2>הצעד הבא הוא<br>שיחה אחת עם נועם.</h2>
+    <p class="lead">נועם יודע הכל על הטירונות — בודק התאמה, עונה על כל שאלה, ופותח לכם את הדרך פנימה.</p>
+    <div class="wa-pill"><svg viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.999-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>דברו עם נועם</div>
+    <div class="sticker-note">👆 לחצו על המדבקה למעלה</div>
+  </div>
+</section>
+
+</body>
+</html>
