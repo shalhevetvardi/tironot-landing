@@ -51,9 +51,17 @@
   .brand img{width:118px;height:118px;filter:drop-shadow(0 8px 20px rgba(0,0,0,.28))}
   .brand span{font-weight:900;font-size:74px;color:#fff;letter-spacing:-1px;line-height:1}
 
-  /* office mockup (compact) */
-  .office{margin-top:60px;background:#FBFCFE;border-radius:30px;overflow:hidden;
-    box-shadow:0 50px 90px -30px rgba(7,3,28,.6)}
+  /* office mockup (compact) — panel + שני ריבועים צפים מעליו, כמו בדף הנחיתה */
+  .office{position:relative;margin-top:86px}
+  .office__panel{background:#FBFCFE;border-radius:30px;overflow:hidden;box-shadow:0 50px 90px -30px rgba(7,3,28,.6)}
+  .office__float{position:absolute;z-index:3;background:#fff;border-radius:20px;
+    box-shadow:0 30px 60px -16px rgba(7,3,28,.5);padding:18px 22px;display:flex;align-items:center;gap:16px}
+  .office__float .ic{width:56px;height:56px;border-radius:16px;flex:0 0 auto;display:flex;align-items:center;justify-content:center}
+  .office__float .ic svg{width:30px;height:30px;fill:#fff}
+  .office__float .t1{font-size:24px;font-weight:800;color:var(--navy);line-height:1.25}
+  .office__float .t2{font-size:20px;color:#8A8AA0}
+  .float--task{top:-36px;left:-34px}
+  .float--chat{bottom:-32px;right:-30px}
   .office__bar{display:flex;align-items:center;gap:14px;padding:24px 30px;background:#fff;border-bottom:2px solid #EEF0F5}
   .office__bar .ttl{font-size:30px;font-weight:800;color:var(--navy)}
   .office__bar .live{margin-inline-start:auto;display:inline-flex;align-items:center;gap:10px;font-size:24px;font-weight:700;color:#3F7E16}
@@ -81,6 +89,22 @@
   .proof p{font-size:40px;line-height:1.55;color:var(--body)}
   .proof__quote{margin-top:34px;padding-right:26px;border-right:7px solid var(--gold);
     font-weight:700;font-size:46px;color:var(--navy);line-height:1.4}
+
+  /* testimonial cards (סגנון כרטיסיית הבוגרים) - מידע + ציטוט לכל אדם */
+  .tcards{display:flex;flex-direction:column;gap:64px;margin:18px 0}
+  .tcard{background:#fff;border-radius:30px;padding:46px 48px 50px;
+    box-shadow:0 0 0 2px var(--c,var(--gold)), 0 0 26px 1px var(--c,var(--gold)), 0 22px 50px -20px rgba(20,9,59,.28)}
+  .tcard__top{display:flex;align-items:center;gap:26px;margin-bottom:26px}
+  .tcard__photo{width:112px;height:112px;border-radius:50%;object-fit:cover;
+    border:6px solid var(--c,var(--gold));flex:0 0 auto}
+  .tcard__name{font-size:40px;font-weight:800;color:var(--navy);line-height:1.12}
+  .tcard__role{font-size:26px;font-weight:600;color:#8A8AA0;margin-top:8px;line-height:1.3}
+  .tcard__info{font-size:30px;font-weight:400;color:var(--body);line-height:1.5;margin-bottom:34px}
+  .tcard__q{font-size:34px;font-weight:700;font-style:italic;color:var(--navy);line-height:1.45}
+  .tcard__q::before{content:'\201D';font-style:normal;font-weight:900;font-size:52px;
+    color:var(--c,var(--gold));vertical-align:-0.36em;margin-left:10px;line-height:0}
+  .tcard__q::after{content:'\201C';font-style:normal;font-weight:900;font-size:52px;
+    color:var(--c,var(--gold));vertical-align:-0.36em;margin-right:10px;line-height:0}
 
   /* includes list */
   .includes{list-style:none;display:flex;flex-direction:column;gap:30px;margin-top:14px}
@@ -150,14 +174,24 @@
     <div class="brand"><img src="tironot-logo-white.png" alt="טירונות סוכנים"><span>טירונות סוכנים</span></div>
     <span class="eyebrow">הופכים אתכם למי שבונה סוכני AI לבד</span>
     <h1>אחרי 5 שבועות -<br><span class="accent-gold">יש לכם צוות AI</span><br>שעובד בשבילכם.</h1>
-    <p class="sub">ואת השיטה לבנות כל סוכן, מערכת ותהליך - לבד, בלי להיתקע.</p>
+    <p class="sub">ואת השיטה והכלים לבנות כל סוכן, מערכת ותהליך שתצטרכו - לבד, בלי להיתקע.</p>
     <div class="office">
-      <div class="office__bar"><span class="ttl">צוות ה-AI שלי</span><span class="live">פעיל</span></div>
-      <div class="office__grid">
-        <div class="agent"><div class="agent__top"><span class="agent__ava" style="background:var(--purple)"></span><span><div class="agent__name">סוכן תוכן</div><div class="agent__role">כתיבה</div></span></div><div class="agent__status"><span class="agent__dot"></span> כותב פוסט…</div><div class="agent__bar"><i style="width:72%;background:var(--purple)"></i></div></div>
-        <div class="agent done"><div class="agent__top"><span class="agent__ava" style="background:var(--blue)"></span><span><div class="agent__name">סוכן מחקר</div><div class="agent__role">איסוף מידע</div></span></div><div class="agent__status"><span class="agent__dot"></span> הושלם</div><div class="agent__bar"><i style="width:100%;background:var(--blue)"></i></div></div>
-        <div class="agent"><div class="agent__top"><span class="agent__ava" style="background:#4FB81E"></span><span><div class="agent__name">סוכן כספים</div><div class="agent__role">ניתוח דוחות</div></span></div><div class="agent__status"><span class="agent__dot"></span> מנתח דוח…</div><div class="agent__bar"><i style="width:45%;background:#4FB81E"></i></div></div>
-        <div class="agent done"><div class="agent__top"><span class="agent__ava" style="background:var(--pink)"></span><span><div class="agent__name">סוכן שיווק</div><div class="agent__role">קמפיינים</div></span></div><div class="agent__status"><span class="agent__dot"></span> הושלם</div><div class="agent__bar"><i style="width:100%;background:var(--pink)"></i></div></div>
+      <div class="office__panel">
+        <div class="office__bar"><span class="ttl">צוות ה-AI שלי</span><span class="live">פעיל</span></div>
+        <div class="office__grid">
+          <div class="agent"><div class="agent__top"><span class="agent__ava" style="background:var(--purple)"></span><span><div class="agent__name">סוכן תוכן</div><div class="agent__role">כתיבה</div></span></div><div class="agent__status"><span class="agent__dot"></span> כותב פוסט…</div><div class="agent__bar"><i style="width:72%;background:var(--purple)"></i></div></div>
+          <div class="agent done"><div class="agent__top"><span class="agent__ava" style="background:var(--blue)"></span><span><div class="agent__name">סוכן מחקר</div><div class="agent__role">איסוף מידע</div></span></div><div class="agent__status"><span class="agent__dot"></span> הושלם</div><div class="agent__bar"><i style="width:100%;background:var(--blue)"></i></div></div>
+          <div class="agent"><div class="agent__top"><span class="agent__ava" style="background:#4FB81E"></span><span><div class="agent__name">סוכן כספים</div><div class="agent__role">ניתוח דוחות</div></span></div><div class="agent__status"><span class="agent__dot"></span> מנתח דוח…</div><div class="agent__bar"><i style="width:45%;background:#4FB81E"></i></div></div>
+          <div class="agent done"><div class="agent__top"><span class="agent__ava" style="background:var(--pink)"></span><span><div class="agent__name">סוכן שיווק</div><div class="agent__role">קמפיינים</div></span></div><div class="agent__status"><span class="agent__dot"></span> הושלם</div><div class="agent__bar"><i style="width:100%;background:var(--pink)"></i></div></div>
+        </div>
+      </div>
+      <div class="office__float float--task">
+        <span class="ic" style="background:var(--green)"><svg viewBox="0 0 24 24"><path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.42z"/></svg></span>
+        <span><span class="t1">משימה הושלמה</span><br><span class="t2">סוכן ניהול</span></span>
+      </div>
+      <div class="office__float float--chat">
+        <span class="ic" style="background:var(--blue)"><svg viewBox="0 0 24 24"><path d="M9 11a3.2 3.2 0 1 0 0-6.4A3.2 3.2 0 0 0 9 11zm0 1.8c-2.7 0-5.4 1.35-5.4 3.6V19h10.8v-2.6c0-2.25-2.7-3.6-5.4-3.6zM16.4 11a3.2 3.2 0 0 0 0-6.4c-.43 0-.84.08-1.22.23a5 5 0 0 1 0 5.94c.38.15.79.23 1.22.23zm1.3 1.9c1.6.5 3.1 1.6 3.1 3.5V19H22v-2.6c0-1.9-2-3.1-4.3-3.5z"/></svg></span>
+        <span><span class="t1">3 לקוחות עודכנו</span><br><span class="t2">אוטומציה רצה</span></span>
       </div>
     </div>
   </div>
@@ -171,8 +205,9 @@
   </div>
   <div class="wrap">
     <span class="eyebrow">מה זה בעצם</span>
-    <h2>מישהו לוקח אתכם ביד<br>ובונה איתכם את<br><span class="gold">משרד ה-AI שלכם.</span></h2>
-    <p class="lead">לא עוד קורס מצולם שתעברו לבד "מתישהו". צעד אחרי צעד, אתם בונים משהו אמיתי: סוכנים שעושים את העבודה שאתם הכי שונאים, ותהליכים שרצים בלי שתיגעו בהם.</p>
+    <h2 style="font-size:56px;line-height:1.16">תארו לכם שמישהו לוקח אתכם ביד ועוזר לכם לבנות את <span class="gold">משרד ה-AI שלכם.</span></h2>
+    <p class="lead" style="font-size:37px;line-height:1.5;margin-top:30px">לא זורק עליכם עוד קורס מצולם שתעברו לבד "מתישהו". לא מציף אתכם בכלים. לוקח אתכם ביד - עם חומר לימודי ברור ומשימות מדויקות - וצעד אחרי צעד, אתם בונים משהו אמיתי משלכם:</p>
+    <p class="lead" style="font-size:37px;line-height:1.5;margin-top:24px">סוכנים שעושים את העבודה שאתם הכי שונאים לעשות. תהליכים שרצים בלי שאתם נוגעים בהם. צוות שלם שעובד בשבילכם - ואתם אלה שבניתם אותו.</p>
   </div>
 </section>
 
@@ -182,9 +217,8 @@
     <i style="width:300px;height:300px;top:200px;right:-70px;background:var(--gold);opacity:.1;transform:rotate(-16deg)"></i>
   </div>
   <div class="wrap">
-    <h2>ותוך כדי, קורה הדבר<br>הכי חשוב:<br><span class="gold">אתם לומדים את השיטה.</span></h2>
-    <p class="lead">לא "איך מפעילים את הכלי הזה". את השיטה השלמה - לבנות כל סוכן, כל תהליך, כל דבר שרץ אוטומטית. גם בעוד שנה, גם משהו שעוד לא קיים.</p>
-    <p class="payoff">ופתאום אתם שוב<br>האדם שיודע.</p>
+    <p class="lead" style="font-size:42px;line-height:1.5">ותוך כדי, קורה הדבר הכי חשוב: <span class="hl">אתם לומדים את השיטה.</span> לא "איך מפעילים את הכלי הזה". את השיטה השלמה - לבנות כל סוכן, כל תהליך, כל דבר שרץ אוטומטית. כל מה שתצטרכו, גם בעוד שנה, גם משהו שעוד לא קיים.</p>
+    <p class="payoff" style="font-size:52px;line-height:1.3;margin-top:40px">ופתאום אתם שוב האדם שיודע.<br>שלא תקוע, שלא תלוי באף אחד - שיכול לבנות לעצמו כל דבר.</p>
   </div>
 </section>
 
@@ -198,16 +232,98 @@
   </div>
 </section>
 
-<!-- ===== 6 · PROOF - ILANA (tint, card) ===== -->
+<!-- ===== 6 · PROOF PAIR A - ILANA + RON (tint, cards) ===== -->
 <section class="slide s-tint"><span class="slide__num">6</span>
   <div class="wrap">
-    <div class="proof">
-      <div class="proof__head">
-        <img class="proof__photo" src="students/ilana.jpg" alt="אילנה וייס">
-        <span class="proof__role">אילנה וייס · מטפלת בחרדות</span>
+    <div class="tcards">
+      <div class="tcard" style="--c:#A52756">
+        <div class="tcard__top">
+          <img class="tcard__photo" src="students/ilana.jpg" alt="אילנה וייס">
+          <div><div class="tcard__name">אילנה וייס</div><div class="tcard__role">מטפלת בחרדות</div></div>
+        </div>
+        <p class="tcard__info">ניהלה מחלקה שלמה של ארבע מזכירות. את כל העבודה שלהן עושה היום צוות הסוכנים שבנתה - במקומן.</p>
+        <p class="tcard__q">הייתה לי מחלקה שלמה של מזכירות - ארבע. אני לא אצטרך את זה יותר. חיסכון כלכלי מטורף.</p>
       </div>
-      <p>ניהלה מחלקה שלמה של ארבע מזכירות. הסוכן שבנתה כבר עושה את רוב עבודתן - עורך מסמכים, מנהל משימות, ומטפל בדברים שעלו לה עשרות אלפי שקלים בחודש.</p>
-      <p class="proof__quote">"הייתה לי מחלקה שלמה של מזכירות - ארבע. אני לא אצטרך את זה יותר."</p>
+      <div class="tcard" style="--c:#2473C8">
+        <div class="tcard__top">
+          <img class="tcard__photo" src="students/ron.jpg" alt="רון אלון">
+          <div><div class="tcard__name">רון אלון</div><div class="tcard__role">יזם</div></div>
+        </div>
+        <p class="tcard__info">הגיע עם ידע מפוזר. היום יש לו משרד AI שלם - 8 מחלקות, 20 סקילים וסוכן-על בשם "קפטן אדי".</p>
+        <p class="tcard__q">היה לי חזון שתקעתי עליו 3 חודשים. בקורס בניתי סוכן שמצא לי בדיוק איפה נכשלתי כל פעם.</p>
+      </div>
+      <div class="tcard" style="--c:#6762FF">
+        <div class="tcard__top">
+          <img class="tcard__photo" src="students/anat.jpg" alt="ענת מנור">
+          <div><div class="tcard__name">ענת מנור</div><div class="tcard__role">סמנכ"לית פיתוח עסקי</div></div>
+        </div>
+        <p class="tcard__info">בנתה את "רז" - סוכן שמחלץ ממכרז את תנאי הסף ומחליט "שווה לגשת או לא". וגם דף נחיתה אישי, לבד.</p>
+        <p class="tcard__q">בניתי סוכן שמסכם מכרזים - אני לא יכולה להגיד לך כמה זמן זה חסך לי.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 7 · PROOF PAIR B - DOLEV + BATCHEN (tint, cards) ===== -->
+<section class="slide s-tint"><span class="slide__num">7</span>
+  <div class="wrap">
+    <div class="tcards">
+      <div class="tcard" style="--c:#FE6DB2">
+        <div class="tcard__top">
+          <img class="tcard__photo" src="students/dolev.jpg" alt="דולב דרי">
+          <div><div class="tcard__name">דולב דרי</div><div class="tcard__role">בעל משרד פרסום</div></div>
+        </div>
+        <p class="tcard__info">כבר בשיעור השני בנה תהליך אוטומטי שמייצר תוכן לכל הרשתות. ואת "שון" - סוכן שמנהל לו את הלקוחות בוואטסאפ.</p>
+        <p class="tcard__q">חלומות לפרויקטים שהיו מורכבים מדי בשבילי - אחרי הקורס קורמים עור וגידים בשעה.</p>
+      </div>
+      <div class="tcard" style="--c:#6BD22B">
+        <div class="tcard__top">
+          <img class="tcard__photo" src="students/batchen.jpg" alt="בת חן לוי">
+          <div><div class="tcard__name">בת חן לוי</div><div class="tcard__role">סמנכ"לית פיתוח עסקי</div></div>
+        </div>
+        <p class="tcard__info">כל פוסט על AI היה מלחיץ אותה - הרגישה שכולם יודעים משהו שהיא לא. בחמישה שבועות זה התהפך: היום היא בונה בעצמה את הכלים שהלחיצו אותה.</p>
+        <p class="tcard__q">הפסקתי לישון, הפסקתי לאכול. אני כל היום מתרגשת מהטירוף הזה - איך לא הכרתי את זה קודם?</p>
+      </div>
+      <div class="tcard" style="--c:#F0A500">
+        <div class="tcard__top">
+          <img class="tcard__photo" src="students/lital.jpg" alt="ליטל יעקובוביץ דראי">
+          <div><div class="tcard__name">ליטל יעקובוביץ דראי</div><div class="tcard__role">עו"ד · מדריכת AI לעורכי דין</div></div>
+        </div>
+        <p class="tcard__info">נרשמה לקורסים אחרים של Claude Code והתאכזבה. כאן, לדבריה, זה עולם אחר לגמרי.</p>
+        <p class="tcard__q">למי שמתלבטת - חד משמעית לא להתלבט. זה שווה את זה.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 8 · PROOF PAIR C - MORAN + SHAHAR + HANI (tint, cards) ===== -->
+<section class="slide s-tint"><span class="slide__num">8</span>
+  <div class="wrap">
+    <div class="tcards">
+      <div class="tcard" style="--c:#12A594">
+        <div class="tcard__top">
+          <img class="tcard__photo" src="students/moran.jpg" alt="מורן טאובר">
+          <div><div class="tcard__name">מורן טאובר</div><div class="tcard__role">מטפלת ברפואה סינית · עו"ד בעברה</div></div>
+        </div>
+        <p class="tcard__info">מהקליניקה שלה בנתה את "זהבה" - סוכנת שמנהלת לה את הכספים, ואת "צביקה" לתוכן ושיווק. סוכן אחד עבד 12 שעות לבד בזמן שישנה.</p>
+        <p class="tcard__q">אין גבול למה שאפשר לעשות. אני יכולה לבנות אימפריה - לשם אני הולכת.</p>
+      </div>
+      <div class="tcard" style="--c:#F2542D">
+        <div class="tcard__top">
+          <img class="tcard__photo" src="students/shahar.jpg" alt="שחר דיק">
+          <div><div class="tcard__name">שחר דיק</div><div class="tcard__role">מהנדסת · שיווק דיגיטלי וחדשנות</div></div>
+        </div>
+        <p class="tcard__info">מהנדסת בחברה משפחתית בענף הבנייה. בנתה סוכן ידע-מכירות שכל הצוות מתייעץ איתו, ופייפליין שמתרגם מפרטים מקצועיים מאנגלית לעברית.</p>
+        <p class="tcard__q">זה באמת משנה חיים - יכול אשכרה לחסוך כסף ולהכניס כסף. חד משמעית, להירשם אתמול.</p>
+      </div>
+      <div class="tcard" style="--c:#9C36B5">
+        <div class="tcard__top">
+          <img class="tcard__photo" src="students/hani.jpg" alt="חני הופמן">
+          <div><div class="tcard__name">חני הופמן</div><div class="tcard__role">פיתוח עסקי ונדל"ן · מדריכת AI</div></div>
+        </div>
+        <p class="tcard__info">סיימה את הטירונות והפכה בעצמה למדריכת AI. בנתה את "תמר" - עוזרת אישית, וסקיל לתיעוד משאבי אנוש.</p>
+        <p class="tcard__q">אני אשמח להיות ממליצה שלך - וכבר המלצתי לחברים.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -216,7 +332,7 @@
 <section class="slide s-white"><span class="slide__num">10</span>
   <div class="wrap">
     <span class="eyebrow">מה מקבלים</span>
-    <h2>זו לא קורס.<br><span class="accent-blue">זו תוכנית הכשרה<br>מעמיקה.</span></h2>
+    <h2>זה לא קורס.<br><span class="accent-blue">זו תוכנית הכשרה<br>מעמיקה.</span></h2>
     <ul class="includes">
       <li><span><strong>5 מפגשי לייב אינטנסיביים</strong> - כל מפגש 3 שעות של למידה ובנייה משותפת</span></li>
       <li><span><strong>הכנה אישית עוד לפני שמתחילים</strong> - מקימים איתכם את סביבת העבודה ובונים את הסוכן הראשון</span></li>
@@ -242,25 +358,18 @@
   </div>
 </section>
 
-<!-- ===== 13 · NOAM STORY (gold) ===== -->
+<!-- ===== 13 · NOAM CARD (gold) - מאוחד: כותרת ← תיאור נועם ← וואטסאפ ← מדבקת קישור ===== -->
 <section class="slide s-gold"><span class="slide__num">13</span>
-  <div class="wrap">
-    <div class="cta-story">
-      <div class="hook">את נועם - הסוכן שתדברו איתו - בניתי בעצמי.</div>
-      <p>בפחות משבוע. לא כי אני טכנית - כי יש לי <strong>שיטה</strong> שמאפשרת לבנות כל דבר, גם מה שמעולם לא בניתי.</p>
-      <p>ובדיוק את השיטה הזאת <strong>אתם לומדים בטירונות.</strong> ואחריה גם לכם יהיה הקסם הזה בידיים.</p>
-    </div>
-    <div style="text-align:center"><div class="swipe">איך מתחילים? תעברו לסטורי הבא <span class="arr">←</span></div></div>
-  </div>
-</section>
-
-<!-- ===== 14 · FINAL CTA (gold) ===== -->
-<section class="slide s-gold"><span class="slide__num">14</span>
   <div class="wrap" style="text-align:center">
-    <h2>הצעד הבא הוא<br>שיחה אחת עם נועם.</h2>
-    <p class="lead">נועם יודע הכל על הטירונות - בודק התאמה, עונה על כל שאלה, ופותח לכם את הדרך פנימה.</p>
-    <!-- חלל למדבקת הקישור: שלהבת מניחה כאן את סטיקר ה-Link של אינסטגרם. האמוג'י/אייקון
-         הוואטסאפ לידו מסמן שזה וואטסאפ. ה-👇 מצביע למקום שבו תניח את המדבקה (מתחת). -->
+    <p class="lead" style="margin-bottom:26px">אז הגעתם עד לכאן.<br>בואו אספר לכם מה הצעד הבא.</p>
+    <h2>הצעד הבא הוא<br>שיחה עם נועם.</h2>
+    <div class="cta-story" style="text-align:right;margin-top:48px">
+      <div class="hook">את נועם - הסוכן שתדברו איתו - בניתי בעצמי.</div>
+      <p>בפחות משבוע. לא כי אני טכנית - כי יש לי <strong>שיטה</strong> שמאפשרת לבנות כל דבר. ובדיוק אותה <strong>אתם לומדים בטירונות.</strong></p>
+      <p>נועם יודע הכל על הטירונות - בודק התאמה, עונה על כל שאלה, ופותח לכם את הדרך פנימה.</p>
+    </div>
+    <!-- חלל למדבקת הקישור: שלהבת מניחה כאן את סטיקר ה-Link של אינסטגרם. אייקון
+         הוואטסאפ מסמן שזה וואטסאפ. ה-👇 מצביע למקום שבו תניח את המדבקה (מתחת). -->
     <div class="cta-link">
       <div class="cta-link__wa"><svg viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.999-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></div>
       <div class="cta-link__txt">לדבר עם נועם בוואטסאפ</div>
