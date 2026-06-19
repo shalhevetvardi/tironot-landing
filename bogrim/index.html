@@ -288,13 +288,12 @@
             <li>בריף יומי אוטומטי - קופי לכל הרשתות + תמונות מג'ונרטות</li>
             <li>עיבוד פודקאסט - חיתוך ל-Reels, אודיו והעלאה</li>
           </ul>
-          <div class="gallery-label"><span class="vids-ico">▶</span> הסרטונים של דולב</div>
           <div class="coverflow" data-active="1" data-videos='[
             {"id":"1202912111","h":"967ec473e0","poster":"images/cf-dolev-2.jpg","cap":"חלומות הופכים למציאות"},
             {"id":"1202912038","h":"e8b0d754f9","poster":"images/cf-dolev-1.jpg","cap":"שון - בוט הוואטסאפ"},
             {"id":"1202912177","h":"d2b67196c1","poster":"images/cf-dolev-3.jpg","cap":"תוכן לכל הרשתות"}
           ]'><div class="cf-stage"></div></div>
-          <div class="cf-nav"><button class="cf-arrow cf-prev" aria-label="הקודם">‹</button><div class="cf-dots"></div><button class="cf-arrow cf-next" aria-label="הבא">›</button></div>
+          <div class="cf-nav"><div class="cf-dots"></div></div>
           <a class="cta" href="https://aimprove-redirector.shalhevetia.workers.dev/r/dolev"><svg aria-hidden="true"><use href="#wa"></use></svg>לדבר עם דולב</a>
           <span class="flip-hint"><span class="ico">↩</span> חזרה</span>
         </div>
@@ -523,8 +522,8 @@
         var it = items[i]; if (it.dataset.playing) return; var v = VIDEOS[i];
         it.innerHTML = '<iframe src="https://player.vimeo.com/video/' + v.id + '?h=' + v.h + '&autoplay=1&title=0&byline=0&portrait=0&dnt=1" allow="autoplay;fullscreen;picture-in-picture" allowfullscreen></iframe>'; it.dataset.playing = '1';
       }
-      nav.querySelector('.cf-next').addEventListener('click', function () { active = Math.min(VIDEOS.length - 1, active + 1); layout(); });
-      nav.querySelector('.cf-prev').addEventListener('click', function () { active = Math.max(0, active - 1); layout(); });
+      var nx = nav.querySelector('.cf-next'); if (nx) nx.addEventListener('click', function () { active = Math.min(VIDEOS.length - 1, active + 1); layout(); });
+      var pv = nav.querySelector('.cf-prev'); if (pv) pv.addEventListener('click', function () { active = Math.max(0, active - 1); layout(); });
       layout();
     });
   </script>
