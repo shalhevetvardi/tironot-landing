@@ -172,6 +172,26 @@
     .footer { background: var(--navy); text-align: center; padding: 26px 24px; }
     .footer p { color: rgba(255,255,255,0.7); font-size: 14px; }
     .footer .privacy-note { margin-top: 10px; font-size: 11.5px; line-height: 1.55; color: rgba(255,255,255,0.45); max-width: 720px; margin-left: auto; margin-right: auto; }
+    /* ---------- COVERFLOW VIDEO GALLERY (card back) ---------- */
+    .gallery-label { font-size: 13px; font-weight: 700; color: var(--navy); margin: 2px auto 8px auto; }
+    .gallery-label .vids-ico { color: var(--c, var(--gold)); }
+    .coverflow { position: relative; width: 100%; height: 300px; margin: 0 auto 6px auto; perspective: 900px; }
+    .cf-stage { position: absolute; inset: 0; transform-style: preserve-3d; }
+    .cf-item { position: absolute; top: 50%; left: 50%; width: 150px; height: 267px; margin: -133px 0 0 -75px;
+      border-radius: 12px; overflow: hidden; cursor: pointer; background: #000;
+      box-shadow: 0 10px 26px rgba(20,9,59,.28); transition: transform .45s cubic-bezier(.2,.7,.2,1), opacity .45s, filter .45s; }
+    .cf-item img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
+    .cf-item iframe { width: 100%; height: 100%; border: 0; display: block; }
+    .cf-play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; }
+    .cf-play span { width: 46px; height: 46px; border-radius: 50%; background: rgba(20,9,59,.62); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 14px rgba(0,0,0,.3); }
+    .cf-play span::before { content: ""; border-style: solid; border-width: 9px 0 9px 15px; border-color: transparent transparent transparent #fff; margin-right: -3px; }
+    .cf-cap { position: absolute; bottom: 0; left: 0; right: 0; padding: 18px 8px 7px 8px; font-size: 11px; font-weight: 700; color: #fff; text-align: center; background: linear-gradient(to top, rgba(0,0,0,.72), transparent); pointer-events: none; }
+    .cf-nav { display: flex; align-items: center; justify-content: center; gap: 14px; margin: 0 auto 10px auto; }
+    .cf-arrow { width: 34px; height: 34px; border-radius: 50%; border: none; background: #fff; color: var(--navy); font-size: 18px; font-weight: 800; cursor: pointer; box-shadow: 0 3px 10px rgba(20,9,59,.16); display: flex; align-items: center; justify-content: center; transition: transform .15s; }
+    .cf-arrow:hover { transform: scale(1.1); }
+    .cf-dots { display: flex; gap: 6px; align-items: center; }
+    .cf-dot { width: 8px; height: 8px; border-radius: 50%; background: #D5DCE8; border: none; cursor: pointer; padding: 0; transition: background .2s, transform .2s; }
+    .cf-dot.on { background: var(--c, var(--gold)); transform: scale(1.25); }
     @media (max-width: 480px) {
       .hero h1 { font-size: 28px; }
       .grid { grid-template-columns: 1fr; }
@@ -268,7 +288,13 @@
             <li>בריף יומי אוטומטי - קופי לכל הרשתות + תמונות מג'ונרטות</li>
             <li>עיבוד פודקאסט - חיתוך ל-Reels, אודיו והעלאה</li>
           </ul>
-          <div class="media" data-type="shot"><img src="images/shot-dolev.png" alt="המלצה של דולב בוואטסאפ" loading="lazy"></div>
+          <div class="gallery-label"><span class="vids-ico">▶</span> הסרטונים של דולב</div>
+          <div class="coverflow" data-active="1" data-videos='[
+            {"id":"1202912111","h":"967ec473e0","poster":"images/cf-dolev-2.jpg","cap":"חלומות הופכים למציאות"},
+            {"id":"1202912038","h":"e8b0d754f9","poster":"images/cf-dolev-1.jpg","cap":"שון - בוט הוואטסאפ"},
+            {"id":"1202912177","h":"d2b67196c1","poster":"images/cf-dolev-3.jpg","cap":"תוכן לכל הרשתות"}
+          ]'><div class="cf-stage"></div></div>
+          <div class="cf-nav"><button class="cf-arrow cf-prev" aria-label="הקודם">‹</button><div class="cf-dots"></div><button class="cf-arrow cf-next" aria-label="הבא">›</button></div>
           <a class="cta" href="https://aimprove-redirector.shalhevetia.workers.dev/r/dolev"><svg aria-hidden="true"><use href="#wa"></use></svg>לדבר עם דולב</a>
           <span class="flip-hint"><span class="ico">↩</span> חזרה</span>
         </div>
@@ -460,12 +486,46 @@
         if (slot) slot.style.display = 'none';
       });
     });
-    // Flip on tap - but not when interacting with a link or the video player
+    // Flip on tap - but not when interacting with a link, screenshot, or the video gallery
     document.querySelectorAll('.card').forEach(function (card) {
       card.addEventListener('click', function (e) {
-        if (e.target.closest('a') || e.target.closest('.media')) return;
+        if (e.target.closest('a') || e.target.closest('.media') || e.target.closest('.coverflow') || e.target.closest('.cf-nav')) return;
         card.classList.toggle('flipped');
       });
+    });
+    // Coverflow video galleries (one per card that has videos)
+    document.querySelectorAll('.coverflow').forEach(function (cf) {
+      var VIDEOS = JSON.parse(cf.getAttribute('data-videos'));
+      var active = parseInt(cf.getAttribute('data-active') || '0', 10);
+      var stage = cf.querySelector('.cf-stage');
+      var nav = cf.nextElementSibling;
+      var dotsBox = nav.querySelector('.cf-dots');
+      VIDEOS.forEach(function (v, i) {
+        var it = document.createElement('div'); it.className = 'cf-item'; it.dataset.i = i;
+        it.innerHTML = '<img src="' + v.poster + '" alt="' + v.cap + '"><div class="cf-play"><span></span></div><div class="cf-cap">' + v.cap + '</div>';
+        it.addEventListener('click', function () { onClick(i); }); stage.appendChild(it);
+        var d = document.createElement('button'); d.className = 'cf-dot'; d.addEventListener('click', function () { active = i; layout(); }); dotsBox.appendChild(d);
+      });
+      var items = Array.from(stage.children), dots = Array.from(dotsBox.children);
+      function layout() {
+        items.forEach(function (it, i) {
+          var off = i - active, abs = Math.abs(off);
+          it.style.transform = 'translateX(' + (off * 92) + 'px) rotateY(' + (off * -38) + 'deg) scale(' + (off === 0 ? 1 : 0.74) + ')';
+          it.style.opacity = off === 0 ? 1 : (abs === 1 ? 0.5 : 0.2);
+          it.style.filter = off === 0 ? 'none' : 'brightness(.72)';
+          it.style.zIndex = 10 - abs; it.style.pointerEvents = abs > 1 ? 'none' : 'auto';
+          if (off !== 0 && it.dataset.playing) { it.innerHTML = '<img src="' + VIDEOS[i].poster + '"><div class="cf-play"><span></span></div><div class="cf-cap">' + VIDEOS[i].cap + '</div>'; delete it.dataset.playing; }
+        });
+        dots.forEach(function (d, i) { d.classList.toggle('on', i === active); });
+      }
+      function onClick(i) {
+        if (i !== active) { active = i; layout(); return; }
+        var it = items[i]; if (it.dataset.playing) return; var v = VIDEOS[i];
+        it.innerHTML = '<iframe src="https://player.vimeo.com/video/' + v.id + '?h=' + v.h + '&autoplay=1&title=0&byline=0&portrait=0&dnt=1" allow="autoplay;fullscreen;picture-in-picture" allowfullscreen></iframe>'; it.dataset.playing = '1';
+      }
+      nav.querySelector('.cf-next').addEventListener('click', function () { active = Math.min(VIDEOS.length - 1, active + 1); layout(); });
+      nav.querySelector('.cf-prev').addEventListener('click', function () { active = Math.max(0, active - 1); layout(); });
+      layout();
     });
   </script>
 
