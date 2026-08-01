@@ -560,5 +560,28 @@ window.interdeal = {
 })(document, document.head, document.body);
 </script>
 
+<script>
+/* ייחוס-מקור: שומר ?src= בזיכרון-הדפדפן, כך שהקוד ממשיך לרכוב אם המבקר עובר
+   מכאן לדף-הראשי ← נועם (אותו origin — ה-localStorage משותף). */
+(function () {
+  try {
+    var src = new URLSearchParams(location.search).get('src') || '';
+    src = src.replace(/[^a-z0-9_-]/gi, '').slice(0, 40);
+    if (src) { try { localStorage.setItem('aim_src', src); } catch (e) {} }
+    var stored = src || (function(){ try { return localStorage.getItem('aim_src') || ''; } catch (e) { return ''; } })();
+    if (!stored) return;
+    var links = document.querySelectorAll('a[href*="wa.me/972559397247"]');
+    for (var i = 0; i < links.length; i++) {
+      var u = new URL(links[i].href);
+      var t = u.searchParams.get('text') || '';
+      if (t.indexOf('#src-') === -1) {
+        u.searchParams.set('text', t + ' #src-' + stored);
+        links[i].href = u.toString();
+      }
+    }
+  } catch (e) { /* לעולם לא שובר את הדף */ }
+})();
+</script>
+
 </body>
 </html>
