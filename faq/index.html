@@ -987,8 +987,10 @@ window.interdeal = {
     for (var i = 0; i < links.length; i++) {
       var u = new URL(links[i].href);
       var t = u.searchParams.get('text') || '';
-      if (t.indexOf('#src-') === -1) {
-        u.searchParams.set('text', t + ' #src-' + src);
+      var ep = src.match(/^p(\d{1,4})$/);
+      var suffix = ep ? ' (הגעתי מפרק ' + ep[1] + ' בפודקאסט)' : ' #src-' + src;
+      if (t.indexOf('הגעתי מפרק') === -1 && t.indexOf('#src-') === -1) {
+        u.searchParams.set('text', t + suffix);
         links[i].href = u.toString();
       }
     }
