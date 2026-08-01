@@ -882,5 +882,29 @@ window.interdeal = {
 })(document, document.head, document.body);
 </script>
 
+<script>
+/* ייחוס-מקור (פודקאסט/קמפיין): קורא ?src= מהכתובת (או מביקור קודם באותו דפדפן),
+   ומספח #src-<code> להודעה המוכנה של כל כפתור וואטסאפ-נועם. הקוד נוחת בשיחת נועם
+   ונקרא ע"י בונה כרטיס-המסע. אפס שינוי ויזואלי. */
+(function () {
+  try {
+    var src = new URLSearchParams(location.search).get('src') || '';
+    src = src.replace(/[^a-z0-9_-]/gi, '').slice(0, 40);
+    if (src) { try { localStorage.setItem('aim_src', src); } catch (e) {} }
+    else { try { src = localStorage.getItem('aim_src') || ''; } catch (e) {} }
+    if (!src) return;
+    var links = document.querySelectorAll('a[href*="wa.me/972559397247"]');
+    for (var i = 0; i < links.length; i++) {
+      var u = new URL(links[i].href);
+      var t = u.searchParams.get('text') || '';
+      if (t.indexOf('#src-') === -1) {
+        u.searchParams.set('text', t + ' #src-' + src);
+        links[i].href = u.toString();
+      }
+    }
+  } catch (e) { /* לעולם לא שובר את הדף */ }
+})();
+</script>
+
 </body>
 </html>
