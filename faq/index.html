@@ -987,9 +987,9 @@ window.interdeal = {
     for (var i = 0; i < links.length; i++) {
       var u = new URL(links[i].href);
       var t = u.searchParams.get('text') || '';
-      var suffix = ' #' + src + ' (שלחו הודעה זו כמו שהיא)';
-      if (t.indexOf('כמו שהיא') === -1 && t.indexOf('#src-') === -1 && t.indexOf('#' + src) === -1) {
-        u.searchParams.set('text', t + suffix);
+      var newText = 'שלחו הודעה זו בדיוק כמו שהיא כדי להתחיל לדבר עם נועם #' + src;
+      if (t.indexOf('#' + src) === -1) {
+        u.searchParams.set('text', newText);
         links[i].href = u.toString();
       }
     }
