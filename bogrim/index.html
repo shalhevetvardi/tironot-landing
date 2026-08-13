@@ -333,6 +333,10 @@
             <li>סקיל "קריא" - הופך תשובות ארוכות ל-HTML מיושר להעתקה נוחה</li>
           </ul>
           <p class="quote">"הצלחתי לתקן סוכן עיקרי שלי. עכשיו הוא רץ כמו נינג'ה."</p>
+          <div class="coverflow" data-active="0" data-videos='[
+            {"id":"1217933800","h":"765aad977a","poster":"images/cf-batchen-1.jpg","cap":"אני לא טכנולוגית"}
+          ]'><div class="cf-stage"></div></div>
+          <div class="cf-nav"><div class="cf-dots"></div></div>
           <a class="cta" href="https://r.aimprove.co.il/w/batchen"><svg aria-hidden="true"><use href="#wa"></use></svg>לדבר עם בת חן</a>
           <span class="flip-hint"><span class="ico">↩</span> חזרה</span>
         </div>
@@ -399,7 +403,8 @@
           <img class="avatar" src="images/hani.jpg" alt="חני הופמן">
           <h2>חני הופמן</h2>
           <p class="role">פיתוח עסקי והשקעות נדל"ן · מדריכת AI</p>
-          <p class="quote">"אני אשמח להיות ממליצה שלך, וכבר המלצתי לחברים."</p>
+          <p class="quote">"אני מרגישה היום שיש לי את הידע ואת ההבנה, ואני רק צריכה לחלום על משהו... ולבצע את זה."</p>
+          <p class="quote">"אתם תקבלו פה איזושהי פריצת דרך והשראה לדברים שלא חלמתם שאפשר לעשות אותם, ובעצם אין מגבלות."</p>
           <a class="cta" href="https://r.aimprove.co.il/w/hani"><svg aria-hidden="true"><use href="#wa"></use></svg>לדבר עם חני</a>
           <span class="flip-hint"><span class="ico">↻</span> הפכו את הכרטיס לראות מה חני בנתה</span>
         </div>
@@ -411,6 +416,10 @@
             <li>pipeline לתמלול וסיכום הרצאות ושיעורים</li>
             <li>דף נחיתה וסוכן Workflow</li>
           </ul>
+          <div class="coverflow" data-active="0" data-videos='[
+            {"id":"1217933716","h":"f6c857e89b","poster":"images/cf-hani-1.jpg","cap":"אין מגבלות"}
+          ]'><div class="cf-stage"></div></div>
+          <div class="cf-nav"><div class="cf-dots"></div></div>
           <a class="cta" href="https://r.aimprove.co.il/w/hani"><svg aria-hidden="true"><use href="#wa"></use></svg>לדבר עם חני</a>
           <span class="flip-hint"><span class="ico">↩</span> חזרה</span>
         </div>
@@ -495,6 +504,8 @@
         var d = document.createElement('button'); d.className = 'cf-dot'; d.addEventListener('click', function () { active = i; layout(); }); dotsBox.appendChild(d);
       });
       var items = Array.from(stage.children), dots = Array.from(dotsBox.children);
+      // סרטון בודד - אין לאן לנווט, והנקודה הבודדת היא רעש ויזואלי בלבד.
+      if (VIDEOS.length < 2) nav.style.display = 'none';
       function layout() {
         items.forEach(function (it, i) {
           var off = i - active, abs = Math.abs(off);
