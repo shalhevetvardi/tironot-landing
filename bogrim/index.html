@@ -176,9 +176,11 @@
     .gallery-label { font-size: 13px; font-weight: 700; color: var(--navy); margin: 2px auto 8px auto; }
     .gallery-label .vids-ico { color: var(--c, var(--gold)); }
     .coverflow { position: relative; width: 100%; height: 300px; margin: 0 auto 6px auto; perspective: 900px; }
-    .cf-stage { position: absolute; inset: 0; transform-style: preserve-3d; }
+    /* pan-y = גלילה אנכית של הדף נשארת של הדפדפן, החלקה אופקית שלנו */
+    .cf-stage { position: absolute; inset: 0; transform-style: preserve-3d; touch-action: pan-y; }
     .cf-item { position: absolute; top: 50%; left: 50%; width: 150px; height: 267px; margin: -133px 0 0 -75px;
       border-radius: 12px; overflow: hidden; cursor: pointer; background: #000;
+      -webkit-user-select: none; user-select: none; -webkit-touch-callout: none;
       box-shadow: 0 10px 26px rgba(20,9,59,.28); transition: transform .45s cubic-bezier(.2,.7,.2,1), opacity .45s, filter .45s; }
     .cf-item img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
     .cf-item iframe { width: 100%; height: 100%; border: 0; display: block; }
@@ -192,6 +194,63 @@
     .cf-dots { display: flex; gap: 6px; align-items: center; }
     .cf-dot { width: 8px; height: 8px; border-radius: 50%; background: #D5DCE8; border: none; cursor: pointer; padding: 0; transition: background .2s, transform .2s; }
     .cf-dot.on { background: var(--c, var(--gold)); transform: scale(1.25); }
+    /* ---------- VIDEO LIGHTBOX - הסרטון נפתח גדול, עם עצירה/המשך בלבד ---------- */
+    .cf-lb {
+      position: fixed; inset: 0; z-index: 9000;
+      background: rgba(12,6,32,.94);
+      display: flex; align-items: center; justify-content: center;
+      padding: 0; opacity: 0; transition: opacity .2s ease;
+    }
+    .cf-lb[hidden] { display: none; }
+    .cf-lb.is-open { opacity: 1; }
+    /* --lb-ar = יחס רוחב/גובה של הסרטון; נקבע מהנגן עצמו, 9:16 עד שידוע.
+       הסרטון לוקח את כל מה שהמסך נותן - ברוחב או בגובה, לפי מה שנגמר קודם. */
+    .cf-lb-frame {
+      position: relative; background: #000; border-radius: 14px; overflow: hidden;
+      width: min(100%, calc(94vh * var(--lb-ar, .5625)));
+      aspect-ratio: var(--lb-ar, .5625);
+      box-shadow: 0 18px 60px rgba(0,0,0,.55);
+    }
+    .cf-lb-holder { position: absolute; inset: 0; }
+    .cf-lb-frame iframe { width: 100%; height: 100%; border: 0; display: block; }
+    /* שכבה שקופה מעל ה-iframe - מבטיחה שהקשה = עצירה/המשך ותו לא */
+    .cf-lb-tap { position: absolute; inset: 0; padding: 0; border: 0; background: transparent; cursor: pointer; }
+    .cf-lb-icon {
+      position: absolute; top: 50%; left: 50%; width: 74px; height: 74px; margin: -37px 0 0 -37px;
+      border-radius: 50%; background: rgba(20,9,59,.58);
+      display: flex; align-items: center; justify-content: center;
+      pointer-events: none; opacity: 0; transition: opacity .3s ease;
+    }
+    .cf-lb-icon.show { opacity: 1; }
+    .cf-lb-icon svg { width: 32px; height: 32px; fill: #fff; }
+    /* יושב מעל הסרטון (שתופס עכשיו את כל הרוחב), ולכן צריך רקע כהה משלו
+       ומרווח מהמצלמה/הכפתורים של הטלפון */
+    .cf-lb-close {
+      position: absolute; z-index: 2;
+      top: calc(12px + env(safe-area-inset-top, 0px));
+      left: calc(12px + env(safe-area-inset-left, 0px));
+      width: 44px; height: 44px;
+      border-radius: 50%; border: none; background: rgba(0,0,0,.5); color: #fff;
+      font-size: 27px; line-height: 1; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .cf-lb-close:hover { background: rgba(0,0,0,.72); }
+    .cf-lb-sound {
+      position: absolute; z-index: 2; bottom: 76px; left: 50%; transform: translateX(-50%);
+      display: inline-flex; align-items: center; gap: 7px; white-space: nowrap;
+      background: var(--gold); color: var(--navy); border: none; border-radius: 50px;
+      padding: 10px 18px; font-size: 14px; font-weight: 700; cursor: pointer;
+      box-shadow: 0 6px 18px rgba(0,0,0,.4);
+    }
+    .cf-lb-sound[hidden] { display: none; }
+    .cf-lb-sound svg { width: 16px; height: 16px; fill: currentColor; }
+    /* הכיתוב יושב על הסרטון ולא מתחתיו, כדי לא לגזול ממנו גובה */
+    .cf-lb-cap {
+      position: absolute; left: 0; right: 0; bottom: 0; margin: 0;
+      padding: 32px 14px 12px 14px; color: #fff; font-size: 15px; font-weight: 700;
+      text-align: center; pointer-events: none;
+      background: linear-gradient(to top, rgba(0,0,0,.78), transparent);
+    }
     @media (max-width: 480px) {
       .hero h1 { font-size: 28px; }
       .grid { grid-template-columns: 1fr; }
@@ -611,6 +670,154 @@
         card.classList.toggle('flipped');
       });
     });
+    /* Video lightbox - אחד לכל הדף, משותף לכל הגלריות.
+       למה לייטבוקס ולא ניגון בתוך האריח: האריח הוא 150px רוחב, ובתוכו סרגל
+       הבקרה של Vimeo נדחס לכפתורים שאי-אפשר לפגוע בהם במובייל. */
+    var LB = (function () {
+      var el, frameEl, holder, iconEl, soundBtn, capEl;
+      var player = null, apiPromise = null, opener = null, userTouched = false;
+
+      var ICON_PLAY = '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
+      var ICON_PAUSE = '<svg viewBox="0 0 24 24"><path d="M6 5h4v14H6zm8 0h4v14h-4z"/></svg>';
+
+      function api() {
+        if (window.Vimeo) return Promise.resolve();
+        if (!apiPromise) {
+          apiPromise = new Promise(function (res, rej) {
+            var s = document.createElement('script');
+            s.src = 'https://player.vimeo.com/api/player.js';
+            s.onload = res; s.onerror = rej;
+            document.head.appendChild(s);
+          });
+        }
+        return apiPromise;
+      }
+
+      function build() {
+        el = document.createElement('div');
+        el.className = 'cf-lb';
+        el.hidden = true;
+        el.innerHTML =
+          '<button class="cf-lb-close" type="button" aria-label="סגירת הסרטון">×</button>' +
+          '<div class="cf-lb-frame">' +
+            '<div class="cf-lb-holder"></div>' +
+            '<button class="cf-lb-tap" type="button" aria-label="עצירה או המשך"></button>' +
+            '<div class="cf-lb-icon" aria-hidden="true"></div>' +
+            '<button class="cf-lb-sound" type="button" hidden>' +
+              '<svg viewBox="0 0 24 24"><path d="M3 10v4a1 1 0 0 0 1 1h2l4 4V5L6 9H4a1 1 0 0 0-1 1zm13.5 2a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a6.8 6.8 0 0 1 0 13.4v2.1a8.9 8.9 0 0 0 0-17.6z"/></svg>' +
+              'לחצו להפעלת קול</button>' +
+            '<p class="cf-lb-cap"></p>' +
+          '</div>';
+        document.body.appendChild(el);
+        frameEl = el.querySelector('.cf-lb-frame');
+        holder = el.querySelector('.cf-lb-holder');
+        iconEl = el.querySelector('.cf-lb-icon');
+        soundBtn = el.querySelector('.cf-lb-sound');
+        capEl = el.querySelector('.cf-lb-cap');
+
+        el.querySelector('.cf-lb-close').addEventListener('click', close);
+        el.addEventListener('click', function (e) { if (e.target === el) close(); });
+        el.querySelector('.cf-lb-tap').addEventListener('click', toggle);
+        soundBtn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          if (!player) return;
+          player.setMuted(false).then(function () { player.setVolume(1); player.play(); });
+          soundBtn.hidden = true;
+        });
+        document.addEventListener('keydown', function (e) {
+          if (!el.hidden && (e.key === 'Escape' || e.key === 'Esc')) close();
+        });
+      }
+
+      function flash(html) {
+        iconEl.innerHTML = html;
+        iconEl.classList.add('show');
+        clearTimeout(iconEl._t);
+        iconEl._t = setTimeout(function () { iconEl.classList.remove('show'); }, 550);
+      }
+
+      function toggle() {
+        if (!player) return;
+        userTouched = true;   // מכאן ואילך לא מתערבים בניגון מאחורי גבו
+        player.getPaused().then(function (paused) {
+          if (paused) { player.play(); flash(ICON_PLAY); }
+          else { player.pause(); flash(ICON_PAUSE); }
+        });
+      }
+
+      function open(v, fromEl) {
+        if (!el) build();
+        opener = fromEl || null;
+        userTouched = false;
+        capEl.textContent = v.cap || '';
+        frameEl.style.removeProperty('--lb-ar');
+        soundBtn.hidden = true;
+        iconEl.classList.remove('show');
+
+        /* חושפים את החלון לפני יצירת ה-iframe: iframe שנולד בתוך display:none
+           מקבל גודל אפס, ו-Vimeo מקבע לפיו נגן זעיר בתוך מסגרת גדולה. */
+        holder.innerHTML = '';
+        el.hidden = false;
+        document.body.style.overflow = 'hidden';
+
+        /* ה-iframe נוצר כאן, סינכרונית בתוך מטפל-ההקשה, כדי שהדפדפן יעביר את
+           אישור-המשתמש אל המסגרת החדשה - זה מה שמתיר ניגון עם קול. */
+        var iframe = document.createElement('iframe');
+        iframe.src = 'https://player.vimeo.com/video/' + v.id + '?h=' + v.h +
+          '&autoplay=1&muted=0&controls=0&playsinline=1&title=0&byline=0&portrait=0&badge=0&dnt=1';
+        iframe.allow = 'autoplay; fullscreen; picture-in-picture; encrypted-media';
+        holder.appendChild(iframe);
+
+        requestAnimationFrame(function () { el.classList.add('is-open'); });
+
+        api().then(function () {
+          if (el.hidden) return;
+          var p = player = new Vimeo.Player(iframe);
+          var settled = false;
+          /* אם הדפדפן חסם ניגון-עם-קול - מנגנים מושתק ומציעים כפתור קול,
+             במקום להשאיר סרטון שנראה תקוע.
+             לא נשענים על אירוע play: Vimeo יורה play רגעי גם כשהניגון נחסם
+             מיד אחריו, ולכן ההכרעה היא getPaused בפועל, ופעמיים. */
+          function ensurePlaying() {
+            if (settled || userTouched || p !== player) return;
+            p.getPaused().then(function (paused) {
+              if (!paused || settled || userTouched || p !== player) return;
+              settled = true;
+              p.setMuted(true).then(function () { return p.play(); })
+                .then(function () { if (p === player) soundBtn.hidden = false; })
+                .catch(function () {});
+            }).catch(function () {});
+          }
+          setTimeout(ensurePlaying, 900);
+          setTimeout(ensurePlaying, 2400);
+
+          p.ready().then(function () {
+            Promise.all([p.getVideoWidth(), p.getVideoHeight()]).then(function (d) {
+              if (d[0] && d[1] && p === player) frameEl.style.setProperty('--lb-ar', d[0] / d[1]);
+            }).catch(function () {});
+            return p.setVolume(1).then(function () { return p.play(); });
+          }).catch(function () {});
+
+        }).catch(function () {
+          /* player.js לא נטען - מחזירים את סרגל הבקרה המובנה, שבנגן הגדול שמיש */
+          iframe.src = iframe.src.replace('&controls=0', '&controls=1');
+        });
+      }
+
+      function close() {
+        if (!el || el.hidden) return;
+        el.classList.remove('is-open');
+        player = null;
+        holder.innerHTML = '';   // הסרת ה-iframe עוצרת את הסרטון ואת הקול
+        el.hidden = true;
+        document.body.style.overflow = '';
+        if (opener && opener.focus) opener.focus();
+        opener = null;
+      }
+
+      return { open: open };
+    })();
+
     // Coverflow video galleries (one per card that has videos)
     document.querySelectorAll('.coverflow').forEach(function (cf) {
       var VIDEOS = JSON.parse(cf.getAttribute('data-videos'));
@@ -618,10 +825,17 @@
       var stage = cf.querySelector('.cf-stage');
       var nav = cf.nextElementSibling;
       var dotsBox = nav.querySelector('.cf-dots');
+      var swiped = false;   // סוף החלקה - לא לפרש כלחיצה שפותחת סרטון
       VIDEOS.forEach(function (v, i) {
         var it = document.createElement('div'); it.className = 'cf-item'; it.dataset.i = i;
         it.innerHTML = '<img src="' + v.poster + '" alt="' + v.cap + '"><div class="cf-play"><span></span></div><div class="cf-cap">' + v.cap + '</div>';
-        it.addEventListener('click', function () { onClick(i); }); stage.appendChild(it);
+        it.setAttribute('role', 'button');
+        it.setAttribute('aria-label', 'הפעלת הסרטון: ' + v.cap);
+        it.addEventListener('click', function () { if (!swiped) onClick(i); });
+        it.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClick(i); }
+        });
+        stage.appendChild(it);
         var d = document.createElement('button'); d.className = 'cf-dot'; d.addEventListener('click', function () { active = i; layout(); }); dotsBox.appendChild(d);
       });
       var items = Array.from(stage.children), dots = Array.from(dotsBox.children);
@@ -634,15 +848,48 @@
           it.style.opacity = off === 0 ? 1 : (abs === 1 ? 0.5 : 0.2);
           it.style.filter = off === 0 ? 'none' : 'brightness(.72)';
           it.style.zIndex = 10 - abs; it.style.pointerEvents = abs > 1 ? 'none' : 'auto';
-          if (off !== 0 && it.dataset.playing) { it.innerHTML = '<img src="' + VIDEOS[i].poster + '"><div class="cf-play"><span></span></div><div class="cf-cap">' + VIDEOS[i].cap + '</div>'; delete it.dataset.playing; }
+          it.tabIndex = off === 0 ? 0 : -1;
         });
         dots.forEach(function (d, i) { d.classList.toggle('on', i === active); });
       }
       function onClick(i) {
         if (i !== active) { active = i; layout(); return; }
-        var it = items[i]; if (it.dataset.playing) return; var v = VIDEOS[i];
-        it.innerHTML = '<iframe src="https://player.vimeo.com/video/' + v.id + '?h=' + v.h + '&autoplay=1&title=0&byline=0&portrait=0&dnt=1" allow="autoplay;fullscreen;picture-in-picture" allowfullscreen></iframe>'; it.dataset.playing = '1';
+        LB.open(VIDEOS[i], items[i]);
       }
+
+      /* החלקה אצבע/עכבר בין הסרטונים - זו הציפייה הטבעית בגלריה כזו,
+         והלחיצה על החץ/נקודה נשארת כדרך נוספת ולא כדרך היחידה.
+         מזיזים כבר תוך כדי התנועה (ולא בשחרור) כדי שההחלקה תרגיש מיידית. */
+      if (VIDEOS.length > 1) {
+        var x0 = 0, y0 = 0, dragging = false;
+        var STEP = 44;   // מרחק אצבע שנחשב החלקה ולא נגיעה מקרית
+        stage.addEventListener('pointerdown', function (e) {
+          if (e.pointerType === 'mouse' && e.button !== 0) return;
+          x0 = e.clientX; y0 = e.clientY; dragging = true; swiped = false;
+        });
+        stage.addEventListener('pointermove', function (e) {
+          if (!dragging) return;
+          var dx = e.clientX - x0, dy = e.clientY - y0;
+          // גלילה אנכית של הדף מנצחת - משחררים ולא מתערבים
+          if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 12) { dragging = false; return; }
+          if (Math.abs(dx) < STEP) return;
+          // גרירה שמאלה מביאה למרכז את הסרטון שמימין
+          var next = Math.max(0, Math.min(VIDEOS.length - 1, active + (dx < 0 ? 1 : -1)));
+          if (next !== active) { active = next; layout(); }
+          swiped = true;
+          dragging = false;   // סרטון אחד לכל החלקה - גרירה ארוכה לא מדלגת על שלושה
+        });
+        /* משחררים את הדגל מיד אחרי הקליק שהדפדפן יורה בסוף החלקה, כדי שלא
+           יישאר דלוק וימנע פתיחת סרטון בנגיעה הבאה */
+        function endDrag() {
+          dragging = false;
+          if (swiped) setTimeout(function () { swiped = false; }, 60);
+        }
+        stage.addEventListener('pointerup', endDrag);
+        stage.addEventListener('pointercancel', endDrag);
+        stage.addEventListener('pointerleave', endDrag);
+      }
+
       var nx = nav.querySelector('.cf-next'); if (nx) nx.addEventListener('click', function () { active = Math.min(VIDEOS.length - 1, active + 1); layout(); });
       var pv = nav.querySelector('.cf-prev'); if (pv) pv.addEventListener('click', function () { active = Math.max(0, active - 1); layout(); });
       layout();
