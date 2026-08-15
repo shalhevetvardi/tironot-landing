@@ -130,16 +130,6 @@
     /* כרטיס שגובהו דוחף את כפתור הוואטסאפ מתחת לקצה המסך - מקטינים את
        הצילום כולו, בלי לחתוך ממנו (חיתוך היה מסתיר את גוף ההודעה) */
     .media.compact { max-width: 170px; }
-    /* צילום שיחה ארוך במיוחד (יחס גובה-רוחב 3:1 ומעלה): בגודל הזה הטקסט
-       ממילא לא קריא, אז מציגים את ראש השיחה עם דהייה שמסמנת שיש המשך,
-       במקום להריץ 600 פיקסל של צילום ולדחוף את הכפתור מחוץ למסך. */
-    .media.clipped { position: relative; max-height: 260px; }
-    .media.clipped > img { height: 260px; object-fit: cover; object-position: top; }
-    .media.clipped::after {
-      content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 64px;
-      background: linear-gradient(to top, #FFFFFF, rgba(255,255,255,0));
-      pointer-events: none;
-    }
     .cta {
       display: inline-flex; align-items: center; justify-content: center; gap: 9px;
       background: var(--wa); color: #FFFFFF;
@@ -680,7 +670,7 @@
             <li>בְּצַלְאֵל — שותף עיצוב אישי - סוכן שותף (companion) שמלווה מרעיון ועד תוצר מעוצב, על כל סוג תוצר (מדריך, מסמך, מצגת, פוסט, מסך). מוביל דרך 9 תחנות — מהגדרת מה בונים, למי ולמה, דרך בחירת פלטת אופי ועד מפרט עיצובי מדויק (Design Spec) ודוגמאות HTML מרונדרות. עובד מול דוגמאות לעיניים, מתרגם סימפטומים (&quot;צפוף&quot;, &quot;קר</li>
             <li>אורי — שותף ליצירת חומרי הדרכה מעוצבים - סוכן שהופך הקלטות מסך וצילומי מסך למדריכי הדרכה מעוצבים, ומפיק ניוזלטרים, פרסומים, סיכומי ישיבות ומצגות. עובד בעיצוב חם ומותאם למותג המתי&quot;א, עם דגש על כרטיסים ברורים וסימון ויזואלי של צעדים.</li>
           </ul>
-          <div class="media clipped" data-type="shot"><img src="https://pub-2a91b922e96044308a32fc11dd990c56.r2.dev/wa-testimonials/TRN-0067.png" alt="המלצה של נחמה בוואטסאפ" loading="lazy"></div>
+          <div class="media" data-type="shot"><img src="images/shot-nechama.jpg" alt="המלצה של נחמה בוואטסאפ" loading="lazy"></div>
           <a class="cta" href="https://r.aimprove.co.il/w/neshamalevy"><svg aria-hidden="true"><use href="#wa"></use></svg>לדבר עם נחמה</a>
           <span class="flip-hint"><span class="ico">↩</span> חזרה</span>
         </div>
