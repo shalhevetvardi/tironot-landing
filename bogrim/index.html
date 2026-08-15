@@ -191,9 +191,46 @@
     .cf-nav { display: flex; align-items: center; justify-content: center; gap: 14px; margin: 0 auto 10px auto; }
     .cf-arrow { width: 34px; height: 34px; border-radius: 50%; border: none; background: #fff; color: var(--navy); font-size: 18px; font-weight: 800; cursor: pointer; box-shadow: 0 3px 10px rgba(20,9,59,.16); display: flex; align-items: center; justify-content: center; transition: transform .15s; }
     .cf-arrow:hover { transform: scale(1.1); }
-    .cf-dots { display: flex; gap: 6px; align-items: center; }
-    .cf-dot { width: 8px; height: 8px; border-radius: 50%; background: #D5DCE8; border: none; cursor: pointer; padding: 0; transition: background .2s, transform .2s; }
+    .cf-dots { display: flex; gap: 22px; align-items: center; }
+    .cf-dot { position: relative; width: 8px; height: 8px; border-radius: 50%; background: #D5DCE8; border: none; cursor: pointer; padding: 0; transition: background .2s, transform .2s; }
     .cf-dot.on { background: var(--c, var(--gold)); transform: scale(1.25); }
+    /* מטרת מגע 30x44 סביב נקודה של 8px - הנקודה נשארת קטנה למראה, האצבע
+       מקבלת שטח אמיתי. 30 ולא 44 ברוחב כדי שהמטרות לא יחפפו זו לזו. */
+    .cf-dot::after { content: ""; position: absolute; top: 50%; left: 50%; width: 30px; height: 44px; transform: translate(-50%, -50%); }
+    /* ---------- גלריה: תצוגה לפי מספר הסרטונים ---------- */
+    /* סרטון בודד - בלי קרוסלה. הפוסטר תופס את כל רוחב הכרטיס.
+       (היה 150px צף בתוך קופסה של 299 - רוחב שהוקטן בשביל שכנים שלא קיימים.) */
+    .coverflow.is-single { height: auto; perspective: none; }
+    .coverflow.is-single .cf-stage { position: static; transform-style: flat; }
+    .coverflow.is-single .cf-item {
+      position: relative; top: auto; left: auto; margin: 0;
+      width: 100%; height: auto; aspect-ratio: 4 / 5;
+      transform: none; opacity: 1; filter: none;
+    }
+    /* כמה סרטונים - רצועה שטוחה שנשפכת לרוחב הכרטיס המלא, במקום תלת-ממד.
+       השכן מציץ בקצה ומרמז "יש עוד", בלי לגזול חצי מהרוחב. */
+    /* הרחבה מעבר לפדינג של הכרטיס דרך שוליים שליליים ו-stretch, ולא דרך
+       calc על הרוחב - פריט flex שרחב מהמכל אינו ממורכז אמין (יצא מוסט 22px) */
+    .coverflow.is-strip {
+      height: auto; perspective: none;
+      align-self: stretch; width: auto; margin: 0 -22px 6px -22px;
+      aspect-ratio: 20 / 19;
+    }
+    .coverflow.is-strip .cf-stage { transform-style: flat; }
+    .coverflow.is-strip .cf-item {
+      width: 75%; height: auto; aspect-ratio: 4 / 5; margin: 0;
+    }
+    /* הפוסטר הוא פריים 9:16 והאריח רחב יותר, כלומר יש חיתוך. חותכים מלמטה
+       ולא מהאמצע - למעלה יושב כרטיס-השם של הסרטון, ובתחתית ממילא יושב
+       הכיתוב שלנו. */
+    .coverflow.is-single .cf-item img, .coverflow.is-strip .cf-item img { object-position: center top; }
+    /* בסרטון בודד הכיתוב מיותר - אין בין מה לבין מה להבחין, כרטיס-השם
+       שבפוסטר כבר אומר מי זו, והוא התנגש עם הכתובית הצרובה בסרטון */
+    .coverflow.is-single .cf-cap { display: none; }
+    /* ברצועה הכיתוב כן מבחין בין הסרטונים - וגדל יחד עם האריח */
+    .coverflow.is-strip .cf-cap { font-size: 13px; padding: 22px 10px 9px 10px; }
+    .coverflow.is-single .cf-play span { width: 58px; height: 58px; }
+    .coverflow.is-single .cf-play span::before { border-width: 11px 0 11px 18px; }
     /* ---------- VIDEO LIGHTBOX - הסרטון נפתח גדול, עם עצירה/המשך בלבד ---------- */
     .cf-lb {
       position: fixed; inset: 0; z-index: 9000;
@@ -839,19 +876,27 @@
         var d = document.createElement('button'); d.className = 'cf-dot'; d.addEventListener('click', function () { active = i; layout(); }); dotsBox.appendChild(d);
       });
       var items = Array.from(stage.children), dots = Array.from(dotsBox.children);
+      /* התצוגה נקבעת לפי מספר הסרטונים: קרוסלה עולה ברוחב רק כשיש בין מה
+         לבין מה לנווט. סרטון בודד מקבל את כל הרוחב. */
+      var single = VIDEOS.length < 2;
+      cf.classList.add(single ? 'is-single' : 'is-strip');
       // סרטון בודד - אין לאן לנווט, והנקודה הבודדת היא רעש ויזואלי בלבד.
-      if (VIDEOS.length < 2) nav.style.display = 'none';
+      if (single) nav.style.display = 'none';
       function layout() {
+        if (single) { items[0].tabIndex = 0; return; }
+        // נמדד בכל פעם, כדי שסיבוב מסך/רוחב עמודה אחר לא ישברו את המרווח
+        var step = (items[0].getBoundingClientRect().width || 257) + 10;
         items.forEach(function (it, i) {
           var off = i - active, abs = Math.abs(off);
-          it.style.transform = 'translateX(' + (off * 92) + 'px) rotateY(' + (off * -38) + 'deg) scale(' + (off === 0 ? 1 : 0.74) + ')';
-          it.style.opacity = off === 0 ? 1 : (abs === 1 ? 0.5 : 0.2);
-          it.style.filter = off === 0 ? 'none' : 'brightness(.72)';
+          it.style.transform = 'translate(-50%, -50%) translateX(' + (off * step) + 'px)';
+          it.style.opacity = off === 0 ? 1 : 0.45;
+          it.style.filter = off === 0 ? 'none' : 'brightness(.7)';
           it.style.zIndex = 10 - abs; it.style.pointerEvents = abs > 1 ? 'none' : 'auto';
           it.tabIndex = off === 0 ? 0 : -1;
         });
         dots.forEach(function (d, i) { d.classList.toggle('on', i === active); });
       }
+      if (!single) window.addEventListener('resize', layout);
       function onClick(i) {
         if (i !== active) { active = i; layout(); return; }
         LB.open(VIDEOS[i], items[i]);
