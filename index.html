@@ -907,5 +907,190 @@ window.interdeal = {
 })();
 </script>
 
+
+<script>
+/* ── מדידת-משפך אנונימית (נוסף 23-08-2026) ─────────────────────────────────────
+   עונה על שאלה אחת: כמה נכנסים לדף, כמה באמת רואים את המחיר, וכמה לוחצים על
+   הכפתור שמוביל לנועם. בלי זה כל טענה על "אנשים נוטשים במחיר" היא ניחוש.
+
+   פרטיות - זהה במדויק למודל שכבר מאושר בלוג-הקליקים של r.aimprove.co.il:
+   אין עוגיות, אין IP גולמי (ה-Worker מגבב אותו במלח מתחלף-יומית), ואין שום
+   מזהה אישי. ה-vid הוא מספר אקראי שחי ב-sessionStorage בלבד - הוא מת עם
+   סגירת הלשונית, ואין דרך לקשור אותו לאדם, לביקור אחר או לאתר אחר. כל תכליתו
+   לאחד את שורות אותו ביקור, אחרת אי-אפשר לדעת "מי שראה מחיר - לחץ?".
+
+   ה-view נשלח ראשון בכוונה - הוא המכנה של כל המשפך, ואסור שיאבד אם שורת
+   היציאה לא תשרוד סגירת דפדפן במובייל.
+
+   שלוש החלטות-מדידה ששווה לדעת:
+   1. אירוע price נורה על כרטיס-המחיר עצמו (.price-card), לא על תחילת הסקשן.
+      הסקשן נפתח ברשימת "מה כלול" ארוכה, וכניסה אליו אינה ראייה של המספר -
+      וזו בדיוק השאלה שנשאלה.
+   2. "נראה" = חצה את 60% העליונים של המסך, ולא אחוז-נראות מהאלמנט: סקשן
+      גבוה מהמסך לעולם לא מגיע ל-25% נראות, ולכן סף-אחוזים היה מפספס דווקא
+      את הסקשנים הארוכים - כלומר את אזור המחיר עצמו.
+   3. המדידה על מאזין-גלילה מווסת, ולא על IntersectionObserver ולא על
+      requestAnimationFrame - למרות ששניהם מתאימים כאן לכאורה יותר. שניהם
+      מושהים בלשונית שאינה נראית, ולכן אי-אפשר לאמת אותם בבדיקה אוטומטית,
+      ומסלול-מדידה שאי-אפשר לבדוק הוא מסלול שיישבר בשקט ואיש לא יידע.
+
+   הסקריפט לעולם לא שובר את הדף: הכל בתוך try/catch, אפס שינוי ויזואלי,
+   ואם נקודת-הקצה לא זמינה הדף מתפקד בדיוק כרגיל. */
+(function () {
+  try {
+    var ENDPOINT = 'https://r.aimprove.co.il/e';
+    var PAGE = 'index';
+
+    /* הסקשנים לפי סדר הופעתם בדף. שם קצר ← בורר. סקשן שלא קיים פשוט מדולג,
+       כך שאותו סקריפט אפשר להעתיק לדף אחר בלי לשנות אותו. */
+    var SECTIONS = [
+      ['hero',    '.hero'],
+      ['intro',   '#intro'],
+      ['story',   '#story'],
+      ['proofs',  '.section--proofs'],
+      ['roadmap', '.section--roadmap'],
+      ['price',   '#price'],
+      ['video',   '#video-noam'],
+      ['final',   '.final']
+    ];
+
+    /* מזהה-ביקור אפמרלי. sessionStorage ולא localStorage - כדי שלא ישרוד
+       את סגירת הלשונית ולא יהפוך למזהה עוקב. */
+    var vid = '';
+    try { vid = sessionStorage.getItem('aim_vid') || ''; } catch (e) {}
+    if (!vid) {
+      vid = (Math.random().toString(16).slice(2) + Math.random().toString(16).slice(2)).slice(0, 16);
+      try { sessionStorage.setItem('aim_vid', vid); } catch (e) {}
+    }
+
+    /* קוד-מקור הקמפיין - אותה קריאה בדיוק כמו סקריפט ייחוס-המקור שמעליי. */
+    var src = '';
+    try {
+      src = new URLSearchParams(location.search).get('src') || '';
+      if (!src) src = localStorage.getItem('aim_src') || '';
+      src = String(src).replace(/[^a-z0-9_-]/gi, '').slice(0, 40);
+    } catch (e) { src = ''; }
+
+    var t0 = Date.now();
+    var depthIdx = -1;   /* האינדקס העמוק ביותר שנראה בפועל */
+    var sent = {};       /* מה כבר נשלח - סופרים אנשים, לא קליקים */
+
+    function send(ev, extra) {
+      try {
+        var body = { v: 1, vid: vid, e: ev, p: PAGE };
+        if (src) body.src = src;
+        if (extra) for (var k in extra) { if (extra.hasOwnProperty(k)) body[k] = extra[k]; }
+        var payload = JSON.stringify(body);
+        /* text/plain = בקשה פשוטה, בלי preflight. sendBeacon שורד יציאה מהדף. */
+        if (navigator.sendBeacon) {
+          navigator.sendBeacon(ENDPOINT, new Blob([payload], { type: 'text/plain;charset=UTF-8' }));
+        } else {
+          var x = new XMLHttpRequest();
+          x.open('POST', ENDPOINT, true);
+          x.setRequestHeader('Content-Type', 'text/plain;charset=UTF-8');
+          x.send(payload);
+        }
+      } catch (e) { /* מדידה שנכשלת לא נוגעת במשתמש */ }
+    }
+
+    function sendOnce(key, ev, extra) {
+      if (sent[key]) return;
+      sent[key] = 1;
+      send(ev, extra);
+    }
+
+    /* ── 1. view - נשלח מיד. זה המכנה של כל המשפך. ── */
+    send('view');
+
+    /* ── 2. מעקב-עומק + ראיית כרטיס-המחיר ── */
+
+    /* האלמנטים שנמדדים, נאספים פעם אחת. אלמנט חסר מדולג, כך שאותו סקריפט
+       אפשר להעתיק כמו-שהוא לדף אחר בלי לשנות בו שורה. */
+    var watched = [];
+    for (var j = 0; j < SECTIONS.length; j++) {
+      var el = document.querySelector(SECTIONS[j][1]);
+      if (el) watched.push({ idx: j, el: el });
+    }
+    /* כרטיס-המחיר עצמו = "ראה את המחיר". נופל אחורה לסקשן אם אין כרטיס. */
+    var priceEl = document.querySelector('.price-card') || document.querySelector('#price');
+
+    /* "נראה" = הקצה העליון חצה את 60% העליונים של המסך. תלוי-מיקום ולא
+       תלוי-גובה, ולכן נכון גם לסקשן ארוך בהרבה מהמסך. */
+    function seen(el) {
+      var r = el.getBoundingClientRect();
+      var h = window.innerHeight || document.documentElement.clientHeight || 0;
+      if (!h) return false;
+      return r.top < h * 0.6 && r.bottom > 0;
+    }
+
+    var ticking = false;
+    function measure() {
+      ticking = false;
+      try {
+        for (var i = 0; i < watched.length; i++) {
+          if (watched[i].idx > depthIdx && seen(watched[i].el)) depthIdx = watched[i].idx;
+        }
+        if (priceEl && !sent.price && seen(priceEl)) sendOnce('price', 'price');
+      } catch (e) {}
+    }
+    /* setTimeout ולא requestAnimationFrame - rAF מושהה לחלוטין בלשונית שאינה
+       נראית, ואז המדידה נעצרת בשקט בדיוק כמו עם IntersectionObserver. 100ms
+       זה פחות מפריים אחד של גלילה אנושית, כך שאין הפרש מעשי בדיוק. */
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      setTimeout(measure, 100);
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+
+    /* דגימה תקופתית לצד מאזין-הגלילה, ובכוונה - היא המנגנון שאפשר לאמת.
+       שלושה מנגנוני-מדידה מבוססי-דפדפן (IntersectionObserver, rAF, ואפילו
+       מסירת אירוע scroll עצמה) מושהים בלשוניות שאינן נראות, ולכן אף אחד מהם
+       אינו ניתן לבדיקה אוטומטית - וכשל שקט שם נראה בדיוק כמו "אף אחד לא
+       הגיע למחיר", כלומר כמו ממצא עסקי אמיתי. טיימר עובד תמיד.
+       נעצר מעצמו ברגע שאין עוד מה לגלות, כך שאין לו עלות מתמשכת. */
+    var poll = setInterval(function () {
+      measure();
+      var doneDepth = watched.length === 0 || depthIdx >= watched[watched.length - 1].idx;
+      if (doneDepth && (!priceEl || sent.price)) clearInterval(poll);
+    }, 500);
+
+    measure();  /* מצב פתיחה - דף קצר שכולו נראה מיד, או טעינה באמצע הדף */
+
+    /* ── 3. לחיצות שמובילות החוצה ── */
+    document.addEventListener('click', function (evt) {
+      try {
+        var a = evt.target && evt.target.closest ? evt.target.closest('a') : null;
+        if (!a) return;
+        var href = a.getAttribute('href') || '';
+        var cls  = String(a.className || '');
+        var kind = '';
+        if (href.indexOf('wa.me/972559397247') !== -1) kind = 'noam';
+        else if (href.indexOf('calendly.com') !== -1) kind = 'calendly';
+        else if (cls.indexOf('price-card__cta') !== -1) kind = 'video';
+        if (!kind) return;
+        sendOnce('cta_' + kind, 'cta', { k: kind });
+      } catch (e) {}
+    }, true);
+
+    /* ── 4. end - העומק שהושג וכמה זמן. פעם אחת, במה שקורה קודם. ── */
+    function finish() {
+      if (sent.end) return;
+      sent.end = 1;
+      var name = (depthIdx >= 0 && SECTIONS[depthIdx]) ? SECTIONS[depthIdx][0] : 'hero';
+      var secs = Math.round((Date.now() - t0) / 1000);
+      if (!isFinite(secs) || secs < 0) secs = 0;
+      if (secs > 7200) secs = 7200;
+      send('end', { d: name, s: secs });
+    }
+    window.addEventListener('pagehide', finish, true);
+    document.addEventListener('visibilitychange', function () {
+      if (document.visibilityState === 'hidden') finish();
+    }, true);
+  } catch (e) { /* לעולם לא שובר את הדף */ }
+})();
+</script>
+
 </body>
 </html>
