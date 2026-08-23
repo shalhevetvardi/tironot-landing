@@ -188,16 +188,35 @@ def main():
 
     # ── 2. הקשר: כמה הגיעו לדף, וכמה שיחות נפתחו ─────────────────────────────
     clicks = [
-        r for r in fetch_all(T_CLICKS)
+        r["fields"] for r in fetch_all(T_CLICKS)
         if str(r["fields"].get("slug", "")).startswith("p-")
         and str(r["fields"].get("ts", "")) >= since_s
     ]
     leads = [r for r in fetch_all(T_LEADS) if str(r.get("createdTime", "")) >= since_s]
 
+    # ניקוי בוטים מהקליקים. נמדד 23-08-2026: מתוך 631 קליקים גולמיים רק ~107
+    # היו בני-אדם מישראל - 387 מארה"ב ו-36 מסין, ו-65 כתובות סרקו 3+ קודים
+    # שונים באותו יום (זחלני ספוטיפיי/יוטיוב/מנועי-חיפוש שפותחים כל לינק).
+    # הצגת המספר הגולמי לבדו מטעה, ולכן שניהם מוצגים.
+    sweep = {}
+    for f in clicks:
+        k = (f.get("ip_hash", ""), str(f.get("ts", ""))[:10])
+        sweep.setdefault(k, set()).add(f.get("slug"))
+    sweepers = {k for k, v in sweep.items() if len(v) >= 3 and k[0]}
+    human = set()
+    for f in clicks:
+        k = (f.get("ip_hash", ""), str(f.get("ts", ""))[:10])
+        if f.get("prefetch") or k in sweepers:
+            continue
+        if str(f.get("country", "")) != "IL" or str(f.get("device_class", "")) == "unknown":
+            continue
+        human.add((f.get("ip_hash", ""), f.get("slug"), str(f.get("ts", ""))[:10]))
+
     print()
     print("-" * 62)
     print("  להשוואה, מאותה תקופה:")
-    print(f"    הגיעו לדף דרך לינק מתויג     {len(clicks):>5}")
+    print(f"    קליקים על לינק מתויג (גולמי, כולל בוטים)  {len(clicks):>5}")
+    print(f"    מתוכם בני-אדם מישראל, ככל הנראה           {len(human):>5}")
     print(f"    שיחות חדשות שנפתחו עם נועם   {len(leads):>5}")
     print()
     print("    שימי לב: שיחות נועם מגיעות גם מאינסטגרם ומקישורים ישירים,")
