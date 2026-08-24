@@ -1126,6 +1126,7 @@ window.interdeal = {
     var CONSENT_KEY = 'aim_consent';
     var PIXEL_ID = '1249254740429699';
     var GA_ID = 'G-4VXR3V1J4N';
+    var PAGE = 'index'; /* השורה היחידה שמשתנה בהעתקה לדף אחר - ר' EV_PAGES ב-Worker */
 
     function loadPixel() {
       try {
@@ -1164,15 +1165,20 @@ window.interdeal = {
     }
 
     /* רישום ההחלטה בשרת (Worker + Airtable) - אותו צינור בדיוק כמו מדידת-
-       המשפך למעלה, כדי שתהיה רשומה מרכזית של מי הסכים ומתי, לא רק דגל
-       בדפדפן של המבקר עצמו. אותו vid כמו המשפך, כדי שאפשר יהיה לצלוב אם
-       ירצו - נקרא מ-sessionStorage ולא מיוצר מחדש. */
+       המשפך (בדפים שבהם היא רצה), כדי שתהיה רשומה מרכזית של מי הסכים
+       ומתי, לא רק דגל בדפדפן של המבקר עצמו. אותו מפתח sessionStorage
+       (aim_vid) כמו המשפך - אם הוא כבר קיים נעשה בו שימוש חוזר (כדי
+       שאפשר יהיה לצלוב אם ירצו), ואם לא, נוצר כאן מזהה אפמרלי חדש כדי
+       שהבלוק הזה יעבוד גם בדף שאין בו את סקריפט המשפך. */
     function sendConsentEvent(choice) {
       try {
         var vid = '';
         try { vid = sessionStorage.getItem('aim_vid') || ''; } catch (e) {}
-        if (!vid) return; /* בלי vid תקין ה-Worker זורק את האירוע ממילא */
-        var payload = JSON.stringify({ v: 1, vid: vid, e: 'consent', p: 'index', c: choice });
+        if (!vid) {
+          vid = (Math.random().toString(16).slice(2) + Math.random().toString(16).slice(2)).slice(0, 16);
+          try { sessionStorage.setItem('aim_vid', vid); } catch (e) {}
+        }
+        var payload = JSON.stringify({ v: 1, vid: vid, e: 'consent', p: PAGE, c: choice });
         var ENDPOINT = 'https://r.aimprove.co.il/e';
         if (navigator.sendBeacon) {
           navigator.sendBeacon(ENDPOINT, new Blob([payload], { type: 'text/plain;charset=UTF-8' }));
