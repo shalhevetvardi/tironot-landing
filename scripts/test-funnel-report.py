@@ -37,8 +37,15 @@ ROWS = [
       ev("v6","cta", cta_kind="calendly", src="p96"), ev("v6","end", depth="final", seconds=300, device_class="mobile", src="p96"),
 ]
 
+# צד ההטבה: 3 שיחות - אחת עם קוד+נרשמה, אחת עם קוד בלבד, אחת בלי קוד
+LEADS = [
+    {"createdTime": NOW, "fields": {"קוד הטבה": "AIM-TST1", "סטטוס": "נרשם לקורס"}},
+    {"createdTime": NOW, "fields": {"קוד הטבה": "AIM-TST2", "סטטוס": "התקיימה שיחה"}},
+    {"createdTime": NOW, "fields": {"סטטוס": "התקיימה שיחה"}},
+]
+
 fr.find_events_table = lambda: "tblFAKE"
-fr.fetch_all = lambda t: ROWS if t == "tblFAKE" else []
+fr.fetch_all = lambda t: ROWS if t == "tblFAKE" else (LEADS if t == fr.T_LEADS else [])
 sys.argv = ["x", "--days", "30"]
 
 buf = io.StringIO()
@@ -56,6 +63,9 @@ checks = [
     ("2 ראו מחיר ולא לחצו",          "ומתוך 4 שכן ראו אותו, 2 לא לחצו על נועם"),
     ("קלנדלי נספר פעם אחת",          "ביקשו שיחה ישירה עם שלהבת:          1"),
     ("פילוח לפי קוד-מקור",           "p96             2 ביקורים · 2 ראו מחיר · 2 לחצו על נועם"),
+    ("3 שיחות בצד נועם",             "שיחות חדשות שנפתחו               3"),
+    ("2 קיבלו קוד הטבה (67%)",       "קיבלו קוד הטבה (1,400 ₪)         2   (67% מהשיחות)"),
+    ("1 נרשמה לקורס",                "נרשמו לקורס                      1"),
 ]
 ok = True
 for label, needle in checks:
