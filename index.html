@@ -1163,6 +1163,28 @@ window.interdeal = {
       loadGA();
     }
 
+    /* רישום ההחלטה בשרת (Worker + Airtable) - אותו צינור בדיוק כמו מדידת-
+       המשפך למעלה, כדי שתהיה רשומה מרכזית של מי הסכים ומתי, לא רק דגל
+       בדפדפן של המבקר עצמו. אותו vid כמו המשפך, כדי שאפשר יהיה לצלוב אם
+       ירצו - נקרא מ-sessionStorage ולא מיוצר מחדש. */
+    function sendConsentEvent(choice) {
+      try {
+        var vid = '';
+        try { vid = sessionStorage.getItem('aim_vid') || ''; } catch (e) {}
+        if (!vid) return; /* בלי vid תקין ה-Worker זורק את האירוע ממילא */
+        var payload = JSON.stringify({ v: 1, vid: vid, e: 'consent', p: 'index', c: choice });
+        var ENDPOINT = 'https://r.aimprove.co.il/e';
+        if (navigator.sendBeacon) {
+          navigator.sendBeacon(ENDPOINT, new Blob([payload], { type: 'text/plain;charset=UTF-8' }));
+        } else {
+          var x = new XMLHttpRequest();
+          x.open('POST', ENDPOINT, true);
+          x.setRequestHeader('Content-Type', 'text/plain;charset=UTF-8');
+          x.send(payload);
+        }
+      } catch (e) {}
+    }
+
     var bar = null;
 
     /* בונים ב-JS ולא ב-HTML קבוע, כדי שלא יהיה שום הבזק (flash) של הבאנר
@@ -1203,11 +1225,13 @@ window.interdeal = {
 
       accept.addEventListener('click', function () {
         try { localStorage.setItem(CONSENT_KEY, 'granted'); } catch (e) {}
+        sendConsentEvent('granted');
         loadAll();
         close();
       });
       decline.addEventListener('click', function () {
         try { localStorage.setItem(CONSENT_KEY, 'denied'); } catch (e) {}
+        sendConsentEvent('denied');
         close();
       });
 
