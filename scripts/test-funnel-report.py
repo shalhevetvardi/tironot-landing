@@ -25,6 +25,8 @@ def ev(vid, event, **kw):
 #  v4 ראה מחיר ולחץ על נועם                  ← ראה מחיר, לחץ
 #  v5 לא נשלחה לו שורת price אך עומקו final  ← נספר כמי שראה מחיר (הגיבוי)
 #  v6 ראה מחיר ולחץ פעמיים על נועם + קלנדלי  ← נספר פעם אחת בכל סוג
+#  v7 קוד-בדיקה חד-פעמי (vo-checkout)        ← לא נכנס לשום מספר, גם לא ל"נכנסו לדף"
+#  v8 קוד-בדיקה בתחילית המוסכמה (test-*)     ← אותו דבר, דרך הכלל הכללי ולא הרשימה
 ROWS = [
     ev("v1","view"), ev("v1","end", depth="hero", seconds=4, device_class="mobile"),
     ev("v2","view"), ev("v2","end", depth="story", seconds=30, device_class="mobile"),
@@ -35,6 +37,10 @@ ROWS = [
     ev("v6","view", src="p96"), ev("v6","price", src="p96"),
       ev("v6","cta", cta_kind="noam", src="p96"), ev("v6","cta", cta_kind="noam", src="p96"),
       ev("v6","cta", cta_kind="calendly", src="p96"), ev("v6","end", depth="final", seconds=300, device_class="mobile", src="p96"),
+    ev("v7","view", src="vo-checkout"),
+      ev("v7","price", src="vo-checkout"), ev("v7","end", depth="final", seconds=999, device_class="desktop", src="vo-checkout"),
+    ev("v8","view", src="test-anything"),
+      ev("v8","price", src="test-anything"), ev("v8","end", depth="final", seconds=999, device_class="desktop", src="test-anything"),
 ]
 
 # צד ההטבה: 3 שיחות - אחת עם קוד+נרשמה, אחת עם קוד בלבד, אחת בלי קוד
@@ -66,6 +72,8 @@ checks = [
     ("3 שיחות בצד נועם",             "שיחות חדשות שנפתחו               3"),
     ("2 קיבלו קוד הטבה (67%)",       "קיבלו קוד הטבה (1,400 ₪)         2   (67% מהשיחות)"),
     ("1 נרשמה לקורס",                "נרשמו לקורס                      1"),
+    ("v7+v8 (קודי-בדיקה) סוננו ולא נספרו בשום מקום",
+                                      "סוננו 2 ביקורי-בדיקה מוכרים"),
 ]
 ok = True
 for label, needle in checks:
