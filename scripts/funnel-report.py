@@ -62,6 +62,12 @@ def fetch_all(table):
     out, offset = [], None
     while True:
         p = {"pageSize": 100}
+        if table == T_CLICKS:
+            # שדה "bot" נוסף לטבלה 24-08-2026 - הטבלה מסננת את עצמה בצד השרת
+            # (NOT({bot})). חתימת הפונקציה נשארת אחידה בכוונה (לא פרמטר נוסף)
+            # כי test-funnel-report.py מזריק fetch_all=lambda t: ... בעל
+            # ארגומנט יחיד - שינוי חתימה כאן היה שובר את הבדיקה בלי לגעת בה.
+            p["filterByFormula"] = "NOT({bot})"
         if offset:
             p["offset"] = offset
         d = _get(f"{BASE}/{urllib.parse.quote(table)}", p)
@@ -76,6 +82,17 @@ def find_events_table():
         if t["name"] == EVENTS_TABLE_NAME:
             return t["id"]
     return None
+
+
+# קודי-בדיקה שנספרו בטעות כמבקרים ב-24-08-2026 (ר' docs/מדידת-משפך-דף-הנחיתה.md,
+# סעיף 10) - חד-פעמיים שכבר נצפו, ומוסכמה קדימה לכל בדיקה עתידית (ידנית/CI).
+TEST_SRC_EXACT = {"vo-checkout", "deploy-e2e2"}
+TEST_SRC_PREFIX = "test-"
+
+
+def is_test_src(src):
+    s = str(src or "")
+    return s in TEST_SRC_EXACT or s.startswith(TEST_SRC_PREFIX)
 
 
 def pct(n, total):
@@ -107,6 +124,7 @@ def main():
 
     # ── 1. המשפך בתוך הדף ─────────────────────────────────────────────────────
     tid = find_events_table()
+    n_excluded = 0
     if not tid:
         print()
         print("  טבלת אירועי-המשפך עדיין לא קיימת, ולכן אין נתונים על מה")
@@ -114,7 +132,17 @@ def main():
         print("      python3 scripts/create-events-table.py")
         visits = {}
     else:
-        rows = [r for r in fetch_all(tid) if str(r["fields"].get("ts", "")) >= since_s]
+        raw = fetch_all(tid)
+        test_vids = {
+            str(r["fields"].get("vid", ""))
+            for r in raw if is_test_src(r["fields"].get("src"))
+        }
+        n_excluded = len(test_vids)
+        rows = [
+            r for r in raw
+            if str(r["fields"].get("ts", "")) >= since_s
+            and str(r["fields"].get("vid", "")) not in test_vids
+        ]
         visits = collections.defaultdict(
             lambda: {"price": False, "cta": set(), "depth": -1, "src": "", "dev": "", "secs": None}
         )
@@ -141,6 +169,9 @@ def main():
                 v["price"] = True
 
     n = len(visits)
+    if n_excluded:
+        print()
+        print(f"  (סוננו {n_excluded} ביקורי-בדיקה מוכרים - src מתויג כבדיקה, לא בחישוב)")
     if n:
         saw_price = sum(1 for v in visits.values() if v["price"])
         clicked_noam = sum(1 for v in visits.values() if "noam" in v["cta"])
@@ -196,7 +227,12 @@ def main():
     ]
     leads = [r for r in fetch_all(T_LEADS) if str(r.get("createdTime", "")) >= since_s]
 
-    # ניקוי בוטים מהקליקים. נמדד 23-08-2026: מתוך 631 קליקים גולמיים רק ~107
+    # ניקוי בוטים מהקליקים - שכבה שנייה. fetch_all(T_CLICKS) כבר מבקש
+    # NOT({bot}) בצד השרת (24-08-2026, ר' fetch_all למעלה), אבל הלוגיקה
+    # המקומית כאן נשארת: היא תופסת דפוסים (סריקת-כמה-קודים/geo/מכשיר) שהם
+    # ספציפיים לכלי-האבחון הזה ולא בהכרח זהים לקריטריון ה-"bot" בטבלה, בדיוק
+    # כמו בצד הפייתון של sales-automation ובצד ה-JS של tironot-control-room.
+    # נמדד 23-08-2026 (לפני שהיה שדה bot): מתוך 631 קליקים גולמיים רק ~107
     # היו בני-אדם מישראל - 387 מארה"ב ו-36 מסין, ו-65 כתובות סרקו 3+ קודים
     # שונים באותו יום (זחלני ספוטיפיי/יוטיוב/מנועי-חיפוש שפותחים כל לינק).
     # הצגת המספר הגולמי לבדו מטעה, ולכן שניהם מוצגים.
