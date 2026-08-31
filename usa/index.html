@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>טירונות סוכנים בארה"ב - אִימפּרוּב</title>
+  <meta name="description" content="בעלי עסקים יוצאים מהתוכנית עם צוות AI שרץ במקומם, ועם השיטה לבנות כל סוכן, מערכת ותהליך - לבד.">
+  <meta property="og:title" content='טירונות סוכנים בארה"ב - אִימפּרוּב'>
+  <meta property="og:description" content="בעלי עסקים יוצאים עם צוות AI שרץ במקומם, ועם השיטה לבנות כל סוכן נוסף שיצטרכו.">
+  <meta property="og:image" content="https://agent-course.aimprove.co.il/usa/office-hero.png">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="he_IL">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#14093B; --gold:#FFD747; --blue:#2473C8; --green:#4FB81E;
+    --blue-fill:#D8E5F4; --green-fill:#E8F5DC; --gold-fill:#FCEBA4; --purple-fill:#F3F0FF;
+    --ink:#14093B; --muted:#6B6577; --line:#E8E6F0; --card:#FAFAFC;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0; background:#fff; color:var(--ink); direction:rtl;
+    font-family:'Rubik','Heebo',Arial,sans-serif;
+    font-size:17px; line-height:1.75; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px; margin:0 auto; padding:0 20px 64px}
+  h1{font-size:clamp(28px,7vw,44px); font-weight:800; line-height:1.15; margin:0 0 14px; letter-spacing:-.5px}
+  h2{font-size:clamp(21px,4.6vw,28px); font-weight:700; line-height:1.3; margin:0 0 8px}
+  p{margin:0 0 16px}
+  a{color:var(--blue)}
+  .sub{color:var(--muted); font-size:15px; margin:0 0 20px}
+  section{margin:0 0 44px}
+
+  /* hero */
+  .hero{background:var(--navy); color:#fff; padding:36px 24px 34px; border-radius:0 0 26px 26px; margin:0 0 36px}
+  .hero-in{max-width:760px; margin:0 auto}
+  .hero img.logo{width:66px; height:auto; display:block; margin:0 0 16px}
+  .hero .kick{color:var(--gold); font-size:13px; font-weight:700; letter-spacing:1.6px; margin:0 0 12px}
+  .hero h1{color:#fff}
+  .hero p{color:#CFC9E0; font-size:17px; margin:0}
+  .hero .gold{color:var(--gold); font-weight:600}
+
+  /* blocks */
+  .bl{background:var(--blue-fill); border-radius:18px; padding:22px 24px; margin:0 0 28px}
+  .bl p{font-size:18px; line-height:1.6; margin:0}
+  .note{background:var(--gold-fill); border-radius:16px; padding:20px 22px; margin:0 0 26px; font-size:16px}
+  .note p:last-child{margin:0}
+  .lang{background:var(--green-fill); border-radius:14px; padding:16px 20px; font-size:16px; margin:26px 0 0}
+  .lang p{margin:0}
+
+  /* image */
+  figure{margin:0}
+  figure img{width:100%; height:auto; display:block; border-radius:16px}
+  figcaption{font-size:15px; color:#3A3350; margin-top:12px; line-height:1.65}
+
+  /* legend */
+  .legend{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px 20px; margin-top:18px}
+  .legend h3{font-size:13px; font-weight:700; color:var(--muted); letter-spacing:.6px; margin:0 0 12px; text-transform:none}
+  .legend ul{list-style:none; margin:0; padding:0}
+  .legend li{display:flex; gap:12px; align-items:flex-start; padding:6px 0; font-size:15.5px; line-height:1.5}
+  .legend .sw{flex:0 0 20px; margin-top:3px}
+  .legend b{flex:0 0 92px}
+  .legend span.d{color:#4A4360}
+
+  /* steps */
+  .step{display:flex; gap:14px; margin:0 0 20px}
+  .step .n{flex:0 0 32px; height:32px; border-radius:50%; background:var(--navy); color:var(--gold);
+           display:flex; align-items:center; justify-content:center; font-weight:700; font-size:16px}
+  .step h3{margin:2px 0 4px; font-size:18px; font-weight:700}
+  .step p{margin:0; font-size:16px; color:#3A3350; line-height:1.65}
+
+  /* stats */
+  .bignum{background:var(--navy); color:#fff; border-radius:18px; padding:24px; margin:0 0 14px}
+  .bignum .t{font-size:16px; color:#CFC9E0; margin:0 0 6px}
+  .bignum .n{font-size:clamp(30px,8vw,42px); font-weight:800; color:var(--gold); line-height:1.05; display:block}
+  .bignum .s{font-size:15px; color:#CFC9E0; margin:8px 0 0}
+  .stats{display:grid; grid-template-columns:repeat(auto-fit,minmax(96px,1fr)); gap:10px}
+  .stat{background:var(--purple-fill); border-radius:14px; padding:16px 8px; text-align:center}
+  .stat b{display:block; font-size:24px; font-weight:800; line-height:1.1}
+  .stat span{display:block; font-size:12.5px; color:#5C5470; margin-top:5px; line-height:1.35}
+
+  /* cards */
+  .card{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px 20px; margin:0 0 12px}
+  .card.hi{background:var(--green-fill); border-color:#CFE5B8}
+  .card .who{font-size:18px; font-weight:700}
+  .card .role{font-size:14px; color:var(--muted); margin:0 0 10px}
+  .card .q{font-style:italic; font-size:16px; margin:0 0 10px; line-height:1.6}
+  .card ul{margin:0; padding-inline-start:20px; font-size:15.5px; color:#3A3350; line-height:1.65}
+  .card li{margin-bottom:4px}
+  .tag{display:inline-block; background:var(--green); color:#fff; font-size:12px; font-weight:700;
+       border-radius:20px; padding:3px 10px; margin-inline-start:8px; vertical-align:middle}
+
+  ul.build{margin:0; padding-inline-start:22px; line-height:1.8}
+  ul.build li{margin-bottom:10px}
+
+  /* pods + links */
+  .pod{display:block; background:var(--card); border:1px solid var(--line); border-radius:14px;
+       padding:15px 18px; margin:0 0 10px; text-decoration:none; color:inherit}
+  .pod b{display:block; color:var(--blue); font-size:16px; line-height:1.4}
+  .pod span{display:block; font-size:14px; color:var(--muted); margin-top:3px}
+  .links{background:var(--navy); border-radius:18px; padding:22px 24px; color:#fff}
+  .links h2{color:var(--gold); font-size:20px; margin:0 0 14px}
+  .links a{display:block; color:#fff; font-size:16px; text-decoration:none; border-bottom:1px solid #4B3D7A; padding-bottom:2px}
+  .links .row{margin:0 0 14px}
+  .links .row span{display:block; color:#A79ECC; font-size:14px; margin-top:3px}
+
+  /* ask + CTA */
+  .ask{background:var(--gold-fill); border-radius:20px; padding:26px 24px}
+  .ask ol{margin:14px 0 0; padding-inline-start:22px; line-height:1.7}
+  .ask li{margin-bottom:12px}
+  .cta{display:block; background:var(--navy); color:var(--gold); text-align:center;
+       font-size:18px; font-weight:700; text-decoration:none; padding:18px 24px;
+       border-radius:50px; margin:22px auto 0; max-width:340px}
+  .dl{display:inline-block; margin-top:14px; font-size:15px; color:var(--blue)}
+  footer{text-align:center; color:#8A8398; font-size:14px; margin-top:40px}
+  hr{border:none; border-top:1px solid var(--line); margin:36px 0}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-in">
+    <img class="logo" src="../tironot-logo-white.png" alt="טירונות סוכנים">
+    <div class="kick">אִימפּרוּב · טירונות סוכנים</div>
+    <h1>אנשים בונים לעצמם<br>צוות AI שעובד בשבילם.</h1>
+    <p>אני שלהבת ורדי, מייסדת אִימפּרוּב - ואני רוצה להביא את "טירונות סוכנים" לקהילה בארה"ב.<br>
+    <span class="gold">כאן תמצאו מה זה, למי זה עובד, ומה אני מחפשת.</span></p>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <section>
+    <h2>אני מנהלת חברה שלמה. אין בה אף עובד.</h2>
+    <p><b>אִימפּרוּב היא חברת AI שהקמתי ב-2022.</b></p>
+    <p>כיום אני מריצה אופרציה שמצריכה עשרות עובדים - שיווק, מכירות, תוכן, פדגוגיה, שירות לקוחות, תפעול וכספים. הכול רץ, כל יום, גם כשאני ישנה.</p>
+    <p>את כל העבודה הזאת עושה <b>צוות של סוכני AI שבניתי בעצמי</b>. אין עובד אנושי אחד.</p>
+  </section>
+
+  <section>
+    <h2>ככה נראה העסק שלי מבפנים</h2>
+    <p>זה צילום מסך מהמערכת האמיתית של צוות ה-AI שלי - משרד ה-AI שלי. <b>כל שטח צבעוני הוא מחלקה שלמה בעסק, וכל קובייה היא סוכן שעושה עבודה של אדם.</b></p>
+
+    <figure>
+      <img src="office-hero.png" alt="משרד ה-AI של אִימפּרוּב - מחלקות צבעוניות עם סוכנים">
+      <figcaption>והם מדברים זה עם זה - סוכן מעביר עבודה לסוכן, בלי שאני באמצע.</figcaption>
+    </figure>
+
+    <div class="legend">
+      <h3>מה רואים בתמונה</h3>
+      <ul>
+        <li><svg class="sw" width="18" height="18"><rect x="3" y="3" width="12" height="12" rx="2" fill="#8B7BC8"/></svg><b>קובייה</b><span class="d">סוכן - עובד AI שאחראי על תחום</span></li>
+        <li><svg class="sw" width="18" height="18"><polygon points="9,3 15,15 3,15" fill="#F0A868"/></svg><b>חרוט</b><span class="d">כלי שהסוכן יודע להפעיל</span></li>
+        <li><svg class="sw" width="18" height="18"><circle cx="9" cy="9" r="6" fill="#5FBFD6"/></svg><b>כדור</b><span class="d">כלל עבודה שהסוכן פועל לפיו</span></li>
+        <li><svg class="sw" width="18" height="18"><rect x="5" y="3" width="8" height="12" rx="4" fill="#4FB81E"/></svg><b>גליל</b><span class="d">מסמך ידע שהסוכן קורא</span></li>
+        <li><svg class="sw" width="18" height="18"><circle cx="9" cy="9" r="6" fill="none" stroke="#E4A0C0" stroke-width="3"/></svg><b>טבעת</b><span class="d">תהליך אוטומטי שרץ מקצה לקצה</span></li>
+        <li><svg class="sw" width="18" height="18"><circle cx="9" cy="9" r="6.5" fill="#fff" stroke="#B9B3C9" stroke-width="1.5"/><circle cx="9" cy="9" r="3" fill="#B9B3C9"/></svg><b>מטבע עם לוגו</b><span class="d">חיבור למערכת חיצונית - וואטסאפ, ג'ימייל, נושן, אינסטגרם</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>וזה לא כישרון טכני. זו שיטה.</h2>
+    <p><b>אני לא מתכנתת.</b> בדיוק בגלל זה הייתי חייבת לפתח שיטה שמאפשרת גם לאדם לא-טכני לבנות בעצמו כל סוכן שהוא צריך - בלי קוד, בלי להיות תלוי במפתח.</p>
+    <p>השיטה הזאת עובדת. <b>ואותה בדיוק אני מלמדת בטירונות סוכנים.</b></p>
+  </section>
+
+  <hr>
+
+  <section>
+    <h2>מה זו "טירונות סוכנים"</h2>
+    <p class="sub">תוכנית הכשרה מקיפה, 360 מעלות</p>
+
+    <div class="bl">
+      <p>בעלי עסקים יוצאים מהתוכנית עם <b>צוות AI שרץ במקומם</b> - ועם השיטה והכלים לבנות כל סוכן, מערכת ותהליך - <b>לבד, בלי להיתקע.</b></p>
+    </div>
+
+    <p>בכל מפגש בונים - על העסק האמיתי של המשתתף, על העבודה שבאמת מעיקה עליו. מי שנכנס עם בעיה יוצא עם מערכת שפותרת אותה.</p>
+  </section>
+
+  <section>
+    <h2>דוגמאות למה תלמידים בנו בפועל</h2>
+    <ul class="build">
+      <li><b>מחלקה שלמה של ארבע מזכירות - שסוכן אחד החליף.</b> עריכת מסמכים, סיכומים, תמלול וניתוח נתונים כלכליים. חיסכון של עשרות אלפי שקלים בחודש.</li>
+      <li><b>משרד וירטואלי עם שמונה מחלקות וסוכן-על שמנווט ביניהן</b> - המחלקות מדברות זו עם זו ועובדות גם כשהבעלים ישן.</li>
+      <li><b>אפליקציה מסחרית עם 20,000 משתמשים ו-1,500 משלמים</b> - נבנתה בידי משתתף בתוכנית.</li>
+      <li><b>סוכנת שקוראת מכרז שלם, מסכמת את תנאי הסף, ומחליטה אם בכלל שווה לגשת.</b> "היא קוראת מכרז מהר ממני - ויודעת להגיד לי 'לא שווה'."</li>
+      <li><b>סוכן שקורא תשע קבוצות וואטסאפ של לקוחות</b> - מסווג לפי דחיפות ומגיש סיכום בוקר עם טיוטות תשובה מוכנות.</li>
+      <li><b>מחצית מיום העבודה של סמנכ"לית בחברה בינלאומית</b> - הועברה לסוכנים שבנתה בעצמה.</li>
+      <li><b>סוכן שעבד שתים-עשרה שעות לבד בזמן שהבעלים ישנה</b> - וסיים את העבודה עד הבוקר.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>איך התוכנית בנויה</h2>
+
+    <div class="note">
+      <p><b>התוכנית המקורית היא חמישה שבועות.</b> לגרסה בארה"ב אני מתכננת התאמות שיכניסו אותה לכשלושה שבועות - <b>אותה כמות מפגשים בדיוק</b>, מרוכזים, במקום פרוסים על תקופה ארוכה.</p>
+      <p><b>והמפגשים הם כ-20% מהתוכנית.</b> 80% הם העבודה עצמה: תרגולים, תרגולי בנייה ושיעורי בית שכל משתתף מיישם על העסק שלו - בהנחיה שלנו ובצורה מובנית, לא "לכו תתאמנו".</p>
+    </div>
+
+    <div class="step"><div class="n">1</div><div><h3>לפני שמתחילים - הכנה אישית</h3>
+      <p>מקימים לכל משתתף את סביבת העבודה ובונים איתו את הסוכן הראשון שלו. אף אחד לא מגיע למפגש הראשון עם מסך ריק.</p></div></div>
+
+    <div class="step"><div class="n">2</div><div><h3>מפגשי הבנייה</h3>
+      <p>מפגשים אינטנסיביים שבהם בונים יחד. לא הרצאות - עבודה. כל אחד מתקדם על המערכת שלו, עם עזרה צמודה.</p></div></div>
+
+    <div class="step"><div class="n">3</div><div><h3>שיעורי בית ותרגולים - צעד אחר צעד</h3>
+      <p>בין המפגשים יש תרגולים שלוקחים כל משתתף שלב אחר שלב אל המערכת שלו: עבודה מעמיקה עם Claude Code, והבנה מדורגת של איך בונים סוכן, איך בונים מערכת שלמה, ואיך בונים משרד AI שאפשר להרחיב אותו לאורך זמן.</p></div></div>
+
+    <div class="step"><div class="n">4</div><div><h3>בין המפגשים - לא נשארים לבד</h3>
+      <p>מפגשי חידוד להתייעצות ולשאלות, וצוות סוכני AI של אִימפּרוּב שזמין לעזרה בכל שלב. מי שנתקע לא מחכה למפגש הבא.</p></div></div>
+
+    <div class="step"><div class="n">5</div><div><h3>אחרי - הכול נשאר</h3>
+      <p>ההקלטות, אתר חומרי הלמידה, וכל מה שנבנה. בלי הגבלת זמן. והכי חשוב - השיטה נשארת, ואיתה <b>היכולת לבנות כל סוכן, מערכת ותהליך אוטומטי שרק תדמיינו.</b> כל בעיה עסקית שעולה - אפשר לבנות לה פתרון מקצה לקצה, בקלות ובמהירות, ופתרון שיעבוד לאורך זמן.</p></div></div>
+
+    <div class="lang"><p><b>שפת התוכנית: עברית.</b> כל המפגשים, החומרים והליווי מתקיימים בעברית - כך שהיא מתאימה לדוברי עברית בקהילה.</p></div>
+  </section>
+
+  <hr>
+
+  <section>
+    <h2>מה תלמידים כבר בנו</h2>
+    <div class="bignum">
+      <p class="t">37 תלמידים בנו מערכות AI שחוסכות</p>
+      <span class="n">25,290,000 ₪</span>
+      <p class="s">בלי לכתוב שורת קוד אחת · שווה ערך ל-101,160 שעות עבודה</p>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>37</b><span>בוגרים שבנו<br>מערכות AI</span></div>
+      <div class="stat"><b>166</b><span>סוכנים<br>שנבנו</span></div>
+      <div class="stat"><b>336</b><span>כלים<br>ייעודיים</span></div>
+      <div class="stat"><b>281</b><span>תהליכים<br>אוטומטיים</span></div>
+      <div class="stat"><b>490</b><span>מסמכי<br>ידע</span></div>
+    </div>
+    <p style="margin-top:16px">כל תוצר כזה גלוי לצפייה בגלריה הפומבית, עם השם של מי שבנה אותו ומה הוא עושה:<br>
+    <a href="https://gallery.aimprove.co.il">gallery.aimprove.co.il</a></p>
+  </section>
+
+  <section>
+    <h2>צירפתי כמה סיפורים של בוגרים</h2>
+    <p class="sub">רובם הגיעו בלי שום רקע טכני. ואגב - הם הסכימו שיפנו אליהם ישירות:<br>
+    <a href="https://bogrim.aimprove.co.il/">bogrim.aimprove.co.il</a></p>
+
+    <div class="card hi">
+      <div class="who">דולב דרי <span class="tag">מי ששלח לכם את הקישור</span></div>
+      <div class="role">בעל משרד פרסום</div>
+      <div class="q">"אם מישהו שואל אותי אם שווה להגיע - שווה של החיים. שווה לעצור הכול ולהגיע."</div>
+      <ul>
+        <li>בריף יומי אוטומטי - קופי לכל הרשתות ותמונות מג'ונרטות</li>
+        <li>עיבוד פודקאסט מלא - חיתוך, אודיו והעלאה</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="who">רון אלון</div>
+      <div class="role">יזם</div>
+      <div class="q">"זה מהפך של 180 מעלות. יש לי משרד עם 8 מחלקות, 20 כלים, וסוכן-על שנקרא קפטן אדי."</div>
+      <ul>
+        <li>סקיל חיפוש מתחרים, ותהליך שהופך הקלטות שיעור למסמכי ידע מנותחים</li>
+        <li>"עובדים אנושיים שעשו את העבודה - היום כבר לא נמצאים, כי אני לא צריך אותם."</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="who">אילנה וייס</div>
+      <div class="role">מטפלת בחרדות</div>
+      <div class="q">"הייתה לי מחלקה שלמה של מזכירות - ארבע. אני לא אצטרך את זה יותר."</div>
+      <ul>
+        <li>אוטומציה שמחפשת ומשווה שירותים, אוספת ביקורות ומסכמת</li>
+        <li>סוכן תמלול שיחות מכירה, ודף נחיתה אישי שעלה לאוויר</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="who">בת חן לוי</div>
+      <div class="role">סמנכ"לית פיתוח עסקי, חברה בינלאומית</div>
+      <div class="q">"מאז שהצטרפתי אני לא מוטרדת מ-AI יותר. כל הודעה שקפצה לי בפיד הלחיצה אותי, כי חשבתי שכולם יודעים משהו שאני לא."</div>
+      <ul>
+        <li>סוכן שסורק עשר תיקיות ומזהה תעודות איכות שפג תוקפן</li>
+        <li>כלי שמסווג חשבוניות ומחלץ מהן מהות, תאריך וסכום</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="who">מורן טאובר</div>
+      <div class="role">מטפלת ברפואה סינית · עורכת דין בעברה</div>
+      <div class="q">"לקחתי מלא קורסים בחיים. אין מה להשוות את הקפיצה."</div>
+      <ul>
+        <li>סוכנת פיננסית שקוראת חשבוניות, בונה דוחות ומתרגמת אותם לתמחור</li>
+        <li>מנהל תוכן ושיווק שמחובר לצינור הפרסומים ומפרסם אוטומטית</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>רוצים לשמוע עוד ממני?</h2>
+    <p>שלושה פרקים <b>מהפודקאסט שלי, "לומדים AI"</b>:</p>
+
+    <a class="pod" href="https://open.spotify.com/episode/6UJcOVj9fkIiGOrUfWylie">
+      <b>אנשים ששינו את החיים שלהם עם AI - ואיך גם אתם יכולים</b>
+      <span>על התוכנית עצמה, עם דוגמאות אמיתיות של אנשים שעברו אותה</span></a>
+
+    <a class="pod" href="https://open.spotify.com/episode/5W3k6WkyIDbok1nvcsE1kh">
+      <b>ככה בונים עסק שלם עם AI (בלי לשלם משכורות לעובדים)</b>
+      <span>איך נראית אופרציה שלמה שרצה על סוכנים</span></a>
+
+    <a class="pod" href="https://open.spotify.com/episode/0iB07ory456ebG4TOHi3xw">
+      <b>כל האמת על סוכני AI לעסק (במקום עובדים אנושיים)</b>
+      <span>מה סוכן באמת יודע לעשות, ומה לא</span></a>
+
+    <div class="bl" style="margin-top:24px">
+      <p style="font-size:17px"><b>ההשקעה למשתתף: 9,300 ₪</b> - כ-3,100$ לפי השער היום. זהו אותו מחיר בדיוק שאני גובה בישראל.</p>
+      <p style="font-size:15px; color:#35405C; margin-top:10px">תנאי הסף היחיד: מנוי פעיל ל-Claude. זה כלי העבודה לאורך כל התוכנית.<br>
+      הפירוט המלא: <a href="https://agent-course.aimprove.co.il/faq/">agent-course.aimprove.co.il/faq</a></p>
+    </div>
+  </section>
+
+  <section>
+    <div class="links">
+      <h2>לראות בעצמכם</h2>
+      <div class="row"><a href="https://gallery.aimprove.co.il">gallery.aimprove.co.il</a>
+        <span>הגלריה הפומבית - כל מה שהבוגרים בנו בפועל</span></div>
+      <div class="row"><a href="https://bogrim.aimprove.co.il/">bogrim.aimprove.co.il</a>
+        <span>הבוגרים - אפשר לכתוב לכל אחד מהם ישירות ולשאול מה שרוצים</span></div>
+      <div class="row"><a href="https://agent-course.aimprove.co.il">agent-course.aimprove.co.il</a>
+        <span>דף התוכנית המלא</span></div>
+      <div class="row" style="margin:0"><a href="https://www.instagram.com/aimprove.ai/">instagram.com/aimprove.ai</a>
+        <span>מה אני בונה ביומיום</span></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="ask">
+      <h2>מה אני מחפשת</h2>
+      <p style="margin-top:8px"><b>אני מתכננת להגיע לארה"ב פיזית ולהעביר את התוכנית שם</b>, ואני מחפשת אנשים מהקהילה שיעזרו לי להרכיב את זה נכון.</p>
+      <ol>
+        <li><b>חיבור לקהילה</b> - מי שמכיר את האנשים הנכונים ויכול לפתוח דלת: בעלי עסקים, עצמאים ואנשי מקצוע דוברי עברית שהיו מרוויחים מזה.</li>
+        <li><b>עזרה בהרכבת קבוצה</b> - התוכנית עובדת בקבוצות קטנות, ואני צריכה שותף מקומי שיעזור להביא את המשתתפים.</li>
+        <li><b>מקום להעביר בו</b> - חלל שאפשר להתארח בו לימי הבנייה.</li>
+        <li><b>עצה מקומית</b> - מי שמכיר את הקהילה ויכול לומר לי מה יעבוד שם ומה לא. גם זה שווה לי הרבה.</li>
+      </ol>
+      <p style="margin-top:16px"><b>אם אחד מאלה מדבר אליכם - אשמח לשיחה.</b> בלי התחייבות, ובלי שתצטרכו להחליט שום דבר מראש. פשוט נדבר ונראה אם יש כאן משהו.</p>
+      <a class="cta" href="https://wa.me/972545709393?text=%D7%94%D7%99%D7%99%20%D7%A9%D7%9C%D7%94%D7%91%D7%AA%2C%20%D7%A7%D7%A8%D7%90%D7%AA%D7%99%20%D7%90%D7%AA%20%D7%94%D7%9E%D7%A1%D7%9E%D7%9A%20%D7%A2%D7%9C%20%D7%98%D7%99%D7%A8%D7%95%D7%A0%D7%95%D7%AA%20%D7%A1%D7%95%D7%9B%D7%A0%D7%99%D7%9D%20%D7%91%D7%90%D7%A8%D7%94%22%D7%91%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%93%D7%91%D7%A8.">לכתוב לי בוואטסאפ</a>
+    </div>
+    <p style="text-align:center"><a class="dl" href="tironot-usa.pdf">להורדת המסמך כ-PDF</a></p>
+  </section>
+
+  <footer>שלהבת ורדי · אִימפּרוּב · <a href="mailto:connect@aimprove.co.il">connect@aimprove.co.il</a></footer>
+
+</div>
+</body>
+</html>
