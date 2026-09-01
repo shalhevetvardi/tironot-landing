@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agent Bootcamp in the U.S. - Aimprove</title>
+  <meta name="description" content="Business owners leave with an AI team that runs in their place - and the method to build any agent, system or process on their own.">
+  <meta property="og:title" content="Agent Bootcamp in the U.S. - Aimprove">
+  <meta property="og:description" content="Business owners leave with an AI team that runs in their place, and the method to build every agent they will ever need.">
+  <meta property="og:image" content="https://agent-course.aimprove.co.il/usa/en/office-hero.png">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="en_US">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#14093B; --gold:#FFD747; --blue:#2473C8; --green:#4FB81E;
+    --blue-fill:#D8E5F4; --green-fill:#E8F5DC; --gold-fill:#FCEBA4; --purple-fill:#F3F0FF;
+    --ink:#14093B; --muted:#6B6577; --line:#E8E6F0; --card:#FAFAFC;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0; background:#fff; color:var(--ink); direction:ltr;
+    font-family:'Rubik','Helvetica Neue',Arial,sans-serif;
+    font-size:17px; line-height:1.7; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px; margin:0 auto; padding:0 20px 64px}
+  h1{font-size:clamp(28px,7vw,44px); font-weight:800; line-height:1.15; margin:0 0 14px; letter-spacing:-.5px}
+  h2{font-size:clamp(21px,4.6vw,28px); font-weight:700; line-height:1.3; margin:0 0 8px}
+  p{margin:0 0 16px}
+  a{color:var(--blue)}
+  .sub{color:var(--muted); font-size:15px; margin:0 0 20px}
+  section{margin:0 0 44px}
+
+  /* hero */
+  .hero{background:var(--navy); color:#fff; padding:30px 24px 34px; border-radius:0 0 26px 26px; margin:0 0 36px}
+  .hero-in{max-width:760px; margin:0 auto}
+  .hero img.logo{width:66px; height:auto; display:block; margin:0 0 16px}
+  .hero .kick{color:var(--gold); font-size:13px; font-weight:700; letter-spacing:1.6px; margin:0 0 12px}
+  .hero h1{color:#fff}
+  .hero p{color:#CFC9E0; font-size:17px; margin:0}
+  .hero .gold{color:var(--gold); font-weight:600}
+  .switch{display:inline-block; margin:0 0 18px; font-size:14px; color:#CFC9E0;
+          text-decoration:none; border:1px solid #4B3D7A; border-radius:20px; padding:5px 14px}
+  .switch:hover{border-color:var(--gold); color:var(--gold)}
+
+  /* blocks */
+  .bl{background:var(--blue-fill); border-radius:18px; padding:22px 24px; margin:0 0 28px}
+  .bl p{font-size:18px; line-height:1.6; margin:0}
+  .note{background:var(--gold-fill); border-radius:16px; padding:20px 22px; margin:0 0 26px; font-size:16px}
+  .note p:last-child{margin:0}
+  .lang{background:var(--green-fill); border:1px solid #CFE5B8; border-radius:14px;
+        padding:18px 20px; font-size:16px; margin:26px 0 0}
+  .lang p{margin:0}
+  .lang p + p{margin-top:10px}
+
+  /* image */
+  figure{margin:0}
+  figure img{width:100%; height:auto; display:block; border-radius:16px}
+  figcaption{font-size:15px; color:#3A3350; margin-top:12px; line-height:1.65}
+
+  /* legend */
+  .legend{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px 20px; margin-top:18px}
+  .legend h3{font-size:13px; font-weight:700; color:var(--muted); letter-spacing:.6px; margin:0 0 12px}
+  .legend ul{list-style:none; margin:0; padding:0}
+  .legend li{display:flex; gap:12px; align-items:flex-start; padding:6px 0; font-size:15.5px; line-height:1.5}
+  .legend .sw{flex:0 0 20px; margin-top:3px}
+  .legend b{flex:0 0 108px}
+  .legend span.d{color:#4A4360}
+
+  /* steps */
+  .step{display:flex; gap:14px; margin:0 0 20px}
+  .step .n{flex:0 0 32px; height:32px; border-radius:50%; background:var(--navy); color:var(--gold);
+           display:flex; align-items:center; justify-content:center; font-weight:700; font-size:16px}
+  .step h3{margin:2px 0 4px; font-size:18px; font-weight:700}
+  .step p{margin:0; font-size:16px; color:#3A3350; line-height:1.65}
+
+  /* stats */
+  .bignum{background:var(--navy); color:#fff; border-radius:18px; padding:24px; margin:0 0 14px}
+  .bignum .t{font-size:16px; color:#CFC9E0; margin:0 0 6px}
+  .bignum .n{font-size:clamp(28px,7.5vw,40px); font-weight:800; color:var(--gold); line-height:1.05; display:block}
+  .bignum .s{font-size:15px; color:#CFC9E0; margin:8px 0 0}
+  .stats{display:grid; grid-template-columns:repeat(auto-fit,minmax(96px,1fr)); gap:10px}
+  .stat{background:var(--purple-fill); border-radius:14px; padding:16px 8px; text-align:center}
+  .stat b{display:block; font-size:24px; font-weight:800; line-height:1.1}
+  .stat span{display:block; font-size:12.5px; color:#5C5470; margin-top:5px; line-height:1.35}
+
+  /* cards */
+  .card{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px 20px; margin:0 0 12px}
+  .card.hi{background:var(--green-fill); border-color:#CFE5B8}
+  .card .who{font-size:18px; font-weight:700}
+  .card .role{font-size:14px; color:var(--muted); margin:0 0 10px}
+  .card .q{font-style:italic; font-size:16px; margin:0 0 10px; line-height:1.6}
+  .card ul{margin:0; padding-inline-start:20px; font-size:15.5px; color:#3A3350; line-height:1.65}
+  .card li{margin-bottom:4px}
+  .tag{display:inline-block; background:var(--green); color:#fff; font-size:12px; font-weight:700;
+       border-radius:20px; padding:3px 10px; margin-inline-start:8px; vertical-align:middle}
+
+  ul.build{margin:0; padding-inline-start:22px; line-height:1.8}
+  ul.build li{margin-bottom:10px}
+
+  /* pods + links */
+  .pod{display:block; background:var(--card); border:1px solid var(--line); border-radius:14px;
+       padding:15px 18px; margin:0 0 10px; text-decoration:none; color:inherit}
+  .pod b{display:block; color:var(--blue); font-size:16px; line-height:1.4}
+  .pod span{display:block; font-size:14px; color:var(--muted); margin-top:3px}
+  .links{background:var(--navy); border-radius:18px; padding:22px 24px; color:#fff}
+  .links h2{color:var(--gold); font-size:20px; margin:0 0 14px}
+  .links a{display:block; color:#fff; font-size:16px; text-decoration:none; border-bottom:1px solid #4B3D7A; padding-bottom:2px}
+  .links .row{margin:0 0 14px}
+  .links .row span{display:block; color:#A79ECC; font-size:14px; margin-top:3px}
+  .he{display:inline-block; background:#4B3D7A; color:#E8E3F5; font-size:11px; font-weight:600;
+      border-radius:10px; padding:1px 8px; margin-inline-start:6px; vertical-align:middle; letter-spacing:.3px}
+
+  /* ask + CTA */
+  .ask{background:var(--gold-fill); border-radius:20px; padding:26px 24px}
+  .ask ol{margin:14px 0 0; padding-inline-start:22px; line-height:1.7}
+  .ask li{margin-bottom:12px}
+  .give{background:#fff; border:1px solid #EBD98A; border-radius:14px; padding:17px 20px; margin:20px 0 0}
+  .give p{margin:0; font-size:16.5px; line-height:1.6}
+  .cta{display:block; background:var(--navy); color:var(--gold); text-align:center;
+       font-size:18px; font-weight:700; text-decoration:none; padding:18px 24px;
+       border-radius:50px; margin:22px auto 0; max-width:360px}
+  footer{text-align:center; color:#8A8398; font-size:14px; margin-top:40px}
+  hr{border:none; border-top:1px solid var(--line); margin:36px 0}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-in">
+    <img class="logo" src="tironot-logo-white.png" alt="Agent Bootcamp">
+    <a class="switch" href="../">✦ לגרסה העברית</a>
+    <div class="kick">AIMPROVE · AGENT BOOTCAMP</div>
+    <h1>People are building themselves<br>an AI team that works for them.</h1>
+    <p>I'm Shalhevet Vardi, founder of Aimprove - and I want to bring my Agent Bootcamp to a community in the U.S.<br>
+    <span class="gold">Here is what it is, who it works for, and what I'm looking for.</span></p>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <section>
+    <h2>I run an entire company. It has no employees.</h2>
+    <p><b>Aimprove is an AI company I founded in 2022.</b></p>
+    <p>Today I run an operation that would normally require dozens of people - marketing, sales, content, curriculum, customer service, operations and finance. All of it runs, every day, including while I sleep.</p>
+    <p>All of that work is done by <b>a team of AI agents I built myself</b>. There is not one human employee.</p>
+  </section>
+
+  <section>
+    <h2>This is what my business looks like from the inside</h2>
+    <p>This is a real screenshot from the actual system my AI team runs on - my AI office. <b>Every colored area is a whole department in the business, and every cube is an agent doing the work of a person.</b></p>
+
+    <figure>
+      <img src="office-hero.png" alt="The Aimprove AI office - colored departments containing agents">
+      <figcaption>And they talk to each other - one agent hands work to the next, without me in the middle.</figcaption>
+    </figure>
+
+    <div class="legend">
+      <h3>WHAT YOU ARE LOOKING AT</h3>
+      <ul>
+        <li><svg class="sw" width="18" height="18"><rect x="3" y="3" width="12" height="12" rx="2" fill="#8B7BC8"/></svg><b>Cube</b><span class="d">An agent - an AI worker that owns a domain</span></li>
+        <li><svg class="sw" width="18" height="18"><polygon points="9,3 15,15 3,15" fill="#F0A868"/></svg><b>Cone</b><span class="d">A tool the agent knows how to operate</span></li>
+        <li><svg class="sw" width="18" height="18"><circle cx="9" cy="9" r="6" fill="#5FBFD6"/></svg><b>Sphere</b><span class="d">A working rule the agent follows</span></li>
+        <li><svg class="sw" width="18" height="18"><rect x="5" y="3" width="8" height="12" rx="4" fill="#4FB81E"/></svg><b>Cylinder</b><span class="d">A knowledge document the agent reads</span></li>
+        <li><svg class="sw" width="18" height="18"><circle cx="9" cy="9" r="6" fill="none" stroke="#E4A0C0" stroke-width="3"/></svg><b>Ring</b><span class="d">An automated process that runs end to end</span></li>
+        <li><svg class="sw" width="18" height="18"><circle cx="9" cy="9" r="6.5" fill="#fff" stroke="#B9B3C9" stroke-width="1.5"/><circle cx="9" cy="9" r="3" fill="#B9B3C9"/></svg><b>Coin with logo</b><span class="d">A connection to an outside system - WhatsApp, Gmail, Notion, Instagram</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>And this is not a technical talent. It's a method.</h2>
+    <p><b>I am not a programmer.</b> That is exactly why I had to develop a method that lets a non-technical person build any agent they need - without code, and without depending on a developer.</p>
+    <p>The method works. <b>And it is precisely what I teach in the Agent Bootcamp.</b></p>
+  </section>
+
+  <hr>
+
+  <section>
+    <h2>What the Agent Bootcamp is</h2>
+    <p class="sub">A comprehensive, 360-degree training program</p>
+
+    <div class="bl">
+      <p>Business owners finish the program with <b>an AI team that runs in their place</b> - and with the method and the tools to build any agent, system or process <b>on their own, without getting stuck.</b></p>
+    </div>
+
+    <p>In every session we build - on the participant's real business, on the work that actually weighs on them. Whoever comes in with a problem leaves with a system that solves it.</p>
+  </section>
+
+  <section>
+    <h2>Examples of what participants actually built</h2>
+    <ul class="build">
+      <li><b>A whole department of four assistants - replaced by a single agent.</b> Document editing, summaries, transcription and financial analysis. Saving tens of thousands of shekels a month.</li>
+      <li><b>A virtual office with eight departments and a supervising agent routing between them</b> - the departments talk to each other and keep working while the owner sleeps.</li>
+      <li><b>A commercial app with 20,000 users and 1,500 paying subscribers</b> - built by a participant during the program.</li>
+      <li><b>An agent that reads an entire public tender, summarizes the qualifying terms, and decides whether it is even worth bidding.</b> "She reads a tender faster than I do - and knows how to tell me 'not worth it'."</li>
+      <li><b>An agent that reads nine client WhatsApp groups</b> - sorts by urgency and delivers a morning summary with draft replies ready to send.</li>
+      <li><b>Half the working day of a VP at an international company</b> - handed over to agents she built herself.</li>
+      <li><b>An agent that worked twelve hours alone while its owner slept</b> - and had the job finished by morning.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>How the program is structured</h2>
+
+    <div class="note">
+      <p><b>The original program runs five weeks.</b> For the U.S. edition I am planning adaptations that fit it into roughly three weeks - <b>exactly the same number of sessions</b>, concentrated, rather than spread over a longer period.</p>
+      <p><b>And the sessions are about 20% of the program.</b> The other 80% is the work itself: drills, build exercises and assignments that each participant applies to their own business - guided by us and structured, not "go practice on your own".</p>
+    </div>
+
+    <div class="step"><div class="n">1</div><div><h3>Before we start - personal setup</h3>
+      <p>We set up each participant's working environment and build their first agent with them. Nobody arrives at the first session facing a blank screen.</p></div></div>
+
+    <div class="step"><div class="n">2</div><div><h3>The build sessions</h3>
+      <p>Intensive sessions where we build together. Not lectures - work. Each person advances on their own system, with close support.</p></div></div>
+
+    <div class="step"><div class="n">3</div><div><h3>Assignments and drills - step by step</h3>
+      <p>Between sessions there are drills that take each participant step by step toward their own system: deep work with Claude Code, and a gradual understanding of how you build an agent, how you build a complete system, and how you build an AI office you can keep expanding over time.</p></div></div>
+
+    <div class="step"><div class="n">4</div><div><h3>Between sessions - you are not on your own</h3>
+      <p>Sharpening sessions for questions and consultation, plus the Aimprove AI agent team available for help at any stage. Anyone who gets stuck does not wait for the next session.</p></div></div>
+
+    <div class="step"><div class="n">5</div><div><h3>Afterward - everything stays</h3>
+      <p>The recordings, the learning-materials site, and everything that was built. With no time limit. And most importantly - the method stays, and with it <b>the ability to build any agent, system or automated process you can imagine.</b> Any business problem that comes up, you can build an end-to-end solution for it, quickly and easily, and one that keeps working over time.</p></div></div>
+
+    <div class="lang">
+      <p><b>⚠️ The program is taught in Hebrew.</b> All sessions, materials and support are in Hebrew - so it fits Hebrew-speaking business owners in the community.</p>
+      <p>This page is in English so it is easy to read and pass along. <b>The participants themselves need to be comfortable in Hebrew.</b></p>
+    </div>
+  </section>
+
+  <hr>
+
+  <section>
+    <h2>What participants have already built</h2>
+    <div class="bignum">
+      <p class="t">37 participants built AI systems that save</p>
+      <span class="n">₪25,290,000</span>
+      <p class="s">roughly $8.5M · without writing a single line of code · the equivalent of 101,160 working hours</p>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>37</b><span>graduates who built<br>AI systems</span></div>
+      <div class="stat"><b>166</b><span>agents<br>built</span></div>
+      <div class="stat"><b>336</b><span>custom<br>tools</span></div>
+      <div class="stat"><b>281</b><span>automated<br>processes</span></div>
+      <div class="stat"><b>490</b><span>knowledge<br>documents</span></div>
+    </div>
+    <p style="margin-top:16px">Every one of those is publicly visible in the gallery, with the name of the person who built it and what it does:<br>
+    <a href="https://gallery.aimprove.co.il">gallery.aimprove.co.il</a> <span class="he" style="background:#E8E6F0;color:#5C5470">in Hebrew</span></p>
+  </section>
+
+  <section>
+    <h2>A few graduate stories</h2>
+    <p class="sub">Most of them arrived with no technical background at all. And by the way - they agreed to be contacted directly:<br>
+    <a href="https://bogrim.aimprove.co.il/">bogrim.aimprove.co.il</a> <span class="he" style="background:#E8E6F0;color:#5C5470">in Hebrew</span></p>
+
+    <div class="card hi">
+      <div class="who">Dolev Deri <span class="tag">who sent you this link</span></div>
+      <div class="role">Owner of an advertising agency</div>
+      <div class="q">"If someone asks me whether it's worth going - it's the deal of a lifetime. Worth dropping everything and showing up."</div>
+      <ul>
+        <li>An automated daily brief - copy for every social network, with generated images</li>
+        <li>Full podcast processing - editing, audio and upload</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="who">Ron Alon</div>
+      <div class="role">Entrepreneur</div>
+      <div class="q">"It's a 180-degree turnaround. I have an office with 8 departments, 20 tools, and a supervising agent called Captain Eddie."</div>
+      <ul>
+        <li>A competitor-research skill, and a process that turns lesson recordings into analyzed knowledge documents</li>
+        <li>"The human employees who used to do that work are no longer here, because I don't need them."</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="who">Ilana Weiss</div>
+      <div class="role">Anxiety therapist</div>
+      <div class="q">"I had a whole department of assistants - four of them. I won't need that anymore."</div>
+      <ul>
+        <li>An automation that researches and compares services, collects reviews and summarizes them</li>
+        <li>A sales-call transcription agent, and a personal landing page that went live</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="who">Bat Chen Levi</div>
+      <div class="role">VP Business Development, international company</div>
+      <div class="q">"Since I joined I'm not anxious about AI anymore. Every post in my feed used to stress me out, because I thought everyone knew something I didn't."</div>
+      <ul>
+        <li>An agent that scans ten folders and flags expired quality certificates</li>
+        <li>A tool that classifies invoices and extracts their subject, date and amount</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="who">Moran Tauber</div>
+      <div class="role">Chinese-medicine practitioner · former attorney</div>
+      <div class="q">"I've taken a lot of courses in my life. There is no comparison to this jump."</div>
+      <ul>
+        <li>A financial agent that reads invoices, builds reports and translates them into pricing</li>
+        <li>A content and marketing manager wired into the publishing pipeline that posts automatically</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>Want to hear more from me?</h2>
+    <p>Three episodes <b>from my podcast, "Lomdim AI" (Learning AI)</b> <span class="he" style="background:#E8E6F0;color:#5C5470">in Hebrew</span>:</p>
+
+    <a class="pod" href="https://open.spotify.com/episode/6UJcOVj9fkIiGOrUfWylie">
+      <b>People who changed their lives with AI - and how you can too</b>
+      <span>About the program itself, with real examples of people who went through it</span></a>
+
+    <a class="pod" href="https://open.spotify.com/episode/5W3k6WkyIDbok1nvcsE1kh">
+      <b>How to build an entire business with AI (without paying salaries)</b>
+      <span>What a full operation running on agents actually looks like</span></a>
+
+    <a class="pod" href="https://open.spotify.com/episode/0iB07ory456ebG4TOHi3xw">
+      <b>The whole truth about AI agents for business (instead of human employees)</b>
+      <span>What an agent can really do, and what it can't</span></a>
+
+    <div class="bl" style="margin-top:24px">
+      <p style="font-size:17px"><b>Investment per participant: ₪9,300</b> - roughly $3,100 at today's rate. That is exactly the same price I charge in Israel.</p>
+      <p style="font-size:15px; color:#35405C; margin-top:10px">The one prerequisite: an active Claude subscription. That is the working tool throughout the program.<br>
+      Full details: <a href="https://agent-course.aimprove.co.il/faq/">agent-course.aimprove.co.il/faq</a> <span class="he" style="background:#E8E6F0;color:#5C5470">in Hebrew</span></p>
+    </div>
+  </section>
+
+  <section>
+    <div class="links">
+      <h2>See for yourself</h2>
+      <div class="row"><a href="https://gallery.aimprove.co.il">gallery.aimprove.co.il</a>
+        <span>The public gallery - everything the graduates actually built <span class="he">Hebrew</span></span></div>
+      <div class="row"><a href="https://bogrim.aimprove.co.il/">bogrim.aimprove.co.il</a>
+        <span>The graduates - you can write to any of them directly and ask anything <span class="he">Hebrew</span></span></div>
+      <div class="row"><a href="https://agent-course.aimprove.co.il">agent-course.aimprove.co.il</a>
+        <span>The full program page <span class="he">Hebrew</span></span></div>
+      <div class="row" style="margin:0"><a href="https://www.instagram.com/aimprove.ai/">instagram.com/aimprove.ai</a>
+        <span>What I'm building day to day</span></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="ask">
+      <h2>What I'm looking for</h2>
+      <p style="margin-top:8px"><b>I'm planning to come to the U.S. in person and run the program there</b>, and I'm looking for people in the community who can help me put it together properly.</p>
+      <ol>
+        <li><b>A connection to the community</b> - someone who knows the right people and can open a door: Hebrew-speaking business owners, freelancers and professionals who would benefit from this.</li>
+        <li><b>A place to teach in</b> - a space that could host the sessions.</li>
+        <li><b>Help understanding where to promote it, and to whom</b> - someone who knows the community and can tell me where it's worth promoting the Agent Bootcamp, and which people to approach.</li>
+      </ol>
+      <div class="give"><p><b>And in return</b> - I'd be glad to reserve you a seat in the program, at no cost.</p></div>
+      <p style="margin:18px 0 0"><b>If any of these speaks to you - I'd love it if you wrote to me on WhatsApp.</b></p>
+      <a class="cta" href="https://wa.me/972545709393?text=Hi%20Shalhevet%2C%20I%20read%20the%20page%20about%20the%20Agent%20Bootcamp%20in%20the%20U.S.%20and%20I%27d%20love%20to%20talk.">Message me on WhatsApp</a>
+    </div>
+    <p style="text-align:center; margin-top:18px"><a href="../">לגרסה העברית של הדף ←</a></p>
+  </section>
+
+  <footer>Shalhevet Vardi · Aimprove · <a href="mailto:connect@aimprove.co.il">connect@aimprove.co.il</a></footer>
+
+</div>
+</body>
+</html>
