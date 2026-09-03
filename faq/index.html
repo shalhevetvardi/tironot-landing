@@ -489,6 +489,25 @@
     .coverflow.is-strip .cf-cap { font-size: 13px; padding: 22px 10px 9px 10px; }
     .coverflow.is-single .cf-play span { width: 58px; height: 58px; }
     .coverflow.is-single .cf-play span::before { border-width: 11px 0 11px 18px; }
+
+    /* ---------- דסקטופ: תקרה לאריח + מניפת קאברפלו ----------
+       "75% מרוחב המכל" נכון בנייד (נותן ~280px) ושגוי לגמרי במסך רחב:
+       שם המכל 1138px והאריח יצא 854x1067 - גבוה ממסך שלם. התקרה מחזירה
+       את האריח לגודל הפיזי שאושר בנייד, והמניפה מחליפה את הערימה
+       השטוחה - השכנים נפרשים לצדדים בזווית, כך שרואים שיש עוד סרטונים.
+       --cf-card הוא מקור-האמת היחיד לרוחב, וה-JS קורא אותו מכאן. */
+    @media (min-width: 700px) {
+      .coverflow.is-single .cf-item { width: min(100%, 340px); margin: 0 auto; }
+      .coverflow.is-strip {
+        --cf-card: 320px;
+        width: 100%; align-self: auto; margin: 0 0 6px 0;
+        height: 452px; aspect-ratio: auto; overflow: hidden;
+        perspective: 1400px;
+      }
+      .coverflow.is-strip .cf-stage { transform-style: preserve-3d; }
+      .coverflow.is-strip .cf-item { width: var(--cf-card); height: 400px; aspect-ratio: auto; }
+      .coverflow.is-strip .cf-cap { font-size: 12px; padding: 18px 9px 8px 9px; }
+    }
     /* ---------- INLINE PLAYER (מתנגן בתוך האריח על הכרטיס) ----------
        זו ברירת המחדל בלחיצה על סרטון - אותו גודל שהאריח כבר מוצג בו,
        לא מסך מלא. הגדלה היא פעולה נפרדת ומפורשת (כפתור ⤢ למטה). */
@@ -1790,14 +1809,42 @@ window.interdeal = {
       if (single) nav.style.display = 'none';
       function layout() {
         if (single) { items[0].tabIndex = 0; return; }
-        // נמדד בכל פעם, כדי שסיבוב מסך/רוחב עמודה אחר לא ישברו את המרווח
-        var step = (items[0].getBoundingClientRect().width || 257) + 10;
+        /* בדסקטופ הרוחב נלקח מ---cf-card שב-CSS ולא נמדד. מדידה מחזירה 0
+           כל עוד הקטגוריה/השאלה סגורה - וזה בדיוק המצב שבו layout רץ
+           לראשונה - ומספר-קסם שנשמר מאותו רגע נשאר שגוי לתמיד. משתנה
+           CSS נקרא נכון גם כשהאזור מוסתר, ולכן אין כאן "רגע חשיפה" לתפוס. */
+        var card = parseFloat(getComputedStyle(cf).getPropertyValue('--cf-card'));
+        var fan = card > 0;
+        var w = fan ? card : (items[0].getBoundingClientRect().width || 257);
         items.forEach(function (it, i) {
-          var off = i - active, abs = Math.abs(off);
-          it.style.transform = 'translate(-50%, -50%) translateX(' + (off * step) + 'px)';
-          it.style.opacity = off === 0 ? 1 : 0.45;
+          var off = i - active, tr, op, zi;
+          if (fan) {
+            /* גלישה מעגלית לתצוגה בלבד: בלעדיה, כשהפעיל הוא הראשון, כל
+               השכנים נערמים לצד אחד וחצי הרוחב נשאר ריק. הניווט עצמו
+               (חצים/נקודות/החלקה) נשאר ליניארי בדיוק כפי שהיה. */
+            var half = items.length / 2;
+            if (off > half) off -= items.length;
+            else if (off < -half) off += items.length;
+          }
+          var abs = Math.abs(off), dir = off < 0 ? -1 : 1;
+          if (fan) {
+            var lvl = Math.min(abs, 2);                       // מעבר לזה - מוסתר
+            var x = lvl === 0 ? 0 : dir * (lvl === 1 ? 0.86 : 1.55) * w;
+            var ry = lvl === 0 ? 0 : -dir * (lvl === 1 ? 24 : 38);
+            var sc = lvl === 0 ? 1 : (lvl === 1 ? 0.84 : 0.68);
+            tr = 'translate(-50%, -50%) translateX(' + x + 'px) rotateY(' + ry + 'deg) scale(' + sc + ')';
+            op = abs === 0 ? 1 : (abs === 1 ? 0.65 : (abs === 2 ? 0.34 : 0));
+            zi = 30 - lvl * 10;
+          } else {
+            tr = 'translate(-50%, -50%) translateX(' + (off * (w + 10)) + 'px)';
+            op = off === 0 ? 1 : 0.45;
+            zi = 10 - abs;
+          }
+          it.style.transform = tr;
+          it.style.opacity = op;
           it.style.filter = off === 0 ? 'none' : 'brightness(.7)';
-          it.style.zIndex = 10 - abs; it.style.pointerEvents = abs > 1 ? 'none' : 'auto';
+          it.style.zIndex = zi;
+          it.style.pointerEvents = abs > (fan ? 2 : 1) ? 'none' : 'auto';
           it.tabIndex = off === 0 ? 0 : -1;
         });
         dots.forEach(function (d, i) { d.classList.toggle('on', i === active); });
