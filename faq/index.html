@@ -497,16 +497,21 @@
        השטוחה - השכנים נפרשים לצדדים בזווית, כך שרואים שיש עוד סרטונים.
        --cf-card הוא מקור-האמת היחיד לרוחב, וה-JS קורא אותו מכאן. */
     @media (min-width: 700px) {
-      .coverflow.is-single .cf-item { width: min(100%, 340px); margin: 0 auto; }
+      /* 9:16 - היחס שבו הסרטונים באמת צולמו. בנייד האריח 4/5 והפוסטר
+         נחתך מלמטה בכוונה; כאן אין סיבה לחתוך, ולכן היחס המלא. */
+      .coverflow.is-single .cf-item { width: min(100%, 300px); margin: 0 auto; aspect-ratio: 9 / 16; }
       .coverflow.is-strip {
-        --cf-card: 320px;
+        --cf-card: 270px;
         width: 100%; align-self: auto; margin: 0 0 6px 0;
-        height: 452px; aspect-ratio: auto; overflow: hidden;
+        height: 520px; aspect-ratio: auto; overflow: hidden;
         perspective: 1400px;
       }
       .coverflow.is-strip .cf-stage { transform-style: preserve-3d; }
-      .coverflow.is-strip .cf-item { width: var(--cf-card); height: 400px; aspect-ratio: auto; }
+      .coverflow.is-strip .cf-item { width: var(--cf-card); height: 480px; aspect-ratio: auto; }
       .coverflow.is-strip .cf-cap { font-size: 12px; padding: 18px 9px 8px 9px; }
+      /* מנווטים בלחיצה על הסרטון הצדדי או בגרירה - שניהם כבר בקוד -
+         ולכן שורת הנקודות מיותרת כאן ורק מוסיפה רעש מתחת למניפה. */
+      .coverflow.is-strip + .cf-nav { display: none; }
     }
     /* ---------- INLINE PLAYER (מתנגן בתוך האריח על הכרטיס) ----------
        זו ברירת המחדל בלחיצה על סרטון - אותו גודל שהאריח כבר מוצג בו,
