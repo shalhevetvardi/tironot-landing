@@ -428,6 +428,180 @@
     .tl-body p { margin:0; font-size:16px; line-height:1.7; }
     .tl-body .tl-title { display:block; font-weight:800; color:var(--navy); font-size:16.5px; margin-bottom:4px; }
     .tl-body em { color:var(--blue); font-style:italic; }
+
+    /* ---------- נגן ההמלצות - הועתק מדף הבוגרים, אותו נגן מאושר ---------- */
+    /* ---------- COVERFLOW VIDEO GALLERY (card back) ---------- */
+    .gallery-label { font-size: 13px; font-weight: 700; color: var(--navy); margin: 2px auto 8px auto; }
+    .gallery-label .vids-ico { color: var(--c, var(--gold)); }
+    .coverflow { position: relative; width: 100%; height: 300px; margin: 0 auto 6px auto; perspective: 900px; }
+    /* pan-y = גלילה אנכית של הדף נשארת של הדפדפן, החלקה אופקית שלנו */
+    .cf-stage { position: absolute; inset: 0; transform-style: preserve-3d; touch-action: pan-y; }
+    .cf-item { position: absolute; top: 50%; left: 50%; width: 150px; height: 267px; margin: -133px 0 0 -75px;
+      border-radius: 12px; overflow: hidden; cursor: pointer; background: #000;
+      -webkit-user-select: none; user-select: none; -webkit-touch-callout: none;
+      box-shadow: 0 10px 26px rgba(20,9,59,.28); transition: transform .45s cubic-bezier(.2,.7,.2,1), opacity .45s, filter .45s; }
+    .cf-item img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
+    .cf-item iframe { width: 100%; height: 100%; border: 0; display: block; }
+    .cf-play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; }
+    .cf-play span { width: 46px; height: 46px; border-radius: 50%; background: rgba(20,9,59,.62); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 14px rgba(0,0,0,.3); }
+    .cf-play span::before { content: ""; border-style: solid; border-width: 9px 0 9px 15px; border-color: transparent transparent transparent #fff; margin-right: -3px; }
+    .cf-cap { position: absolute; bottom: 0; left: 0; right: 0; padding: 18px 8px 7px 8px; font-size: 11px; font-weight: 700; color: #fff; text-align: center; background: linear-gradient(to top, rgba(0,0,0,.72), transparent); pointer-events: none; }
+    .cf-nav { display: flex; align-items: center; justify-content: center; gap: 14px; margin: 0 auto 10px auto; }
+    .cf-arrow { width: 34px; height: 34px; border-radius: 50%; border: none; background: #fff; color: var(--navy); font-size: 18px; font-weight: 800; cursor: pointer; box-shadow: 0 3px 10px rgba(20,9,59,.16); display: flex; align-items: center; justify-content: center; transition: transform .15s; }
+    .cf-arrow:hover { transform: scale(1.1); }
+    .cf-dots { display: flex; gap: 22px; align-items: center; }
+    .cf-dot { position: relative; width: 8px; height: 8px; border-radius: 50%; background: #D5DCE8; border: none; cursor: pointer; padding: 0; transition: background .2s, transform .2s; }
+    .cf-dot.on { background: var(--c, var(--gold)); transform: scale(1.25); }
+    /* מטרת מגע 30x44 סביב נקודה של 8px - הנקודה נשארת קטנה למראה, האצבע
+       מקבלת שטח אמיתי. 30 ולא 44 ברוחב כדי שהמטרות לא יחפפו זו לזו. */
+    .cf-dot::after { content: ""; position: absolute; top: 50%; left: 50%; width: 30px; height: 44px; transform: translate(-50%, -50%); }
+    /* ---------- גלריה: תצוגה לפי מספר הסרטונים ---------- */
+    /* סרטון בודד - בלי קרוסלה. הפוסטר תופס את כל רוחב הכרטיס.
+       (היה 150px צף בתוך קופסה של 299 - רוחב שהוקטן בשביל שכנים שלא קיימים.) */
+    .coverflow.is-single { height: auto; perspective: none; }
+    .coverflow.is-single .cf-stage { position: static; transform-style: flat; }
+    .coverflow.is-single .cf-item {
+      position: relative; top: auto; left: auto; margin: 0;
+      width: 100%; height: auto; aspect-ratio: 4 / 5;
+      transform: none; opacity: 1; filter: none;
+    }
+    /* כמה סרטונים - רצועה שטוחה שנשפכת לרוחב הכרטיס המלא, במקום תלת-ממד.
+       השכן מציץ בקצה ומרמז "יש עוד", בלי לגזול חצי מהרוחב. */
+    /* הרחבה מעבר לפדינג של הכרטיס דרך שוליים שליליים ו-stretch, ולא דרך
+       calc על הרוחב - פריט flex שרחב מהמכל אינו ממורכז אמין (יצא מוסט 22px) */
+    .coverflow.is-strip {
+      height: auto; perspective: none;
+      align-self: stretch; width: auto; margin: 0 -22px 6px -22px;
+      aspect-ratio: 20 / 19;
+    }
+    .coverflow.is-strip .cf-stage { transform-style: flat; }
+    .coverflow.is-strip .cf-item {
+      width: 75%; height: auto; aspect-ratio: 4 / 5; margin: 0;
+    }
+    /* הפוסטר הוא פריים 9:16 והאריח רחב יותר, כלומר יש חיתוך. חותכים מלמטה
+       ולא מהאמצע - למעלה יושב כרטיס-השם של הסרטון, ובתחתית ממילא יושב
+       הכיתוב שלנו. */
+    .coverflow.is-single .cf-item img, .coverflow.is-strip .cf-item img { object-position: center top; }
+    /* בסרטון בודד הכיתוב מיותר - אין בין מה לבין מה להבחין, כרטיס-השם
+       שבפוסטר כבר אומר מי זו, והוא התנגש עם הכתובית הצרובה בסרטון */
+    .coverflow.is-single .cf-cap { display: none; }
+    /* ברצועה הכיתוב כן מבחין בין הסרטונים - וגדל יחד עם האריח */
+    .coverflow.is-strip .cf-cap { font-size: 13px; padding: 22px 10px 9px 10px; }
+    .coverflow.is-single .cf-play span { width: 58px; height: 58px; }
+    .coverflow.is-single .cf-play span::before { border-width: 11px 0 11px 18px; }
+    /* ---------- INLINE PLAYER (מתנגן בתוך האריח על הכרטיס) ----------
+       זו ברירת המחדל בלחיצה על סרטון - אותו גודל שהאריח כבר מוצג בו,
+       לא מסך מלא. הגדלה היא פעולה נפרדת ומפורשת (כפתור ⤢ למטה). */
+    .cf-item-player { position: absolute; inset: 0; }
+    .cf-item-holder { position: absolute; inset: 0; }
+    .cf-item-holder iframe { width: 100%; height: 100%; border: 0; display: block; }
+    /* הסרטון עצמו לוקח כ-2 שניות אמיתיות להתחיל (בדיקה חיה) - בלי משוב
+       חזותי בזמן הזה זה מרגיש תקוע. משאירים את הפוסטר + ספינר עד לרגע
+       שהניגון באמת מתחיל (לא ready() - זה מוקדם מדי, עדיין מסך שחור). */
+    .cf-item-loading { position: absolute; inset: 0; z-index: 1; transition: opacity .25s ease; }
+    .cf-item-loading.hide { opacity: 0; pointer-events: none; }
+    .cf-item-loading img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+    .cf-item-spinner {
+      position: absolute; top: 50%; left: 50%; width: 32px; height: 32px; margin: -16px 0 0 -16px;
+      border: 3px solid rgba(255,255,255,.35); border-top-color: #fff; border-radius: 50%;
+      animation: cf-spin .8s linear infinite;
+    }
+    @keyframes cf-spin { to { transform: rotate(360deg); } }
+    .cf-item-tap { position: absolute; inset: 0; z-index: 2; padding: 0; border: 0; background: transparent; cursor: pointer; }
+    .cf-item-icon {
+      position: absolute; top: 50%; left: 50%; width: 52px; height: 52px; margin: -26px 0 0 -26px;
+      border-radius: 50%; background: rgba(20,9,59,.58);
+      display: flex; align-items: center; justify-content: center;
+      pointer-events: none; opacity: 0; transition: opacity .3s ease; z-index: 2;
+    }
+    .cf-item-icon.show { opacity: 1; }
+    .cf-item-icon svg { width: 24px; height: 24px; fill: #fff; }
+    .cf-item-expand {
+      position: absolute; z-index: 3; top: 8px; left: 8px; width: 32px; height: 32px;
+      border-radius: 50%; border: none; background: rgba(0,0,0,.5); color: #fff;
+      display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0;
+    }
+    .cf-item-expand svg { width: 16px; height: 16px; fill: currentColor; }
+    .cf-item-sound {
+      position: absolute; z-index: 3; bottom: 8px; left: 50%; transform: translateX(-50%);
+      display: inline-flex; align-items: center; gap: 5px; white-space: nowrap;
+      background: var(--gold); color: var(--navy); border: none; border-radius: 50px;
+      padding: 6px 12px; font-size: 11px; font-weight: 700; cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,.4);
+    }
+    .cf-item-sound[hidden] { display: none; }
+    .cf-item-sound svg { width: 12px; height: 12px; fill: currentColor; }
+    /* ---------- VIDEO LIGHTBOX - פעולת "הגדלה" מפורשת בלבד, לא ברירת מחדל ---------- */
+    .cf-lb {
+      position: fixed; inset: 0; z-index: 9000;
+      background: rgba(12,6,32,.94);
+      display: flex; align-items: center; justify-content: center;
+      padding: 0; opacity: 0; transition: opacity .2s ease;
+    }
+    .cf-lb[hidden] { display: none; }
+    .cf-lb.is-open { opacity: 1; }
+    /* --lb-ar = יחס רוחב/גובה של הסרטון; נקבע מהנגן עצמו, 9:16 עד שידוע.
+       הסרטון לוקח את כל מה שהמסך נותן - ברוחב או בגובה, לפי מה שנגמר קודם. */
+    .cf-lb-frame {
+      position: relative; background: #000; border-radius: 14px; overflow: hidden;
+      width: min(100%, calc(94vh * var(--lb-ar, .5625)));
+      aspect-ratio: var(--lb-ar, .5625);
+      box-shadow: 0 18px 60px rgba(0,0,0,.55);
+    }
+    .cf-lb-holder { position: absolute; inset: 0; }
+    .cf-lb-frame iframe { width: 100%; height: 100%; border: 0; display: block; }
+    /* אותה סיבה כמו .cf-item-loading - הסרטון נטען מחדש (גם אם כבר התנגן
+       באריח לפני ההגדלה) ולוקח כ-2 שניות; פוסטר+ספינר במקום מסך שחור */
+    .cf-lb-loading { position: absolute; inset: 0; z-index: 1; transition: opacity .25s ease; }
+    .cf-lb-loading.hide { opacity: 0; pointer-events: none; }
+    .cf-lb-loading img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+    .cf-lb-spinner {
+      position: absolute; top: 50%; left: 50%; width: 44px; height: 44px; margin: -22px 0 0 -22px;
+      border: 4px solid rgba(255,255,255,.35); border-top-color: #fff; border-radius: 50%;
+      animation: cf-spin .8s linear infinite;
+    }
+    /* שכבה שקופה מעל ה-iframe - מבטיחה שהקשה = עצירה/המשך ותו לא */
+    .cf-lb-tap { position: absolute; inset: 0; z-index: 2; padding: 0; border: 0; background: transparent; cursor: pointer; }
+    .cf-lb-icon {
+      position: absolute; top: 50%; left: 50%; width: 74px; height: 74px; margin: -37px 0 0 -37px;
+      border-radius: 50%; background: rgba(20,9,59,.58);
+      display: flex; align-items: center; justify-content: center;
+      pointer-events: none; opacity: 0; transition: opacity .3s ease; z-index: 2;
+    }
+    .cf-lb-icon.show { opacity: 1; }
+    .cf-lb-icon svg { width: 32px; height: 32px; fill: #fff; }
+    /* יושב מעל הסרטון (שתופס עכשיו את כל הרוחב), ולכן צריך רקע כהה משלו
+       ומרווח מהמצלמה/הכפתורים של הטלפון */
+    .cf-lb-close {
+      position: absolute; z-index: 2;
+      top: calc(12px + env(safe-area-inset-top, 0px));
+      left: calc(12px + env(safe-area-inset-left, 0px));
+      width: 44px; height: 44px;
+      border-radius: 50%; border: none; background: rgba(0,0,0,.5); color: #fff;
+      font-size: 27px; line-height: 1; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .cf-lb-close:hover { background: rgba(0,0,0,.72); }
+    .cf-lb-sound {
+      position: absolute; z-index: 2; bottom: 76px; left: 50%; transform: translateX(-50%);
+      display: inline-flex; align-items: center; gap: 7px; white-space: nowrap;
+      background: var(--gold); color: var(--navy); border: none; border-radius: 50px;
+      padding: 10px 18px; font-size: 14px; font-weight: 700; cursor: pointer;
+      box-shadow: 0 6px 18px rgba(0,0,0,.4);
+    }
+    .cf-lb-sound[hidden] { display: none; }
+    .cf-lb-sound svg { width: 16px; height: 16px; fill: currentColor; }
+    /* הכיתוב יושב על הסרטון ולא מתחתיו, כדי לא לגזול ממנו גובה */
+    .cf-lb-cap {
+      position: absolute; left: 0; right: 0; bottom: 0; margin: 0;
+      padding: 32px 14px 12px 14px; color: #fff; font-size: 15px; font-weight: 700;
+      text-align: center; pointer-events: none;
+      background: linear-gradient(to top, rgba(0,0,0,.78), transparent);
+    }
+    @media (max-width: 480px) {
+      .hero h1 { font-size: 28px; }
+      .grid { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
@@ -546,11 +720,37 @@
           </div>
         </details>
         <details>
+          <summary>מה ההבדל בינכם לבין קורסים אחרים על קלוד?<span class="arrow">⌄</span></summary>
+          <div class="answer">
+            <p>נתחיל דווקא מהחלק הלא נעים: יש קורסים זולים מאיתנו. הרבה יותר זולים. מי שמחפש את המחיר הנמוך ביותר ימצא אותו במקום אחר, וזו לא בושה.</p>
+            <p>אבל מה שמקבלים שם הוא בדרך כלל <strong>הכלי</strong> - איזה כפתור ללחוץ, איזו פקודה להקליד, איך לגרום למשהו לעבוד פעם אחת. מה שלא מקבלים שם הוא <strong>השיטה</strong>: איך לוקחים בעיה עסקית אמיתית ובונים לה פתרון שלם, שעובד גם מחר, שלא נשבר שבוע אחרי, וששורד גם כשהכלי עצמו משתנה.</p>
+            <p><strong>וזו רק ההתחלה של ההבדל.</strong> מה שבאמת לא תמצאו בקורסים אחרים זו המעטפת שנבנתה כאן סביב חמשת המפגשים. היא לא קישוט - היא הלב של ההצלחה שלכם:</p>
+            <ul>
+              <li><strong>מתחילים לבנות עוד לפני המפגש הראשון.</strong> יש הכנה מסודרת עם סוכן שלוקח אתכם צעד-צעד, כך שביום הראשון אתם כבר לא יושבים בצד ומסתכלים - יש לכם סוכן משלכם.</li>
+              <li><strong>ליווי אנושי יד ביד.</strong> מתרגלים שעוזרים בזמן אמת בתוך הסשנים, ומפגש חידוד שבועי בזום שמגיעים אליו עם אתגר אמיתי ומקבלים הכוונה אישית.</li>
+              <li><strong>סוכנים שמלווים אתכם לאורך כל הדרך</strong> - לא רק בהתחלה. סוכנים שעוזרים ללמוד, לתרגל ולבנות.</li>
+              <li><strong>ספרייה שלמה שנשארת אצלכם:</strong> מאגר מדריכים, מילון מושגים, תרגולים מדויקים, ספריית ה-Skills של אִימפּרוּב מותקנת ועובדת, הקלטות ואתר חומרים - הכל ללא הגבלת זמן.</li>
+              <li><strong>מה שבניתם נשאר שלכם.</strong> הסוכן, ה-Skills והפלאגין - שלכם, גם אחרי שהקורס נגמר.</li>
+              <li><strong>תעודת הסמכה</strong> בפיתוח וניהול סוכני AI, עם מעל 40 שעות הכשרה. היא לא אוטומטית: היא ניתנת למי שיש לו תוצרים בפועל.</li>
+              <li><strong>קהילת בוגרים</strong> שממשיכה גם אחרי שהקורס נגמר.</li>
+            </ul>
+            <p>זה מה שעולה כסף. וזה גם ההבדל בין לצאת עם עוד קורס שראיתם, לבין לצאת עם משרד שעובד. בוגרות שהגיעו לכאן אחרי קורסים אחרים אומרות את זה טוב ממני:</p>
+          
+            <p class="gallery-label"><span class="vids-ico">▸</span> הבוגרים מספרים</p>
+            <div class="coverflow" data-active="0" data-videos='[{"id": "1223170559", "h": "a3ee78b996", "poster": "images/cf-1223170559.jpg", "cap": "לקחתי קורסים אחרים"}, {"id": "1223170783", "h": "0b68e7d3e8", "poster": "images/cf-1223170783.jpg", "cap": "עולם אחר לגמרי"}, {"id": "1223170683", "h": "bd1d98a271", "poster": "images/cf-1223170683.jpg", "cap": "לא טכנולוגית ובכל זאת"}]'><div class="cf-stage"></div></div>
+            <div class="cf-nav"><div class="cf-dots"></div></div>
+          </div>
+        </details>
+        <details>
           <summary>אני לא טכני/ת. זה בשבילי?<span class="arrow">⌄</span></summary>
           <div class="answer">
             <p>כן. התוכנית נבנתה בדיוק לאנשים כאלה.</p>
             <p>היא <strong>לא מיועדת למפתחים בלבד</strong>, אלא לאנשים שרוצים לבנות בלי לדעת קוד.</p>
             <p>אנחנו עובדים בגישת Vibe Coding: אתם מתארים מה אתם רוצים, ו-Claude בונה איתכם. בנוסף, מתרגלים עוזרים בזמן אמת לאורך הסשנים.</p>
+          
+            <p class="gallery-label"><span class="vids-ico">▸</span> הבוגרים מספרים</p>
+            <div class="coverflow" data-active="0" data-videos='[{"id": "1223170683", "h": "bd1d98a271", "poster": "images/cf-1223170683.jpg", "cap": "לא טכנולוגית ובכל זאת"}, {"id": "1223170879", "h": "b8520792fd", "poster": "images/cf-1223170879.jpg", "cap": "התגברתי על הפחד"}]'><div class="cf-stage"></div></div>
+            <div class="cf-nav"><div class="cf-dots"></div></div>
           </div>
         </details>
         <details>
@@ -559,6 +759,10 @@
             <p>לא. בכלל.</p>
             <p>לא צריך לדעת לכתוב קוד כדי להשתתף ולבנות סוכנים, כלים ופלאגינים.</p>
             <p>אם תרצו להבין בהמשך מה קורה מאחורי הקלעים — מצוין, יש לזה מקום. אבל זו לא דרישת כניסה.</p>
+          
+            <p class="gallery-label"><span class="vids-ico">▸</span> הבוגרים מספרים</p>
+            <div class="coverflow" data-active="0" data-videos='[{"id": "1223170879", "h": "b8520792fd", "poster": "images/cf-1223170879.jpg", "cap": "התגברתי על הפחד"}, {"id": "1223170683", "h": "bd1d98a271", "poster": "images/cf-1223170683.jpg", "cap": "לא טכנולוגית ובכל זאת"}]'><div class="cf-stage"></div></div>
+            <div class="cf-nav"><div class="cf-dots"></div></div>
           </div>
         </details>
         <details>
@@ -567,6 +771,10 @@
             <p>בואו נבדוק — וזו לא רק שאלה של "מכירים את הכלים":</p>
             <p>שולטים בכל האקוסיסטם (Projects, Cowork, Claude Code, Skills, MCP, פלאגינים)? יודעים לבנות לא רק סוכן בודד — אלא <strong>צוות סוכנים שעובדים אחד עם השני</strong>, משרד שלם? יודעים לבנות מערכות <strong>שלא נשברות</strong>, ולנטר אותן לאורך זמן?</p>
             <p>אם כן לכל אלה — כנראה שהתוכנית פחות תחדש לכם. אם לא — כאן בדיוק הפער שהיא סוגרת.</p>
+          
+            <p class="gallery-label"><span class="vids-ico">▸</span> הבוגרים מספרים</p>
+            <div class="coverflow" data-active="0" data-videos='[{"id": "1223170559", "h": "a3ee78b996", "poster": "images/cf-1223170559.jpg", "cap": "לקחתי קורסים אחרים"}, {"id": "1223170783", "h": "0b68e7d3e8", "poster": "images/cf-1223170783.jpg", "cap": "עולם אחר לגמרי"}]'><div class="cf-stage"></div></div>
+            <div class="cf-nav"><div class="cf-dots"></div></div>
           </div>
         </details>
         <details>
@@ -574,6 +782,10 @@
           <div class="answer">
             <p>התחושה הזאת ("אולי אני לא מספיק…") מופיעה דווקא אצל אנשים מוכשרים. הדרישה היא לא רקע טכני — אלא שאתם כבר עובדים עם AI ומסתדרים טוב עם מחשב.</p>
             <p>אם זה אתם, יש לכם בדיוק את הבסיס. הסינון בכניסה נועד לוודא שתהיו במקום הנכון — אז אם עברתם את הסינון בכניסה, אתם מתאימים.</p>
+          
+            <p class="gallery-label"><span class="vids-ico">▸</span> הבוגרים מספרים</p>
+            <div class="coverflow" data-active="0" data-videos='[{"id": "1223170683", "h": "bd1d98a271", "poster": "images/cf-1223170683.jpg", "cap": "לא טכנולוגית ובכל זאת"}, {"id": "1223170879", "h": "b8520792fd", "poster": "images/cf-1223170879.jpg", "cap": "התגברתי על הפחד"}]'><div class="cf-stage"></div></div>
+            <div class="cf-nav"><div class="cf-dots"></div></div>
           </div>
         </details>
         <details>
@@ -582,6 +794,10 @@
             <p>כן — וזו בדיוק אחת ההפתעות. בקורס אתם בונים <strong>הרבה מאוד דברים</strong>, לא דבר אחד.</p>
             <p>מניסיון: גם מי שהגיע בלי רעיון יצא עם יותר מדי. הרעיונות מגיעים מכמה כיוונים — מאיתנו, מהקבוצה (שמפרה רעיונות אחד לשני), ובעיקר מהיום-יום שלכם: ברגע שאתם יודעים לבנות, פתאום רואים use case בכל פינה.</p>
             <p>אז לא, לא צריך להגיע עם רעיון — צריך להגיע עם נכונות לבנות.</p>
+          
+            <p class="gallery-label"><span class="vids-ico">▸</span> הבוגרים מספרים</p>
+            <div class="coverflow" data-active="0" data-videos='[{"id": "1223170856", "h": "0f050acd50", "poster": "images/cf-1223170856.jpg", "cap": "השמיים הם הגבול"}, {"id": "1223170501", "h": "f0bc73dba9", "poster": "images/cf-1223170501.jpg", "cap": "100% הבטחה לבנות הכל"}, {"id": "1223170982", "h": "ca3f7dad2d", "poster": "images/cf-1223170982.jpg", "cap": "תפסתי את המקום האחרון"}, {"id": "1223365201", "h": "8d77e09076", "poster": "images/cf-1223365201.jpg", "cap": "לא צריך יותר מ-5 שבועות"}]'><div class="cf-stage"></div></div>
+            <div class="cf-nav"><div class="cf-dots"></div></div>
           </div>
         </details>
         <details>
@@ -596,6 +812,10 @@
           <div class="answer">
             <p>היכולת לבנות סוכנים ואוטומציות היא אחד הכישורים הכי מבוקשים היום.</p>
             <p>במקום להיות "מישהו שמשתמש ב-AI", אתם הופכים למי ש<strong>בונה</strong> פתרונות — מי שמביא תוצאה, לא רק כלי. זה כישור שנשאר אתכם, לכל תפקיד ולכל מקום.</p>
+          
+            <p class="gallery-label"><span class="vids-ico">▸</span> בוגרת מספרת</p>
+            <div class="coverflow" data-active="0" data-videos='[{"id": "1223170856", "h": "0f050acd50", "poster": "images/cf-1223170856.jpg", "cap": "השמיים הם הגבול"}]'><div class="cf-stage"></div></div>
+            <div class="cf-nav"><div class="cf-dots"></div></div>
           </div>
         </details>
         <details>
@@ -604,6 +824,10 @@
             <p>אין גיל שמתאים או לא מתאים לטירונות.</p>
             <p>הקריטריון האמיתי הוא אחר לגמרי: <strong>נוחות קיימת עם מחשב, ניסיון קודם בעבודה עם AI</strong> (ChatGPT, Claude, כל כלי), רצון ללמוד, והיעדר פחד מלשבת מול המסך.</p>
             <p>מי שכבר עובד עם מחשב ביום-יום ועבד פעם עם כלי AI — זה בדיוק מי שמתאים, בלי שום קשר לגיל.</p>
+          
+            <p class="gallery-label"><span class="vids-ico">▸</span> הבוגרים מספרים</p>
+            <div class="coverflow" data-active="0" data-videos='[{"id": "1223170879", "h": "b8520792fd", "poster": "images/cf-1223170879.jpg", "cap": "התגברתי על הפחד"}, {"id": "1223365235", "h": "c1f040eabd", "poster": "images/cf-1223365235.jpg", "cap": "הרגשתי על גג העולם"}]'><div class="cf-stage"></div></div>
+            <div class="cf-nav"><div class="cf-dots"></div></div>
           </div>
         </details>
       </div>
@@ -651,6 +875,10 @@
             <p>✦ <strong>כלי אחד, לעומק.</strong><br>רק Claude. לא עשרה כלים ולא אוטומציות מסובכות. בלי לנפח לכם את המוח.</p>
             <p>✦ <strong>בלי קוד.</strong><br>שלהבת עצמה לא כותבת קוד. אם אתם יודעים לנהל — אתם יודעים לבנות סוכן.</p>
             <p>ומילה כנה: זאת תוכנית <strong>עמוקה ומקיפה</strong>. לא סתם קוראים לזה טירונות — אלה חמישה שבועות אינטנסיביים, שאחריהם אתם כבר לא צריכים ללמוד כלום. אבל זה דורש עבודה. אם אין לכם זמן להשקיע בין המפגשים — עדיף להמתין למחזור אחר.</p>
+          
+            <p class="gallery-label"><span class="vids-ico">▸</span> הבוגרים מספרים</p>
+            <div class="coverflow" data-active="0" data-videos='[{"id": "1223365235", "h": "c1f040eabd", "poster": "images/cf-1223365235.jpg", "cap": "הרגשתי על גג העולם"}, {"id": "1223170501", "h": "f0bc73dba9", "poster": "images/cf-1223170501.jpg", "cap": "100% הבטחה לבנות הכל"}, {"id": "1223170683", "h": "bd1d98a271", "poster": "images/cf-1223170683.jpg", "cap": "לא טכנולוגית ובכל זאת"}, {"id": "1223365364", "h": "191e214656", "poster": "images/cf-1223365364.jpg", "cap": "חמישה שבועות זה מספיק"}]'><div class="cf-stage"></div></div>
+            <div class="cf-nav"><div class="cf-dots"></div></div>
           </div>
         </details>
         <details>
@@ -659,6 +887,10 @@
             <p>Claude הוא האקוסיסטם השלם ביותר היום לבניית סוכנים בלי קוד: Projects, Cowork, MCP, Skills ו-Plugins.</p>
             <p>ChatGPT מצוין לשיחות ויצירת תוכן, Gemini מצוין לחיפוש. אבל כשמטרת העל היא לבנות משרד AI שלם שעובד לבד — Claude הוא הסביבה המתאימה ביותר.</p>
             <p>העקרונות שתלמדו כאן (Context Engineering, ארכיטקטורת ידע, בניית סוכנים) לא תלויים בפלטפורמה אחת, ולכן תדעו להסתגל גם בהמשך.</p>
+          
+            <p class="gallery-label"><span class="vids-ico">▸</span> הבוגרים מספרים</p>
+            <div class="coverflow" data-active="0" data-videos='[{"id": "1223170899", "h": "fc164b4016", "poster": "images/cf-1223170899.jpg", "cap": "ידע שנשאר רלוונטי"}, {"id": "1223170931", "h": "1b04cf045f", "poster": "images/cf-1223170931.jpg", "cap": "הידע נשאר איתי"}]'><div class="cf-stage"></div></div>
+            <div class="cf-nav"><div class="cf-dots"></div></div>
           </div>
         </details>
         <details>
@@ -674,6 +906,10 @@
           <div class="answer">
             <p>את הדברים שלכם. לאורך כל הקורס אתם בונים על העסק או התפקיד שלכם — לא צופים בדמואים גנריים מהצד.</p>
             <p>ולא רק דבר אחד: אתם בונים <strong>צוות סוכנים שלם</strong> משלכם, צעד אחרי צעד. כל מה שתבנו נשאר אצלכם ועובד בשבילכם.</p>
+          
+            <p class="gallery-label"><span class="vids-ico">▸</span> בוגרת מספרת</p>
+            <div class="coverflow" data-active="0" data-videos='[{"id": "1223170783", "h": "0b68e7d3e8", "poster": "images/cf-1223170783.jpg", "cap": "עולם אחר לגמרי"}]'><div class="cf-stage"></div></div>
+            <div class="cf-nav"><div class="cf-dots"></div></div>
           </div>
         </details>
       </div>
@@ -743,6 +979,10 @@
             <p>הרבה מעבר לחמישה מפגשים — נבנתה כאן <strong>מעטפת פדגוגית עמוקה ויוצאת דופן</strong>, והיא לא קישוט, היא הלב של ההצלחה שלכם:</p>
             <p><strong>ליווי יד ביד</strong> — מתרגלים שעוזרים בזמן אמת בתוך הסשנים, ומפגש חידוד שבועי בזום. <strong>סוכנים שמלווים אתכם</strong> — כבר מההכנה יש סוכן שלוקח אתכם צעד-צעד, ולאורך הדרך עוד סוכנים שעוזרים לכם ללמוד ולבנות. <strong>ספרייה עשירה</strong> — מאגר מדריכים, מילון מושגים, תרגולים מדויקים, ספריית Skills מוכנה של אִימפּרוּב, הקלטות ואתר חומרים — הכל ללא הגבלת זמן.</p>
             <p>המטרה: שאחרי חמישה שבועות יהיה לכם <strong>כל</strong> מה שצריך כדי לבנות כל דבר. ידע שלא מתיישן — כי לימדנו אתכם איך לבנות, לא איך להשתמש בכלי שישתנה מחר.</p>
+          
+            <p class="gallery-label"><span class="vids-ico">▸</span> בוגרת מספרת</p>
+            <div class="coverflow" data-active="0" data-videos='[{"id": "1223171023", "h": "a68dff366d", "poster": "images/cf-1223171023.jpg", "cap": "לא צריכה קורס נוסף"}]'><div class="cf-stage"></div></div>
+            <div class="cf-nav"><div class="cf-dots"></div></div>
           </div>
         </details>
       </div>
@@ -770,6 +1010,10 @@
             <p>כי אנחנו לא מלמדים כלי. אנחנו מלמדים <strong>שיטה</strong>.</p>
             <p>וזה אומר שזה יעבוד לכם בכל גרסה עתידית של Claude, וגם בכל כלי חדש שיבוא אחריו.<br>הטכנולוגיה משתנה כל הזמן — <strong>היכולת שלכם לבנות, נשארת.</strong></p>
             <p>זה ההבדל בין מי שתלוי בטרנד הבא, לבין מי שיודע לבנות — ויודע להישאר רלוונטי תמיד.</p>
+          
+            <p class="gallery-label"><span class="vids-ico">▸</span> הבוגרים מספרים</p>
+            <div class="coverflow" data-active="0" data-videos='[{"id": "1223170899", "h": "fc164b4016", "poster": "images/cf-1223170899.jpg", "cap": "ידע שנשאר רלוונטי"}, {"id": "1223170931", "h": "1b04cf045f", "poster": "images/cf-1223170931.jpg", "cap": "הידע נשאר איתי"}]'><div class="cf-stage"></div></div>
+            <div class="cf-nav"><div class="cf-dots"></div></div>
           </div>
         </details>
         <details>
@@ -777,6 +1021,10 @@
           <div class="answer">
             <p>כי זה הרבה יותר מ-5 מפגשים. המסע מתחיל <strong>עוד לפני המפגש הראשון</strong> — סוכן ליווי לוקח אתכם צעד-צעד ואתם כבר בונים את הסוכן הראשון. ובין המפגשים יש עבודה רצינית, תרגולים מדויקים, מפגש חידוד שבועי בזום, מתרגלים שעוזרים בזמן אמת, וסוכנים שמלווים אתכם.</p>
             <p>זה טירונות — מקוצר ואינטנסיבי <strong>בכוונה</strong>, למצליחנים שאין להם 70 שעות פנויות. הכוח הוא בריכוז ובמעטפת שעוטפת כל רגע, לא באורך. כל מה שלא מהותי פשוט לא נמצא שם — ומה שכן, בנוי כדי שתצאו יודעים לבנות באמת.</p>
+          
+            <p class="gallery-label"><span class="vids-ico">▸</span> הבוגרים מספרים</p>
+            <div class="coverflow" data-active="0" data-videos='[{"id": "1223365364", "h": "191e214656", "poster": "images/cf-1223365364.jpg", "cap": "חמישה שבועות זה מספיק"}, {"id": "1223170982", "h": "ca3f7dad2d", "poster": "images/cf-1223170982.jpg", "cap": "תפסתי את המקום האחרון"}, {"id": "1223365201", "h": "8d77e09076", "poster": "images/cf-1223365201.jpg", "cap": "לא צריך יותר מ-5 שבועות"}, {"id": "1223365235", "h": "c1f040eabd", "poster": "images/cf-1223365235.jpg", "cap": "הרגשתי על גג העולם"}]'><div class="cf-stage"></div></div>
+            <div class="cf-nav"><div class="cf-dots"></div></div>
           </div>
         </details>
         <details>
@@ -785,6 +1033,10 @@
             <p>קשה לא להצליח, כי כל המעטפת בנויה בדיוק כדי שלא תיתקעו לבד באף רגע: מתרגלים שעוזרים יד ביד בתוך הסשנים, מפגש חידוד שבועי בזום לכל שאלה ואתגר, סוכנים שמלווים אתכם, ותרגולים מדויקים שלוקחים אתכם צעד-צעד.</p>
             <p>בכל מפגש בונים משהו עובד — לא רק תיאוריה. ויש סינון כניסה מראש, שמוודא שאתם בדיוק ברמה הנכונה לקבוצה.</p>
             <p>ומדד ההצלחה שלנו פשוט: שתדעו לבנות מה שתרצו. אם בסוף אתם לא יודעים — אנחנו נכשלנו.</p>
+          
+            <p class="gallery-label"><span class="vids-ico">▸</span> הבוגרים מספרים</p>
+            <div class="coverflow" data-active="0" data-videos='[{"id": "1223170501", "h": "f0bc73dba9", "poster": "images/cf-1223170501.jpg", "cap": "100% הבטחה לבנות הכל"}, {"id": "1223170856", "h": "0f050acd50", "poster": "images/cf-1223170856.jpg", "cap": "השמיים הם הגבול"}]'><div class="cf-stage"></div></div>
+            <div class="cf-nav"><div class="cf-dots"></div></div>
           </div>
         </details>
         <details>
@@ -793,6 +1045,10 @@
             <p>ברוב המקרים הבעיה היא לא בכם — היא שאין שיטה מסודרת כשמנסים לבד. בונים משהו שעובד פעם אחת, ואז זה נשבר ולא יודעים למה.</p>
             <p>כאן זה אחרת: יש <strong>שיטה מלאה</strong> מאפיון ועד אריזה, מתרגלים שעוזרים בזמן אמת ברגע שנתקעים, מפגש חידוד שבועי, וסוכנים שמלווים אתכם. ואתם בונים על העסק האמיתי שלכם, עם משוב לאורך הדרך — לא על תרגיל גנרי.</p>
             <p>זה ההבדל בין "ניסיתי משהו שנשבר" לבין "בניתי מערכת שמחזיקה ויודעת לגדול".</p>
+          
+            <p class="gallery-label"><span class="vids-ico">▸</span> הבוגרים מספרים</p>
+            <div class="coverflow" data-active="0" data-videos='[{"id": "1223170559", "h": "a3ee78b996", "poster": "images/cf-1223170559.jpg", "cap": "לקחתי קורסים אחרים"}, {"id": "1223170818", "h": "1ceee5b64e", "poster": "images/cf-1223170818.jpg", "cap": "חסכתי שנה שלמה"}]'><div class="cf-stage"></div></div>
+            <div class="cf-nav"><div class="cf-dots"></div></div>
           </div>
         </details>
         <details>
@@ -809,6 +1065,10 @@
             <p>אפשר, ויש תוכן חינמי מעולה — אבל ביוטיוב תקבלו טיפים מפוזרים, לא מסלול. אין מי שיענה כשנתקעים, אין סדר, ואין מי שמסתכל על מה שאתם בונים ואומר "כאן טעית, ככה מתקנים".</p>
             <p>כאן יש מעטפת פדגוגית שלמה: מסלול ברור מרעיון למערכת, מתרגלים בזמן אמת, מפגש חידוד שבועי, סוכני ליווי, תרגולים וספריית מדריכים.</p>
             <p>בלי זה, רוב האנשים נשארים עם אוטומציות נקודתיות שנשברות אחרי שבוע. עם זה — אתם יוצאים עם יכולת אמיתית לבנות.</p>
+          
+            <p class="gallery-label"><span class="vids-ico">▸</span> הבוגרים מספרים</p>
+            <div class="coverflow" data-active="0" data-videos='[{"id": "1223170559", "h": "a3ee78b996", "poster": "images/cf-1223170559.jpg", "cap": "לקחתי קורסים אחרים"}, {"id": "1223170783", "h": "0b68e7d3e8", "poster": "images/cf-1223170783.jpg", "cap": "עולם אחר לגמרי"}]'><div class="cf-stage"></div></div>
+            <div class="cf-nav"><div class="cf-dots"></div></div>
           </div>
         </details>
       </div>
@@ -834,6 +1094,10 @@
           <div class="answer">
             <p>הקבוצה מגוונת: שכירים, בעלי עסקים, עצמאיים ואנשי מקצוע מתחומים שונים.</p>
             <p>המשותף לכולם — כבר עובדים עם AI ורוצים לעלות שלב לבנייה. יש סינון בכניסה כדי לשמור על רמה אחידה. הקבוצה מוגבלת (כ-20 משתתפים).</p>
+          
+            <p class="gallery-label"><span class="vids-ico">▸</span> בוגרת מספרת</p>
+            <div class="coverflow" data-active="0" data-videos='[{"id": "1223365235", "h": "c1f040eabd", "poster": "images/cf-1223365235.jpg", "cap": "הרגשתי על גג העולם"}]'><div class="cf-stage"></div></div>
+            <div class="cf-nav"><div class="cf-dots"></div></div>
           </div>
         </details>
         <details>
@@ -842,6 +1106,10 @@
             <p><strong>הכל שלכם.</strong> הסוכן שבניתם, ה-Skills והפלאגין — נשארים אצלכם.</p>
             <p>בנוסף: <strong>הקלטות</strong> ללא הגבלת זמן · <strong>חומרי הלימוד</strong> · <strong>ספריית ה-Skills</strong> של אִימפּרוּב מותקנת ועובדת · <strong>קהילת בוגרים</strong>.</p>
             <p>והכי חשוב — יוצאים עם <strong>שיטה לשכפל</strong>: לבנות עוד סוכנים, עוד מחלקות, משרד שלם. בעצמכם.</p>
+          
+            <p class="gallery-label"><span class="vids-ico">▸</span> הבוגרים מספרים</p>
+            <div class="coverflow" data-active="0" data-videos='[{"id": "1223171023", "h": "a68dff366d", "poster": "images/cf-1223171023.jpg", "cap": "לא צריכה קורס נוסף"}, {"id": "1223170899", "h": "fc164b4016", "poster": "images/cf-1223170899.jpg", "cap": "ידע שנשאר רלוונטי"}, {"id": "1223170856", "h": "0f050acd50", "poster": "images/cf-1223170856.jpg", "cap": "השמיים הם הגבול"}, {"id": "1223365364", "h": "191e214656", "poster": "images/cf-1223365364.jpg", "cap": "חמישה שבועות זה מספיק"}]'><div class="cf-stage"></div></div>
+            <div class="cf-nav"><div class="cf-dots"></div></div>
           </div>
         </details>
         <details>
@@ -858,6 +1126,10 @@
             <p>מחזורי יולי (19.7) וספטמבר (3.9) — <strong>Sold Out</strong>.</p>
             <p>כל מחזור פתוח לכ-20 משתתפים.</p>
             <p><strong>המחזור הקרוב:</strong> 28.10 | 4.11 | 11.11 | 18.11 | 25.11 — כל יום רביעי, 18:30–21:30. <em>נותרו 5 מקומות (נכון ל-22.8).</em></p>
+          
+            <p class="gallery-label"><span class="vids-ico">▸</span> בוגרת מספרת</p>
+            <div class="coverflow" data-active="0" data-videos='[{"id": "1223170982", "h": "ca3f7dad2d", "poster": "images/cf-1223170982.jpg", "cap": "תפסתי את המקום האחרון"}]'><div class="cf-stage"></div></div>
+            <div class="cf-nav"><div class="cf-dots"></div></div>
           </div>
         </details>
         <details>
@@ -865,6 +1137,10 @@
           <div class="answer">
             <p>9,300₪ כולל מע"מ, עם אפשרות לפרוס עד 12 תשלומים.</p>
             <p>מי שמגיע דרך נועם ומחליט — מקבל <strong>הטבה</strong>: 7,900₪ במקום 9,300₪ (חיסכון 1,400₪). ההטבה היא הכרת תודה למי שעשה את עבודת ההחלטה בעצמו, עם הסוכן.</p>
+          
+            <p class="gallery-label"><span class="vids-ico">▸</span> הבוגרים מספרים</p>
+            <div class="coverflow" data-active="0" data-videos='[{"id": "1223170645", "h": "381f27ebdc", "poster": "images/cf-1223170645.jpg", "cap": "חד משמעית שווה"}, {"id": "1223170818", "h": "1ceee5b64e", "poster": "images/cf-1223170818.jpg", "cap": "חסכתי שנה שלמה"}]'><div class="cf-stage"></div></div>
+            <div class="cf-nav"><div class="cf-dots"></div></div>
           </div>
         </details>
         <details>
@@ -881,6 +1157,10 @@
             <p>ובטירונות אתם לא בונים סוכן אחד — כל אחד בונה כמה סוכנים לאורך הדרך. מהמחזורים הקודמים ומהניסיון שלנו אנחנו רואים שתלמידים בנו כבר בשבוע-השבועיים הראשונים סוכן שמחזיר להם את ההשקעה.</p>
             <p>ומעבר לחיסכון: אתם יוצאים עם כישור לכל החיים — היכולת לבנות כל סוכן, אוטומציה או מערכת שתצטרכו, בעצמכם, לתמיד.</p>
             <p>רוצים לשמוע מבוגרת אמיתית? מורן טאובר עברה את הטירונות וזינקה איתה — אתם מוזמנים <a href="https://wa.me/972549574690?text=היי מורן! ראיתי שעברת את טירונות סוכנים ושלהבת הציעה לדבר איתך. אפשר לשאול כמה שאלות?" target="_blank" rel="noopener noreferrer">לדבר איתה ישירות בוואטסאפ</a> ולשמוע מהיד הראשונה.</p>
+          
+            <p class="gallery-label"><span class="vids-ico">▸</span> הבוגרים מספרים</p>
+            <div class="coverflow" data-active="0" data-videos='[{"id": "1223170597", "h": "4116d42c2d", "poster": "images/cf-1223170597.jpg", "cap": "שקלתי והחלטתי"}, {"id": "1223170818", "h": "1ceee5b64e", "poster": "images/cf-1223170818.jpg", "cap": "חסכתי שנה שלמה"}, {"id": "1223170501", "h": "f0bc73dba9", "poster": "images/cf-1223170501.jpg", "cap": "100% הבטחה לבנות הכל"}]'><div class="cf-stage"></div></div>
+            <div class="cf-nav"><div class="cf-dots"></div></div>
           </div>
         </details>
         <details>
@@ -895,6 +1175,10 @@
           <summary>מה אם אני משלם/ת ומתחרט/ת?<span class="arrow">⌄</span></summary>
           <div class="answer">
             <p>החזרים כספיים וביטולי עסקה — בהתאם למפורט ב<a href="https://aimprove.co.il/terms-of-use/" target="_blank" rel="noopener noreferrer">תקנון</a>.</p>
+          
+            <p class="gallery-label"><span class="vids-ico">▸</span> בוגרת מספרת</p>
+            <div class="coverflow" data-active="0" data-videos='[{"id": "1223170597", "h": "4116d42c2d", "poster": "images/cf-1223170597.jpg", "cap": "שקלתי והחלטתי"}]'><div class="cf-stage"></div></div>
+            <div class="cf-nav"><div class="cf-dots"></div></div>
           </div>
         </details>
         <details>
@@ -1213,5 +1497,347 @@ window.interdeal = {
 })();
 </script>
 
+  <script>
+(function () {
+    /* ---------- ליבת הנגן, משותפת ללייטבוקס ולנגן-בתוך-האריח ----------
+       שתי מלכודות ששוות זהב למי שיגע בזה: (1) אסור להסתמך על אירוע play
+       של Vimeo - הוא נורה גם כשהניגון נחסם מיד אחריו; ההכרעה היא getPaused
+       בפועל, ופעמיים (900ms, 2400ms). (2) ה-iframe חייב להיווצר סינכרונית
+       בתוך מטפל-ההקשה וכשהמכולה שלו כבר גלויה - זה מעביר את אישור-המשתמש
+       (מתיר קול) ומונע מ-Vimeo לקבוע גודל מ-iframe של 0x0. */
+    var ICON_PLAY = '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
+    var ICON_PAUSE = '<svg viewBox="0 0 24 24"><path d="M6 5h4v14H6zm8 0h4v14h-4z"/></svg>';
+    var vimeoApiPromise = null;
+    function loadVimeoApi() {
+      if (window.Vimeo) return Promise.resolve();
+      if (!vimeoApiPromise) {
+        vimeoApiPromise = new Promise(function (res, rej) {
+          var s = document.createElement('script');
+          s.src = 'https://player.vimeo.com/api/player.js';
+          s.onload = res; s.onerror = rej;
+          document.head.appendChild(s);
+        });
+      }
+      return vimeoApiPromise;
+    }
+    /* refs = {holder, tap, icon, sound} - ארבעתם כבר ב-DOM (מודל או אריח).
+       onReady (אופציונלי) נקרא עם הנגן מיד אחרי ready(). onFirstPlay
+       (אופציונלי) נקרא ברגע שהניגון בפועל מתחיל - נמדד בדף החי: כ-2
+       שניות אמיתיות מהלחיצה, גם כש-ready() כבר חלף מזמן (ready = הנגן
+       מוכן לקבל פקודות, לא שהתמונה כבר זזה על המסך). לא נשענים על אירוע
+       play - הוא נורה גם רגע לפני שהניגון נחסם; זו סקירה נפרדת של
+       getPaused, לא קשורה ל-ensurePlaying שלמטה (זו רוצה לדעת "כבר?"
+       כמה שיותר מהר, זו רוצה לחכות מספיק לפני שמחליטה על השתקה). */
+    function mountVimeoPlayer(refs, v, onReady, onFirstPlay) {
+      var player = null, userTouched = false, destroyed = false;
+
+      function flash(html) {
+        refs.icon.innerHTML = html;
+        refs.icon.classList.add('show');
+        clearTimeout(refs.icon._t);
+        refs.icon._t = setTimeout(function () { refs.icon.classList.remove('show'); }, 550);
+      }
+      function toggle() {
+        if (!player) return;
+        userTouched = true;   // מכאן ואילך לא מתערבים בניגון מאחורי גבו
+        player.getPaused().then(function (paused) {
+          if (paused) { player.play(); flash(ICON_PLAY); }
+          else { player.pause(); flash(ICON_PAUSE); }
+        });
+      }
+      refs.tap.onclick = toggle;
+      refs.icon.classList.remove('show');
+      refs.sound.hidden = true;
+      refs.sound.onclick = function (e) {
+        e.stopPropagation();
+        if (!player) return;
+        player.setMuted(false).then(function () { player.setVolume(1); player.play(); });
+        refs.sound.hidden = true;
+      };
+
+      refs.holder.innerHTML = '';
+      var iframe = document.createElement('iframe');
+      iframe.src = 'https://player.vimeo.com/video/' + v.id + '?h=' + v.h +
+        '&autoplay=1&muted=0&controls=0&playsinline=1&title=0&byline=0&portrait=0&badge=0&dnt=1';
+      iframe.allow = 'autoplay; fullscreen; picture-in-picture; encrypted-media';
+      refs.holder.appendChild(iframe);
+
+      loadVimeoApi().then(function () {
+        if (destroyed) return;
+        var p = player = new Vimeo.Player(iframe);
+        var settled = false;
+        /* אם הדפדפן חסם ניגון-עם-קול - מנגנים מושתק ומציעים כפתור קול,
+           במקום להשאיר סרטון שנראה תקוע. */
+        function ensurePlaying() {
+          if (settled || userTouched || destroyed || p !== player) return;
+          p.getPaused().then(function (paused) {
+            if (!paused || settled || userTouched || destroyed || p !== player) return;
+            settled = true;
+            p.setMuted(true).then(function () { return p.play(); })
+              .then(function () { if (!destroyed && p === player) refs.sound.hidden = false; })
+              .catch(function () {});
+          }).catch(function () {});
+        }
+        setTimeout(ensurePlaying, 900);
+        setTimeout(ensurePlaying, 2400);
+
+        if (onFirstPlay) {
+          var firstPlayFired = false;
+          (function pollFirstPlay(triesLeft) {
+            if (firstPlayFired || destroyed || p !== player || triesLeft <= 0) return;
+            p.getPaused().then(function (paused) {
+              if (destroyed || p !== player || firstPlayFired) return;
+              if (!paused) { firstPlayFired = true; onFirstPlay(); return; }
+              setTimeout(function () { pollFirstPlay(triesLeft - 1); }, 150);
+            }).catch(function () {});
+          })(65);   // ~10 שניות; אחרי זה משאירים את הספינר - עדיף מלולאה אינסופית
+        }
+
+        p.ready().then(function () {
+          if (onReady) onReady(p);
+          return p.setVolume(1).then(function () { return p.play(); });
+        }).catch(function () {});
+      }).catch(function () {
+        // player.js לא נטען - מחזירים את סרגל הבקרה המובנה, שלפחות שמיש
+        iframe.src = iframe.src.replace('&controls=0', '&controls=1');
+        if (onFirstPlay) onFirstPlay();   // אין לנו getPaused בלי ה-API - מסירים את הספינר בכל מקרה
+      });
+
+      return {
+        stop: function () { destroyed = true; player = null; refs.holder.innerHTML = ''; }
+      };
+    }
+
+    /* ---------- נגן-בתוך-האריח - זו ברירת המחדל בלחיצה על סרטון ----------
+       רק סרטון אחד מתנגן בכל רגע נתון בכל הדף, ולכן המצב גלובלי. */
+    var ACTIVE_INLINE = null;   // { it, v, ctrl }
+    function posterMarkup(v) {
+      return '<img src="' + v.poster + '" alt="' + v.cap + '"><div class="cf-play"><span></span></div><div class="cf-cap">' + v.cap + '</div>';
+    }
+    function stopActiveInline() {
+      if (!ACTIVE_INLINE) return;
+      ACTIVE_INLINE.ctrl.stop();
+      ACTIVE_INLINE.it.innerHTML = posterMarkup(ACTIVE_INLINE.v);
+      ACTIVE_INLINE = null;
+    }
+    function stopActiveInlineIfAmong(items) {
+      if (ACTIVE_INLINE && items.indexOf(ACTIVE_INLINE.it) !== -1) stopActiveInline();
+    }
+    function inlineMarkup(v) {
+      return (
+        '<div class="cf-item-player">' +
+          '<div class="cf-item-holder"></div>' +
+          '<div class="cf-item-loading"><img src="' + v.poster + '" alt=""><div class="cf-item-spinner"></div></div>' +
+          '<button class="cf-item-tap" type="button" aria-label="עצירה או המשך"></button>' +
+          '<div class="cf-item-icon" aria-hidden="true"></div>' +
+          '<button class="cf-item-sound" type="button" hidden>' +
+            '<svg viewBox="0 0 24 24"><path d="M3 10v4a1 1 0 0 0 1 1h2l4 4V5L6 9H4a1 1 0 0 0-1 1zm13.5 2a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a6.8 6.8 0 0 1 0 13.4v2.1a8.9 8.9 0 0 0 0-17.6z"/></svg>' +
+            'קול</button>' +
+          '<button class="cf-item-expand" type="button" aria-label="הגדלת הסרטון">' +
+            '<svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>' +
+          '</button>' +
+        '</div>'
+      );
+    }
+    function startInline(it, v) {
+      if (ACTIVE_INLINE && ACTIVE_INLINE.it === it) return;   // כבר מתנגן כאן
+      stopActiveInline();
+      it.innerHTML = inlineMarkup(v);
+      var loadingEl = it.querySelector('.cf-item-loading');
+      var ctrl = mountVimeoPlayer({
+        holder: it.querySelector('.cf-item-holder'),
+        tap: it.querySelector('.cf-item-tap'),
+        icon: it.querySelector('.cf-item-icon'),
+        sound: it.querySelector('.cf-item-sound')
+      }, v, null, function () { loadingEl.classList.add('hide'); });
+      it.querySelector('.cf-item-expand').addEventListener('click', function (e) {
+        e.stopPropagation();
+        LB.open(v, it);   // LB.open עוצר את הניגון-בתוך-האריח בעצמו
+      });
+      ACTIVE_INLINE = { it: it, v: v, ctrl: ctrl };
+    }
+
+    // Flip on tap - but not when interacting with a link, screenshot, or the video gallery
+    document.querySelectorAll('.card').forEach(function (card) {
+      card.addEventListener('click', function (e) {
+        if (e.target.closest('a') || e.target.closest('.media') || e.target.closest('.coverflow') || e.target.closest('.cf-nav')) return;
+        var wasFlipped = card.classList.contains('flipped');
+        card.classList.toggle('flipped');
+        // הופכים כרטיס שהסרטון-באריח שלו מתנגן - עוצרים, אחרת הקול ממשיך
+        // מאחורי כרטיס שכבר לא רואים
+        if (wasFlipped && ACTIVE_INLINE && card.contains(ACTIVE_INLINE.it)) stopActiveInline();
+      });
+    });
+
+    /* ---------- הלייטבוקס - פעולת "הגדלה" מפורשת בלבד ----------
+       לא תוצאה אוטומטית של לחיצה על סרטון (זו מנגנת באריח עצמו,
+       startInline למעלה) - רק כפתור ה-⤢ שמופיע כשסרטון כבר מתנגן שם
+       פותח את זה. (שונה מגרסה קודמת שקפצה למסך מלא בכל לחיצה - שלהבת
+       15-08-2026: "אני לא רוצה שהוא יגדל... אם אני רוצה, אני אוכל
+       ללחוץ ולהגדיל אותו".) */
+    var LB = (function () {
+      var el, frameEl, holder, iconEl, soundBtn, capEl, tapBtn, loadingEl, loadingImg;
+      var opener = null, current = null;
+
+      function build() {
+        el = document.createElement('div');
+        el.className = 'cf-lb';
+        el.hidden = true;
+        el.innerHTML =
+          '<button class="cf-lb-close" type="button" aria-label="סגירת הסרטון">×</button>' +
+          '<div class="cf-lb-frame">' +
+            '<div class="cf-lb-holder"></div>' +
+            '<div class="cf-lb-loading"><img alt=""><div class="cf-lb-spinner"></div></div>' +
+            '<button class="cf-lb-tap" type="button" aria-label="עצירה או המשך"></button>' +
+            '<div class="cf-lb-icon" aria-hidden="true"></div>' +
+            '<button class="cf-lb-sound" type="button" hidden>' +
+              '<svg viewBox="0 0 24 24"><path d="M3 10v4a1 1 0 0 0 1 1h2l4 4V5L6 9H4a1 1 0 0 0-1 1zm13.5 2a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a6.8 6.8 0 0 1 0 13.4v2.1a8.9 8.9 0 0 0 0-17.6z"/></svg>' +
+              'לחצו להפעלת קול</button>' +
+            '<p class="cf-lb-cap"></p>' +
+          '</div>';
+        document.body.appendChild(el);
+        frameEl = el.querySelector('.cf-lb-frame');
+        holder = el.querySelector('.cf-lb-holder');
+        loadingEl = el.querySelector('.cf-lb-loading');
+        loadingImg = loadingEl.querySelector('img');
+        iconEl = el.querySelector('.cf-lb-icon');
+        soundBtn = el.querySelector('.cf-lb-sound');
+        capEl = el.querySelector('.cf-lb-cap');
+        tapBtn = el.querySelector('.cf-lb-tap');
+
+        el.querySelector('.cf-lb-close').addEventListener('click', close);
+        el.addEventListener('click', function (e) { if (e.target === el) close(); });
+        document.addEventListener('keydown', function (e) {
+          if (!el.hidden && (e.key === 'Escape' || e.key === 'Esc')) close();
+        });
+      }
+
+      function open(v, fromEl) {
+        stopActiveInline();
+        if (!el) build();
+        opener = fromEl || null;
+        capEl.textContent = v.cap || '';
+        frameEl.style.removeProperty('--lb-ar');
+        loadingImg.src = v.poster || '';
+        loadingEl.classList.remove('hide');
+
+        holder.innerHTML = '';
+        el.hidden = false;
+        document.body.style.overflow = 'hidden';
+        requestAnimationFrame(function () { el.classList.add('is-open'); });
+
+        current = mountVimeoPlayer(
+          { holder: holder, tap: tapBtn, icon: iconEl, sound: soundBtn },
+          v,
+          function (p) {
+            Promise.all([p.getVideoWidth(), p.getVideoHeight()]).then(function (d) {
+              if (d[0] && d[1]) frameEl.style.setProperty('--lb-ar', d[0] / d[1]);
+            }).catch(function () {});
+          },
+          function () { loadingEl.classList.add('hide'); }
+        );
+      }
+
+      function close() {
+        if (!el || el.hidden) return;
+        el.classList.remove('is-open');
+        if (current) { current.stop(); current = null; }
+        el.hidden = true;
+        document.body.style.overflow = '';
+        if (opener && opener.focus) opener.focus();
+        opener = null;
+      }
+
+      return { open: open };
+    })();
+
+    // Coverflow video galleries (one per card that has videos)
+    document.querySelectorAll('.coverflow').forEach(function (cf) {
+      var VIDEOS = JSON.parse(cf.getAttribute('data-videos'));
+      var active = parseInt(cf.getAttribute('data-active') || '0', 10);
+      var stage = cf.querySelector('.cf-stage');
+      var nav = cf.nextElementSibling;
+      var dotsBox = nav.querySelector('.cf-dots');
+      var swiped = false;   // סוף החלקה - לא לפרש כלחיצה שפותחת סרטון
+      VIDEOS.forEach(function (v, i) {
+        var it = document.createElement('div'); it.className = 'cf-item'; it.dataset.i = i;
+        it.innerHTML = posterMarkup(v);
+        it.setAttribute('role', 'button');
+        it.setAttribute('aria-label', 'הפעלת הסרטון: ' + v.cap);
+        it.addEventListener('click', function () { if (!swiped) onClick(i); });
+        it.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClick(i); }
+        });
+        stage.appendChild(it);
+        var d = document.createElement('button'); d.className = 'cf-dot';
+        d.addEventListener('click', function () { stopActiveInlineIfAmong(items); active = i; layout(); });
+        dotsBox.appendChild(d);
+      });
+      var items = Array.from(stage.children), dots = Array.from(dotsBox.children);
+      /* התצוגה נקבעת לפי מספר הסרטונים: קרוסלה עולה ברוחב רק כשיש בין מה
+         לבין מה לנווט. סרטון בודד מקבל את כל הרוחב. */
+      var single = VIDEOS.length < 2;
+      cf.classList.add(single ? 'is-single' : 'is-strip');
+      // סרטון בודד - אין לאן לנווט, והנקודה הבודדת היא רעש ויזואלי בלבד.
+      if (single) nav.style.display = 'none';
+      function layout() {
+        if (single) { items[0].tabIndex = 0; return; }
+        // נמדד בכל פעם, כדי שסיבוב מסך/רוחב עמודה אחר לא ישברו את המרווח
+        var step = (items[0].getBoundingClientRect().width || 257) + 10;
+        items.forEach(function (it, i) {
+          var off = i - active, abs = Math.abs(off);
+          it.style.transform = 'translate(-50%, -50%) translateX(' + (off * step) + 'px)';
+          it.style.opacity = off === 0 ? 1 : 0.45;
+          it.style.filter = off === 0 ? 'none' : 'brightness(.7)';
+          it.style.zIndex = 10 - abs; it.style.pointerEvents = abs > 1 ? 'none' : 'auto';
+          it.tabIndex = off === 0 ? 0 : -1;
+        });
+        dots.forEach(function (d, i) { d.classList.toggle('on', i === active); });
+      }
+      if (!single) window.addEventListener('resize', layout);
+      function onClick(i) {
+        if (i !== active) { stopActiveInlineIfAmong(items); active = i; layout(); return; }
+        startInline(items[i], VIDEOS[i]);
+      }
+
+      /* החלקה אצבע/עכבר בין הסרטונים - זו הציפייה הטבעית בגלריה כזו,
+         והלחיצה על החץ/נקודה נשארת כדרך נוספת ולא כדרך היחידה.
+         מזיזים כבר תוך כדי התנועה (ולא בשחרור) כדי שההחלקה תרגיש מיידית. */
+      if (VIDEOS.length > 1) {
+        var x0 = 0, y0 = 0, dragging = false;
+        var STEP = 44;   // מרחק אצבע שנחשב החלקה ולא נגיעה מקרית
+        stage.addEventListener('pointerdown', function (e) {
+          if (e.pointerType === 'mouse' && e.button !== 0) return;
+          x0 = e.clientX; y0 = e.clientY; dragging = true; swiped = false;
+        });
+        stage.addEventListener('pointermove', function (e) {
+          if (!dragging) return;
+          var dx = e.clientX - x0, dy = e.clientY - y0;
+          // גלילה אנכית של הדף מנצחת - משחררים ולא מתערבים
+          if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 12) { dragging = false; return; }
+          if (Math.abs(dx) < STEP) return;
+          // גרירה שמאלה מביאה למרכז את הסרטון שמימין
+          var next = Math.max(0, Math.min(VIDEOS.length - 1, active + (dx < 0 ? 1 : -1)));
+          if (next !== active) { stopActiveInlineIfAmong(items); active = next; layout(); }
+          swiped = true;
+          dragging = false;   // סרטון אחד לכל החלקה - גרירה ארוכה לא מדלגת על שלושה
+        });
+        /* משחררים את הדגל מיד אחרי הקליק שהדפדפן יורה בסוף החלקה, כדי שלא
+           יישאר דלוק וימנע פתיחת סרטון בנגיעה הבאה */
+        function endDrag() {
+          dragging = false;
+          if (swiped) setTimeout(function () { swiped = false; }, 60);
+        }
+        stage.addEventListener('pointerup', endDrag);
+        stage.addEventListener('pointercancel', endDrag);
+        stage.addEventListener('pointerleave', endDrag);
+      }
+
+      var nx = nav.querySelector('.cf-next'); if (nx) nx.addEventListener('click', function () { stopActiveInlineIfAmong(items); active = Math.min(VIDEOS.length - 1, active + 1); layout(); });
+      var pv = nav.querySelector('.cf-prev'); if (pv) pv.addEventListener('click', function () { stopActiveInlineIfAmong(items); active = Math.max(0, active - 1); layout(); });
+      layout();
+    });
+})();
+  </script>
 </body>
 </html>
