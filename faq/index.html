@@ -469,15 +469,21 @@
        השכן מציץ בקצה ומרמז "יש עוד", בלי לגזול חצי מהרוחב. */
     /* הרחבה מעבר לפדינג של הכרטיס דרך שוליים שליליים ו-stretch, ולא דרך
        calc על הרוחב - פריט flex שרחב מהמכל אינו ממורכז אמין (יצא מוסט 22px) */
+    /* גם בנייד מניפה ולא רצועה שטוחה: ברצועה נראו מהשכן 50 פיקסלים
+       בצד אחד ואפס בשני, וזה לא קרא כמו "יש עוד סרטונים, אפשר לגרור".
+       --cf-card ו---cf-spread הם מקור-האמת לרוחב ולמרווח, וה-JS קורא
+       אותם מכאן - ערך פיקסלים פשוט, כדי ש-parseFloat יצליח. */
     .coverflow.is-strip {
-      height: auto; perspective: none;
+      --cf-card: 210px; --cf-spread: .60;
+      height: auto; perspective: 900px; overflow: hidden;
       align-self: stretch; width: auto; margin: 0 -22px 6px -22px;
       aspect-ratio: 20 / 19;
     }
-    .coverflow.is-strip .cf-stage { transform-style: flat; }
+    .coverflow.is-strip .cf-stage { transform-style: preserve-3d; }
     .coverflow.is-strip .cf-item {
-      width: 75%; height: auto; aspect-ratio: 4 / 5; margin: 0;
+      width: var(--cf-card); height: auto; aspect-ratio: 4 / 5; margin: 0;
     }
+    @media (min-width: 360px) { .coverflow.is-strip { --cf-card: 240px; } }   /* 375 = iPhone SE/mini, נפוץ */
     /* הפוסטר הוא פריים 9:16 והאריח רחב יותר, כלומר יש חיתוך. חותכים מלמטה
        ולא מהאמצע - למעלה יושב כרטיס-השם של הסרטון, ובתחתית ממילא יושב
        הכיתוב שלנו. */
@@ -501,7 +507,7 @@
          נחתך מלמטה בכוונה; כאן אין סיבה לחתוך, ולכן היחס המלא. */
       .coverflow.is-single .cf-item { width: min(100%, 300px); margin: 0 auto; aspect-ratio: 9 / 16; }
       .coverflow.is-strip {
-        --cf-card: 270px;
+        --cf-card: 270px; --cf-spread: .86;
         width: 100%; align-self: auto; margin: 0 0 6px 0;
         height: 520px; aspect-ratio: auto; overflow: hidden;
         perspective: 1400px;
@@ -546,6 +552,15 @@
       display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0;
     }
     .cf-item-expand svg { width: 16px; height: 16px; fill: currentColor; }
+    /* בר התקדמות - מופיע רק בזמן ניגון (נבנה מחדש בכל הפעלה), וגורר
+       להזזה קדימה/אחורה. יושב מעל כפתור העצירה כדי שגרירה עליו לא
+       תיקרא כלחיצה, ו-touch-action:none מונע גלילת דף תוך כדי. */
+    .cf-item-bar { position: absolute; z-index: 4; left: 12px; right: 12px; bottom: 10px;
+      height: 20px; display: flex; align-items: center; cursor: pointer; touch-action: none; }
+    .cf-item-bar span { position: relative; flex: 1; height: 4px; border-radius: 99px;
+      background: rgba(255,255,255,.34); overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,.35); }
+    .cf-item-bar i { position: absolute; top: 0; bottom: 0; left: 0; width: 0;
+      background: #FFD747; border-radius: 99px; }
     .cf-item-sound {
       position: absolute; z-index: 3; bottom: 8px; left: 50%; transform: translateX(-50%);
       display: inline-flex; align-items: center; gap: 5px; white-space: nowrap;
@@ -1598,6 +1613,43 @@ window.interdeal = {
         if (destroyed) return;
         var p = player = new Vimeo.Player(iframe);
         var settled = false;
+
+        /* בר ההתקדמות. stopPropagation בכל אירוע מצביע חיוני: אירועי
+           ההצבעה של האריח עולים ל-.cf-stage שמפרש תנועה אופקית כהחלקה
+           בין סרטונים - בלי זה גרירה על הבר הייתה מחליפה סרטון. */
+        var bar = refs.bar, fill = bar && bar.querySelector('i');
+        var dur = 0, scrubbing = false;
+        if (bar) {
+          p.getDuration().then(function (d) { dur = d || 0; }).catch(function () {});
+          p.on('timeupdate', function (e) {
+            if (!scrubbing && fill) fill.style.width = ((e.percent || 0) * 100).toFixed(2) + '%';
+          });
+          var track = bar.querySelector('span');
+          var at = function (clientX) {
+            var r = track.getBoundingClientRect();
+            var pct = r.width ? (clientX - r.left) / r.width : 0;
+            pct = Math.max(0, Math.min(1, pct));
+            if (fill) fill.style.width = (pct * 100).toFixed(2) + '%';
+            return pct;
+          };
+          bar.addEventListener('click', function (e) { e.stopPropagation(); });
+          bar.addEventListener('pointerdown', function (e) {
+            e.stopPropagation(); e.preventDefault();
+            scrubbing = true; at(e.clientX);
+            try { bar.setPointerCapture(e.pointerId); } catch (err) {}
+          });
+          bar.addEventListener('pointermove', function (e) {
+            if (!scrubbing) return; e.stopPropagation(); at(e.clientX);
+          });
+          var endScrub = function (e) {
+            if (!scrubbing) return;
+            e.stopPropagation(); scrubbing = false;
+            var pct = at(e.clientX);
+            if (dur && player) player.setCurrentTime(pct * dur).catch(function () {});
+          };
+          bar.addEventListener('pointerup', endScrub);
+          bar.addEventListener('pointercancel', function () { scrubbing = false; });
+        }
         /* אם הדפדפן חסם ניגון-עם-קול - מנגנים מושתק ומציעים כפתור קול,
            במקום להשאיר סרטון שנראה תקוע. */
         function ensurePlaying() {
@@ -1665,6 +1717,7 @@ window.interdeal = {
           '<button class="cf-item-sound" type="button" hidden>' +
             '<svg viewBox="0 0 24 24"><path d="M3 10v4a1 1 0 0 0 1 1h2l4 4V5L6 9H4a1 1 0 0 0-1 1zm13.5 2a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a6.8 6.8 0 0 1 0 13.4v2.1a8.9 8.9 0 0 0 0-17.6z"/></svg>' +
             'קול</button>' +
+          '<div class="cf-item-bar"><span><i></i></span></div>' +
           '<button class="cf-item-expand" type="button" aria-label="הגדלת הסרטון">' +
             '<svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>' +
           '</button>' +
@@ -1680,7 +1733,8 @@ window.interdeal = {
         holder: it.querySelector('.cf-item-holder'),
         tap: it.querySelector('.cf-item-tap'),
         icon: it.querySelector('.cf-item-icon'),
-        sound: it.querySelector('.cf-item-sound')
+        sound: it.querySelector('.cf-item-sound'),
+        bar: it.querySelector('.cf-item-bar')
       }, v, null, function () { loadingEl.classList.add('hide'); });
       it.querySelector('.cf-item-expand').addEventListener('click', function (e) {
         e.stopPropagation();
@@ -1818,7 +1872,9 @@ window.interdeal = {
            כל עוד הקטגוריה/השאלה סגורה - וזה בדיוק המצב שבו layout רץ
            לראשונה - ומספר-קסם שנשמר מאותו רגע נשאר שגוי לתמיד. משתנה
            CSS נקרא נכון גם כשהאזור מוסתר, ולכן אין כאן "רגע חשיפה" לתפוס. */
-        var card = parseFloat(getComputedStyle(cf).getPropertyValue('--cf-card'));
+        var cs = getComputedStyle(cf);
+        var card = parseFloat(cs.getPropertyValue('--cf-card'));
+        var spread = parseFloat(cs.getPropertyValue('--cf-spread')) || 0.86;
         var fan = card > 0;
         var w = fan ? card : (items[0].getBoundingClientRect().width || 257);
         items.forEach(function (it, i) {
@@ -1834,7 +1890,7 @@ window.interdeal = {
           var abs = Math.abs(off), dir = off < 0 ? -1 : 1;
           if (fan) {
             var lvl = Math.min(abs, 2);                       // מעבר לזה - מוסתר
-            var x = lvl === 0 ? 0 : dir * (lvl === 1 ? 0.86 : 1.55) * w;
+            var x = lvl === 0 ? 0 : dir * (lvl === 1 ? spread : spread * 1.8) * w;
             var ry = lvl === 0 ? 0 : -dir * (lvl === 1 ? 24 : 38);
             var sc = lvl === 0 ? 1 : (lvl === 1 ? 0.84 : 0.68);
             tr = 'translate(-50%, -50%) translateX(' + x + 'px) rotateY(' + ry + 'deg) scale(' + sc + ')';
