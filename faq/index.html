@@ -561,14 +561,23 @@
       background: rgba(255,255,255,.34); overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,.35); }
     .cf-item-bar i { position: absolute; top: 0; bottom: 0; left: 0; width: 0;
       background: #FFD747; border-radius: 99px; }
+    /* עבר מתחתית-מרכז לפינה: שם ישב בדיוק על בר ההתקדמות החדש. */
     .cf-item-sound {
-      position: absolute; z-index: 3; bottom: 8px; left: 50%; transform: translateX(-50%);
+      position: absolute; z-index: 4; top: 8px; right: 8px;
       display: inline-flex; align-items: center; gap: 5px; white-space: nowrap;
       background: var(--gold); color: var(--navy); border: none; border-radius: 50px;
       padding: 6px 12px; font-size: 11px; font-weight: 700; cursor: pointer;
       box-shadow: 0 4px 12px rgba(0,0,0,.4);
     }
     .cf-item-sound[hidden] { display: none; }
+    /* מתג ולא כפתור חד-פעמי: הסמל מראה את המצב הנוכחי, והמילה "קול"
+       מופיעה רק כשמושתק - שם היא הזמנה לפעולה ולא רעש. */
+    .cf-item-sound .ic-off, .cf-item-sound b { display: none; }
+    .cf-item-sound.muted .ic-on { display: none; }
+    .cf-item-sound.muted .ic-off, .cf-item-sound.muted b { display: inline; }
+    .cf-lb-sound .ic-off, .cf-lb-sound b { display: none; }
+    .cf-lb-sound.muted .ic-on { display: none; }
+    .cf-lb-sound.muted .ic-off, .cf-lb-sound.muted b { display: inline; }
     .cf-item-sound svg { width: 12px; height: 12px; fill: currentColor; }
     /* ---------- VIDEO LIGHTBOX - פעולת "הגדלה" מפורשת בלבד, לא ברירת מחדל ---------- */
     .cf-lb {
@@ -1594,12 +1603,28 @@ window.interdeal = {
       }
       refs.tap.onclick = toggle;
       refs.icon.classList.remove('show');
-      refs.sound.hidden = true;
+      /* מתג קול קבוע. קודם זה היה כפתור חד-פעמי: הוא נחשף רק כשהדפדפן
+         חסם ניגון-עם-קול, ונעלם לתמיד ברגע שנלחץ. התוצאה הייתה שאחרי
+         הסרטון הראשון לא הייתה שום דרך להשתיק - ובסרטונים הבאים הוא
+         כבר לא הופיע בכלל, כי מרגע שהמשתמש נגע בדף הדפדפן מתיר קול
+         ו-ensurePlaying לא נכנס לפעולה. */
+      function syncSound() {
+        if (!player || !refs.sound) return;
+        player.getMuted().then(function (m) {
+          refs.sound.classList.toggle('muted', !!m);
+          refs.sound.setAttribute('aria-label', m ? 'הפעלת קול' : 'השתקה');
+        }).catch(function () {});
+      }
       refs.sound.onclick = function (e) {
         e.stopPropagation();
         if (!player) return;
-        player.setMuted(false).then(function () { player.setVolume(1); player.play(); });
-        refs.sound.hidden = true;
+        userTouched = true;
+        player.getMuted().then(function (m) {
+          if (!m) return player.setMuted(true);
+          return player.setMuted(false).then(function () {
+            player.setVolume(1); return player.play();
+          });
+        }).then(syncSound).catch(syncSound);
       };
 
       refs.holder.innerHTML = '';
@@ -1613,6 +1638,8 @@ window.interdeal = {
         if (destroyed) return;
         var p = player = new Vimeo.Player(iframe);
         var settled = false;
+        p.on('volumechange', syncSound);
+        syncSound();
 
         /* בר ההתקדמות. stopPropagation בכל אירוע מצביע חיוני: אירועי
            ההצבעה של האריח עולים ל-.cf-stage שמפרש תנועה אופקית כהחלקה
@@ -1658,7 +1685,7 @@ window.interdeal = {
             if (!paused || settled || userTouched || destroyed || p !== player) return;
             settled = true;
             p.setMuted(true).then(function () { return p.play(); })
-              .then(function () { if (!destroyed && p === player) refs.sound.hidden = false; })
+              .then(function () { if (!destroyed && p === player) syncSound(); })
               .catch(function () {});
           }).catch(function () {});
         }
@@ -1714,9 +1741,9 @@ window.interdeal = {
           '<div class="cf-item-loading"><img src="' + v.poster + '" alt=""><div class="cf-item-spinner"></div></div>' +
           '<button class="cf-item-tap" type="button" aria-label="עצירה או המשך"></button>' +
           '<div class="cf-item-icon" aria-hidden="true"></div>' +
-          '<button class="cf-item-sound" type="button" hidden>' +
-            '<svg viewBox="0 0 24 24"><path d="M3 10v4a1 1 0 0 0 1 1h2l4 4V5L6 9H4a1 1 0 0 0-1 1zm13.5 2a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a6.8 6.8 0 0 1 0 13.4v2.1a8.9 8.9 0 0 0 0-17.6z"/></svg>' +
-            'קול</button>' +
+          '<button class="cf-item-sound muted" type="button" aria-label="הפעלת קול">' +
+            '<svg class="ic-on" viewBox="0 0 24 24"><path d="M3 10v4a1 1 0 0 0 1 1h2l4 4V5L6 9H4a1 1 0 0 0-1 1zm13.5 2a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a6.8 6.8 0 0 1 0 13.4v2.1a8.9 8.9 0 0 0 0-17.6z"/></svg>' + '<svg class="ic-off" viewBox="0 0 24 24"><path d="M3 10v4a1 1 0 0 0 1 1h2l4 4V5L6 9H4a1 1 0 0 0-1 1zm18.5-.6-1.4-1.4-2.1 2.1-2.1-2.1-1.4 1.4L16.6 12l-2.1 2.1 1.4 1.4 2.1-2.1 2.1 2.1 1.4-1.4L19.4 12z"/></svg>' +
+            '<b>קול</b></button>' +
           '<div class="cf-item-bar"><span><i></i></span></div>' +
           '<button class="cf-item-expand" type="button" aria-label="הגדלת הסרטון">' +
             '<svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>' +
@@ -1776,9 +1803,9 @@ window.interdeal = {
             '<div class="cf-lb-loading"><img alt=""><div class="cf-lb-spinner"></div></div>' +
             '<button class="cf-lb-tap" type="button" aria-label="עצירה או המשך"></button>' +
             '<div class="cf-lb-icon" aria-hidden="true"></div>' +
-            '<button class="cf-lb-sound" type="button" hidden>' +
-              '<svg viewBox="0 0 24 24"><path d="M3 10v4a1 1 0 0 0 1 1h2l4 4V5L6 9H4a1 1 0 0 0-1 1zm13.5 2a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a6.8 6.8 0 0 1 0 13.4v2.1a8.9 8.9 0 0 0 0-17.6z"/></svg>' +
-              'לחצו להפעלת קול</button>' +
+            '<button class="cf-lb-sound muted" type="button" aria-label="הפעלת קול">' +
+              '<svg class="ic-on" viewBox="0 0 24 24"><path d="M3 10v4a1 1 0 0 0 1 1h2l4 4V5L6 9H4a1 1 0 0 0-1 1zm13.5 2a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a6.8 6.8 0 0 1 0 13.4v2.1a8.9 8.9 0 0 0 0-17.6z"/></svg>' + '<svg class="ic-off" viewBox="0 0 24 24"><path d="M3 10v4a1 1 0 0 0 1 1h2l4 4V5L6 9H4a1 1 0 0 0-1 1zm18.5-.6-1.4-1.4-2.1 2.1-2.1-2.1-1.4 1.4L16.6 12l-2.1 2.1 1.4 1.4 2.1-2.1 2.1 2.1 1.4-1.4L19.4 12z"/></svg>' +
+              '<b>לחצו להפעלת קול</b></button>' +
             '<p class="cf-lb-cap"></p>' +
           '</div>';
         document.body.appendChild(el);
