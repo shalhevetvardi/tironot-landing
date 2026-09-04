@@ -219,11 +219,18 @@
        השכן מציץ בקצה ומרמז "יש עוד", בלי לגזול חצי מהרוחב. */
     /* הרחבה מעבר לפדינג של הכרטיס דרך שוליים שליליים ו-stretch, ולא דרך
        calc על הרוחב - פריט flex שרחב מהמכל אינו ממורכז אמין (יצא מוסט 22px) */
+    /* מניפה, לא רצועה. ברצועה השכן נראה 30px בלבד והשאר יצא מהכרטיס -
+       כלומר כרטיס עם 4 סרטונים נראה כאילו יש בו אחד.
+       --cf-tilt: 0 בכוונה: הכרטיס האחורי יושב בתוך rotateY(180deg), ולכן
+       סיבוב תלת-ממדי על האריחים היה נראה כאן מהופך. ההיררכיה נבנית
+       מהקטנה ומשקיפות בלבד, וזה מספיק. */
     .coverflow.is-strip {
-      height: auto; perspective: none;
+      --cf-card: 240px; --cf-spread: .60; --cf-tilt: 0;
+      height: auto; perspective: none; overflow: hidden;
       align-self: stretch; width: auto; margin: 0 -22px 6px -22px;
       aspect-ratio: 20 / 19;
     }
+    .coverflow.is-strip .cf-item { width: var(--cf-card); }
     .coverflow.is-strip .cf-stage { transform-style: flat; }
     .coverflow.is-strip .cf-item {
       width: 75%; height: auto; aspect-ratio: 4 / 5; margin: 0;
@@ -1192,14 +1199,44 @@
       if (single) nav.style.display = 'none';
       function layout() {
         if (single) { items[0].tabIndex = 0; return; }
-        // נמדד בכל פעם, כדי שסיבוב מסך/רוחב עמודה אחר לא ישברו את המרווח
-        var step = (items[0].getBoundingClientRect().width || 257) + 10;
+        /* הרוחב מגיע מ---cf-card שב-CSS ולא נמדד: מדידה מחזירה 0 כל עוד
+           הכרטיס לא הפוך, וזה בדיוק הרגע שבו layout רץ לראשונה. */
+        var cs = getComputedStyle(cf);
+        var card = parseFloat(cs.getPropertyValue('--cf-card'));
+        var spread = parseFloat(cs.getPropertyValue('--cf-spread')) || 0.86;
+        var tilt = parseFloat(cs.getPropertyValue('--cf-tilt'));
+        if (isNaN(tilt)) tilt = 24;
+        var fan = card > 0;
+        var w = fan ? card : (items[0].getBoundingClientRect().width || 257);
         items.forEach(function (it, i) {
-          var off = i - active, abs = Math.abs(off);
-          it.style.transform = 'translate(-50%, -50%) translateX(' + (off * step) + 'px)';
-          it.style.opacity = off === 0 ? 1 : 0.45;
+          var off = i - active, tr, op, zi;
+          if (fan) {
+            /* גלישה מעגלית לתצוגה בלבד, כדי שיהיה שכן משני הצדדים גם
+               כשהפעיל הוא הראשון. הניווט נשאר ליניארי. */
+            var half = items.length / 2;
+            if (off > half) off -= items.length;
+            else if (off < -half) off += items.length;
+          }
+          var abs = Math.abs(off), dir = off < 0 ? -1 : 1;
+          if (fan) {
+            var lvl = Math.min(abs, 2);
+            var x = lvl === 0 ? 0 : dir * (lvl === 1 ? spread : spread * 1.8) * w;
+            var ry = (lvl === 0 || !tilt) ? 0 : -dir * (lvl === 1 ? tilt : tilt * 1.58);
+            var sc = lvl === 0 ? 1 : (lvl === 1 ? 0.84 : 0.68);
+            tr = 'translate(-50%, -50%) translateX(' + x + 'px)' +
+                 (ry ? ' rotateY(' + ry + 'deg)' : '') + ' scale(' + sc + ')';
+            op = abs === 0 ? 1 : (abs === 1 ? 0.65 : (abs === 2 ? 0.34 : 0));
+            zi = 30 - lvl * 10;
+          } else {
+            tr = 'translate(-50%, -50%) translateX(' + (off * (w + 10)) + 'px)';
+            op = off === 0 ? 1 : 0.45;
+            zi = 10 - abs;
+          }
+          it.style.transform = tr;
+          it.style.opacity = op;
           it.style.filter = off === 0 ? 'none' : 'brightness(.7)';
-          it.style.zIndex = 10 - abs; it.style.pointerEvents = abs > 1 ? 'none' : 'auto';
+          it.style.zIndex = zi;
+          it.style.pointerEvents = abs > (fan ? 2 : 1) ? 'none' : 'auto';
           it.tabIndex = off === 0 ? 0 : -1;
         });
         dots.forEach(function (d, i) { d.classList.toggle('on', i === active); });
