@@ -211,8 +211,8 @@
     .coverflow.is-single { height: auto; perspective: none; }
     .coverflow.is-single .cf-stage { position: static; transform-style: flat; }
     .coverflow.is-single .cf-item {
-      position: relative; top: auto; left: auto; margin: 0;
-      width: 100%; height: auto; aspect-ratio: 4 / 5;
+      position: relative; top: auto; left: auto; margin: 0 auto;
+      width: min(100%, 240px); height: auto; aspect-ratio: 9 / 16;
       transform: none; opacity: 1; filter: none;
     }
     /* כמה סרטונים - רצועה שטוחה שנשפכת לרוחב הכרטיס המלא, במקום תלת-ממד.
@@ -224,20 +224,23 @@
        --cf-tilt: 0 בכוונה: הכרטיס האחורי יושב בתוך rotateY(180deg), ולכן
        סיבוב תלת-ממדי על האריחים היה נראה כאן מהופך. ההיררכיה נבנית
        מהקטנה ומשקיפות בלבד, וזה מספיק. */
+    /* אותה מניפה שאושרה בדף השאלות: 9:16 והטיה לצדדים.
+       --cf-tilt שלילי בכוונה - הכרטיס האחורי יושב בתוך rotateY(180deg),
+       כלומר מוצג במראה, ולכן הטיה חיובית הייתה נוטה לכיוון ההפוך. */
     .coverflow.is-strip {
-      --cf-card: 240px; --cf-spread: .60; --cf-tilt: 0;
-      height: auto; perspective: none; overflow: hidden;
+      --cf-card: 240px; --cf-spread: .60; --cf-tilt: -24;
+      height: 448px; aspect-ratio: auto; perspective: 1200px; overflow: hidden;
       align-self: stretch; width: auto; margin: 0 -22px 6px -22px;
-      aspect-ratio: 20 / 19;
     }
-    .coverflow.is-strip .cf-item { width: var(--cf-card); }
+    .coverflow.is-strip .cf-stage { transform-style: preserve-3d; }
+    /* מנווטים בלחיצה על סרטון צדדי או בגרירה - כמו בדף השאלות. */
+    .coverflow.is-strip + .cf-nav { display: none; }
     .coverflow.is-strip .cf-stage { transform-style: flat; }
     .coverflow.is-strip .cf-item {
-      width: 75%; height: auto; aspect-ratio: 4 / 5; margin: 0;
+      width: var(--cf-card); height: 427px; aspect-ratio: auto; margin: 0;
     }
-    /* הפוסטר הוא פריים 9:16 והאריח רחב יותר, כלומר יש חיתוך. חותכים מלמטה
-       ולא מהאמצע - למעלה יושב כרטיס-השם של הסרטון, ובתחתית ממילא יושב
-       הכיתוב שלנו. */
+    /* מ-04-09-2026 האריח עצמו 9:16, ולכן אין חיתוך ברצועה. object-position
+       נשאר בשביל מצב הסרטון-הבודד, ולמקרה שיחזור אריח רחב מהפריים. */
     .coverflow.is-single .cf-item img, .coverflow.is-strip .cf-item img { object-position: center top; }
     /* בסרטון בודד הכיתוב מיותר - אין בין מה לבין מה להבחין, כרטיס-השם
        שבפוסטר כבר אומר מי זו, והוא התנגש עם הכתובית הצרובה בסרטון */
