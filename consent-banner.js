@@ -91,49 +91,74 @@
 
     var bar = null;
     var reduceMotion = false;
+    var prevOverflow = '';
     try { reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
 
     /* בונים ב-JS ולא ב-HTML קבוע, כדי שלא יהיה שום הבזק (flash) של הבאנר
        למי שכבר החליט בעבר.
 
-       שדרוג-בולטות 07-09-2026: מתוך 456 ביקורים בדף הראשי, רק 161 (35%)
-       בכלל לחצו על כפתור - 295 גללו הלאה בלי לגעת בבאנר. הפס גדול ובולט
-       יותר, ונכנס באנימציה במקום לקפוץ לעמדה שלו - כדי שיירשם כמשהו
-       שקורה על המסך, לא רק כרצועה קבועה שהעין מתרגלת אליה. עדיין לא-חוסם:
-       אפשר לגלול ולהתעלם, בכוונה - לא הפכנו אותו לחלון-מודאלי. */
+       07-09-2026: הפך מפס-תחתון לחלון חוסם. הסיבה במספרים - מתוך 456 ביקורים
+       בדף הראשי, רק 161 (35%) בכלל לחצו על כפתור; 295 גללו הלאה בלי להחליט
+       כלום. פס בתחתית תמיד יאפשר את זה, זו התכונה שלו.
+
+       ⚖️ מותר, ובתנאי אחד שנשמר כאן במפורש: הסירוב קל בדיוק כמו האישור
+       (אותו גודל, אותה לחיצה אחת), ומי שסירב מקבל את הדף במלואו. מה שאסור
+       הוא להתנות את הגישה באישור - וזה בדיוק מה שלא עושים כאן. אין X ואין
+       סגירה בלחיצה בחוץ, כי המטרה היא החלטה - לא לכידה. */
     function showBanner() {
       if (bar) return;
       bar = document.createElement('div');
       bar.setAttribute('dir', 'rtl');
-      bar.style.cssText = 'position:fixed;left:0;right:0;bottom:0;z-index:9999;'
-        + 'background:#14093B;color:#fff;padding:20px 24px;'
-        + 'display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:center;'
-        + 'font-family:"Rubik",Arial,sans-serif;font-size:15.5px;line-height:1.5;'
-        + 'box-shadow:0 -10px 32px rgba(0,0,0,.35);'
-        + (reduceMotion
-            ? ''
-            : 'transform:translateY(100%);opacity:0;transition:transform .45s cubic-bezier(.16,1,.3,1),opacity .35s ease-out;');
+      bar.setAttribute('role', 'dialog');
+      bar.setAttribute('aria-modal', 'true');
+      bar.setAttribute('aria-label', 'הסכמה לעוגיות שיווקיות');
+      bar.style.cssText = 'position:fixed;inset:0;z-index:2147483000;'
+        + 'background:rgba(9,4,26,.72);display:flex;align-items:center;justify-content:center;padding:20px;'
+        + 'font-family:"Rubik",Arial,sans-serif;'
+        + (reduceMotion ? '' : 'opacity:0;transition:opacity .28s ease-out;');
 
-      var text = document.createElement('span');
-      text.style.cssText = 'flex:1;min-width:240px;max-width:640px;';
+      var card = document.createElement('div');
+      card.style.cssText = 'background:#14093B;color:#fff;border-radius:18px;padding:28px 26px;'
+        + 'max-width:520px;width:100%;box-shadow:0 24px 60px rgba(0,0,0,.45);'
+        + 'font-size:15.5px;line-height:1.6;text-align:right;'
+        + (reduceMotion ? '' : 'transform:translateY(14px) scale(.98);transition:transform .32s cubic-bezier(.16,1,.3,1);');
+
+      var title = document.createElement('div');
+      title.textContent = 'רגע לפני שנתחיל';
+      title.style.cssText = 'font-size:20px;font-weight:700;margin-bottom:10px;';
+
+      var text = document.createElement('div');
+      text.style.cssText = 'margin-bottom:22px;color:rgba(255,255,255,.88);';
       text.textContent = 'אנחנו משתמשים בעוגיות שיווקיות (פייסבוק, גוגל) כדי להבין מה עובד ולהראות לכם תוכן רלוונטי. אפשר לאשר או לסרב - הדף יעבוד בכל מקרה.';
 
       var btnRow = document.createElement('div');
-      btnRow.style.cssText = 'display:flex;gap:10px;flex-shrink:0;';
+      btnRow.style.cssText = 'display:flex;gap:10px;flex-wrap:wrap;';
 
       var accept = document.createElement('button');
       accept.type = 'button';
       accept.textContent = 'מאשר/ת';
-      accept.style.cssText = 'background:#FFD747;color:#14093B;border:none;border-radius:10px;'
-        + 'padding:12px 26px;font-weight:700;font-size:15.5px;cursor:pointer;font-family:inherit;';
+      accept.style.cssText = 'flex:1;min-width:140px;background:#FFD747;color:#14093B;border:none;border-radius:10px;'
+        + 'padding:13px 26px;font-weight:700;font-size:15.5px;cursor:pointer;font-family:inherit;';
 
       var decline = document.createElement('button');
       decline.type = 'button';
       decline.textContent = 'לא תודה';
-      decline.style.cssText = 'background:transparent;color:#fff;border:1px solid rgba(255,255,255,.4);'
-        + 'border-radius:10px;padding:12px 26px;font-weight:600;font-size:15.5px;cursor:pointer;font-family:inherit;';
+      decline.style.cssText = 'flex:1;min-width:140px;background:transparent;color:#fff;border:1px solid rgba(255,255,255,.45);'
+        + 'border-radius:10px;padding:13px 26px;font-weight:600;font-size:15.5px;cursor:pointer;font-family:inherit;';
+
+      /* מקלדת: Tab מסתובב בין שני הכפתורים בלבד כל עוד החלון פתוח. */
+      function trap(e) {
+        if (e.key !== 'Tab') return;
+        var focusables = [accept, decline];
+        var i = focusables.indexOf(document.activeElement);
+        e.preventDefault();
+        var next = e.shiftKey ? (i <= 0 ? focusables.length - 1 : i - 1) : (i === focusables.length - 1 ? 0 : i + 1);
+        focusables[next].focus();
+      }
 
       function close() {
+        try { document.removeEventListener('keydown', trap, true); } catch (e) {}
+        try { document.body.style.overflow = prevOverflow; } catch (e) {}
         try { bar.remove(); } catch (e) {}
         bar = null;
       }
@@ -152,31 +177,26 @@
 
       btnRow.appendChild(accept);
       btnRow.appendChild(decline);
-      bar.appendChild(text);
-      bar.appendChild(btnRow);
+      card.appendChild(title);
+      card.appendChild(text);
+      card.appendChild(btnRow);
+      bar.appendChild(card);
       document.body.appendChild(bar);
+
+      try { prevOverflow = document.body.style.overflow; document.body.style.overflow = 'hidden'; } catch (e) {}
+      document.addEventListener('keydown', trap, true);
+      /* מפקסים על החלון עצמו ולא על "מאשר/ת" - פוקוס על כפתור האישור הופך
+         Enter לאישור בהיסח הדעת, וזו הטיה לטובת צד אחד. */
+      card.setAttribute('tabindex', '-1');
+      try { card.focus({ preventScroll: true }); } catch (e) {}
 
       if (!reduceMotion) {
         requestAnimationFrame(function () {
           requestAnimationFrame(function () {
-            bar.style.transform = 'translateY(0)';
             bar.style.opacity = '1';
+            card.style.transform = 'translateY(0) scale(1)';
           });
         });
-        /* פעימה עדינה חד-פעמית על כפתור האישור, אחרי שהפס כבר נכנס -
-           לא לפני, כדי לא להתחרות עם אנימציית-הכניסה עצמה. */
-        window.setTimeout(function () {
-          if (!accept.isConnected) return;
-          accept.style.transition = 'transform .35s ease-in-out';
-          var n = 0;
-          function pulse() {
-            if (!accept.isConnected || n >= 2) { accept.style.transform = ''; return; }
-            accept.style.transform = n % 2 === 0 ? 'scale(1.06)' : 'scale(1)';
-            n++;
-            window.setTimeout(pulse, 350);
-          }
-          pulse();
-        }, 900);
       }
     }
 
