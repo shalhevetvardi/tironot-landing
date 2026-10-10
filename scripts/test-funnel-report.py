@@ -27,6 +27,9 @@ def ev(vid, event, **kw):
 #  v6 ראה מחיר ולחץ פעמיים על נועם + קלנדלי  ← נספר פעם אחת בכל סוג
 #  v7 קוד-בדיקה חד-פעמי (vo-checkout)        ← לא נכנס לשום מספר, גם לא ל"נכנסו לדף"
 #  v8 קוד-בדיקה בתחילית המוסכמה (test-*)     ← אותו דבר, דרך הכלל הכללי ולא הרשימה
+#  v9, v10 ביקורים מדפים אחרים (gallery, aimprove) שחולקים את אותה טבלה
+#                                            ← לא נספרים בכלל. בלי הסינון הם ניפחו את
+#                                              "נכנסו לדף" פי 10 (נמדד 10-10-2026)
 ROWS = [
     ev("v1","view"), ev("v1","end", depth="hero", seconds=4, device_class="mobile"),
     ev("v2","view"), ev("v2","end", depth="story", seconds=30, device_class="mobile"),
@@ -41,6 +44,8 @@ ROWS = [
       ev("v7","price", src="vo-checkout"), ev("v7","end", depth="final", seconds=999, device_class="desktop", src="vo-checkout"),
     ev("v8","view", src="test-anything"),
       ev("v8","price", src="test-anything"), ev("v8","end", depth="final", seconds=999, device_class="desktop", src="test-anything"),
+    ev("v9","view", page="gallery"),
+    ev("v10","view", page="aimprove"), ev("v10","end", depth="hero", seconds=2, device_class="mobile", page="aimprove"),
 ]
 
 # צד ההטבה: 3 שיחות - אחת עם קוד+נרשמה, אחת עם קוד בלבד, אחת בלי קוד
@@ -74,6 +79,7 @@ checks = [
     ("1 נרשמה לקורס",                "נרשמו לקורס                      1"),
     ("v7+v8 (קודי-בדיקה) סוננו ולא נספרו בשום מקום",
                                       "סוננו 2 ביקורי-בדיקה מוכרים"),
+    ("v9+v10 (דפים אחרים) לא נספרו", "לא נספרו 2 ביקורים מדפים אחרים"),
 ]
 ok = True
 for label, needle in checks:

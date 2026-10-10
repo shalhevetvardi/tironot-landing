@@ -125,6 +125,7 @@ def main():
     # ── 1. המשפך בתוך הדף ─────────────────────────────────────────────────────
     tid = find_events_table()
     n_excluded = 0
+    other_page_vids = set()
     if not tid:
         print()
         print("  טבלת אירועי-המשפך עדיין לא קיימת, ולכן אין נתונים על מה")
@@ -138,10 +139,17 @@ def main():
             for r in raw if is_test_src(r["fields"].get("src"))
         }
         n_excluded = len(test_vids)
+        # הטבלה משותפת לכמה דפים (הגלריה, אתר אימפרוב, דפי הסקילים - ר' EV_PAGES
+        # ב-Worker). בלי הסינון הם נספרו כמבקרי דף הטירונות וכמי ש"עזבו בכותרת".
+        in_window = [r for r in raw if str(r["fields"].get("ts", "")) >= since_s]
+        other_page_vids = {
+            str(r["fields"].get("vid", ""))
+            for r in in_window if str(r["fields"].get("page") or "index") != "index"
+        }
         rows = [
-            r for r in raw
-            if str(r["fields"].get("ts", "")) >= since_s
-            and str(r["fields"].get("vid", "")) not in test_vids
+            r for r in in_window
+            if str(r["fields"].get("vid", "")) not in test_vids
+            and str(r["fields"].get("page") or "index") == "index"
         ]
         visits = collections.defaultdict(
             lambda: {"price": False, "cta": set(), "depth": -1, "src": "", "dev": "", "secs": None}
@@ -169,6 +177,9 @@ def main():
                 v["price"] = True
 
     n = len(visits)
+    if tid and other_page_vids:
+        print()
+        print(f"  (לא נספרו {len(other_page_vids)} ביקורים מדפים אחרים שחולקים את הטבלה)")
     if n_excluded:
         print()
         print(f"  (סוננו {n_excluded} ביקורי-בדיקה מוכרים - src מתויג כבדיקה, לא בחישוב)")
