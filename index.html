@@ -488,6 +488,231 @@
 
   /* ---------- STORY — פסקאות הנרטיב המשוחזר (לא ה-payoff) ---------- */
   .story p:not(.story__payoff) { font-size: clamp(16.5px, 1.8vw, 19px); line-height: 1.78; color: rgba(255,255,255,.9); margin-bottom: 18px; }
+
+  /* ---------- נגן הסרטונים - הועתק מ-bogrim/index.html, שינוי שם בלבד אסור: שני הדפים חולקים את אותו JS ---------- */
+    .cf-play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; }
+    .cf-play span { width: 46px; height: 46px; border-radius: 50%; background: rgba(20,9,59,.62); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 14px rgba(0,0,0,.3); }
+    .cf-play span::before { content: ""; border-style: solid; border-width: 9px 0 9px 15px; border-color: transparent transparent transparent #fff; margin-right: -3px; }
+    .cf-cap { position: absolute; bottom: 0; left: 0; right: 0; padding: 18px 8px 7px 8px; font-size: 11px; font-weight: 700; color: #fff; text-align: center; background: linear-gradient(to top, rgba(0,0,0,.72), transparent); pointer-events: none; }
+    .cf-item-player { position: absolute; inset: 0; }
+    .cf-item-holder { position: absolute; inset: 0; }
+    .cf-item-holder iframe { width: 100%; height: 100%; border: 0; display: block; }
+    .cf-item-loading { position: absolute; inset: 0; z-index: 1; transition: opacity .25s ease; }
+    .cf-item-loading.hide { opacity: 0; pointer-events: none; }
+    .cf-item-loading img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+    .cf-item-spinner {
+      position: absolute; top: 50%; left: 50%; width: 32px; height: 32px; margin: -16px 0 0 -16px;
+      border: 3px solid rgba(255,255,255,.35); border-top-color: #fff; border-radius: 50%;
+      animation: cf-spin .8s linear infinite;
+    }
+    @keyframes cf-spin { to { transform: rotate(360deg); } }
+    .cf-item-tap { position: absolute; inset: 0; z-index: 2; padding: 0; border: 0; background: transparent; cursor: pointer; }
+    .cf-item-icon {
+      position: absolute; top: 50%; left: 50%; width: 52px; height: 52px; margin: -26px 0 0 -26px;
+      border-radius: 50%; background: rgba(20,9,59,.58);
+      display: flex; align-items: center; justify-content: center;
+      pointer-events: none; opacity: 0; transition: opacity .3s ease; z-index: 2;
+    }
+    .cf-item-icon.show { opacity: 1; }
+    .cf-item-icon svg { width: 24px; height: 24px; fill: #fff; }
+    .cf-item-expand {
+      position: absolute; z-index: 3; top: 8px; left: 8px; width: 32px; height: 32px;
+      border-radius: 50%; border: none; background: rgba(0,0,0,.5); color: #fff;
+      display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0;
+    }
+    .cf-item-expand svg { width: 16px; height: 16px; fill: currentColor; }
+    .cf-item-bar { position: absolute; z-index: 4; left: 12px; right: 12px; bottom: 10px;
+      height: 20px; display: flex; align-items: center; cursor: pointer; touch-action: none; }
+    .cf-item-bar span { position: relative; flex: 1; height: 4px; border-radius: 99px;
+      background: rgba(255,255,255,.34); overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,.35); }
+    .cf-item-bar i { position: absolute; top: 0; bottom: 0; left: 0; width: 0;
+      background: #FFD747; border-radius: 99px; }
+    .cf-item-sound {
+      position: absolute; z-index: 4; top: 8px; right: 8px;
+      display: inline-flex; align-items: center; gap: 5px; white-space: nowrap;
+      background: var(--gold); color: var(--navy); border: none; border-radius: 50px;
+      padding: 6px 12px; font-size: 11px; font-weight: 700; cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,.4);
+    }
+    .cf-item-sound[hidden] { display: none; }
+    .cf-item-sound .ic-off, .cf-item-sound b { display: none; }
+    .cf-item-sound.muted .ic-on { display: none; }
+    .cf-item-sound.muted .ic-off, .cf-item-sound.muted b { display: inline; }
+    .cf-lb-sound .ic-off, .cf-lb-sound b { display: none; }
+    .cf-lb-sound.muted .ic-on { display: none; }
+    .cf-lb-sound.muted .ic-off, .cf-lb-sound.muted b { display: inline; }
+    .cf-item-sound svg { width: 12px; height: 12px; fill: currentColor; }
+    .cf-lb {
+      position: fixed; inset: 0; z-index: 9000;
+      background: rgba(12,6,32,.94);
+      display: flex; align-items: center; justify-content: center;
+      padding: 0; opacity: 0; transition: opacity .2s ease;
+    }
+    .cf-lb[hidden] { display: none; }
+    .cf-lb.is-open { opacity: 1; }
+    .cf-lb-frame {
+      position: relative; background: #000; border-radius: 14px; overflow: hidden;
+      width: min(100%, calc(94vh * var(--lb-ar, .5625)));
+      aspect-ratio: var(--lb-ar, .5625);
+      box-shadow: 0 18px 60px rgba(0,0,0,.55);
+    }
+    .cf-lb-holder { position: absolute; inset: 0; }
+    .cf-lb-frame iframe { width: 100%; height: 100%; border: 0; display: block; }
+    .cf-lb-loading { position: absolute; inset: 0; z-index: 1; transition: opacity .25s ease; }
+    .cf-lb-loading.hide { opacity: 0; pointer-events: none; }
+    .cf-lb-loading img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+    .cf-lb-spinner {
+      position: absolute; top: 50%; left: 50%; width: 44px; height: 44px; margin: -22px 0 0 -22px;
+      border: 4px solid rgba(255,255,255,.35); border-top-color: #fff; border-radius: 50%;
+      animation: cf-spin .8s linear infinite;
+    }
+    .cf-lb-tap { position: absolute; inset: 0; z-index: 2; padding: 0; border: 0; background: transparent; cursor: pointer; }
+    .cf-lb-icon {
+      position: absolute; top: 50%; left: 50%; width: 74px; height: 74px; margin: -37px 0 0 -37px;
+      border-radius: 50%; background: rgba(20,9,59,.58);
+      display: flex; align-items: center; justify-content: center;
+      pointer-events: none; opacity: 0; transition: opacity .3s ease; z-index: 2;
+    }
+    .cf-lb-icon.show { opacity: 1; }
+    .cf-lb-icon svg { width: 32px; height: 32px; fill: #fff; }
+    .cf-lb-close {
+      position: absolute; z-index: 2;
+      top: calc(12px + env(safe-area-inset-top, 0px));
+      left: calc(12px + env(safe-area-inset-left, 0px));
+      width: 44px; height: 44px;
+      border-radius: 50%; border: none; background: rgba(0,0,0,.5); color: #fff;
+      font-size: 27px; line-height: 1; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .cf-lb-close:hover { background: rgba(0,0,0,.72); }
+    .cf-lb-sound {
+      position: absolute; z-index: 2; bottom: 76px; left: 50%; transform: translateX(-50%);
+      display: inline-flex; align-items: center; gap: 7px; white-space: nowrap;
+      background: var(--gold); color: var(--navy); border: none; border-radius: 50px;
+      padding: 10px 18px; font-size: 14px; font-weight: 700; cursor: pointer;
+      box-shadow: 0 6px 18px rgba(0,0,0,.4);
+    }
+    .cf-lb-sound[hidden] { display: none; }
+    .cf-lb-sound svg { width: 16px; height: 16px; fill: currentColor; }
+    .cf-lb-cap {
+      position: absolute; left: 0; right: 0; bottom: 0; margin: 0;
+      padding: 32px 14px 12px 14px; color: #fff; font-size: 15px; font-weight: 700;
+      text-align: center; pointer-events: none;
+      background: linear-gradient(to top, rgba(0,0,0,.78), transparent);
+    }
+
+  /* ---------- המלצות (10-10-2026) ----------
+     הנכסים עצמם (סרטון, הודעה מהקבוצה, ביקורת גוגל, משפט שבוגר/ת כתב/ה בעצמו/ה) -
+     לא משפטים שניסחנו. מפת השיבוץ והנימוקים: sales-automation, docs/תוכנית-המלצות-בדף-המכירה-של-טירונות.md */
+  .tm-sec { padding: 72px 0; }
+  .tm-sec--quick { background: #fff; padding: 44px 0 60px; }
+  .tm-sec--inside { background: #fff; padding: 20px 0 80px; }
+  .tm-sec--google { background: #EDF2F9; }
+  .tm-sec--doubts { background: #EDF2F9; padding: 80px 0 90px; }
+  .tm-title { font-weight: 800; font-size: clamp(24px, 3vw, 36px); line-height: 1.2; margin-bottom: 10px; }
+  .tm-lead { color: var(--body); font-size: clamp(16px, 1.6vw, 18px); line-height: 1.6; max-width: 640px; margin: 0 auto 26px; }
+
+  .tm-google { display: inline-flex; align-items: center; gap: 10px; background: #fff; border: 1px solid #E3E6EE;
+    border-radius: 50px; padding: 9px 18px; text-decoration: none; color: var(--navy); font-weight: 700; font-size: 15px;
+    box-shadow: 0 4px 14px rgba(20,9,59,.07); }
+  .tm-google svg { width: 20px; height: 20px; flex: 0 0 auto; }
+  .tm-stars { color: #F2A900; letter-spacing: 1px; font-size: 15px; }
+  .tm-google small { font-size: 14px; font-weight: 500; color: #5A5873; }
+
+  .tm-people { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-top: 26px; text-align: right; }
+  .tm-person { background: #F4F7FC; border: 1px solid #E3EAF4; border-radius: 18px; padding: 18px; display: flex; flex-direction: column; gap: 12px; }
+  .tm-person__head { display: flex; align-items: center; gap: 10px; }
+  .tm-person__head img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid #fff;
+    box-shadow: 0 3px 10px rgba(20,9,59,.14); flex: 0 0 auto; }
+  .tm-person__name { display: block; font-weight: 800; font-size: 15px; line-height: 1.25; }
+  .tm-person__role { display: block; font-size: 12.5px; color: #5A5873; line-height: 1.35; }
+  .tm-person blockquote { font-size: 15px; line-height: 1.55; color: var(--navy); font-weight: 500; }
+
+  .tm-shots { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin: 22px auto 0; max-width: 760px; align-items: start; }
+  .tm-shots--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); max-width: none; }
+  .tm-shot { margin: 0; background: #fff; border-radius: 16px; overflow: hidden; border: 1px solid #E3E6EE;
+    box-shadow: 0 8px 22px rgba(20,9,59,.08); display: flex; flex-direction: column; }
+  .tm-shot button { display: block; padding: 0; border: 0; background: #E9EDF3; cursor: zoom-in; }
+  .tm-shot img { width: 100%; height: auto; max-height: 460px; object-fit: cover; object-position: top; display: block; }
+  .tm-shot figcaption { font-size: 12.5px; color: #5A5873; padding: 8px 12px; text-align: right; line-height: 1.4; }
+
+  .tm-video { position: relative; display: block; width: min(100%, 250px); aspect-ratio: 9 / 16; margin: 0 auto;
+    border-radius: 14px; overflow: hidden; background: #000; cursor: pointer; border: 0; padding: 0;
+    box-shadow: 0 12px 30px rgba(20,9,59,.25); }
+  .tm-video > img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+  .tm-video .cf-play span { width: 58px; height: 58px; }
+  .tm-video .cf-play span::before { border-width: 11px 0 11px 18px; }
+  /* השם צרוב בתוך הסרטון עצמו, ולכן הכיתוב יושב מתחת לאריח ולא עליו */
+  .tm-video .cf-cap { display: none; }
+  .tm-vcap { font-size: 13.5px; color: #5A5873; margin-top: 10px; text-align: center; }
+
+  .tm-row { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 28px; align-items: start; margin-top: 30px; text-align: right; }
+  .tm-row .tm-shots { margin-top: 0; max-width: none; }
+  .tm-stack { display: flex; flex-direction: column; gap: 16px; }
+
+  .tm-quote { background: #fff; border-radius: 18px; padding: 20px 22px; border: 1px solid #E3E6EE; text-align: right;
+    box-shadow: 0 8px 22px rgba(20,9,59,.06); }
+  .tm-quote blockquote { font-size: 17px; line-height: 1.6; font-weight: 600; color: var(--navy); border-right: 3px solid var(--gold); padding-right: 12px; }
+  .tm-quote .tm-person__head { margin-top: 14px; }
+  .tm-quote--wide { max-width: 760px; margin: 26px auto 0; }
+
+  .tm-reviews { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin-top: 30px; text-align: right; }
+  .tm-review { background: #fff; border-radius: 18px; padding: 20px 22px; border: 1px solid #DCE5F1; box-shadow: 0 10px 26px rgba(20,9,59,.08);
+    display: flex; flex-direction: column; gap: 10px; }
+  .tm-review__head { display: flex; align-items: center; gap: 10px; }
+  .tm-review__head svg { width: 22px; height: 22px; flex: 0 0 auto; }
+  .tm-review__name { display: block; font-weight: 800; font-size: 15px; line-height: 1.2; }
+  .tm-review__meta { display: block; font-size: 12.5px; color: #5A5873; }
+  .tm-review p { font-size: 15px; line-height: 1.65; color: var(--body); }
+  .tm-more { margin-top: 22px; font-size: 15px; }
+  .tm-more a { color: var(--blue-deep); font-weight: 700; }
+
+  .proof__more { margin-top: 14px; align-self: flex-start; display: inline-flex; align-items: center; gap: 7px;
+    font-family: inherit; font-size: 14px; font-weight: 700; color: var(--blue-deep); background: rgba(36,115,200,.1);
+    border: 0; border-radius: 50px; padding: 8px 14px; cursor: pointer; }
+  .proof__more:hover { background: rgba(36,115,200,.18); }
+  .proof__more svg { width: 14px; height: 14px; fill: currentColor; }
+  .proof-ceiling-card__body .proof__more { margin-top: 12px; }
+
+  .tm-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 8px; }
+  .tm-chip { font-family: inherit; font-size: 16px; font-weight: 700; color: var(--navy); background: #fff;
+    border: 1.5px solid #CFDAEA; border-radius: 50px; padding: 10px 20px; cursor: pointer; }
+  .tm-chip[aria-selected="true"] { background: var(--navy); border-color: var(--navy); color: #fff; }
+  .tm-panel { margin-top: 30px; }
+  .tm-js .tm-panel:not(.is-on) { display: none; }
+  .tm-panel__cta { margin-top: 30px; text-align: center; }
+  .tm-panel__title { font-weight: 800; font-size: 20px; margin: 0 0 4px; text-align: right; }
+
+  .tm-ilb { position: fixed; inset: 0; z-index: 9000; background: rgba(12,6,32,.94); display: flex; align-items: center;
+    justify-content: center; padding: 56px 16px 24px; }
+  .tm-ilb[hidden] { display: none; }
+  .tm-ilb img { max-width: min(100%, 520px); max-height: 100%; border-radius: 14px; display: block; background: #fff; }
+  .tm-ilb button { position: absolute; top: calc(12px + env(safe-area-inset-top, 0px)); left: 12px; width: 44px; height: 44px;
+    border-radius: 50%; border: none; background: rgba(0,0,0,.5); color: #fff; font-size: 27px; line-height: 1; cursor: pointer; }
+
+  @media (max-width: 920px) {
+    .tm-people { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .tm-reviews { grid-template-columns: 1fr; max-width: 640px; margin-inline: auto; }
+    .tm-shots--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 680px) {
+    .tm-sec { padding: 56px 0; }
+    .tm-sec--quick { padding: 34px 0 48px; }
+    /* שורה שגוללים ביד, עם הכרטיס הבא מציץ בקצה - לא קרוסלה שמתחלפת לבד */
+    .tm-people { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 12px;
+      margin: 22px -24px 0; padding: 0 24px 8px; -webkit-overflow-scrolling: touch; }
+    .tm-person { flex: 0 0 80%; scroll-snap-align: center; }
+    /* בטלפון הודעה בחצי רוחב לא קריאה - שורה שגוללים ביד, הודעה כמעט ברוחב מלא */
+    .tm-shots, .tm-shots--4 { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 12px;
+      margin-inline: -24px; padding: 0 24px 8px; -webkit-overflow-scrolling: touch; }
+    .tm-shot { flex: 0 0 82%; scroll-snap-align: center; }
+    .tm-shots .tm-shot:only-child { flex-basis: 100%; }
+    .tm-shot img { max-height: 520px; }
+    /* מתחת לכותרת - טעימה קצרה, ההודעה המלאה בהקשה */
+    .tm-sec--quick .tm-shot img { max-height: 340px; }
+    .tm-row { grid-template-columns: 1fr; gap: 20px; }
+    .tm-chip { font-size: 15px; padding: 9px 16px; }
+  }
 </style>
 </head>
 <body>
@@ -560,6 +785,25 @@
   </div>
 </section>
 
+
+<!-- ====================== TESTIMONIALS 1 - הוכחה מהירה מתחת לכותרת (10-10-2026) ====================== -->
+<section class="tm-sec tm-sec--quick center" id="tm-quick">
+  <div class="container">
+    <a class="tm-google" href="https://maps.google.com/?cid=13202233444689226546" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg><span class="tm-stars" aria-hidden="true">★★★★★</span> 5.0 <small>· 7 ביקורות בגוגל</small></a>
+    <h2 class="tm-title" style="margin-top:20px">בוגרים מספרים, במילים שלהם</h2>
+    <div class="tm-people">
+      <div class="tm-person"><div class="tm-person__head"><img src="bogrim/images/eli.jpg" alt="אלי טל" loading="lazy"><span><span class="tm-person__name">אלי טל</span><span class="tm-person__role">מנהל כספים ורואה חשבון</span></span></div><blockquote>"חודש אחרי תחילת הקורס, התהליכים שבניתי חסכו לחברה שלי כ-10 אלפי ש״ח בחודש."</blockquote></div>
+      <div class="tm-person"><div class="tm-person__head"><img src="bogrim/images/sigal.jpg" alt="סיגל יער" loading="lazy"><span><span class="tm-person__name">סיגל יער</span><span class="tm-person__role">עורכת דין, בת 58</span></span></div><blockquote>"עולם ה-AI זה פחות לגיל שלנו, אנחנו כבר אחרי - לא, אנחנו ממש ממש ממש לא אחרי."</blockquote></div>
+      <div class="tm-person"><div class="tm-person__head"><img src="bogrim/images/dmarad.jpg" alt="דניאל מראד" loading="lazy"><span><span class="tm-person__name">דניאל מראד</span><span class="tm-person__role">בעל סוכנות שיווק דיגיטלי</span></span></div><blockquote>"בניתי מחלקות שלמות שמחליפות אנשים. זה פינה לי המון זמן לדברים באמת חשובים בחיים."</blockquote></div>
+      <div class="tm-person"><div class="tm-person__head"><img src="bogrim/images/inbarcarmeli.jpg" alt="ענבר כרמלי" loading="lazy"><span><span class="tm-person__name">ענבר כרמלי</span><span class="tm-person__role">ראשת מטה, ידע - חברת המיסחור של מכון ויצמן</span></span></div><blockquote>"בניתי סוכן שמסייע לאנשי הארגון לשלוף מידע ודו&quot;חות ממערכת ה CRM של הארגון."</blockquote></div>
+    </div>
+    <div class="tm-shots">
+      <figure class="tm-shot"><button type="button" aria-label="הגדלת ההודעה של רון אלון"><img src="students/wa/TRN-0134.jpg" alt="רון אלון: לפני שנתיים בערך ישבתי על הספה, בין עבודות. היום יש לי עסק עם 3 עובדים, אפליקציה עם יותר מ-2,000 משתמשים" loading="lazy"></button><figcaption>הודעה בקבוצת טירונות סוכנים · רון אלון</figcaption></figure>
+      <figure class="tm-shot"><button type="button" aria-label="הגדלת ההודעה של נחמה לוי"><img src="students/wa/TRN-0128.jpg" alt="נחמה לוי: אם אני יכולה ללמוד ב 5 שבועות משהו שהייתי צריכה להשקיע בו חמש שנים, שווה לי להשקיע בזה כסף" loading="lazy"></button><figcaption>הודעה בקבוצת טירונות סוכנים · נחמה לוי</figcaption></figure>
+    </div>
+  </div>
+</section>
+
 <!-- ====================== VIDEO #1 — INTRO / "מי אני" (WHITE) ====================== -->
 <section class="section section--white center" id="intro">
   <div class="container">
@@ -595,7 +839,7 @@
 <section class="section section--white section--proofs center">
   <div class="container">
     <h2>וזה כבר קורה.<br>אנשים כמוכם <span class="accent-blue">כבר בנו את זה.</span></h2>
-    <p class="lead center">רובם לא הגיעו מרקע טכני. אלה אנשים שעוברים את הקורס <span class="now-underline">עכשיו</span> — וזה מה שהם כבר בנו.</p>
+    <p class="lead center">רובם לא הגיעו מרקע טכני. אלה <span class="now-underline">בוגרים</span> של המחזורים האחרונים - וזה מה שהם כבר בנו.</p>
     <div class="proofs">
       <div class="proof">
         <div class="proof__head">
@@ -603,7 +847,8 @@
           <span class="proof__role" style="color:var(--blue-deep)">אילנה וייס · מטפלת בחרדות</span>
         </div>
         <p>ניהלה מחלקה שלמה של ארבע מזכירות. הסוכן שבנתה כבר עושה את רוב עבודתן — עורך לה מסמכים, מנהל משימות, ומטפל בדברים שעלו לה עשרות אלפי שקלים בחודש.</p>
-        <p class="proof__quote">"הייתה לי מחלקה שלמה של מזכירות — ארבע. אני לא אצטרך את זה יותר."</p>
+        <p class="proof__quote">"הייתה לי מחלקה שלמה של מזכירות - 4. אני לא אצטרך את זה יותר."</p>
+        <button type="button" class="proof__more" data-img="students/wa/TRN-0020.jpg" data-alt="אילנה וייס: הייתה לי מחלקה שלמה של מזכירות - 4. אני לא אצטרך את זה יותר"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2z"/></svg>ההודעה המקורית מהקבוצה</button>
       </div>
       <div class="proof">
         <div class="proof__head">
@@ -611,15 +856,17 @@
           <span class="proof__role" style="color:var(--wine)">ליטל יעקובוביץ · עורכת דין</span>
         </div>
         <p>בנתה עוזר משפטי שמלווה אותה במשרד, וגם סוכן פיננסי שקרא וניתח דפי אשראי וחשבונות בנק, יצר לעצמו את הכלים, ותיעד הכול — בלי שורת קוד.</p>
-        <p class="proof__quote">"זה הצוות שאין לי."</p>
+        <p class="proof__quote">"יצרתי עשרות סוכנים לעבודה שלי המשפטית, כולל משרד משפטי מלא."</p>
+        <button type="button" class="proof__more" data-img="students/wa/TRN-0007.jpg" data-alt="ליטל יעקובוביץ דראי: יצרתי היום בשביל הכיף סוכן פיננסי שקורא ומנתח דפי אשראי וחשבונות בנק"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2z"/></svg>ההודעה המקורית מהקבוצה</button>
       </div>
       <div class="proof">
         <div class="proof__head">
-          <img class="proof__photo" src="students/anat.jpg" alt="ענת מנור" loading="lazy">
-          <span class="proof__role" style="color:var(--purple)">ענת מנור · סמנכ"לית פיתוח עסקי, שירותי רפואה</span>
+          <img class="proof__photo" src="students/hani.jpg" alt="חני הופמן" loading="lazy">
+          <span class="proof__role" style="color:var(--purple)">חני הופמן · פיתוח עסקי ונדל"ן</span>
         </div>
-        <p>בנתה סוכנת אישית, וגם סוכן שקורא מכרז שלם, מסכם את תנאי הסף, ומחליט בשבילה אם בכלל כדאי לגשת אליו.</p>
-        <p class="proof__quote">"היא קוראת מכרז מהר ממני — ויודעת להגיד לי 'לא שווה'."</p>
+        <p>בנתה סוכנת שהיא עוזרת אישית, סקיל לתיעוד משאבי אנוש, ותהליך שמתמלל ומסכם הרצאות ושיעורים.</p>
+        <p class="proof__quote">"אני מרגישה היום שיש לי את הידע ואת ההבנה, ואני רק צריכה לחלום על משהו... ולבצע את זה."</p>
+        <button type="button" class="proof__more" data-v="{&quot;id&quot;: &quot;1217933716&quot;, &quot;h&quot;: &quot;f6c857e89b&quot;, &quot;poster&quot;: &quot;faq/images/cf-1217933716.jpg&quot;, &quot;cap&quot;: &quot;חני הופמן · לעשות כל דבר&quot;}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>צפו בה מספרת</button>
       </div>
       <div class="proof">
         <div class="proof__head">
@@ -627,7 +874,8 @@
           <span class="proof__role" style="color:#3F7E16">דולב דרי · בעל משרד פרסום</span>
         </div>
         <p>בנה צוות סוכנים שמנהלים לו לקוחות — מקבלים פניות, מתאמים פגישות, מזמינים גרפיקות וניהול קמפיינים. הכול בלי שהוא נוגע.</p>
-        <p class="proof__quote">"הסוכנים שלי מנהלים לקוחות במקומי."</p>
+        <p class="proof__quote">"החלומות שהיו מורכבים בראש לפני הקורס - היום יכולים לקרום עור וגידים בשעה."</p>
+        <button type="button" class="proof__more" data-v="{&quot;id&quot;: &quot;1202912038&quot;, &quot;h&quot;: &quot;e8b0d754f9&quot;, &quot;poster&quot;: &quot;faq/images/cf-1202912038.jpg&quot;, &quot;cap&quot;: &quot;דולב דרי · בוט שמנהל לקוחות בוואטסאפ&quot;}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>צפו בו מספר</button>
       </div>
       <div class="proof">
         <div class="proof__head">
@@ -635,7 +883,8 @@
           <span class="proof__role" style="color:var(--blue-deep)">בת חן לוי · סמנכ"לית, חברה בינלאומית</span>
         </div>
         <p>בנתה סוכני AI שלוקחים על עצמם משימות שחזרו על עצמן יום אחרי יום — והעבירה אליהם 50% מהעבודה שלה.</p>
-        <p class="proof__quote">"חצי מהיום שלי כבר רץ לבד."</p>
+        <p class="proof__quote">"מאז שהצטרפתי לקורס אני לא מוטרדת מ-AI יותר."</p>
+        <button type="button" class="proof__more" data-v="{&quot;id&quot;: &quot;1223170879&quot;, &quot;h&quot;: &quot;b8520792fd&quot;, &quot;poster&quot;: &quot;faq/images/cf-1223170879.jpg&quot;, &quot;cap&quot;: &quot;בת חן לוי · התגברתי על הפחד&quot;}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>צפו בה מספרת</button>
       </div>
     </div>
     <p class="proof__ceiling">בניית <span class="accent-blue">משרד AI שלם</span> זה בדיוק לאן שכולכם הולכים. ויש מי שכבר לקח את זה צעד אחד רחוק יותר —</p>
@@ -644,7 +893,8 @@
       <div class="proof-ceiling-card__body">
         <span class="proof__role" style="color:#9A7B00">רון אלון · יזם</span>
         <p>בנה צוות סוכנים שמנהל לו סטארטאפ שלם — מחולק למחלקות: פיתוח, שיווק, מחקר ותפעול, שמדברות זו עם זו ועובדות יחד גם כשהוא ישֵן.</p>
-        <p class="proof__quote">"זה כבר לא כלי. זה ארגון שלם שעובד בשבילי."</p>
+        <p class="proof__quote">"יש לי משרד עם 8 מחלקות, 20 סקילים, וסוכן-על שנקרא קפטן אדי."</p>
+        <button type="button" class="proof__more" data-img="students/wa/TRN-0623.jpg" data-alt="רון אלון: בניתי משרד AI שלם של יותר מ-20 סוכנים"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2z"/></svg>ההודעה המקורית מהקבוצה</button>
       </div>
     </div>
   </div>
@@ -658,6 +908,22 @@
   </div>
   <img class="roadmap-img roadmap-img--desktop" src="roadmap-desktop.png" alt="מפת המסע של טירונות סוכנים — מה לומדים ובונים בכל שבוע, מההכנה ועד משרד AI שלם" loading="lazy" />
   <img class="roadmap-img roadmap-img--mobile" src="roadmap-mobile.png" alt="מפת המסע של טירונות סוכנים — מה לומדים ובונים בכל שבוע, מההכנה ועד משרד AI שלם" loading="lazy" />
+</section>
+
+
+<!-- ====================== TESTIMONIALS 3 - ככה זה נראה מבפנים (10-10-2026) ====================== -->
+<section class="tm-sec tm-sec--inside center" id="tm-inside">
+  <div class="container">
+    <h2 class="tm-title">ככה זה נראה מבפנים</h2>
+    <p class="tm-lead">הודעות שבוגרים שלחו בקבוצה באמצע הקורס.</p>
+    <div class="tm-shots tm-shots--4">
+      <figure class="tm-shot"><button type="button" aria-label="הגדלת ההודעה של Sapphire Ella"><img src="students/wa/TRN-0688.jpg" alt="Sapphire Ella: בהתחלה אמרתי לשלהבת שאני לא חושבת שבכלל אצליח לעשות את זה, אבל באמת לאט לאט הכל התחבר" loading="lazy"></button><figcaption>הודעה בקבוצת השאלות של הטירונות · Sapphire Ella</figcaption></figure>
+      <figure class="tm-shot"><button type="button" aria-label="הגדלת ההודעה של סיגל יער"><img src="students/wa/TRN-0575.jpg" alt="סיגל יער: קלוד קוד מיועד בדיוק למי שלא עוסק בתכנות בשגרה" loading="lazy"></button><figcaption>הודעה בקבוצת השאלות של הטירונות · סיגל יער</figcaption></figure>
+      <figure class="tm-shot"><button type="button" aria-label="הגדלת ההודעה של אילנה וייס"><img src="students/wa/TRN-0207.jpg" alt="אילנה וייס: המעטפת הפסיכית שאת הכנת (שלא ראיתי כמוה בארץ)" loading="lazy"></button><figcaption>הודעה בקבוצת טירונות סוכנים · אילנה וייס</figcaption></figure>
+      <figure class="tm-shot"><button type="button" aria-label="הגדלת ההודעה של אור ברקוביץ"><img src="students/wa/TRN-0201.jpg" alt="אור ברקוביץ: בניתי סוכן שאני מנהלת היום 80% מהמשימות והיומן שלי איתו" loading="lazy"></button><figcaption>הודעה בקבוצת טירונות סוכנים · אור ברקוביץ</figcaption></figure>
+    </div>
+    <div class="tm-quote tm-quote--wide"><blockquote>"הסוכנים שהיא בנתה בעצמה ליוו אותי בבניית הסוכנים שלי. בהתחלה מחזיקים לך את היד, ולאט לאט משחררים בקצב שלך."</blockquote><div class="tm-person__head"><img src="bogrim/images/adidotan1.jpg" alt="עדי דותן" loading="lazy"><span><span class="tm-person__name">עדי דותן</span><span class="tm-person__role">שכירה בהייטק</span></span></div></div>
+  </div>
 </section>
 
 <!-- ====================== PRICE SECTION (WHITE) — אחרי מפת המסע, לפני סרטון נועם ====================== -->
@@ -681,6 +947,22 @@
       <div class="price-card__divider"></div>
       <div class="price-card__offer">רוצים הטבה של <span class="nowrap">1,400&nbsp;₪</span>?</div>
       <a href="#video-noam" class="price-card__cta">צפו בסרטון למטה</a>
+    </div>
+
+    <!-- ===== TESTIMONIALS 4 - שווה את זה? (10-10-2026) ===== -->
+    <div class="tm-worth" id="tm-worth">
+      <h2 class="tm-title" style="margin-top:70px">שווה את ה-9,300?</h2>
+      <p class="tm-lead">הבוגרים עונים על זה בעצמם.</p>
+      <div class="tm-row">
+        <div class="tm-videobox"><div class="tm-video" role="button" tabindex="0" aria-label="ניגון הסרטון: רננה צברי · תפסתי את המקום האחרון" data-v="{&quot;id&quot;: &quot;1223170982&quot;, &quot;h&quot;: &quot;ca3f7dad2d&quot;, &quot;poster&quot;: &quot;faq/images/cf-1223170982.jpg&quot;, &quot;cap&quot;: &quot;רננה צברי · תפסתי את המקום האחרון&quot;}"></div><p class="tm-vcap">רננה צברי · 27 שניות</p></div>
+        <div class="tm-stack">
+          <div class="tm-shots">
+            <figure class="tm-shot"><button type="button" aria-label="הגדלת ההודעה של בת חן לוי"><img src="students/wa/TRN-0052.jpg" alt="בת חן לוי: יש לי סוכן שמנתח לי דוחות רווחיות מה-ERP - חוסך לי משרה שלמה של אנליסט בכיר" loading="lazy"></button><figcaption>הודעה בקבוצת השאלות של הטירונות · בת חן לוי</figcaption></figure>
+            <figure class="tm-shot"><button type="button" aria-label="הגדלת ההודעה של דולב דרי"><img src="students/wa/TRN-0387.jpg" alt="דולב דרי: אמרתי לו שהייתי משלם גם 20 אלף על הקורס הזה" loading="lazy"></button><figcaption>הודעה ששלח לשלהבת · דולב דרי</figcaption></figure>
+          </div>
+          <article class="tm-review"><div class="tm-review__head"><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg><span><span class="tm-review__name">Noam Zarzevsky</span><span class="tm-review__meta"><span class="tm-stars" aria-label="5 כוכבים">★★★★★</span> · ביקורת בגוגל · אוקטובר 2026</span></span></div><p>יש לא מעט קורסים ברשת עם מלא הבטחות, על יכולת ומה לא......</p><p>אחרי לא מעט לבטים ולמרות העלות ברף העליון של הקורסים</p><p>חייב להודות מכל הלב לשלהבת</p><p>על השיטה, הלמידה, ההסברים ובעיקר התוצאות</p><p>לקח בדיוק שבוע וחצי עד שהתחלתי לראות מה אני מקבל וכמה אני יכול לייצר מהסיפור הזה - מומלץ בחום</p></article>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -726,6 +1008,21 @@
   </div>
 </section>
 
+
+<!-- ====================== TESTIMONIALS 5 - ביקורות גוגל לפני הכפתור (10-10-2026) ====================== -->
+<section class="tm-sec tm-sec--google center" id="tm-google">
+  <div class="container">
+    <a class="tm-google" href="https://maps.google.com/?cid=13202233444689226546" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg><span class="tm-stars" aria-hidden="true">★★★★★</span> 5.0 <small>· 7 ביקורות בגוגל</small></a>
+    <h2 class="tm-title" style="margin-top:18px">מה כתבו עלינו בגוגל</h2>
+    <div class="tm-reviews">
+      <article class="tm-review"><div class="tm-review__head"><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg><span><span class="tm-review__name">Tal Magnezi</span><span class="tm-review__meta"><span class="tm-stars" aria-label="5 כוכבים">★★★★★</span> · ביקורת בגוגל · אוקטובר 2026</span></span></div><p>תמיד חשבתי מבחוץ שבניית סוכנים דרשה רקע טכני כבד. ברגע שהבנתי איך לחבר את החלקים והסוכן הראשון פשוט עבד, תפיסת העבודה שלי השתנתה לחלוטין.</p></article>
+      <article class="tm-review"><div class="tm-review__head"><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg><span><span class="tm-review__name">Daniel Marad</span><span class="tm-review__meta"><span class="tm-stars" aria-label="5 כוכבים">★★★★★</span> · ביקורת בגוגל · אוקטובר 2026</span></span></div><p>הכרתי את שלהבת דרך האינסטגרם, ובאותה תקופה האינטרנט היה מוצף במנטורים, קורסים וסוכנים. לא ידעתי מאיפה להתחיל ולא ידעתי אם אני עושה את זה נכון.</p><p>בסוף החלטתי שאני צריך מישהי שכבר עברה את הדרך ותבנה לי אותה בצורה הכי פשוטה. החשש היחיד שלי היה הסכום של הקורס עצמו, והשאלה איזה ערך אקבל. מכל מה שהיא מספרת ידעתי שיש לה את הידע.</p><p>אחרי ארבעה שבועות יש לי שלושה סוכנים שבניתי. אטלס מכיר אותי לעומק. הוצאה לפועל מתייק לי את הוצאות העסק, והוא כבר עובד בשבילי. אסתר עוזרת לי לנהל את הלקוחות, והיא מתחילה לעבוד.</p><p>הכול עדיין בבנייה, אבל לראשונה אני מרגיש שאני על הגל ולא רודף.</p><p>ושיהיה ברור: זה לא קורס שמתקדמים בו על אוטומט. יש המון שיעורי בית, ההתחלה קשה, וצריך לשבת ולעבוד. אני כבר מכור לקלוד.</p><p>לכל מי שמתלבט, מפקפק וכו&#x27; ובאמת רוצה ללמוד את התחום הזה של סוכנים, אוטומציות, Cloud, AI, אין בכלל מה להתלבט.</p></article>
+      <article class="tm-review"><div class="tm-review__head"><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg><span><span class="tm-review__name">Shany Haimy</span><span class="tm-review__meta"><span class="tm-stars" aria-label="5 כוכבים">★★★★★</span> · ביקורת בגוגל · אוקטובר 2026</span></span></div><p>כבר מההכנה לשיעור הראשון מתחילים לבנות סוכנים ותהליכים בנוחות ובמהירות, השיעורי הכנה והשיעורי בית לאחר מכן מכניסים ישר למים עמוקים. בתור אחת שהעידה על עצמה שהיא ברמה גבוהה, למדתי עוד מלא והרמה עלתה משמעותית. יצרתי סוכן תהליך שעוזר לי בניהול של קבלות וחשבוניות וחוסך לי שעות של עבודה סזיפית, יצרתי סוכנים שותפים שעוזרים לי בהתנהלות היומיומית ובמציאת הזדמנויות גדילה. ממליצה בחום על הקורס!</p></article>
+    </div>
+    <p class="tm-more"><a href="https://maps.google.com/?cid=13202233444689226546" target="_blank" rel="noopener noreferrer">לכל הביקורות בגוגל</a></p>
+  </div>
+</section>
+
 <!-- ====================== FINAL CTA — TO NOAM (GOLD) ====================== -->
 <section class="section section--gold center final">
   <div class="container">
@@ -741,6 +1038,22 @@
 
     <!-- Escape hatch: שיחה ישירה עם שלהבת לבירור פרטים (בלי הטבה) -->
     <p class="cta-escape">מעדיפים שיחה לבירור פרטים ישירות עם שלהבת? <a href="#" id="escapeLink">אפשר לקבוע שיחה כאן</a></p>
+  </div>
+</section>
+
+
+<!-- ====================== TESTIMONIALS 6 - עדיין מתלבטים? אחרי הכפתור (10-10-2026) ====================== -->
+<section class="tm-sec tm-sec--doubts center" id="tm-doubts">
+  <div class="container">
+    <h2 class="tm-title">עדיין מתלבטים?</h2>
+    <p class="tm-lead">בחרו מה הכי מעסיק אתכם, ותראו מה ענו על זה בוגרים שהתלבטו בדיוק כמוכם.</p>
+    <div class="tm-chips" role="tablist" aria-label="מה מעסיק אתכם"><button type="button" class="tm-chip" role="tab" id="tm-tab-price" aria-controls="tm-panel-price" aria-selected="true" tabindex="0">המחיר</button><button type="button" class="tm-chip" role="tab" id="tm-tab-time" aria-controls="tm-panel-time" aria-selected="false" tabindex="-1">אין לי זמן</button><button type="button" class="tm-chip" role="tab" id="tm-tab-tech" aria-controls="tm-panel-tech" aria-selected="false" tabindex="-1">אני לא טכני/ת</button><button type="button" class="tm-chip" role="tab" id="tm-tab-tried" aria-controls="tm-panel-tried" aria-selected="false" tabindex="-1">כבר ניסיתי קורסים</button><button type="button" class="tm-chip" role="tab" id="tm-tab-alone" aria-controls="tm-panel-alone" aria-selected="false" tabindex="-1">אשאר לבד עם זה</button></div>
+    <div class="tm-panel is-on" role="tabpanel" id="tm-panel-price" aria-labelledby="tm-tab-price"><p class="tm-panel__title">על המחיר</p><div class="tm-row"><div class="tm-videobox"><div class="tm-video" role="button" tabindex="0" aria-label="ניגון הסרטון: חני הופמן · השמיים הם הגבול" data-v="{&quot;id&quot;: &quot;1223170856&quot;, &quot;h&quot;: &quot;0f050acd50&quot;, &quot;poster&quot;: &quot;faq/images/cf-1223170856.jpg&quot;, &quot;cap&quot;: &quot;חני הופמן · השמיים הם הגבול&quot;}"></div><p class="tm-vcap">חני הופמן · 35 שניות</p></div><div class="tm-stack"><div class="tm-shots"><figure class="tm-shot"><button type="button" aria-label="הגדלת ההודעה של משה לוי"><img src="students/wa/TRN-0586.jpg" alt="משה לוי: שילמתי לסוכנות דיגיטל 1500 יורו בחודש. קלוד ב-100€ לחודש מנצח כאן בלי למצמץ" loading="lazy"></button><figcaption>הודעה בקבוצת השאלות של הטירונות · משה לוי</figcaption></figure><figure class="tm-shot"><button type="button" aria-label="הגדלת ההודעה של אילנה וייס"><img src="students/wa/TRN-0010.jpg" alt="אילנה וייס: קלוד פשוט עושה את מה ששילמתי למזכירות שלי עשרות אלפי שקלים בחודש" loading="lazy"></button><figcaption>הודעה בקבוצת טירונות סוכנים · אילנה וייס</figcaption></figure></div></div></div><div class="tm-panel__cta"><a href="https://wa.me/972559397247?text=%D7%A9%D7%9C%D7%97%D7%95%20%D7%90%D7%AA%20%D7%94%D7%94%D7%95%D7%93%D7%A2%D7%94%20%D7%94%D7%96%D7%95%20%D7%9B%D7%93%D7%99%20%D7%9C%D7%94%D7%AA%D7%97%D7%99%D7%9C%20%D7%9C%D7%93%D7%91%D7%A8%20%D7%A2%D7%9D%20%D7%A0%D7%95%D7%A2%D7%9D" class="btn btn--navy" target="_blank" rel="noopener noreferrer"><svg class="wa-ic" viewBox="0 0 24 24" fill="#25D366" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.999-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>דברו עם נועם</a></div></div>
+    <div class="tm-panel" role="tabpanel" id="tm-panel-time" aria-labelledby="tm-tab-time"><p class="tm-panel__title">על הזמן</p><div class="tm-row"><div class="tm-videobox"><div class="tm-video" role="button" tabindex="0" aria-label="ניגון הסרטון: רננה צברי · חמישה שבועות זה מספיק" data-v="{&quot;id&quot;: &quot;1223365364&quot;, &quot;h&quot;: &quot;191e214656&quot;, &quot;poster&quot;: &quot;faq/images/cf-1223365364.jpg&quot;, &quot;cap&quot;: &quot;רננה צברי · חמישה שבועות זה מספיק&quot;}"></div><p class="tm-vcap">רננה צברי ובוגרות נוספות · 44 שניות</p></div><div class="tm-stack"><div class="tm-shots"><figure class="tm-shot"><button type="button" aria-label="הגדלת ההודעה של Dvora Cohen"><img src="students/wa/TRN-0705.jpg" alt="Dvora Cohen: ביום חמישי ישבתי בחוג כדורגל של הילד ואשכרה עבדתי תוך כדי במקום להיות מתוסכלת" loading="lazy"></button><figcaption>הודעה בקבוצת טירונות סוכנים · Dvora Cohen</figcaption></figure><figure class="tm-shot"><button type="button" aria-label="הגדלת ההודעה של אילנה וייס"><img src="students/wa/TRN-0021.jpg" alt="אילנה וייס: הקורס מדהים- ממוקד בלי מיליון שיעורים מיותרים ומשיכת זמן" loading="lazy"></button><figcaption>הודעה בקבוצת טירונות סוכנים · אילנה וייס</figcaption></figure></div><div class="tm-quote"><blockquote>"למדתי בקצב שלי, פיתחתי מיומנות בשימוש בכלי AI, בניתי תהליכי עבודה אוטומטיים שחוסכים לי עשרות שעות עבודה בחודש."</blockquote><div class="tm-person__head"><img src="bogrim/images/eli.jpg" alt="אלי טל" loading="lazy"><span><span class="tm-person__name">אלי טל</span><span class="tm-person__role">מנהל כספים ורואה חשבון</span></span></div></div></div></div><div class="tm-panel__cta"><a href="https://wa.me/972559397247?text=%D7%A9%D7%9C%D7%97%D7%95%20%D7%90%D7%AA%20%D7%94%D7%94%D7%95%D7%93%D7%A2%D7%94%20%D7%94%D7%96%D7%95%20%D7%9B%D7%93%D7%99%20%D7%9C%D7%94%D7%AA%D7%97%D7%99%D7%9C%20%D7%9C%D7%93%D7%91%D7%A8%20%D7%A2%D7%9D%20%D7%A0%D7%95%D7%A2%D7%9D" class="btn btn--navy" target="_blank" rel="noopener noreferrer"><svg class="wa-ic" viewBox="0 0 24 24" fill="#25D366" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.999-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>דברו עם נועם</a></div></div>
+    <div class="tm-panel" role="tabpanel" id="tm-panel-tech" aria-labelledby="tm-tab-tech"><p class="tm-panel__title">למי שלא טכני/ת</p><div class="tm-row"><div class="tm-videobox"><div class="tm-video" role="button" tabindex="0" aria-label="ניגון הסרטון: בת חן לוי · אני לא טכנולוגית" data-v="{&quot;id&quot;: &quot;1217933800&quot;, &quot;h&quot;: &quot;765aad977a&quot;, &quot;poster&quot;: &quot;faq/images/cf-1217933800.jpg&quot;, &quot;cap&quot;: &quot;בת חן לוי · אני לא טכנולוגית&quot;}"></div><p class="tm-vcap">בת חן לוי · 23 שניות</p></div><div class="tm-stack"><div class="tm-shots"><figure class="tm-shot"><button type="button" aria-label="הגדלת ההודעה של ליטל יעקובוביץ דראי"><img src="students/wa/TRN-0380.jpg" alt="ליטל יעקובוביץ דראי: התגברתי על כל כך הרבה חסמים, כמי שלא עסקה מעולם בתכנות ומילים כמו גיט או טרמינל היו זרות לי" loading="lazy"></button><figcaption>הודעה בקהילת אִימפּרוּב · ליטל יעקובוביץ דראי</figcaption></figure></div><div class="tm-quote"><blockquote>"הבנתי שלי יש את הקצב שלי, ולקח לי קצת זמן לקלוט את זה, אבל זה הגיע וזה פשוט שינה לי את המחשבה לגמרי. והכי חשוב, לא לפחד מהטכני."</blockquote><div class="tm-person__head"><img src="bogrim/images/renana.jpg" alt="רננה צברי" loading="lazy"><span><span class="tm-person__name">רננה צברי</span><span class="tm-person__role">מארגנת קורסים ובונה סוכנים למכירה</span></span></div></div></div></div><div class="tm-panel__cta"><a href="https://wa.me/972559397247?text=%D7%A9%D7%9C%D7%97%D7%95%20%D7%90%D7%AA%20%D7%94%D7%94%D7%95%D7%93%D7%A2%D7%94%20%D7%94%D7%96%D7%95%20%D7%9B%D7%93%D7%99%20%D7%9C%D7%94%D7%AA%D7%97%D7%99%D7%9C%20%D7%9C%D7%93%D7%91%D7%A8%20%D7%A2%D7%9D%20%D7%A0%D7%95%D7%A2%D7%9D" class="btn btn--navy" target="_blank" rel="noopener noreferrer"><svg class="wa-ic" viewBox="0 0 24 24" fill="#25D366" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.999-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>דברו עם נועם</a></div></div>
+    <div class="tm-panel" role="tabpanel" id="tm-panel-tried" aria-labelledby="tm-tab-tried"><p class="tm-panel__title">למי שכבר ניסה</p><div class="tm-row"><div class="tm-videobox"><div class="tm-video" role="button" tabindex="0" aria-label="ניגון הסרטון: ליטל יעקובוביץ דראי · עולם אחר לגמרי" data-v="{&quot;id&quot;: &quot;1223170783&quot;, &quot;h&quot;: &quot;0b68e7d3e8&quot;, &quot;poster&quot;: &quot;faq/images/cf-1223170783.jpg&quot;, &quot;cap&quot;: &quot;ליטל יעקובוביץ דראי · עולם אחר לגמרי&quot;}"></div><p class="tm-vcap">ליטל יעקובוביץ דראי · 35 שניות</p></div><div class="tm-stack"><div class="tm-shots"><figure class="tm-shot"><button type="button" aria-label="הגדלת ההודעה של דבורי חשין"><img src="students/wa/TRN-0658.jpg" alt="דבורי חשין: טרום הרשמה לקורס חיפשתי מומחה שיש לו שיטת עבודה מדוייקת. ערכתי מחקר מטורף" loading="lazy"></button><figcaption>הודעה בקבוצת השאלות של הטירונות · דבורי חשין</figcaption></figure></div><div class="tm-quote"><blockquote>"הכי אהבתי שעכשיו אחרי הטירונות סיימתי את המרדף - אני כבר לא מרגישה צורך לחפש את הכלי הבא או ללכת לכל הכנסים והוובינרים בתקווה לשמוע משהו שיעזור לי. יש לי כל מה שאני צריכה."</blockquote><div class="tm-person__head"><img src="bogrim/images/yarden.jpg" alt="ירדן מנשרי סיני" loading="lazy"><span><span class="tm-person__name">ירדן מנשרי סיני</span><span class="tm-person__role">ד״ר לחקר המוח · יזמת</span></span></div></div></div></div><div class="tm-panel__cta"><a href="https://wa.me/972559397247?text=%D7%A9%D7%9C%D7%97%D7%95%20%D7%90%D7%AA%20%D7%94%D7%94%D7%95%D7%93%D7%A2%D7%94%20%D7%94%D7%96%D7%95%20%D7%9B%D7%93%D7%99%20%D7%9C%D7%94%D7%AA%D7%97%D7%99%D7%9C%20%D7%9C%D7%93%D7%91%D7%A8%20%D7%A2%D7%9D%20%D7%A0%D7%95%D7%A2%D7%9D" class="btn btn--navy" target="_blank" rel="noopener noreferrer"><svg class="wa-ic" viewBox="0 0 24 24" fill="#25D366" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.999-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>דברו עם נועם</a></div></div>
+    <div class="tm-panel" role="tabpanel" id="tm-panel-alone" aria-labelledby="tm-tab-alone"><p class="tm-panel__title">למי שחושש להישאר לבד</p><div class="tm-row"><div class="tm-videobox"><div class="tm-video" role="button" tabindex="0" aria-label="ניגון הסרטון: סיגל יער · הרגשתי על גג העולם" data-v="{&quot;id&quot;: &quot;1223365235&quot;, &quot;h&quot;: &quot;c1f040eabd&quot;, &quot;poster&quot;: &quot;faq/images/cf-1223365235.jpg&quot;, &quot;cap&quot;: &quot;סיגל יער · הרגשתי על גג העולם&quot;}"></div><p class="tm-vcap">סיגל יער · 42 שניות</p></div><div class="tm-stack"><div class="tm-quote"><blockquote>"את ההפריה ההדדית, את הדחיפה קדימה שנותנת המסגרת והקבוצה ואת השיטה המתודולוגית."</blockquote><div class="tm-person__head"><img src="bogrim/images/inbarcarmeli.jpg" alt="ענבר כרמלי" loading="lazy"><span><span class="tm-person__name">ענבר כרמלי</span><span class="tm-person__role">ראשת מטה, ידע - חברת המיסחור של מכון ויצמן</span></span></div></div><div class="tm-quote"><blockquote>"התקשורת עם החברים שלי לקורס, היכולת לתמוך אחד בשני ולתת מענה עוזרת המון, וגם נותנת כוח."</blockquote><div class="tm-person__head"><img src="bogrim/images/renana.jpg" alt="רננה צברי" loading="lazy"><span><span class="tm-person__name">רננה צברי</span><span class="tm-person__role">מארגנת קורסים ובונה סוכנים למכירה</span></span></div></div></div></div><div class="tm-panel__cta"><a href="https://wa.me/972559397247?text=%D7%A9%D7%9C%D7%97%D7%95%20%D7%90%D7%AA%20%D7%94%D7%94%D7%95%D7%93%D7%A2%D7%94%20%D7%94%D7%96%D7%95%20%D7%9B%D7%93%D7%99%20%D7%9C%D7%94%D7%AA%D7%97%D7%99%D7%9C%20%D7%9C%D7%93%D7%91%D7%A8%20%D7%A2%D7%9D%20%D7%A0%D7%95%D7%A2%D7%9D" class="btn btn--navy" target="_blank" rel="noopener noreferrer"><svg class="wa-ic" viewBox="0 0 24 24" fill="#25D366" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.999-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>דברו עם נועם</a></div></div>
+    <p class="tm-more">רוצים לראות עוד? <a href="bogrim/">כל הבוגרים ומה שהם בנו</a> · <a href="faq/">שאלות ותשובות</a></p>
   </div>
 </section>
 
@@ -847,6 +1160,400 @@
     close.addEventListener('click', shut);
     modal.addEventListener('click', function (e) { if (e.target === modal) shut(); });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && modal.classList.contains('is-open')) shut(); });
+  })();
+</script>
+
+<script>
+  /* נגן סרטוני ההמלצות - ליבת הנגן והלייטבוקס הועתקו מ-bogrim/index.html (שם נבדקו בטלפון),
+     ותיקון באחד מהם צריך לעבור גם לשני. */
+  (function () {
+    /* ---------- ליבת הנגן, משותפת ללייטבוקס ולנגן-בתוך-האריח ----------
+       שתי מלכודות ששוות זהב למי שיגע בזה: (1) אסור להסתמך על אירוע play
+       של Vimeo - הוא נורה גם כשהניגון נחסם מיד אחריו; ההכרעה היא getPaused
+       בפועל, ופעמיים (900ms, 2400ms). (2) ה-iframe חייב להיווצר סינכרונית
+       בתוך מטפל-ההקשה וכשהמכולה שלו כבר גלויה - זה מעביר את אישור-המשתמש
+       (מתיר קול) ומונע מ-Vimeo לקבוע גודל מ-iframe של 0x0. */
+    var ICON_PLAY = '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
+    var ICON_PAUSE = '<svg viewBox="0 0 24 24"><path d="M6 5h4v14H6zm8 0h4v14h-4z"/></svg>';
+    var vimeoApiPromise = null;
+    function loadVimeoApi() {
+      if (window.Vimeo) return Promise.resolve();
+      if (!vimeoApiPromise) {
+        vimeoApiPromise = new Promise(function (res, rej) {
+          var s = document.createElement('script');
+          s.src = 'https://player.vimeo.com/api/player.js';
+          s.onload = res; s.onerror = rej;
+          document.head.appendChild(s);
+        });
+      }
+      return vimeoApiPromise;
+    }
+    /* refs = {holder, tap, icon, sound} - ארבעתם כבר ב-DOM (מודל או אריח).
+       onReady (אופציונלי) נקרא עם הנגן מיד אחרי ready(). onFirstPlay
+       (אופציונלי) נקרא ברגע שהניגון בפועל מתחיל - נמדד בדף החי: כ-2
+       שניות אמיתיות מהלחיצה, גם כש-ready() כבר חלף מזמן (ready = הנגן
+       מוכן לקבל פקודות, לא שהתמונה כבר זזה על המסך). לא נשענים על אירוע
+       play - הוא נורה גם רגע לפני שהניגון נחסם; זו סקירה נפרדת של
+       getPaused, לא קשורה ל-ensurePlaying שלמטה (זו רוצה לדעת "כבר?"
+       כמה שיותר מהר, זו רוצה לחכות מספיק לפני שמחליטה על השתקה). */
+    function mountVimeoPlayer(refs, v, onReady, onFirstPlay) {
+      var player = null, userTouched = false, destroyed = false;
+
+      function flash(html) {
+        refs.icon.innerHTML = html;
+        refs.icon.classList.add('show');
+        clearTimeout(refs.icon._t);
+        refs.icon._t = setTimeout(function () { refs.icon.classList.remove('show'); }, 550);
+      }
+      function toggle() {
+        if (!player) return;
+        userTouched = true;   // מכאן ואילך לא מתערבים בניגון מאחורי גבו
+        player.getPaused().then(function (paused) {
+          if (paused) { player.play(); flash(ICON_PLAY); }
+          else { player.pause(); flash(ICON_PAUSE); }
+        });
+      }
+      refs.tap.onclick = toggle;
+      refs.icon.classList.remove('show');
+      /* מתג קול קבוע. קודם זה היה כפתור חד-פעמי שנחשף רק כשהדפדפן חסם
+         ניגון-עם-קול, ונעלם לתמיד ברגע שנלחץ - כלומר אחרי הסרטון הראשון
+         לא הייתה שום דרך להשתיק, ובסרטונים הבאים הוא כבר לא הופיע. */
+      function syncSound() {
+        if (!player || !refs.sound) return;
+        player.getMuted().then(function (m) {
+          refs.sound.classList.toggle('muted', !!m);
+          refs.sound.setAttribute('aria-label', m ? 'הפעלת קול' : 'השתקה');
+        }).catch(function () {});
+      }
+      refs.sound.onclick = function (e) {
+        e.stopPropagation();
+        if (!player) return;
+        userTouched = true;
+        player.getMuted().then(function (m) {
+          if (!m) return player.setMuted(true);
+          return player.setMuted(false).then(function () {
+            player.setVolume(1); return player.play();
+          });
+        }).then(syncSound).catch(syncSound);
+      };
+
+      refs.holder.innerHTML = '';
+      var iframe = document.createElement('iframe');
+      iframe.src = 'https://player.vimeo.com/video/' + v.id + '?h=' + v.h +
+        '&autoplay=1&muted=0&controls=0&playsinline=1&title=0&byline=0&portrait=0&badge=0&dnt=1';
+      iframe.allow = 'autoplay; fullscreen; picture-in-picture; encrypted-media';
+      refs.holder.appendChild(iframe);
+
+      loadVimeoApi().then(function () {
+        if (destroyed) return;
+        var p = player = new Vimeo.Player(iframe);
+        var settled = false;
+        p.on('volumechange', syncSound);
+        syncSound();
+
+        /* בר ההתקדמות. stopPropagation בכל אירוע מצביע חיוני: האירועים
+           עולים ל-.cf-stage שמפרש תנועה אופקית כהחלקה בין סרטונים. */
+        var bar = refs.bar, fill = bar && bar.querySelector('i');
+        var dur = 0, scrubbing = false;
+        if (bar) {
+          p.getDuration().then(function (d) { dur = d || 0; }).catch(function () {});
+          p.on('timeupdate', function (e) {
+            if (!scrubbing && fill) fill.style.width = ((e.percent || 0) * 100).toFixed(2) + '%';
+          });
+          var track = bar.querySelector('span');
+          var at = function (clientX) {
+            var r = track.getBoundingClientRect();
+            var pct = r.width ? (clientX - r.left) / r.width : 0;
+            pct = Math.max(0, Math.min(1, pct));
+            if (fill) fill.style.width = (pct * 100).toFixed(2) + '%';
+            return pct;
+          };
+          bar.addEventListener('click', function (e) { e.stopPropagation(); });
+          bar.addEventListener('pointerdown', function (e) {
+            e.stopPropagation(); e.preventDefault();
+            scrubbing = true; at(e.clientX);
+            try { bar.setPointerCapture(e.pointerId); } catch (err) {}
+          });
+          bar.addEventListener('pointermove', function (e) {
+            if (!scrubbing) return; e.stopPropagation(); at(e.clientX);
+          });
+          bar.addEventListener('pointerup', function (e) {
+            if (!scrubbing) return;
+            e.stopPropagation(); scrubbing = false;
+            var pct = at(e.clientX);
+            if (dur && player) player.setCurrentTime(pct * dur).catch(function () {});
+          });
+          bar.addEventListener('pointercancel', function () { scrubbing = false; });
+        }
+        /* אם הדפדפן חסם ניגון-עם-קול - מנגנים מושתק ומציעים כפתור קול,
+           במקום להשאיר סרטון שנראה תקוע. */
+        function ensurePlaying() {
+          if (settled || userTouched || destroyed || p !== player) return;
+          p.getPaused().then(function (paused) {
+            if (!paused || settled || userTouched || destroyed || p !== player) return;
+            settled = true;
+            p.setMuted(true).then(function () { return p.play(); })
+              .then(function () { if (!destroyed && p === player) syncSound(); })
+              .catch(function () {});
+          }).catch(function () {});
+        }
+        setTimeout(ensurePlaying, 900);
+        setTimeout(ensurePlaying, 2400);
+
+        if (onFirstPlay) {
+          var firstPlayFired = false;
+          (function pollFirstPlay(triesLeft) {
+            if (firstPlayFired || destroyed || p !== player || triesLeft <= 0) return;
+            p.getPaused().then(function (paused) {
+              if (destroyed || p !== player || firstPlayFired) return;
+              if (!paused) { firstPlayFired = true; onFirstPlay(); return; }
+              setTimeout(function () { pollFirstPlay(triesLeft - 1); }, 150);
+            }).catch(function () {});
+          })(65);   // ~10 שניות; אחרי זה משאירים את הספינר - עדיף מלולאה אינסופית
+        }
+
+        p.ready().then(function () {
+          if (onReady) onReady(p);
+          return p.setVolume(1).then(function () { return p.play(); });
+        }).catch(function () {});
+      }).catch(function () {
+        // player.js לא נטען - מחזירים את סרגל הבקרה המובנה, שלפחות שמיש
+        iframe.src = iframe.src.replace('&controls=0', '&controls=1');
+        if (onFirstPlay) onFirstPlay();   // אין לנו getPaused בלי ה-API - מסירים את הספינר בכל מקרה
+      });
+
+      return {
+        stop: function () { destroyed = true; player = null; refs.holder.innerHTML = ''; }
+      };
+    }
+
+    /* ---------- נגן-בתוך-האריח - זו ברירת המחדל בלחיצה על סרטון ----------
+       רק סרטון אחד מתנגן בכל רגע נתון בכל הדף, ולכן המצב גלובלי. */
+    var ACTIVE_INLINE = null;   // { it, v, ctrl }
+    function posterMarkup(v) {
+      return '<img src="' + v.poster + '" alt="' + v.cap + '"><div class="cf-play"><span></span></div><div class="cf-cap">' + v.cap + '</div>';
+    }
+    function stopActiveInline() {
+      if (!ACTIVE_INLINE) return;
+      ACTIVE_INLINE.ctrl.stop();
+      ACTIVE_INLINE.it.innerHTML = posterMarkup(ACTIVE_INLINE.v);
+      ACTIVE_INLINE = null;
+    }
+    function stopActiveInlineIfAmong(items) {
+      if (ACTIVE_INLINE && items.indexOf(ACTIVE_INLINE.it) !== -1) stopActiveInline();
+    }
+    function inlineMarkup(v) {
+      return (
+        '<div class="cf-item-player">' +
+          '<div class="cf-item-holder"></div>' +
+          '<div class="cf-item-loading"><img src="' + v.poster + '" alt=""><div class="cf-item-spinner"></div></div>' +
+          '<button class="cf-item-tap" type="button" aria-label="עצירה או המשך"></button>' +
+          '<div class="cf-item-icon" aria-hidden="true"></div>' +
+          '<button class="cf-item-sound muted" type="button" aria-label="הפעלת קול">' +
+            '<svg class="ic-on" viewBox="0 0 24 24"><path d="M3 10v4a1 1 0 0 0 1 1h2l4 4V5L6 9H4a1 1 0 0 0-1 1zm13.5 2a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a6.8 6.8 0 0 1 0 13.4v2.1a8.9 8.9 0 0 0 0-17.6z"/></svg>' + '<svg class="ic-off" viewBox="0 0 24 24"><path d="M3 10v4a1 1 0 0 0 1 1h2l4 4V5L6 9H4a1 1 0 0 0-1 1zm18.5-.6-1.4-1.4-2.1 2.1-2.1-2.1-1.4 1.4L16.6 12l-2.1 2.1 1.4 1.4 2.1-2.1 2.1 2.1 1.4-1.4L19.4 12z"/></svg>' +
+            '<b>קול</b></button>' +
+          '<div class="cf-item-bar"><span><i></i></span></div>' +
+          '<button class="cf-item-expand" type="button" aria-label="הגדלת הסרטון">' +
+            '<svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>' +
+          '</button>' +
+        '</div>'
+      );
+    }
+    function startInline(it, v) {
+      if (ACTIVE_INLINE && ACTIVE_INLINE.it === it) return;   // כבר מתנגן כאן
+      stopActiveInline();
+      it.innerHTML = inlineMarkup(v);
+      var loadingEl = it.querySelector('.cf-item-loading');
+      var ctrl = mountVimeoPlayer({
+        holder: it.querySelector('.cf-item-holder'),
+        tap: it.querySelector('.cf-item-tap'),
+        icon: it.querySelector('.cf-item-icon'),
+        sound: it.querySelector('.cf-item-sound'),
+        bar: it.querySelector('.cf-item-bar')
+      }, v, null, function () { loadingEl.classList.add('hide'); });
+      it.querySelector('.cf-item-expand').addEventListener('click', function (e) {
+        e.stopPropagation();
+        LB.open(v, it);   // LB.open עוצר את הניגון-בתוך-האריח בעצמו
+      });
+      ACTIVE_INLINE = { it: it, v: v, ctrl: ctrl };
+    }
+
+    /* ---------- הלייטבוקס - פעולת "הגדלה" מפורשת בלבד ----------
+       לא תוצאה אוטומטית של לחיצה על סרטון (זו מנגנת באריח עצמו,
+       startInline למעלה) - רק כפתור ה-⤢ שמופיע כשסרטון כבר מתנגן שם
+       פותח את זה. (שונה מגרסה קודמת שקפצה למסך מלא בכל לחיצה - שלהבת
+       15-08-2026: "אני לא רוצה שהוא יגדל... אם אני רוצה, אני אוכל
+       ללחוץ ולהגדיל אותו".) */
+    var LB = (function () {
+      var el, frameEl, holder, iconEl, soundBtn, capEl, tapBtn, loadingEl, loadingImg;
+      var opener = null, current = null;
+
+      function build() {
+        el = document.createElement('div');
+        el.className = 'cf-lb';
+        el.hidden = true;
+        el.innerHTML =
+          '<button class="cf-lb-close" type="button" aria-label="סגירת הסרטון">×</button>' +
+          '<div class="cf-lb-frame">' +
+            '<div class="cf-lb-holder"></div>' +
+            '<div class="cf-lb-loading"><img alt=""><div class="cf-lb-spinner"></div></div>' +
+            '<button class="cf-lb-tap" type="button" aria-label="עצירה או המשך"></button>' +
+            '<div class="cf-lb-icon" aria-hidden="true"></div>' +
+            '<button class="cf-lb-sound" type="button" hidden>' +
+              '<svg viewBox="0 0 24 24"><path d="M3 10v4a1 1 0 0 0 1 1h2l4 4V5L6 9H4a1 1 0 0 0-1 1zm13.5 2a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a6.8 6.8 0 0 1 0 13.4v2.1a8.9 8.9 0 0 0 0-17.6z"/></svg>' +
+              'לחצו להפעלת קול</button>' +
+            '<p class="cf-lb-cap"></p>' +
+          '</div>';
+        document.body.appendChild(el);
+        frameEl = el.querySelector('.cf-lb-frame');
+        holder = el.querySelector('.cf-lb-holder');
+        loadingEl = el.querySelector('.cf-lb-loading');
+        loadingImg = loadingEl.querySelector('img');
+        iconEl = el.querySelector('.cf-lb-icon');
+        soundBtn = el.querySelector('.cf-lb-sound');
+        capEl = el.querySelector('.cf-lb-cap');
+        tapBtn = el.querySelector('.cf-lb-tap');
+
+        el.querySelector('.cf-lb-close').addEventListener('click', close);
+        el.addEventListener('click', function (e) { if (e.target === el) close(); });
+        document.addEventListener('keydown', function (e) {
+          if (!el.hidden && (e.key === 'Escape' || e.key === 'Esc')) close();
+        });
+      }
+
+      function open(v, fromEl) {
+        stopActiveInline();
+        if (!el) build();
+        opener = fromEl || null;
+        capEl.textContent = v.cap || '';
+        frameEl.style.removeProperty('--lb-ar');
+        loadingImg.src = v.poster || '';
+        loadingEl.classList.remove('hide');
+
+        holder.innerHTML = '';
+        el.hidden = false;
+        document.body.style.overflow = 'hidden';
+        requestAnimationFrame(function () { el.classList.add('is-open'); });
+
+        current = mountVimeoPlayer(
+          { holder: holder, tap: tapBtn, icon: iconEl, sound: soundBtn },
+          v,
+          function (p) {
+            Promise.all([p.getVideoWidth(), p.getVideoHeight()]).then(function (d) {
+              if (d[0] && d[1]) frameEl.style.setProperty('--lb-ar', d[0] / d[1]);
+            }).catch(function () {});
+          },
+          function () { loadingEl.classList.add('hide'); }
+        );
+      }
+
+      function close() {
+        if (!el || el.hidden) return;
+        el.classList.remove('is-open');
+        if (current) { current.stop(); current = null; }
+        el.hidden = true;
+        document.body.style.overflow = '';
+        if (opener && opener.focus) opener.focus();
+        opener = null;
+      }
+
+      return { open: open };
+    })();
+
+    /* ---------- חיבור הנגן לבלוקי ההמלצות של דף המכירה ----------
+       .tm-video מנגן במקום (כמו בדף הבוגרים), והגדלה רק בכפתור. כפתור
+       "צפו" בכרטיס פותח את הלייטבוקס, כי לכרטיס טקסט אין אריח לנגן בו. */
+    document.documentElement.classList.add('tm-js');
+
+    document.querySelectorAll('.tm-video[data-v]').forEach(function (it) {
+      var v = JSON.parse(it.getAttribute('data-v'));
+      it.innerHTML = posterMarkup(v);
+      function go(e) {
+        if (e && e.target.closest && e.target.closest('.cf-item-player')) return;
+        startInline(it, v);
+      }
+      it.addEventListener('click', go);
+      it.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); }
+      });
+    });
+
+    var ILB = (function () {
+      var el, img, opener = null;
+      function build() {
+        el = document.createElement('div');
+        el.className = 'tm-ilb';
+        el.hidden = true;
+        el.setAttribute('role', 'dialog');
+        el.setAttribute('aria-modal', 'true');
+        el.innerHTML = '<button type="button" aria-label="סגירה">×</button><img alt="">';
+        img = el.querySelector('img');
+        document.body.appendChild(el);
+        el.querySelector('button').addEventListener('click', close);
+        el.addEventListener('click', function (e) { if (e.target === el) close(); });
+        document.addEventListener('keydown', function (e) {
+          if (!el.hidden && (e.key === 'Escape' || e.key === 'Esc')) close();
+        });
+      }
+      function open(src, alt, fromEl) {
+        stopActiveInline();
+        if (!el) build();
+        opener = fromEl || null;
+        img.src = src; img.alt = alt || '';
+        el.hidden = false;
+        document.body.style.overflow = 'hidden';
+        el.querySelector('button').focus();
+      }
+      function close() {
+        if (!el || el.hidden) return;
+        el.hidden = true;
+        document.body.style.overflow = '';
+        if (opener && opener.focus) opener.focus();
+        opener = null;
+      }
+      return { open: open };
+    })();
+
+    document.querySelectorAll('.tm-shot button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var im = b.querySelector('img');
+        ILB.open(im.getAttribute('src'), im.getAttribute('alt'), b);
+      });
+    });
+    document.querySelectorAll('.proof__more').forEach(function (b) {
+      b.addEventListener('click', function () {
+        if (b.hasAttribute('data-v')) LB.open(JSON.parse(b.getAttribute('data-v')), b);
+        else ILB.open(b.getAttribute('data-img'), b.getAttribute('data-alt'), b);
+      });
+    });
+
+    /* "עדיין מתלבטים?" - כפתור לכל חשש, וכל אחד רואה רק את החשש שלו.
+       בלי JS כל הלוחות פשוט מוצגים זה מתחת לזה. */
+    (function () {
+      var chips = document.querySelectorAll('.tm-chip');
+      if (!chips.length) return;
+      function select(chip) {
+        chips.forEach(function (c) {
+          var on = c === chip;
+          c.setAttribute('aria-selected', on ? 'true' : 'false');
+          c.tabIndex = on ? 0 : -1;
+          var p = document.getElementById(c.getAttribute('aria-controls'));
+          if (p) p.classList.toggle('is-on', on);
+        });
+        stopActiveInline();
+      }
+      chips.forEach(function (c, i) {
+        c.addEventListener('click', function () { select(c); });
+        c.addEventListener('keydown', function (e) {
+          var d = e.key === 'ArrowLeft' ? 1 : e.key === 'ArrowRight' ? -1 : 0;
+          if (!d) return;
+          e.preventDefault();
+          var n = chips[(i + d + chips.length) % chips.length];
+          select(n); n.focus();
+        });
+      });
+    })();
+
   })();
 </script>
 
