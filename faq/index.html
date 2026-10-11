@@ -429,6 +429,17 @@
     .tl-body .tl-title { display:block; font-weight:800; color:var(--navy); font-size:16.5px; margin-bottom:4px; }
     .tl-body em { color:var(--blue); font-style:italic; }
 
+
+    /* תשובת המחיר וציטוט בסוף תשובה - אותו עיצוב כמו בדף המכירה (11-10-2026). בלי פס צבעוני בצד */
+    .answer .tm-answer__lead { font-weight: 700; color: var(--navy); }
+    .answer .tm-results { margin: 6px 0 16px; padding: 0; list-style: none; display: grid; gap: 10px; }
+    .answer .tm-results li { padding: 11px 15px; border-radius: 12px; background: #F4F6FB; line-height: 1.65; }
+    .answer .tm-results b { color: var(--navy); }
+    .answer .tm-results strong { color: #1F5FA8; font-weight: 800; }
+    .answer .tm-answer__close { font-weight: 800; color: var(--navy); }
+    .answer .tm-answer__quote { margin: 16px 0 18px; padding: 16px 18px; background: #F4F6FB; border-radius: 14px; }
+    .answer .tm-answer__quote p { margin: 0 0 8px; font-weight: 700; color: var(--navy); line-height: 1.7; }
+    .answer .tm-answer__quote cite { font-style: normal; font-size: 14px; font-weight: 700; color: #5A5873; }
     /* ---------- נגן ההמלצות - הועתק מדף הבוגרים, אותו נגן מאושר ---------- */
     /* ---------- COVERFLOW VIDEO GALLERY (card back) ---------- */
     .gallery-label { font-size: 13px; font-weight: 700; color: var(--navy); margin: 2px auto 8px auto; }
@@ -1074,6 +1085,8 @@
             <p>כי זה הרבה יותר מ-5 מפגשים. המסע מתחיל <strong>עוד לפני המפגש הראשון</strong> — סוכן ליווי לוקח אתכם צעד-צעד ואתם כבר בונים את הסוכן הראשון. ובין המפגשים יש עבודה רצינית, תרגולים מדויקים, מפגש חידוד שבועי בזום, מתרגלים שעוזרים בזמן אמת, וסוכנים שמלווים אתכם.</p>
             <p>זה טירונות — מקוצר ואינטנסיבי <strong>בכוונה</strong>, למצליחנים שאין להם 70 שעות פנויות. הכוח הוא בריכוז ובמעטפת שעוטפת כל רגע, לא באורך. כל מה שלא מהותי פשוט לא נמצא שם — ומה שכן, בנוי כדי שתצאו יודעים לבנות באמת.</p>
           
+            <blockquote class="tm-answer__quote"><p>"אחרי שבועיים הרגשתי קפיצה מטורפת. בשלב הזה באתי ואמרתי: 'וואו, אני יכולה לבנות עכשיו כל דבר'. וזה לא רק אני - הרוב המוחלט של האנשים הרגישו את אותה קפיצה. אחרי השבועיים האלה ממש הרגשתי שטיפסתי על גג העולם, ועכשיו אני מסתכלת על העולם ממקום אחר. זה לא ייאמן, אבל כן, זה קורה כל כך מהר."</p><cite>סיגל יער</cite></blockquote>
+          
             <p class="gallery-label"><span class="vids-ico">▸</span> הבוגרים מספרים</p>
             <div class="coverflow" data-active="0" data-videos='[{"id": "1223365364", "h": "191e214656", "poster": "images/cf-1223365364.jpg", "cap": "חמישה שבועות זה מספיק"}, {"id": "1223170982", "h": "ca3f7dad2d", "poster": "images/cf-1223170982.jpg", "cap": "תפסתי את המקום האחרון"}, {"id": "1223365201", "h": "8d77e09076", "poster": "images/cf-1223365201.jpg", "cap": "לא צריך יותר מ-5 שבועות"}, {"id": "1223365235", "h": "c1f040eabd", "poster": "images/cf-1223365235.jpg", "cap": "הרגשתי על גג העולם"}]'><div class="cf-stage"></div></div>
             <div class="cf-nav"><div class="cf-dots"></div></div>
@@ -1209,9 +1222,7 @@
         <details>
           <summary>המחיר מרגיש גבוה — איך אדע שזה מחזיר את עצמו?<span class="arrow">⌄</span></summary>
           <div class="answer">
-            <p>תחשבו כמה שעות ביום הולכות על עבודה שסוכן יכול לעשות במקומכם. גם אם זה שעתיים — זה מחזיר את עצמו תוך חודשים.</p>
-            <p>ובטירונות אתם לא בונים סוכן אחד — כל אחד בונה כמה סוכנים לאורך הדרך. מהמחזורים הקודמים ומהניסיון שלנו אנחנו רואים שתלמידים בנו כבר בשבוע-השבועיים הראשונים סוכן שמחזיר להם את ההשקעה.</p>
-            <p>ומעבר לחיסכון: אתם יוצאים עם כישור לכל החיים — היכולת לבנות כל סוכן, אוטומציה או מערכת שתצטרכו, בעצמכם, לתמיד.</p>
+            <p class="tm-answer__lead">שאלה הוגנת. אז במקום לשכנע אתכם, הנה מה שקרה לתלמידים שלי. וכל מה שתקראו כאן - נבנה תוך כדי הקורס, כבר בשבועות הראשונים.</p><ul class="tm-results"><li><b>בת חן</b> בנתה בטירונות סוכן שחוסך לארגון שלה <strong>200 אלף ₪ בחודש</strong>. ומאז? עוד צוות סוכנים שמגיעים יחד לחיסכון של <strong>מיליונים</strong>.</li><li><b>אילנה</b> הייתה מוציאה <strong>100 אלף ₪ בחודש</strong> על משכורות. היום את העבודה הזאת עושים הסוכנים שהיא בנתה.</li><li><b>ירדן</b> בנתה <strong>6 מחלקות של סוכנים</strong> שמריצים לה חנות אינטרנטית בצורה אוטומטית, מקצה לקצה.</li><li><b>דולב</b> בנה <strong>56 סוכנים</strong> בפחות משלושה חודשים. הם חוסכים לו <strong>35-40 אלף ₪ בחודש</strong>.</li><li><b>ענת</b> בנתה סוכן שמנתח ומסכם מכרזים <strong>תוך דקות</strong>. זו העבודה שעשתה אצלה מזכירה שהוכשרה במיוחד בשביל זה.</li><li><b>ספיר</b> בנתה צוות סוכנים שעושים לה עבודה של <strong>33 שעות ב-7 שעות</strong>. הם מתרגמים ומכתבים סרטונים של לקוח מחו"ל, מכינים לה את תוכנית השיווק של כל החודש, ומייצרים פרומואים לטלוויזיה שעלו עד היום <strong>10,000 ₪</strong> כל אחד.</li><li><b>משה?</b> הפסיק לשלם לסוכנות דיגיטל <strong>1,500 יורו בחודש</strong>. הסוכן שהוא בנה עושה את זה יותר טוב.</li></ul><p>עכשיו תגידו לי שזה לא שווה את המחיר.</p><p class="tm-answer__close">אם יש דבר אחד השנה שבאמת שווה להוציא עליו כסף, זה טירונות סוכנים.</p>
             <p>רוצים לשמוע מבוגרת אמיתית? מורן טאובר עברה את הטירונות וזינקה איתה — אתם מוזמנים <a href="https://wa.me/972549574690?text=היי מורן! ראיתי שעברת את טירונות סוכנים ושלהבת הציעה לדבר איתך. אפשר לשאול כמה שאלות?" target="_blank" rel="noopener noreferrer">לדבר איתה ישירות בוואטסאפ</a> ולשמוע מהיד הראשונה.</p>
           
             <p class="gallery-label"><span class="vids-ico">▸</span> הבוגרים מספרים</p>
