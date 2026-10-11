@@ -1696,7 +1696,8 @@
         .map(function (o) { return o.f; });
       if (old) old.remove();
       if (cap) cap.classList.toggle('is-on', figs.length > 0);
-      box.classList.toggle('is-empty', figs.length === 0);
+      // אזור ריק מוסתר בדף, אבל לא בעריכה על הדף: שם יש בו "אזור ריק - הקישי כדי להוסיף" וצריך לראות אותו
+      box.classList.toggle('is-empty', figs.length === 0 && !box.querySelector('.tm-ed-empty'));
       if (figs.length < 3) {
         box.classList.remove('is-strip');
         figs.forEach(function (f) { f.removeAttribute('data-si'); if (old) host.appendChild(f); });
