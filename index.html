@@ -716,6 +716,16 @@
   /* סבב הערות 1 (10-10-2026): קו אדום מתחת למילים המודגשות, כמו בתמונות ההודעות */
   .tm-hl { text-decoration: underline; text-decoration-color: #E0342F; text-decoration-thickness: 2.5px; text-underline-offset: 5px; text-decoration-skip-ink: none; }
   .tm-shot figcaption { display: none; }
+  /* שורת הודעות באותו גובה, בלי חורים ביניהן (שלהבת, 11-10-2026). רק כשיש יותר מעמודה אחת */
+  @media (min-width: 681px) {
+    .tm-shots { align-items: stretch; }
+    .tm-shot button { position: relative; display: flex; flex-direction: column; justify-content: flex-start;
+      height: var(--shot-h, 440px); overflow: hidden; background: #EFEAE2; }
+    .tm-shot img { max-height: none; height: auto; flex: 0 0 auto; }
+    .tm-shot.is-cut button::after { content: "להקשה - ההודעה המלאה"; position: absolute; inset: auto 0 0 0;
+      padding: 34px 12px 10px; font-size: 13px; font-weight: 700; color: var(--navy); text-align: center;
+      background: linear-gradient(rgba(255,255,255,0), #fff 70%); }
+  }
   .tm-videos { display: flex; justify-content: center; gap: 28px; flex-wrap: wrap; margin-top: 30px; }
   .tm-videos .tm-videobox { width: min(100%, 260px); }
   .tm-vquote { font-size: 16px; line-height: 1.55; font-weight: 600; color: var(--navy); margin-top: 14px; text-align: center; }
@@ -1528,13 +1538,25 @@
 
     function markCut(im) {
       var f = im.closest('.tm-shot');
-      if (f) f.classList.toggle('is-cut', im.naturalHeight > 0 && im.scrollHeight > 0 &&
-        im.naturalHeight * im.clientWidth / im.naturalWidth > im.clientHeight + 4);
+      var box = im.parentElement, shown = Math.min(im.clientHeight, box ? box.clientHeight : im.clientHeight);
+      if (f) f.classList.toggle('is-cut', im.naturalHeight > 0 && im.clientWidth > 0 &&
+        im.naturalHeight * im.clientWidth / im.naturalWidth > shown + 4);
     }
     document.querySelectorAll('.tm-shot img').forEach(function (im) {
-      if (im.complete) markCut(im); else im.addEventListener('load', function () { markCut(im); });
+      if (im.complete) markAll(); else im.addEventListener('load', markAll);
     });
-    function markAll() { document.querySelectorAll('.tm-shot img').forEach(markCut); }
+    /* גובה השורה = ההודעה הגבוהה בה, עד תקרה; הקצרות מושלמות ברקע הצ'אט. רק כשיש יותר מעמודה אחת */
+    function sizeRows() {
+      document.querySelectorAll('.tm-shots').forEach(function (row) {
+        if (window.innerWidth <= 680 || !row.offsetParent) { row.style.removeProperty('--shot-h'); return; }
+        var cap = row.closest('.tm-sec--quick') ? 400 : 440, tallest = 0;
+        row.querySelectorAll('.tm-shot img').forEach(function (im) {
+          if (im.naturalWidth && im.clientWidth) tallest = Math.max(tallest, im.naturalHeight * im.clientWidth / im.naturalWidth);
+        });
+        if (tallest) row.style.setProperty('--shot-h', Math.round(Math.min(cap, tallest)) + 'px');
+      });
+    }
+    function markAll() { sizeRows(); document.querySelectorAll('.tm-shot img').forEach(markCut); }
     window.addEventListener('resize', markAll);
     /* לוח שהיה מוסתר ("עדיין מתלבטים?") נמדד רק כשהוא נפתח */
     document.addEventListener('click', function (e) { if (e.target.closest('.tm-chip')) setTimeout(markAll, 0); });
