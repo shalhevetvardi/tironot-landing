@@ -901,7 +901,7 @@
           <span class="proof__role" style="color:var(--blue-deep)">אילנה וייס · מטפלת בחרדות</span>
         </div>
         <p>ניהלה מחלקה שלמה של ארבע מזכירות. הסוכן שבנתה כבר עושה את רוב עבודתן — עורך לה מסמכים, מנהל משימות, ומטפל בדברים שעלו לה עשרות אלפי שקלים בחודש.</p>
-        <p class="proof__quote">"הייתה לי מחלקה שלמה של מזכירות - 4. אני לא אצטרך את זה יותר."</p>
+        <p class="proof__quote">"הייתה לי מחלקה שלמה של מזכירות. אני לא אצטרך את זה יותר."</p>
         <div class="tm-slot" data-slot="card-ilana" data-items='[{"t": "v", "id": "1223170501", "h": "f0bc73dba9", "poster": "faq/images/cf-1223170501.jpg", "cap": "אילנה וייס ובוגרים נוספים", "label": "צפו בה מספרת"}]'><button type="button" class="proof__more" data-v="{&quot;id&quot;: &quot;1223170501&quot;, &quot;h&quot;: &quot;f0bc73dba9&quot;, &quot;poster&quot;: &quot;faq/images/cf-1223170501.jpg&quot;, &quot;cap&quot;: &quot;אילנה וייס ובוגרים נוספים&quot;}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>צפו בה מספרת</button></div><!-- /tm-slot -->
       </div>
       <div class="proof">
@@ -939,6 +939,15 @@
         <p>בנתה סוכני AI שלוקחים על עצמם משימות שחזרו על עצמן יום אחרי יום — והעבירה אליהם 50% מהעבודה שלה.</p>
         <p class="proof__quote">"מאז שהצטרפתי לקורס אני לא מוטרדת מ-AI יותר."</p>
         <div class="tm-slot" data-slot="card-batchen" data-items='[{"t": "v", "id": "1223170879", "h": "b8520792fd", "poster": "faq/images/cf-1223170879.jpg", "cap": "בת חן לוי · התגברתי על הפחד", "label": "צפו בה מספרת"}]'><button type="button" class="proof__more" data-v="{&quot;id&quot;: &quot;1223170879&quot;, &quot;h&quot;: &quot;b8520792fd&quot;, &quot;poster&quot;: &quot;faq/images/cf-1223170879.jpg&quot;, &quot;cap&quot;: &quot;בת חן לוי · התגברתי על הפחד&quot;}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>צפו בה מספרת</button></div><!-- /tm-slot -->
+      </div>
+      <div class="proof">
+        <div class="proof__head">
+          <img class="proof__photo" src="students/yarden.jpg" alt="ירדן מנשרי סיני" loading="lazy">
+          <span class="proof__role" style="color:var(--wine)">ירדן מנשרי סיני · ד״ר לחקר המוח</span>
+        </div>
+        <p>בנתה סוכן-על שמריץ את העסק שלה מקצה לקצה, אחרי שנה של ניסיונות לבד עם ChatGPT ו-Gemini. היום יש לה משרד וירטואלי שלם: 6 מחלקות של סוכנים שעובדות בשבילה.</p>
+        <p class="proof__quote">"את סוכן העל שתמיד חלמתי עליו בניתי עכשיו בקורס."</p>
+        <div class="tm-slot" data-slot="card-yarden" data-items='[{"t": "v", "id": "1234045834", "h": "04735e81b5", "poster": "faq/images/cf-1234045834.jpg", "cap": "ירדן מנשרי סיני · בניתי את סוכן העל שלי", "label": "צפו בה מספרת"}]'><button type="button" class="proof__more" data-v="{&quot;id&quot;: &quot;1234045834&quot;, &quot;h&quot;: &quot;04735e81b5&quot;, &quot;poster&quot;: &quot;faq/images/cf-1234045834.jpg&quot;, &quot;cap&quot;: &quot;ירדן מנשרי סיני · בניתי את סוכן העל שלי&quot;}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>צפו בה מספרת</button></div><!-- /tm-slot -->
       </div>
     </div>
     <p class="proof__ceiling">בניית <span class="accent-blue">משרד AI שלם</span> זה בדיוק לאן שכולכם הולכים. ויש מי שכבר לקח את זה צעד אחד רחוק יותר —</p>
@@ -1514,6 +1523,8 @@
 
       return { open: open };
     })();
+    // העורך שבדשבורד ("עריכה על הדף") מנגן סרטונים מהרשימה שלו באותו נגן
+    window.tmPlayVideo = function (v, fromEl) { LB.open(v, fromEl); };
 
     /* ---------- חיבור הנגן לבלוקי ההמלצות של דף המכירה ----------
        .tm-video מנגן במקום (כמו בדף הבוגרים), והגדלה רק בכפתור. כפתור
