@@ -437,9 +437,17 @@
     .answer .tm-results b { color: var(--navy); }
     .answer .tm-results strong { color: #1F5FA8; font-weight: 800; }
     .answer .tm-answer__close { font-weight: 800; color: var(--navy); }
-    .answer .tm-answer__quote { margin: 16px 0 18px; padding: 16px 18px; background: #F4F6FB; border-radius: 14px; }
-    .answer .tm-answer__quote p { margin: 0 0 8px; font-weight: 700; color: var(--navy); line-height: 1.7; }
-    .answer .tm-answer__quote cite { font-style: normal; font-size: 14px; font-weight: 700; color: #5A5873; }
+    .answer .tm-answer__quote { position: relative; margin: 20px 0 18px; padding: 26px 22px 18px; background: #fff; border: 1.5px solid #E3E6EE;
+    border-radius: 18px; box-shadow: 0 10px 26px rgba(20,9,59,.08); text-align: right; }
+    .answer .tm-answer__quote .tm-qmark { position: absolute; top: -18px; right: 18px; width: 40px; height: 40px; border-radius: 50%;
+    background: var(--gold); color: var(--navy); font: 900 34px/52px Georgia, serif; text-align: center; }
+    .answer .tm-answer__quote blockquote { margin: 0; }
+    .answer .tm-answer__quote blockquote p { margin: 0 0 9px !important; font-size: 17.5px; line-height: 1.65; font-weight: 700; color: var(--navy) !important; }
+    .answer .tm-answer__quote figcaption { display: flex; align-items: center; gap: 10px; margin-top: 14px; }
+    .answer .tm-answer__quote figcaption img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; }
+    .answer .tm-answer__quote figcaption b { display: block; font-size: 15px; color: var(--navy); }
+    .answer .tm-answer__quote figcaption span span { display: block; font-size: 13.5px; color: #5A5873; }
+    .answer .tm-hl { text-decoration: underline; text-decoration-color: #E0342F; text-decoration-thickness: 2.5px; text-underline-offset: 5px; text-decoration-skip-ink: none; }
     /* ---------- נגן ההמלצות - הועתק מדף הבוגרים, אותו נגן מאושר ---------- */
     /* ---------- COVERFLOW VIDEO GALLERY (card back) ---------- */
     .gallery-label { font-size: 13px; font-weight: 700; color: var(--navy); margin: 2px auto 8px auto; }
@@ -1085,7 +1093,7 @@
             <p>כי זה הרבה יותר מ-5 מפגשים. המסע מתחיל <strong>עוד לפני המפגש הראשון</strong> — סוכן ליווי לוקח אתכם צעד-צעד ואתם כבר בונים את הסוכן הראשון. ובין המפגשים יש עבודה רצינית, תרגולים מדויקים, מפגש חידוד שבועי בזום, מתרגלים שעוזרים בזמן אמת, וסוכנים שמלווים אתכם.</p>
             <p>זה טירונות — מקוצר ואינטנסיבי <strong>בכוונה</strong>, למצליחנים שאין להם 70 שעות פנויות. הכוח הוא בריכוז ובמעטפת שעוטפת כל רגע, לא באורך. כל מה שלא מהותי פשוט לא נמצא שם — ומה שכן, בנוי כדי שתצאו יודעים לבנות באמת.</p>
           
-            <blockquote class="tm-answer__quote"><p>"אחרי שבועיים הרגשתי קפיצה מטורפת. בשלב הזה באתי ואמרתי: 'וואו, אני יכולה לבנות עכשיו כל דבר'. וזה לא רק אני - הרוב המוחלט של האנשים הרגישו את אותה קפיצה. אחרי השבועיים האלה ממש הרגשתי שטיפסתי על גג העולם, ועכשיו אני מסתכלת על העולם ממקום אחר. זה לא ייאמן, אבל כן, זה קורה כל כך מהר."</p><cite>סיגל יער</cite></blockquote>
+            <figure class="tm-answer__quote"><span class="tm-qmark" aria-hidden="true">&rdquo;</span><blockquote><p>"אחרי שבועיים הרגשתי <span class="tm-hl">קפיצה מטורפת</span>.</p><p>בשלב הזה באתי ואמרתי: 'וואו, <span class="tm-hl">אני יכולה לבנות עכשיו כל דבר</span>'.</p><p>וזה לא רק אני - <span class="tm-hl">הרוב המוחלט של האנשים</span> הרגישו את אותה קפיצה.</p><p>אחרי השבועיים האלה ממש הרגשתי <span class="tm-hl">שטיפסתי על גג העולם</span>, ועכשיו אני מסתכלת על העולם ממקום אחר.</p><p>זה לא ייאמן, אבל כן, <span class="tm-hl">זה קורה כל כך מהר</span>."</p></blockquote><figcaption><img src="../bogrim/images/sigal.jpg" alt="סיגל יער" loading="lazy"><span><b>סיגל יער</b><span>עורכת דין, בת 58</span></span></figcaption></figure>
           
             <p class="gallery-label"><span class="vids-ico">▸</span> הבוגרים מספרים</p>
             <div class="coverflow" data-active="0" data-videos='[{"id": "1223365364", "h": "191e214656", "poster": "images/cf-1223365364.jpg", "cap": "חמישה שבועות זה מספיק"}, {"id": "1223170982", "h": "ca3f7dad2d", "poster": "images/cf-1223170982.jpg", "cap": "תפסתי את המקום האחרון"}, {"id": "1223365201", "h": "8d77e09076", "poster": "images/cf-1223365201.jpg", "cap": "לא צריך יותר מ-5 שבועות"}, {"id": "1223365235", "h": "c1f040eabd", "poster": "images/cf-1223365235.jpg", "cap": "הרגשתי על גג העולם"}]'><div class="cf-stage"></div></div>
