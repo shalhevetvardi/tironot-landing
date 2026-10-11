@@ -734,6 +734,31 @@
   .tm-reviews--one { grid-template-columns: minmax(0, 1fr); max-width: 640px; margin: 22px auto 0; }
   .tm-stack--solo { max-width: 760px; margin: 0 auto; }
   span.tm-google { cursor: default; }
+
+  /* רצועות הודעות נעות (11-10-2026): אזור עם 3 הודעות ומעלה הופך לשתי רצועות, זו מעל זו, שזזות לאט בכיוונים הפוכים.
+     direction:ltr רק על הגוללת (חשבון הגלילה); הכרטיסים נשארים בעברית */
+  .tm-strip-cap { display: none; font-family: var(--display, inherit); font-weight: 800; font-size: clamp(20px, 2.4vw, 26px);
+    line-height: 1.25; color: var(--navy); margin: 44px auto 0; text-align: center; text-wrap: balance; }
+  .tm-strip-cap.is-on { display: block; }
+  .tm-strip-cap:has(+ .tm-shots .tm-shot) { display: block; }
+  .tm-shots.is-empty { display: none; }
+  .tm-shots.is-strip { display: block; max-width: none; margin: 18px 0 0; }
+  .tm-strip { margin-inline: -24px; }
+  .tm-band { direction: ltr; overflow-x: auto; overflow-y: hidden; scrollbar-width: none; -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain; -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent); }
+  .tm-band::-webkit-scrollbar { display: none; }
+  .tm-band + .tm-band { margin-top: 4px; }
+  .tm-track { display: flex; align-items: flex-start; gap: 12px; width: max-content; padding: 6px 24px 12px; }
+  .tm-shots.is-strip .tm-shot { direction: rtl; width: min(66vw, 250px); flex: 0 0 auto; }
+  .tm-shots.is-strip .tm-shot button { position: relative; display: block; width: 100%; height: auto; max-height: 300px;
+    overflow: hidden; background: #EFEAE2; }
+  .tm-shots.is-strip .tm-shot button:focus-visible { outline: 3px solid var(--gold); outline-offset: -3px; }
+  .tm-shots.is-strip .tm-shot img { max-height: none; height: auto; pointer-events: none; -webkit-user-drag: none; user-select: none; }
+  @media (min-width: 681px) {
+    .tm-shots.is-strip .tm-shot { width: 270px; }
+    .tm-shots.is-strip .tm-shot button { max-height: 400px; }
+  }
 </style>
 <style id="tm-slot-css">.tm-slot{display:contents}</style>
 </head>
@@ -819,7 +844,7 @@
 <div class="tm-person"><div class="tm-person__head"><img src="bogrim/images/growdigitalsol.jpg" alt="יסמין אלון" loading="lazy"><span><span class="tm-person__name">יסמין אלון</span><span class="tm-person__role">בעלת עסק לאסטרטגיה שיווקית דיגיטלית לעסקים קטנים</span></span></div><blockquote>"<span class="tm-hl">כל האדריכלות של העסק שלי</span> בנויה על הסוכנים שלמדתי לבנות בקורס."</blockquote></div>
 <div class="tm-person"><div class="tm-person__head"><img src="bogrim/images/yarden.jpg" alt="ירדן מנשרי סיני" loading="lazy"><span><span class="tm-person__name">ירדן מנשרי סיני</span><span class="tm-person__role">ד״ר לחקר המוח · יזמת</span></span></div><blockquote>"אחרי הטירונות <span class="tm-hl">סיימתי את המרדף</span>. אני כבר לא מחפשת את הכלי הבא - יש לי כל מה שאני צריכה."</blockquote></div></div><!-- /tm-slot -->
     </div>
-    <div class="tm-shots">
+    <div class="tm-shots" data-strip="1">
       <div class="tm-slot" data-slot="quick-shots" data-items='[{"t": "w", "code": "TRN-0134", "src": "students/wa/TRN-0134.jpg", "name": "רון אלון", "alt": "לפני שנתיים בערך ישבתי על הספה, בין עבודות. היום יש לי עסק עם 3 עובדים, אפליקציה עם יותר מ-2,000 משתמשים"}, {"t": "w", "code": "TRN-0655", "src": "students/wa/TRN-0655.jpg", "name": "נועם זרז&#39;בסקי", "alt": "בניתי סוכן מכירות בוואטסאפ: מנוע שרץ בענן 24/7, מסנן לידים לפי תקציב וסוג קונה, וקובע פגישה ביומן"}]'><figure class="tm-shot"><button type="button" aria-label="הגדלת ההודעה של רון אלון"><img src="students/wa/TRN-0134.jpg" alt="רון אלון: לפני שנתיים בערך ישבתי על הספה, בין עבודות. היום יש לי עסק עם 3 עובדים, אפליקציה עם יותר מ-2,000 משתמשים" loading="lazy"></button></figure>
 <figure class="tm-shot"><button type="button" aria-label="הגדלת ההודעה של נועם זרז&#x27;בסקי"><img src="students/wa/TRN-0655.jpg" alt="נועם זרז&#x27;בסקי: בניתי סוכן מכירות בוואטסאפ: מנוע שרץ בענן 24/7, מסנן לידים לפי תקציב וסוג קונה, וקובע פגישה ביומן" loading="lazy"></button></figure></div><!-- /tm-slot -->
     </div>
@@ -837,6 +862,8 @@
         <div class="video-frame__play"><svg width="30" height="30" viewBox="0 0 24 24"><polygon points="7,4 20,12 7,20"/></svg></div>
       </div>
     </div>
+    <p class="tm-strip-cap">ככה תלמידים מרגישים בקורס</p>
+    <div class="tm-shots tm-shots--intro" data-strip="1"><div class="tm-slot" data-slot="intro-shots" data-items='[]'></div><!-- /tm-slot --></div>
   </div>
 </section>
 
@@ -938,7 +965,7 @@
   <div class="container">
     <h2 class="tm-title">ככה זה נראה מבפנים</h2>
     <p class="tm-lead">הודעות שבוגרים שלחו באמצע הקורס.</p>
-    <div class="tm-shots tm-shots--4">
+    <div class="tm-shots tm-shots--4" data-strip="1">
       <div class="tm-slot" data-slot="inside-shots" data-items='[{"t": "w", "code": "TRN-0688", "src": "students/wa/TRN-0688.jpg", "name": "Sapphire Ella", "alt": "בהתחלה אמרתי לשלהבת שאני לא חושבת שבכלל אצליח לעשות את זה, אבל באמת לאט לאט הכל התחבר"}, {"t": "w", "code": "TRN-0575", "src": "students/wa/TRN-0575.jpg", "name": "סיגל יער", "alt": "קלוד קוד מיועד בדיוק למי שלא עוסק בתכנות בשגרה"}, {"t": "w", "code": "TRN-0207", "src": "students/wa/TRN-0207.jpg", "name": "אילנה וייס", "alt": "המעטפת הפסיכית שאת הכנת (שלא ראיתי כמוה בארץ)"}, {"t": "w", "code": "TRN-0707", "src": "students/wa/TRN-0707.jpg", "name": "זיו עמר", "alt": "אמרתי לסוכן שלי שהוא הולך לתקיית התוכן שלי, בוחר משם תוכן מותאם לסטוריז לחודש שלם, כותב לי קופי"}]'><figure class="tm-shot"><button type="button" aria-label="הגדלת ההודעה של Sapphire Ella"><img src="students/wa/TRN-0688.jpg" alt="Sapphire Ella: בהתחלה אמרתי לשלהבת שאני לא חושבת שבכלל אצליח לעשות את זה, אבל באמת לאט לאט הכל התחבר" loading="lazy"></button></figure>
 <figure class="tm-shot"><button type="button" aria-label="הגדלת ההודעה של סיגל יער"><img src="students/wa/TRN-0575.jpg" alt="סיגל יער: קלוד קוד מיועד בדיוק למי שלא עוסק בתכנות בשגרה" loading="lazy"></button></figure>
 <figure class="tm-shot"><button type="button" aria-label="הגדלת ההודעה של אילנה וייס"><img src="students/wa/TRN-0207.jpg" alt="אילנה וייס: המעטפת הפסיכית שאת הכנת (שלא ראיתי כמוה בארץ)" loading="lazy"></button></figure>
@@ -1548,6 +1575,7 @@
     /* גובה השורה = ההודעה הגבוהה בה, עד תקרה; הקצרות מושלמות ברקע הצ'אט. רק כשיש יותר מעמודה אחת */
     function sizeRows() {
       document.querySelectorAll('.tm-shots').forEach(function (row) {
+        if (row.classList.contains('is-strip')) { row.style.removeProperty('--shot-h'); return; }
         if (window.innerWidth <= 680 || !row.offsetParent) { row.style.removeProperty('--shot-h'); return; }
         var cap = row.closest('.tm-sec--quick') ? 400 : 440, tallest = 0;
         row.querySelectorAll('.tm-shot img').forEach(function (im) {
@@ -1560,12 +1588,169 @@
     window.addEventListener('resize', markAll);
     /* לוח שהיה מוסתר ("עדיין מתלבטים?") נמדד רק כשהוא נפתח */
     document.addEventListener('click', function (e) { if (e.target.closest('.tm-chip')) setTimeout(markAll, 0); });
-    document.querySelectorAll('.tm-shot button').forEach(function (b) {
-      b.addEventListener('click', function () {
-        var im = b.querySelector('img');
-        ILB.open(im.getAttribute('src'), im.getAttribute('alt'), b);
-      });
+    /* מאזין אחד על המסמך: הודעות שהועתקו, הועברו או הוחלפו (רצועות, עורך הדשבורד) ממשיכות להיפתח.
+       גרירה של יותר מ-8 פיקסלים אינה הקשה ולכן לא פותחת */
+    var tap = { down: false, x: 0, y: 0, moved: false };
+    document.addEventListener('pointerdown', function (e) {
+      tap.down = true; tap.x = e.clientX; tap.y = e.clientY; tap.moved = false;
+    }, true);
+    document.addEventListener('pointermove', function (e) {
+      if (tap.down && !tap.moved && Math.hypot(e.clientX - tap.x, e.clientY - tap.y) > 8) tap.moved = true;
+    }, true);
+    ['pointerup', 'pointercancel'].forEach(function (t) {
+      document.addEventListener(t, function () { tap.down = false; }, true);
     });
+    document.addEventListener('click', function (e) {
+      var b = e.target.closest ? e.target.closest('.tm-shot button') : null;
+      if (!b) return;
+      if (tap.moved) { tap.moved = false; return; }
+      var im = b.querySelector('img');
+      if (im) ILB.open(im.getAttribute('src'), im.getAttribute('alt'), b);
+    });
+
+    /* רצועות הודעות: אזור `.tm-shots[data-strip]` עם 3 הודעות ומעלה ← שתי רצועות זו מעל זו.
+       התנועה בגלילה (scrollLeft) ולא ב-transform, כדי שאותה רצועה גם תגלול ביד.
+       הרצועה בנויה מקבוצה שחוזרת על עצמה פעמיים וקופצת חצי אחורה ברגע שעברה חצי, והעין לא רואה קפיצה.
+       window.tmStrips() בונה מחדש מההודעות שבאזור עכשיו, ולכן בטוח להריץ שוב אחרי שהעורך החליף את תוכן ה-slot. */
+    var STRIP_SPEED = 22, STRIP_RESUME = 1600;
+    var stripRows = [], stripLast = 0, stripRaf = 0, stripWidth = window.innerWidth, stripIO = null;
+    var reduceMotion = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    var mouseDrag = null;
+
+    function stripWrap(r) {
+      if (r.half < 10) return;
+      if (r.pos >= r.half) r.pos -= r.half; else if (r.pos <= 0) r.pos += r.half;
+    }
+    function stripMeasure(r) {
+      var a = r.first, b = r.second;
+      r.half = (a && b && b.offsetParent) ? b.offsetLeft - a.offsetLeft : 0;
+      if (r.half < 10) return;
+      if (!r.pos) r.pos = r.dir > 0 ? 1 : r.half * 0.6;
+      r.el.scrollLeft = r.pos; r.set = r.el.scrollLeft;
+    }
+    function stripGrab(r) { r.hold = true; }
+    function stripFree(r) { r.hold = false; r.resumeAt = performance.now() + STRIP_RESUME; }
+    function stripRow(el, dir, first, second) {
+      var r = { el: el, dir: dir, pos: 0, half: 0, hold: false, resumeAt: 0, set: -1, vis: true, first: first, second: second };
+      el.addEventListener('pointerdown', function (e) {
+        stripGrab(r);
+        if (e.pointerType === 'mouse' && e.button === 0) mouseDrag = { r: r, x: e.clientX, left: el.scrollLeft };
+      });
+      el.addEventListener('touchstart', function () { stripGrab(r); }, { passive: true });
+      el.addEventListener('pointerup', function () { stripFree(r); });
+      el.addEventListener('pointercancel', function () { stripFree(r); });
+      el.addEventListener('touchend', function () { stripFree(r); });
+      el.addEventListener('mouseenter', function () { stripGrab(r); });
+      el.addEventListener('mouseleave', function () { stripFree(r); });
+      el.addEventListener('wheel', function () { r.resumeAt = performance.now() + STRIP_RESUME; }, { passive: true });
+      el.addEventListener('scroll', function () {
+        if (Math.abs(el.scrollLeft - r.set) <= 1) return;
+        /* גלילה ביד: ממשיכים מהמקום שבו היא עצרה, לא חוזרים למקום הקודם */
+        r.pos = el.scrollLeft; r.resumeAt = performance.now() + STRIP_RESUME;
+        var before = r.pos; stripWrap(r);
+        if (r.pos !== before) el.scrollLeft = r.pos;
+        r.set = el.scrollLeft;
+      }, { passive: true });
+      if (stripIO) stripIO.observe(el);
+      el._stripRow = r;
+      return r;
+    }
+    document.addEventListener('pointermove', function (e) {
+      if (!mouseDrag) return;
+      var dx = e.clientX - mouseDrag.x;
+      if (Math.abs(dx) > 3) mouseDrag.r.el.scrollLeft = mouseDrag.left - dx;
+    });
+    ['pointerup', 'pointercancel'].forEach(function (t) {
+      document.addEventListener(t, function () { mouseDrag = null; });
+    });
+    if ('IntersectionObserver' in window) {
+      stripIO = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) { if (en.target._stripRow) en.target._stripRow.vis = en.isIntersecting; });
+      });
+    }
+    function stripTick(now) {
+      var dt = Math.min(64, now - stripLast) / 1000; stripLast = now;
+      var paused = document.hidden || document.body.style.overflow === 'hidden';
+      if (!reduceMotion && !paused) stripRows.forEach(function (r) {
+        if (r.hold || now < r.resumeAt || r.half < 10 || !r.vis || !r.el.isConnected) return;
+        r.pos += r.dir * STRIP_SPEED * dt; stripWrap(r);
+        r.el.scrollLeft = r.pos; r.set = r.el.scrollLeft;
+      });
+      stripRaf = requestAnimationFrame(stripTick);
+    }
+    function stripClone(f) {
+      var c = f.cloneNode(true);
+      c.setAttribute('data-clone', '1'); c.setAttribute('aria-hidden', 'true');
+      var b = c.querySelector('button'); if (b) b.tabIndex = -1;
+      return c;
+    }
+    function stripBuild(box) {
+      var host = box.querySelector('.tm-slot') || box;
+      var cap = box.previousElementSibling;
+      if (cap && !cap.classList.contains('tm-strip-cap')) cap = null;
+      var old = box.querySelector('.tm-strip');
+      /* ההודעות האמיתיות בלבד (בלי עותקי הלולאה), לפי הסדר שבו הן היו */
+      var figs = [].slice.call(box.querySelectorAll('.tm-shot')).filter(function (f) { return !f.hasAttribute('data-clone'); })
+        .map(function (f, i) { return { f: f, i: i, si: f.hasAttribute('data-si') ? +f.getAttribute('data-si') : 1e9 }; })
+        .sort(function (a, b) { return (a.si - b.si) || (a.i - b.i); })
+        .map(function (o) { return o.f; });
+      if (old) old.remove();
+      if (cap) cap.classList.toggle('is-on', figs.length > 0);
+      box.classList.toggle('is-empty', figs.length === 0);
+      if (figs.length < 3) {
+        box.classList.remove('is-strip');
+        figs.forEach(function (f) { f.removeAttribute('data-si'); if (old) host.appendChild(f); });
+        return;
+      }
+      figs.forEach(function (f, i) { f.setAttribute('data-si', i); });
+      box.classList.add('is-strip');
+      var strip = document.createElement('div');
+      strip.className = 'tm-strip';
+      host.appendChild(strip);
+      var perRow = [[], []];
+      figs.forEach(function (f, i) { perRow[i % 2].push(f); });
+      var bandW = box.clientWidth + 48 || window.innerWidth;
+      perRow.forEach(function (list, ri) {
+        var band = document.createElement('div'), track = document.createElement('div');
+        band.className = 'tm-band'; track.className = 'tm-track';
+        band.appendChild(track); strip.appendChild(band);
+        list.forEach(function (f) { track.appendChild(f); });
+        var w = list[0].offsetWidth, gap = parseFloat(getComputedStyle(track).columnGap) || 12;
+        var per = (w + gap) * list.length;
+        var k = Math.max(1, Math.ceil((bandW + w + gap) / per));
+        var firstCard = list[0], secondCard = null;
+        for (var rep = 0; rep < 2 * k; rep++) {
+          list.forEach(function (f, j) {
+            if (rep === 0) return;
+            var c = stripClone(f);
+            if (rep === k && j === 0) secondCard = c;
+            track.appendChild(c);
+          });
+        }
+        var r = stripRow(band, ri % 2 ? -1 : 1, firstCard, secondCard);
+        stripRows.push(r);
+      });
+      strip.querySelectorAll('img').forEach(function (im) {
+        im.loading = 'eager';
+        if (!im.complete) im.addEventListener('load', markAll);
+      });
+    }
+    function tmStrips() {
+      stripRows = stripRows.filter(function (r) { return r.el.isConnected; });
+      document.querySelectorAll('.tm-shots[data-strip]').forEach(function (box) {
+        stripRows = stripRows.filter(function (r) { return !box.contains(r.el); });
+        stripBuild(box);
+      });
+      markAll();
+      stripRows.forEach(stripMeasure);
+      if (!stripRaf) { stripLast = performance.now(); stripRaf = requestAnimationFrame(stripTick); }
+    }
+    window.tmStrips = tmStrips;
+    document.addEventListener('visibilitychange', function () { stripLast = performance.now(); });
+    window.addEventListener('resize', function () {
+      if (window.innerWidth !== stripWidth) { stripWidth = window.innerWidth; tmStrips(); }
+    });
+    tmStrips();
     document.querySelectorAll('.proof__more').forEach(function (b) {
       b.addEventListener('click', function () {
         if (b.hasAttribute('data-v')) LB.open(JSON.parse(b.getAttribute('data-v')), b);
