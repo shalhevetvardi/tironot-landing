@@ -209,9 +209,7 @@
       link.style.cssText = 'position:fixed;left:14px;bottom:14px;z-index:9998;'
         + 'background:rgba(20,9,59,.85);color:#fff;border:none;border-radius:20px;'
         + 'padding:7px 14px;font-size:12.5px;font-family:"Rubik",Arial,sans-serif;'
-        + 'cursor:pointer;opacity:.55;transition:opacity .15s;';
-      link.addEventListener('mouseenter', function () { link.style.opacity = '1'; });
-      link.addEventListener('mouseleave', function () { link.style.opacity = '.55'; });
+        + 'cursor:pointer;';
       link.addEventListener('click', showBanner);
       function mount() { document.body.appendChild(link); }
       if (document.body) mount();
