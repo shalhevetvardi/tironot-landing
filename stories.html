@@ -171,6 +171,10 @@
   /* מצב ייצוא: ?only=N מציג שקופית אחת בלבד, ממלאת 1080x1920, בלי מספר-עזר - לצילום נקי */
   body.exporting{display:block;padding:0;background:#fff}
   body.exporting .slide__num{display:none}
+  /* שורת הצהרת נגישות מתחת לשקופיות; לא נכנסת לצילום ה-PNG */
+  .a11y-foot{flex:0 0 100%;text-align:center;font-size:20px;line-height:1.6;padding:8px 0}
+  .a11y-foot a{color:#fff}
+  body.exporting .a11y-foot{display:none}
 </style>
 </head>
 <body>
@@ -389,6 +393,8 @@
     </div>
   </div>
 </section>
+
+<footer class="a11y-foot"><a href="https://aimprove.co.il/accessibility-statement/">הצהרת נגישות</a></footer>
 
 <script>
   /* ?only=N → מצב ייצוא: שקופית בודדת, ממלאת מסך, להפקת PNG 1080x1920 */
