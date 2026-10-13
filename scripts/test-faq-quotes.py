@@ -60,6 +60,7 @@ check(five.count('class="tm-qm__row"') == 1 and five.count("tm-qm__row--rev") ==
 
 # 4. הדפים בריפו מעודכנים, והבנייה יציבה
 placements = json.loads(Path(b.DEFAULT_PLACEMENTS).read_text(encoding="utf-8")) if Path(b.DEFAULT_PLACEMENTS).exists() else None
+check(placements is not None, "חסר scripts/faq-quotes-data/placements.json - הדף לא ניתן לבנייה מהריפו")
 if placements is not None:
     items = json.loads(Path(b.DEFAULT_ITEMS).read_text(encoding="utf-8"))
     pages, done = b.build(ROOT, placements, items)
@@ -75,8 +76,15 @@ if placements is not None:
     for qid, cnt in done.items():
         check(faq.count(f"<!-- tm-qm:{qid} -->") == 1, f"{qid}: בלוק אחד")
     check("tm-answer__quote" in faq, "הציטוט של סיגל נשאר")
-else:
-    print("אין placements-final.json במחשב הזה - דילגתי על בדיקת הדפים")
+    # מה שנכנס לריפו הוא רק מה שמוצג בדף: בלי לשוניות דף המכירה, בלי שדות עבודה, ובלי פריטים שהוצאו
+    rows = [r for v in placements.values() for r in v]
+    check(all(k[0] == "q" and 7 <= int(k[1:]) <= 41 for k in placements), "בקובץ הנתונים רק שאלות q07-q41")
+    check(all(set(r) == {"qid", "name", "role", "photo", "text"} for r in rows), "בפריט רק qid, name, role, photo, text")
+    check(sum(done.values()) == len(rows), "כל פריט בקובץ הנתונים מוצג בדף")
+    # 13-10-2026: הערת עריכה של שלהבת נכנסה לנוסח של ציטוט ועלתה לאוויר (אילנה וייס, שאלה 8). כשהיא מכתיבה נוסח היא
+    # מסיימת אותו ב"סוף ציטוט", ומה שבא אחריו הוא הערה פנימית ולא חלק מהציטוט.
+    notes = sorted({r["qid"] for r in rows if "סוף ציטוט" in r["text"]})
+    check(not notes, f"הערת עריכה בתוך נוסח של ציטוט ('סוף ציטוט'): {notes}")
 
 # 5. עיצוב וקוד: פעם אחת בכל דף, זהים
 blocks = []
