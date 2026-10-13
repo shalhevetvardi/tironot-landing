@@ -11,8 +11,9 @@
   2. העיצוב (<style id="tm-qm-css">) והקוד (<script id="tm-qm-js">) של הרצועות, זהים בשני הדפים. המקור היחיד
      שלהם הוא הקובץ הזה: לא לערוך אותם ביד בדף, אלא כאן ולהריץ.
 
-מקורות: הבחירות של שלהבת לכל שאלה (placements-final.json, הדגשות בסוגריים מרובעים) והשאלות (items.json),
-מתוך ~/Documents/aimprove-demos/ציטוטים-לשאלות/. אפשר לתת נתיבים אחרים ב---placements וב---items.
+מקורות: הבחירות של שלהבת לכל שאלה (הדגשות בסוגריים מרובעים) והשאלות, מתוך scripts/faq-quotes-data/ בריפו
+(placements.json, questions.json). סבבי הבחירה עצמם נעשים בתיקיית עבודה במחשב, ו-scripts/import_faq_quotes_data.py
+מביא משם לריפו את מה שמוצג בדף. אפשר לתת נתיבים אחרים ב---placements וב---items.
 
 המבנה של כרטיס הוא חוזה עם דף המכירה: sales-automation/modules/testimonial_sales_model.py (quote_marquee)
 בונה בדיוק אותו HTML ללשוניות "עדיין מתלבטים?". שינוי כאן = שינוי שם, ולהפך. הבדיקה:
@@ -29,9 +30,9 @@ from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
 ROOT = Path(__file__).resolve().parent.parent
-DEMOS = Path.home() / "Documents" / "aimprove-demos" / "ציטוטים-לשאלות"
-DEFAULT_PLACEMENTS = DEMOS / "סבב2" / "placements-final.json"
-DEFAULT_ITEMS = DEMOS / "items.json"
+DATA = ROOT / "scripts" / "faq-quotes-data"          # נכתב ע"י scripts/import_faq_quotes_data.py; לא לערוך ביד
+DEFAULT_PLACEMENTS = DATA / "placements.json"
+DEFAULT_ITEMS = DATA / "questions.json"
 FAQ_RANGE = range(7, 42)            # q07-q41: שאלות בדף השאלות. q01-q05 הן לשוניות בדף המכירה (דרך הדשבורד)
 PHOTO_PREFIX = "../"                # התמונות בשורש האתר, ודף השאלות בתיקייה faq/
 AVATARS = 6                         # tm-qm__av--0..5
