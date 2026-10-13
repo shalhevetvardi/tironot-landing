@@ -10,7 +10,7 @@
 הריפו ציבורי, ולכן נכנס רק מה שכבר מוצג בדף השאלות:
   * רק שאלות q07-q41 (q01-q05 הן לשוניות בדף המכירה, והבחירות שלהן מנוהלות בדשבורד עד הפרסום).
   * בלי פריטים שסומנו "exclude" בקובץ העבודה.
-  * מכל פריט רק qid, name, role, photo, text; ומכל שאלה רק id ונוסח השאלה.
+  * מכל פריט רק qid, name, role, photo, text, headline (הכותרת שמעל הציטוט); ומכל שאלה רק id ונוסח השאלה.
 אחרי הרצה: python3 scripts/build_faq_quotes.py, ואז python3 scripts/test-faq-quotes.py.
 
 הנתונים שבריפו הם המקור של הדף, וקובץ העבודה הוא הטיוטה שממנה הם מתעדכנים. לכן הסקריפט מדפיס, כרטיס אחר כרטיס, מה
@@ -28,7 +28,7 @@ ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "scripts" / "faq-quotes-data"
 WORK = Path.home() / "Documents" / "aimprove-demos" / "ציטוטים-לשאלות"
 FAQ_RANGE = range(7, 42)
-FIELDS = ("qid", "name", "role", "photo", "text")
+FIELDS = ("qid", "name", "role", "photo", "text", "headline")
 
 
 def build(placements: dict, items: list) -> dict:

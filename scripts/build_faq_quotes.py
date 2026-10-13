@@ -278,6 +278,8 @@ def headline(text: str, ranges) -> str:
 
 
 def card(it: dict, photo_prefix: str = PHOTO_PREFIX) -> str:
+    # הכותרת: השדה "headline" של הציטוט אם יש (נכתבת ביד, לפי docs/פרומפט-כותרות-ציטוטים.md),
+    # ואחרת ההדגשה הראשונה. כותרת שנגזרת מהדגשה יוצאת לעיתים קרובות שבר משפט שאינו מובן בלי הציטוט.
     text, ranges = parse_brackets(str(it.get("text") or ""))
     name = str(it.get("name") or "")
     if it.get("photo"):
@@ -286,7 +288,7 @@ def card(it: dict, photo_prefix: str = PHOTO_PREFIX) -> str:
         av = f'<span class="tm-qm__av tm-qm__av--{avatar_index(name)}" aria-hidden="true">{_esc(name.strip()[:1])}</span>'
     role = f'<span class="tm-qm__role">{_esc(it["role"])}</span>' if it.get("role") else ""
     return (f'<button type="button" class="tm-qm__card">'
-            f'<span class="tm-qm__h">{_esc(headline(text, ranges))}</span>'
+            f'<span class="tm-qm__h">{_esc(str(it.get("headline") or "").strip() or headline(text, ranges))}</span>'
             f'<span class="tm-qm__q">{quote_lines(text, ranges)}</span>'
             f'<span class="tm-qm__who">{av}<span class="tm-qm__id">'
             f'<span class="tm-qm__name">{_esc(name)}</span>{role}</span></span></button>')
