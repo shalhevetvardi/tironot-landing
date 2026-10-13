@@ -65,7 +65,8 @@ if placements is not None:
     items = json.loads(Path(b.DEFAULT_ITEMS).read_text(encoding="utf-8"))
     pages, done = b.build(ROOT, placements, items)
     for p, text in pages.items():
-        check(p.read_text(encoding="utf-8") == text, f"{p.name} לא מעודכן - להריץ scripts/build_faq_quotes.py")
+        check(p.read_text(encoding="utf-8") == text,
+              f"{p.relative_to(ROOT)} לא תואם לנתונים שב-scripts/faq-quotes-data - ר' הסעיף על רצועות הציטוטים ב-CLAUDE.md")
     with tempfile.TemporaryDirectory() as d:
         (Path(d) / "faq").mkdir()
         for rel in ("index.html", "faq/index.html"):
@@ -85,6 +86,16 @@ if placements is not None:
     # מסיימת אותו ב"סוף ציטוט", ומה שבא אחריו הוא הערה פנימית ולא חלק מהציטוט.
     notes = sorted({r["qid"] for r in rows if "סוף ציטוט" in r["text"]})
     check(not notes, f"הערת עריכה בתוך נוסח של ציטוט ('סוף ציטוט'): {notes}")
+
+# 4ב. הייבוא מקובץ העבודה מדפיס מה ישתנה בנתונים שבריפו, כרטיס אחר כרטיס
+import import_faq_quotes_data as imp  # noqa: E402
+
+row = lambda qid, **kw: dict({"qid": qid, "name": "דנה", "role": "", "photo": "", "text": "טקסט"}, **kw)
+old_p = {"q07": [row("Q-1"), row("Q-2")], "q08": [row("Q-3"), row("Q-4")]}
+check(imp.changes(old_p, old_p) == [], "ייבוא בלי שינוי לא מדווח על שינוי")
+got = imp.changes(old_p, {"q07": [row("Q-1", text="אחר", role="תפקיד"), row("Q-5")], "q08": [row("Q-4"), row("Q-3")]})
+check(got == ["q07 Q-1 דנה: השתנה role, text", "q07 Q-2 דנה: הוסר", "q07 Q-5 דנה: נוסף", "q08: סדר הכרטיסים השתנה"],
+      f"ייבוא מדווח על כל שינוי בנפרד: {got}")
 
 # 5. עיצוב וקוד: פעם אחת בכל דף, זהים
 blocks = []

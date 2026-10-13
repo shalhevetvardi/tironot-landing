@@ -1,0 +1,36 @@
+# בודק שדף השאלות ודף המכירה תואמים למה שנבנה מהנתונים שבריפו, ושאין הערת עריכה בתוך ציטוט.
+#
+# רקע: רצועות הציטוטים בדף השאלות נבנות ב-scripts/build_faq_quotes.py מתוך scripts/faq-quotes-data/.
+# ב-13-10-2026, פעמיים בתוך שעה, תיקון של ציטוט נכנס לדף בלי שהנתונים שהוא נבנה מהם עודכנו, ובבנייה
+# הבאה התיקון היה נמחק. הבדיקה scripts/test-faq-quotes.py תופסת את זה, אבל עד עכשיו היא רצה רק כשמישהו
+# זכר להריץ אותה.
+#
+# רץ על בקשות מיזוג (ולפי בקשה), ולא על דחיפה ל-main: דשבורד ההמלצות מפרסם ל-main ישירות, כמה פעמים ביום,
+# ופער שנכנס ל-main ממילא יופיע כאדום בבקשת המיזוג הבאה.
+# בלי `paths:`: הריצה קצרה, ומסנן נתיבים הוא עוד מקום שבו בדיקה יכולה לא לרוץ בלי שאיש יבחין.
+# קריאה בלבד: אין כאן סודות ואין הרשאת כתיבה, ושום דבר לא עולה לאוויר מכאן.
+name: FAQ quotes check
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  faq-quotes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: הדפים תואמים לנתונים שבריפו, ואין הערת עריכה בתוך ציטוט
+        shell: bash
+        run: python3 scripts/test-faq-quotes.py
