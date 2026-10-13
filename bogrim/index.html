@@ -23,7 +23,6 @@
       --body: #333333;
       --muted: #706A70;
       --wa: #25D366;
-      --wa-dark: #1EBE5D;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -137,12 +136,12 @@
     .media.compact { max-width: 170px; }
     .cta {
       display: inline-flex; align-items: center; justify-content: center; gap: 9px;
-      background: var(--wa); color: #FFFFFF;
+      background: var(--navy); color: #FFFFFF;
       text-decoration: none; padding: 12px 26px; border-radius: 50px;
       font-size: 16px; font-weight: 700; transition: background 0.15s;
     }
-    .cta:hover { background: var(--wa-dark); }
-    .cta svg { width: 19px; height: 19px; fill: currentColor; flex-shrink: 0; }
+    .cta:hover { background: var(--navy-mid); }
+    .cta svg { width: 19px; height: 19px; fill: var(--wa); flex-shrink: 0; }
     .card-back .cta { margin-top: auto; }
     .card-front .quote:first-of-type { margin-top: auto; }
     .card-front .cta { margin-top: auto; }
