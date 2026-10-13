@@ -12,6 +12,10 @@
   * בלי פריטים שסומנו "exclude" בקובץ העבודה.
   * מכל פריט רק qid, name, role, photo, text; ומכל שאלה רק id ונוסח השאלה.
 אחרי הרצה: python3 scripts/build_faq_quotes.py, ואז python3 scripts/test-faq-quotes.py.
+
+הנתונים שבריפו הם המקור של הדף, וקובץ העבודה הוא הטיוטה שממנה הם מתעדכנים. לכן הסקריפט מדפיס, כרטיס אחר כרטיס, מה
+ישתנה בנתונים שבריפו. שינוי ברשימה שלא אתה עשית פירושו שהנתונים שבריפו חדשים מקובץ העבודה (תיקון שנעשה ממחשב אחר,
+או ישירות בריפו): לא כותבים, אלא מעדכנים קודם את קובץ העבודה. מריצים --check לפני הכתיבה כדי לראות את הרשימה.
 """
 from __future__ import annotations
 
@@ -38,6 +42,26 @@ def build(placements: dict, items: list) -> dict:
     return {"placements.json": out_p, "questions.json": out_q}
 
 
+def changes(old: dict, new: dict) -> list:
+    """מה ישתנה בנתונים שבריפו, שורה לכל כרטיס. נועד לכך שייבוא מקובץ עבודה ישן לא ימחק בשקט תיקון שכבר בריפו."""
+    out = []
+    for q in sorted(set(old) | set(new)):
+        a, b = old.get(q, []), new.get(q, [])
+        ka, kb = [r["qid"] for r in a], [r["qid"] for r in b]
+        for qid in dict.fromkeys(ka + kb):
+            ra, rb = [r for r in a if r["qid"] == qid], [r for r in b if r["qid"] == qid]
+            who = (rb or ra)[0].get("name", "")
+            if len(ra) != len(rb):
+                out.append(f"{q} {qid} {who}: {'נוסף' if len(rb) > len(ra) else 'הוסר'}")
+                continue
+            fields = sorted({k for x, y in zip(ra, rb) for k in FIELDS if x.get(k) != y.get(k)})
+            if fields:
+                out.append(f"{q} {qid} {who}: השתנה {', '.join(fields)}")
+        if ka != kb and sorted(ka) == sorted(kb):
+            out.append(f"{q}: סדר הכרטיסים השתנה")
+    return out
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--placements", default=str(WORK / "סבב2" / "placements-final.json"))
@@ -46,6 +70,14 @@ def main(argv=None) -> int:
     args = ap.parse_args(argv)
     files = build(json.loads(Path(args.placements).read_text(encoding="utf-8")),
                   json.loads(Path(args.items).read_text(encoding="utf-8")))
+    current = DATA / "placements.json"
+    diff = changes(json.loads(current.read_text(encoding="utf-8")) if current.exists() else {}, files["placements.json"])
+    if diff:
+        print(f"מה ישתנה בנתונים שבריפו ({len(diff)}):")
+        for line in diff[:60]:
+            print("  " + line)
+        if len(diff) > 60:
+            print(f"  ועוד {len(diff) - 60}")
     stale = []
     for name, data in files.items():
         text = json.dumps(data, ensure_ascii=False, indent=1) + "\n"
