@@ -81,6 +81,10 @@ if placements is not None:
     check(all(k[0] == "q" and 7 <= int(k[1:]) <= 41 for k in placements), "בקובץ הנתונים רק שאלות q07-q41")
     check(all(set(r) == {"qid", "name", "role", "photo", "text"} for r in rows), "בפריט רק qid, name, role, photo, text")
     check(sum(done.values()) == len(rows), "כל פריט בקובץ הנתונים מוצג בדף")
+    # 13-10-2026: הערת עריכה של שלהבת נכנסה לנוסח של ציטוט ועלתה לאוויר (אילנה וייס, שאלה 8). כשהיא מכתיבה נוסח היא
+    # מסיימת אותו ב"סוף ציטוט", ומה שבא אחריו הוא הערה פנימית ולא חלק מהציטוט.
+    notes = sorted({r["qid"] for r in rows if "סוף ציטוט" in r["text"]})
+    check(not notes, f"הערת עריכה בתוך נוסח של ציטוט ('סוף ציטוט'): {notes}")
 
 # 5. עיצוב וקוד: פעם אחת בכל דף, זהים
 blocks = []
