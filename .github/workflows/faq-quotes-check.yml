@@ -34,3 +34,8 @@ jobs:
       - name: הדפים תואמים לנתונים שבריפו, ואין הערת עריכה בתוך ציטוט
         shell: bash
         run: python3 scripts/test-faq-quotes.py
+
+      # נוסף 14-10-2026: בטקסט שרואים אין מקף ארוך, ואין חץ בקישור או בכפתור (CLAUDE.md).
+      - name: בלי מקפים ארוכים ובלי חצים בקישורים
+        shell: bash
+        run: python3 scripts/test-typography.py
