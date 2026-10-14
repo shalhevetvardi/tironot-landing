@@ -7,8 +7,10 @@
   * הבנייה לא משנה דבר בהפעלה חוזרת, והדפים בריפו מעודכנים (--check).
   * העיצוב והקוד יושבים פעם אחת בכל דף, וזהים בשני הדפים.
 """
+import html
 import json
 import os
+import re
 import sys
 import tempfile
 from pathlib import Path
@@ -80,7 +82,23 @@ if placements is not None:
     # מה שנכנס לריפו הוא רק מה שמוצג בדף: בלי לשוניות דף המכירה, בלי שדות עבודה, ובלי פריטים שהוצאו
     rows = [r for v in placements.values() for r in v]
     check(all(k[0] == "q" and 7 <= int(k[1:]) <= 41 for k in placements), "בקובץ הנתונים רק שאלות q07-q41")
-    check(all(set(r) == {"qid", "name", "role", "photo", "text"} for r in rows), "בפריט רק qid, name, role, photo, text")
+    check(all(set(r) == {"qid", "name", "role", "photo", "text", "headline"} for r in rows),
+          "בפריט רק qid, name, role, photo, text, headline")
+    # 13-10-2026: הכותרת שמעל כל ציטוט נכתבת ביד (docs/פרומפט-כותרות-ציטוטים.md) ולא נגזרת מההדגשה הראשונה. רוב
+    # המבקרים קוראים רק אותה, ולכן היא חייבת להיות מובנת בלי הציטוט: כותרת שנגזרה מהדגשה יצאה שבר משפט
+    # ("היום", "לא יכלתי"), או ביקורת על קורסים אחרים שנקראת כאילו היא עלינו ("יוצא מוגבל").
+    heads = [str(r.get("headline") or "").strip() for r in rows]
+    check(all(heads), "לכל ציטוט יש כותרת")
+    check(all(2 <= len(h.split()) <= 5 for h in heads), "כותרת היא שתיים עד חמש מילים")
+    check(not any(re.search(r"[\u2013\u2014]", h) or re.match(r"[A-Za-z]", h) for h in heads),
+          "בכותרת אין מקף ארוך, והיא לא מתחילה באנגלית")
+    for qid, items in placements.items():
+        seen = {}
+        for r in items:
+            seen.setdefault(str(r.get("headline") or ""), set()).add(r["text"])
+        twice = sorted(h for h, texts in seen.items() if len(texts) > 1)
+        check(not twice, f"באותה רצועה ({qid}) אין שני ציטוטים שונים עם אותה כותרת: {twice}")
+    check(all(html.escape(h) in faq for h in set(heads)), "כל כותרת מופיעה בדף")
     check(sum(done.values()) == len(rows), "כל פריט בקובץ הנתונים מוצג בדף")
     # 13-10-2026: הערת עריכה של שלהבת נכנסה לנוסח של ציטוט ועלתה לאוויר (אילנה וייס, שאלה 8). כשהיא מכתיבה נוסח היא
     # מסיימת אותו ב"סוף ציטוט", ומה שבא אחריו הוא הערה פנימית ולא חלק מהציטוט.
