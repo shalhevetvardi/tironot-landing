@@ -1452,6 +1452,40 @@
     modal.addEventListener('click', function (e) { if (e.target === modal) shut(); });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && modal.classList.contains('is-open')) shut(); });
   })();
+
+  /* קישור עם # (למשל agent-course.aimprove.co.il/#price) נוחת במקום הלא נכון: הדפדפן גולל מיד,
+     ואז רצועות ההמלצות והתמונות שמעל נטענות ודוחפות את היעד למטה. נמדד 14-10-2026 באתר החי:
+     בטלפון ראש החלק נשאר 760 פיקסלים מתחת לראש המסך, ובמחשב מחוץ למסך. לכן כל עוד הדף משנה
+     גובה, מחזירים את היעד לראש המסך - עד שהמבקר גולל בעצמו, או אחרי 6 שניות.
+     בטעינה מחדש ובחזרה אחורה לא נוגעים: שם הדפדפן מחזיר את המבקר למקום שבו היה. */
+  (function () {
+    var id = '';
+    try { id = decodeURIComponent(location.hash.slice(1)); } catch (e) {}
+    var target = id && document.getElementById(id);
+    if (!target) return;
+    var nav = (performance.getEntriesByType && performance.getEntriesByType('navigation')[0]) || {};
+    if (nav.type && nav.type !== 'navigate') return;
+    var root = document.documentElement, done = false, ro = null;
+    function stop() {
+      done = true;
+      if (ro) ro.disconnect();
+      ['wheel', 'touchmove', 'keydown'].forEach(function (ev) { window.removeEventListener(ev, stop); });
+    }
+    function align() {
+      if (done) return;
+      var top = target.getBoundingClientRect().top;
+      if (Math.abs(top) < 2) return;
+      var prev = root.style.scrollBehavior;
+      root.style.scrollBehavior = 'auto';       /* בלי הגלילה החלקה של הדף: היא לא מספיקה להגיע לפני השינוי הבא */
+      window.scrollTo(0, window.pageYOffset + top);
+      root.style.scrollBehavior = prev;
+    }
+    ['wheel', 'touchmove', 'keydown'].forEach(function (ev) { window.addEventListener(ev, stop, { passive: true }); });
+    if ('ResizeObserver' in window) { ro = new ResizeObserver(align); ro.observe(document.body); }
+    window.addEventListener('load', align);
+    setTimeout(function () { align(); stop(); }, 6000);
+    align();
+  })();
 </script>
 
 <script>
