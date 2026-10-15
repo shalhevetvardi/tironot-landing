@@ -26,6 +26,21 @@
     }
     var PAGE = detectPage();
 
+    /* סימון "זו אני" (15-10-2026): מכשיר של הצוות לא טוען פיקסל ואנליטיקס ולא
+       שולח את אירוע ההסכמה. שני מקורות: העוגייה המשותפת לכל aimprove.co.il
+       (נקבעת ב-r.aimprove.co.il/optout), ו-localStorage aim_optout של האתר הזה
+       (?aim_optout=1, אותו מפתח שמשפך דף הנחיתה בודק). הבאנר עצמו מופיע כרגיל. */
+    var OPTOUT = false;
+    try {
+      var optParam = new URLSearchParams(location.search).get('aim_optout');
+      if (optParam === '1') localStorage.setItem('aim_optout', '1');
+      else if (optParam === '0') localStorage.removeItem('aim_optout');
+      OPTOUT = localStorage.getItem('aim_optout') === '1';
+    } catch (e) {}
+    try {
+      if (!OPTOUT && ('; ' + document.cookie + ';').indexOf('; aim_optout=1;') !== -1) OPTOUT = true;
+    } catch (e) {}
+
     function loadPixel() {
       try {
         !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -57,7 +72,7 @@
     }
 
     function loadAll() {
-      if (loaded()) return;
+      if (OPTOUT || loaded()) return;
       loadPixel();
       loadGA();
     }
@@ -69,6 +84,7 @@
        שאפשר יהיה לצלוב אם ירצו), ואם לא, נוצר כאן מזהה אפמרלי חדש כדי
        שהבלוק הזה יעבוד גם בדף שאין בו את סקריפט המשפך. */
     function sendConsentEvent(choice) {
+      if (OPTOUT) return;
       try {
         var vid = '';
         try { vid = sessionStorage.getItem('aim_vid') || ''; } catch (e) {}
