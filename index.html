@@ -2371,6 +2371,9 @@ window.interdeal = {
       else if (flag === '0') localStorage.removeItem('aim_optout');
       if (localStorage.getItem('aim_optout') === '1') return;
     } catch (e) { /* דפדפן שחוסם אחסון - ממשיכים כרגיל */ }
+    /* והעוגייה המשותפת לכל aimprove.co.il מ-r.aimprove.co.il/optout (15-10-2026).
+       השרת מדלג עליה גם בעצמו; הבדיקה כאן חוסכת את השליחה. */
+    try { if (('; ' + document.cookie + ';').indexOf('; aim_optout=1;') !== -1) return; } catch (e) {}
 
     /* הסקשנים לפי סדר הופעתם בדף. שם קצר ← בורר. סקשן שלא קיים פשוט מדולג,
        כך שאותו סקריפט אפשר להעתיק לדף אחר בלי לשנות אותו. */
