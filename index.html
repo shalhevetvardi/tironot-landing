@@ -453,13 +453,15 @@
 
     /* journey stepper → vertical stack on mobile */
     .jrn-stage { margin-top: 32px; }
-    .jrn-card { flex-direction: column; align-items: stretch; padding: 34px 22px 28px; }
+    .jrn-card { flex-direction: column; align-items: stretch; padding: 52px 22px 28px; }
     .jrn-step { flex-direction: row; width: 100%; align-items: center; gap: 18px; justify-content: flex-start; }
     .jrn-circle { flex: 0 0 auto; }
     .jrn-label { margin-top: 0; flex: 1 1 auto; text-align: right; font-size: 16px; line-height: 1.4; }
     .jrn-conn { width: 2.5px; height: 26px; min-width: 0; flex: 0 0 auto; margin: 6px 35px; }
-    .jrn-here { top: -18px; right: 4px; left: auto; transform: none; }
-    .jrn-here::after { right: 30px; left: auto; transform: rotate(45deg); }
+    /* מעל העיגול של שלב 1 ולא עליו: העיגול (position: relative) בא אחרי התווית ב-DOM ולכן הסתיר אותה
+       (שלהבת, 15-10-2026: "מוסתר על ידי הספרה 1"). z-index, מקום מעל העיגול, והחץ מצביע על מרכזו */
+    .jrn-here { top: -40px; right: 0; left: auto; transform: none; z-index: 1; }
+    .jrn-here::after { right: 31px; left: auto; transform: rotate(45deg); }
     .jrn-card.is-in .jrn-here { animation: none; }
   }
   /* ---------- HERO BRAND LOCKUP (לוגו טירונות + שם הקורס) ---------- */
@@ -563,8 +565,10 @@
     }
     .cf-lb-icon.show { opacity: 1; }
     .cf-lb-icon svg { width: 32px; height: 32px; fill: #fff; }
+    /* z-index מעל .cf-lb-tap (2): בטלפון הסרטון מגיע עד ה-X, ושכבת העצירה כיסתה אותו - לחיצה על X עצרה את
+       הסרטון במקום לסגור (שלהבת, 15-10-2026) */
     .cf-lb-close {
-      position: absolute; z-index: 2;
+      position: absolute; z-index: 5;
       top: calc(12px + env(safe-area-inset-top, 0px));
       left: calc(12px + env(safe-area-inset-left, 0px));
       width: 44px; height: 44px;
@@ -723,7 +727,7 @@
   .tm-stack--solo { max-width: 760px; margin: 0 auto; }
   span.tm-google { cursor: default; }
 
-  /* רצועות הודעות נעות (11-10-2026): אזור עם 3 הודעות ומעלה הופך לשתי רצועות, זו מעל זו, שזזות לאט בכיוונים הפוכים.
+  /* רצועות הודעות נעות (11-10-2026): אזור עם 3 הודעות ומעלה הופך לשתי רצועות, זו מעל זו, שזזות בכיוונים הפוכים.
      direction:ltr רק על הגוללת (חשבון הגלילה); הכרטיסים נשארים בעברית */
   .tm-strip-cap { display: none; font-family: var(--display, inherit); font-weight: 800; font-size: clamp(20px, 2.4vw, 26px);
     line-height: 1.25; color: var(--navy); margin: 44px auto 0; text-align: center; text-wrap: balance; }
@@ -732,14 +736,20 @@
   .tm-shots.is-empty { display: none; }
   .tm-shots.is-strip { display: block; max-width: none; margin: 18px 0 0; }
   .tm-strip { margin-inline: -24px; }
-  .tm-band { direction: ltr; overflow-x: auto; overflow-y: hidden; scrollbar-width: none; -webkit-overflow-scrolling: touch;
-    overscroll-behavior-x: contain; -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+  /* התנועה וההחלקה ביד ב-JS (tmMarquee); גלילה אנכית של הדף נשארת לדפדפן */
+  .tm-band { direction: ltr; overflow: hidden; scrollbar-width: none; touch-action: pan-y; cursor: grab; -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
     mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent); }
   .tm-band::-webkit-scrollbar { display: none; }
   /* כל הכרטיסים ברצועה באותו גובה (--strip-h); הרוחב של כל כרטיס נקבע ב-JS לפי צורת ההודעה, בין מינימום למקסימום.
      הודעה גבוהה מהכרטיס נחתכת עם "להקשה - ההודעה המלאה", ושטח שנשאר ריק צבוע ברקע הצ'אט */
   .tm-shots.is-strip { --strip-h: 260px; }
-  .tm-track { display: flex; align-items: flex-start; gap: 12px; width: max-content; padding: 4px 24px; }
+  .tm-track { display: flex; align-items: flex-start; gap: 12px; width: max-content; padding: 4px 24px; will-change: transform; }
+  .tm-band.is-dragging { cursor: grabbing; }
+  /* "מה כתבו עלינו בגוגל" כרצועה אחת (15-10-2026). הריפוד התחתון משאיר מקום לצל של הכרטיסים */
+  .tm-reviews.is-strip { display: block; max-width: none; margin: 26px 0 0; }
+  .tm-reviews.is-strip .tm-track { align-items: stretch; gap: 14px; padding: 6px 24px 30px; }
+  .tm-reviews.is-strip .tm-review { direction: rtl; flex: 0 0 auto; width: 300px; }
+  @media (min-width: 900px) { .tm-reviews.is-strip .tm-review { width: 340px; } }
   .tm-shots.is-strip .tm-shot { direction: rtl; width: 220px; height: var(--strip-h); flex: 0 0 auto; border: 0;
     outline: 1px solid #E3E6EE; outline-offset: -1px; background: #EFEAE2; }
   .tm-shots.is-strip .tm-shot button { position: relative; display: block; width: 100%; height: 100%; max-height: none;
@@ -852,16 +862,10 @@
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
   mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
 .tm-qm__row::-webkit-scrollbar { display: none; }
-.tm-qm__row.is-on { overflow: hidden; }
+/* רצועה שזזה (tmMarquee): גלילה אנכית של הדף נשארת לדפדפן, החלקה לצדדים מזיזה את הרצועה */
+.tm-qm__row.is-on { overflow: hidden; touch-action: pan-y; cursor: grab; }
 .tm-qm__track { display: flex; align-items: stretch; width: max-content; padding: 5px 0; }
-.tm-qm__row.is-on .tm-qm__track { animation: tmQmSlide var(--qm-dur, 60s) linear infinite; }
-.tm-qm__row--rev.is-on .tm-qm__track { animation-direction: reverse; }
-.tm-qm__row:hover .tm-qm__track, .tm-qm__row:focus-within .tm-qm__track { animation-play-state: paused; }
-@keyframes tmQmSlide { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-@media (prefers-reduced-motion: reduce) {
-  .tm-qm__row.is-on { overflow-x: auto; }
-  .tm-qm__row.is-on .tm-qm__track { animation: none; }
-}
+.tm-qm__row.is-on .tm-qm__track { will-change: transform; }
 .tm-qm__card { direction: rtl; text-align: right; flex: 0 0 auto; width: 330px; margin: 0 8px; display: flex; flex-direction: column;
   background: #F4F2FB; border: 1px solid #E6E1F5; border-radius: 18px; padding: 20px; font: inherit; color: #14093B;
   line-height: 1.5; cursor: pointer; -webkit-appearance: none; appearance: none; }
@@ -992,7 +996,7 @@
         <div class="video-frame__play"><svg width="30" height="30" viewBox="0 0 24 24"><polygon points="7,4 20,12 7,20"/></svg></div>
       </div>
     </div>
-    <p class="tm-strip-cap">ככה תלמידים מרגישים בקורס</p>
+    <p class="tm-strip-cap">ככה תלמידים מרגישים בטירונות</p>
     <div class="tm-shots tm-shots--intro" data-strip="1"><div class="tm-slot" data-slot="intro-shots" data-items='[{"t": "w", "code": "TRN-0207", "src": "students/wa/TRN-0207.jpg", "name": "אילנה וייס", "alt": "המעטפת הפסיכית שאת הכנת (שלא ראיתי כמוה בארץ)- גם סוכנים שמלווים אותך, גם האסיסטנט במפגשים פרונטליים/זום בין השיעורים, וגם את אישית שעונה"}, {"t": "w", "code": "TRN-0309", "src": "students/wa/TRN-0309.jpg", "name": "בת חן לוי", "alt": "ממש מורגש שבמעגל זהות שלך את מגדירה את עצמך כמורה. מאוד חששתי ליפול בבחירה כי ההיצע פסיכי... ואני מאוד מרוצה.🩷"}, {"t": "w", "code": "TRN-0353", "src": "students/wa/TRN-0353.jpg", "name": "בת חן לוי", "alt": "ואת אחת החכמות שהכרתי. אין לי מושג איך הצלחת לקחת עולם כל כך מורכב ולהנגיש אותו לאנשים שלא כותבים קוד רק מבינים לוגיקה"}, {"t": "w", "code": "TRN-0400", "src": "students/wa/TRN-0400.jpg", "name": "אילנה וייס", "alt": "אצלך לומדים איך ליצור כל דבר שרוצים - בקורסים של מתחרים נותנים לך כבר סוכנים או כלים מוכנים אבל לא מלמדים איך לעשות בעצמך, ובסוף אתה משלם הרבה כסף אבל יוצא מוגבל. אצל שלהבת אתה משלם פעם אחת, ואפשר גם לפרוס לתשלומים כך שזה פחות מורגש - אבל אתה יוצא עם ידע שאפילו השמיים לא הגבול."}, {"t": "w", "code": "TRN-0476", "src": "students/wa/TRN-0476.jpg", "name": "רון אלון", "alt": "היה לי ידע לפני, אני כבר כמעט שנתיים בתחום. אבל - וזה אבל גדול - הידע שהיה לי בנושא סוכנים, קלוד וכו&#39; היה מועט, והרבה מפוזר, בלאגן בראש. שלהבת בקורס נותנת כלים לעשות סדר, להבין איך דברים עובדים נכון ואיך צריך לבנות. וזה פשוט סידר לי את הכל, חיבר לי קצוות. גם הסוכנים והמדריכים, מניסיון שלי, שווים זהב!"}, {"t": "w", "code": "TRN-0582", "src": "students/wa/TRN-0582.jpg", "name": "הדס זרחיה", "alt": "שלהבת יקרה☀️\nקיבלתי הבוקר את המייל שלך\nופשוט התרגשתי מכל מילה.\n\"13 תוצרים ושיטות עבודה ותעודת סיום״\nמההה\nאני עשיתי את כל זה?!\n\n5 שבועות של שיכרון חושים - בקבוצה מאות שאלות, ואצלי צרצרים, שקט, דממה. פשוט סינית. \nבית פעיל, 3 ילדים, לקוחות בלחץ - ואני טובעת בחומר. \n\nהיה גם משבר, התייאשתי והתלוננתי.\nואת מיד עמדת לצידי מיד התקשרת\nבשעת ערב מאוחרת,\nהזרקת לי מרץ אנרגיה חיוביות ולא ויתרת לי.\n\nואז הקסם קרה\nהבנתי מה שכתבו בקבוצה\nהבנתי את המושגים והשאלות. \n\nאתמול סיימנו את הקורס. והחשק רק נפתח\n\nתודה שלהבת\nעל שלא ויתרת עלי\nועל כולנו\nיש לך שיטה מיוחדת\nשמביאה לתוצאות ❤️"}, {"t": "w", "code": "TRN-0008", "src": "students/wa/TRN-0008.jpg", "name": "אילנה וייס", "alt": "למה לשלם אם גיליתי את נושן בזכות שלהבת?"}, {"t": "w", "code": "TRN-0154", "src": "students/wa/TRN-0154.jpg", "name": "רוני ירושלמי", "alt": "הכל בזכות שלהבת, קלוד ובזכותכם🤯❤️"}, {"t": "w", "code": "TRN-0327", "src": "students/wa/TRN-0327.jpg", "name": "בת חן לוי", "alt": "ההכנה מובנית מעולה. זה מאוד ברור. פדגוגית זה מורכב לבנות הכנה כזו, כי את ממש צריכה להתחקות אחרי התלמיד... וכל אחד מרקע אחר..."}, {"t": "w", "code": "TRN-0354", "src": "students/wa/TRN-0354.jpg", "name": "בת חן לוי", "alt": "אם עוברים על כל החומר שלך אחד אחרי השני. לא ממש צריך מישהו פרונטלי רק לשאלות.. את לגמרי יכולה למכור קורס דיגיטלי. זה מגובש לחלוטין."}, {"t": "w", "code": "TRN-0504", "src": "students/wa/TRN-0504.jpg", "name": "רון אלון", "alt": "בסופו של דבר, אחרי הקורס אנחנו ממשיכים לבד ובונים את הדרך שלנו כל אחד איך שהוא חושב.. אבל הכללים וההנחיות שלומדים פה זה הבסיס להמשיך ולבנות מערכות שיתפקדו נכון וטוב. ושלהבת נותנת לכם את הבסיס הכי טוב שאפשר.."}, {"t": "w", "code": "TRN-0659", "src": "students/wa/TRN-0659.jpg", "name": "דבורי חשין", "alt": "תצמדו לשיטה של אימפרוב - גבולות הסוכנים, מיון שותף, ותהליך לחדד את הסוכנים - זה פשוט מטורף!!!"}]'><figure class="tm-shot"><button type="button" aria-label="הגדלת ההודעה של אילנה וייס"><img src="students/wa/TRN-0207.jpg" alt="אילנה וייס: המעטפת הפסיכית שאת הכנת (שלא ראיתי כמוה בארץ)- גם סוכנים שמלווים אותך, גם האסיסטנט במפגשים פרונטליים/זום בין השיעורים, וגם את אישית שעונה" loading="lazy"></button></figure>
 <figure class="tm-shot"><button type="button" aria-label="הגדלת ההודעה של בת חן לוי"><img src="students/wa/TRN-0309.jpg" alt="בת חן לוי: ממש מורגש שבמעגל זהות שלך את מגדירה את עצמך כמורה. מאוד חששתי ליפול בבחירה כי ההיצע פסיכי... ואני מאוד מרוצה.🩷" loading="lazy"></button></figure>
 <figure class="tm-shot"><button type="button" aria-label="הגדלת ההודעה של בת חן לוי"><img src="students/wa/TRN-0353.jpg" alt="בת חן לוי: ואת אחת החכמות שהכרתי. אין לי מושג איך הצלחת לקחת עולם כל כך מורכב ולהנגיש אותו לאנשים שלא כותבים קוד רק מבינים לוגיקה" loading="lazy"></button></figure>
@@ -1124,6 +1128,23 @@
   </div>
 </section>
 
+<!-- ====================== TESTIMONIALS 5 - ביקורות גוגל, מיד אחרי סיפורי הבוגרים (הועבר מלפני הכפתור 15-10-2026: הסרטון של שלהבת צמוד לכפתור של נועם) ====================== -->
+<section class="tm-sec tm-sec--google center" id="tm-google">
+  <div class="container">
+    <span class="tm-google"><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg><span class="tm-stars" aria-hidden="true">★★★★★</span> 5 כוכבים</span>
+    <h2 class="tm-title" style="margin-top:18px">מה כתבו עלינו בגוגל</h2>
+    <div class="tm-reviews" data-strip="1">
+      <div class="tm-slot" data-slot="google-reviews" data-items='[{"t": "r", "qid": "Q-0011", "name": "Tal Magnezi", "when": "אוקטובר 2026", "text": "תמיד חשבתי שבניית סוכנים דורשת רקע טכני כבד. ברגע שהסוכן הראשון עבד, תפיסת העבודה שלי השתנתה לחלוטין.", "mark": "הסוכן הראשון עבד"}, {"t": "r", "qid": "Q-0012", "name": "Daniel Marad", "when": "אוקטובר 2026", "text": "אחרי ארבעה שבועות יש לי שלושה סוכנים שבניתי. לראשונה אני מרגיש שאני על הגל ולא רודף.", "mark": "על הגל ולא רודף"}, {"t": "r", "qid": "Q-0013", "name": "Shany Haimy", "when": "אוקטובר 2026", "text": "העדתי על עצמי שאני ברמה גבוהה, ולמדתי עוד מלא. בניתי סוכן לקבלות וחשבוניות שחוסך לי שעות של עבודה סיזיפית.", "mark": "חוסך לי שעות"}, {"t": "r", "qid": "Q-0014", "name": "תמר שילון", "when": "ספטמבר 2026", "text": "חששתי שאני כבר יודעת הכל, כי כל העסק שלי מנוהל בכלים שבניתי. עכשיו אני קופצת לרמה חדשה.", "mark": "קופצת לרמה חדשה"}, {"t": "r", "qid": "Q-0015", "name": "Adi Dotan", "when": "ספטמבר 2026", "text": "הפחד שלי היה ללמוד עוד שיטה בלי להבין את הלוגיקה שמאחוריה. כאן קיבלתי מתודולוגיה סדורה ותשתית שלמה.", "mark": "מתודולוגיה סדורה"}, {"t": "r", "qid": "Q-0016", "name": "yaron yaroni", "when": "אוקטובר 2026", "text": "בניתי את גרייס - מערכת שמתחילה בצ&#39;אט עם המשתמש ומבצעת בהצלחה עדכונים במערכת מידע אמיתית.", "mark": "במערכת מידע אמיתית"}, {"t": "r", "qid": "Q-0301", "name": "תמר פיגנבלט", "when": "אוקטובר 2026", "text": "עוד לא סיימתי ללמוד, וכבר יש בשימוש אצלנו סקיל שבודק את כתיבת הצוות בסגנון שלי ורץ עבורם במקומי.", "mark": "רץ עבורם במקומי"}]'><article class="tm-review"><div class="tm-review__head"><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg><span><span class="tm-review__name">Tal Magnezi</span><span class="tm-review__meta"><span class="tm-stars" aria-label="5 כוכבים">★★★★★</span></span></span></div><p>"תמיד חשבתי שבניית סוכנים דורשת רקע טכני כבד. ברגע ש<span class="tm-hl">הסוכן הראשון עבד</span>, תפיסת העבודה שלי השתנתה לחלוטין."</p></article>
+<article class="tm-review"><div class="tm-review__head"><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg><span><span class="tm-review__name">Daniel Marad</span><span class="tm-review__meta"><span class="tm-stars" aria-label="5 כוכבים">★★★★★</span></span></span></div><p>"אחרי ארבעה שבועות יש לי שלושה סוכנים שבניתי. לראשונה אני מרגיש שאני <span class="tm-hl">על הגל ולא רודף</span>."</p></article>
+<article class="tm-review"><div class="tm-review__head"><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg><span><span class="tm-review__name">Shany Haimy</span><span class="tm-review__meta"><span class="tm-stars" aria-label="5 כוכבים">★★★★★</span></span></span></div><p>"העדתי על עצמי שאני ברמה גבוהה, ולמדתי עוד מלא. בניתי סוכן לקבלות וחשבוניות ש<span class="tm-hl">חוסך לי שעות</span> של עבודה סיזיפית."</p></article>
+<article class="tm-review"><div class="tm-review__head"><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg><span><span class="tm-review__name">תמר שילון</span><span class="tm-review__meta"><span class="tm-stars" aria-label="5 כוכבים">★★★★★</span></span></span></div><p>"חששתי שאני כבר יודעת הכל, כי כל העסק שלי מנוהל בכלים שבניתי. עכשיו אני <span class="tm-hl">קופצת לרמה חדשה</span>."</p></article>
+<article class="tm-review"><div class="tm-review__head"><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg><span><span class="tm-review__name">Adi Dotan</span><span class="tm-review__meta"><span class="tm-stars" aria-label="5 כוכבים">★★★★★</span></span></span></div><p>"הפחד שלי היה ללמוד עוד שיטה בלי להבין את הלוגיקה שמאחוריה. כאן קיבלתי <span class="tm-hl">מתודולוגיה סדורה</span> ותשתית שלמה."</p></article>
+<article class="tm-review"><div class="tm-review__head"><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg><span><span class="tm-review__name">yaron yaroni</span><span class="tm-review__meta"><span class="tm-stars" aria-label="5 כוכבים">★★★★★</span></span></span></div><p>"בניתי את גרייס - מערכת שמתחילה בצ&#x27;אט עם המשתמש ומבצעת בהצלחה עדכונים <span class="tm-hl">במערכת מידע אמיתית</span>."</p></article>
+<article class="tm-review"><div class="tm-review__head"><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg><span><span class="tm-review__name">תמר פיגנבלט</span><span class="tm-review__meta"><span class="tm-stars" aria-label="5 כוכבים">★★★★★</span></span></span></div><p>"עוד לא סיימתי ללמוד, וכבר יש בשימוש אצלנו סקיל שבודק את כתיבת הצוות בסגנון שלי ו<span class="tm-hl">רץ עבורם במקומי</span>."</p></article></div><!-- /tm-slot -->
+    </div>
+  </div>
+</section>
+
 <!-- ====================== ROADMAP — COURSE JOURNEY (infographic) ====================== -->
 <section class="section section--roadmap center">
   <div class="container">
@@ -1138,8 +1159,8 @@
 <!-- ====================== TESTIMONIALS 3 - ככה זה נראה מבפנים (10-10-2026) ====================== -->
 <section class="tm-sec tm-sec--inside center" id="tm-inside">
   <div class="container">
-    <h2 class="tm-title">מה תלמידים בונים כבר בזמן הקורס</h2>
-    <p class="tm-lead">סוכנים ומערכות שתלמידים בנו בעצמם, כמו שסיפרו עליהם בקבוצת הקורס.</p>
+    <h2 class="tm-title">מה תלמידים בונים כבר בזמן הטירונות</h2>
+    <p class="tm-lead">סוכנים ומערכות שתלמידים בנו בעצמם, כמו שסיפרו עליהם בקבוצת הטירונות.</p>
     <div class="tm-shots tm-shots--4" data-strip="1">
       <div class="tm-slot" data-slot="inside-shots" data-items='[{"t": "w", "code": "TRN-0736", "src": "students/wa/TRN-0736.jpg", "name": "זיו עמר", "alt": "קצת התחרפנתי מלעשות סטוריז ללקוחות, אז עכשיו הסוכן שלי עובר על 3 אלף קבצי המדיה שלי, בוחר סטוריז לחודש שלם, כותב קופי ובונה לי דף כזה לאישור."}, {"t": "w", "code": "TRN-0664", "src": "students/wa/TRN-0664.jpg", "name": "ירון", "alt": "חפצו&#39; - הוא סוכן שמדבר עם מורות (מורה מתקנת) מקבל מהן בקשה ובונה עבורן מערך שיעור שלם לתלמיד לפי מה שהן ביקשו"}, {"t": "w", "code": "TRN-0622", "src": "students/wa/TRN-0622.jpg", "name": "ענת", "alt": "בניתי את רז, סוכן שמנתח ומסכם עבורנו מכרזים בתוך דקות. עבודה שבעבר דרשה שעות של קריאה, ניתוח והכנת סיכומים, ובפועל בוצעה אצלנו על ידי מזכירה שהוכשרה במיוחד לכך. היום הסוכן רז עושה את העבודה וחוסך לנו בפועל כחצי משרה"}, {"t": "w", "code": "TRN-0288", "src": "students/wa/TRN-0288.jpg", "name": "Bat Hen", "alt": "בניתי כל מיני תהליכים שקשורים להכנת תוויות רגולטוריות למזון מיובא"}, {"t": "w", "code": "TRN-0205", "src": "students/wa/TRN-0205.jpg", "name": "בת חן לוי", "alt": "אוסף את כל הקבלות מהמייל שלי ומכין אקסל ותיקיות של פידאפים מופרדות לפי סוג ההוצאה ואז שולח מייל+ אקסל+ תיקיות מכווצות לרוח כל חודש"}, {"t": "w", "code": "TRN-0201", "src": "students/wa/TRN-0201.jpg", "name": "אור ברקוביץ", "alt": "מנהלת היום 80% מהמשימות והיומן שלי איתו"}, {"t": "w", "code": "TRN-0001", "src": "students/wa/TRN-0001.jpg", "name": "דולב דרי", "alt": "סוכן מהדק-תוכן רב-פלטפורמי... משרת אותי ב-3 לקוחות במקביל"}, {"t": "w", "code": "TRN-0729", "src": "students/wa/TRN-0729.jpg", "name": "שפי גור-ארי", "alt": "אתר תיק עבודות לבת שלי - רבע שעה עם הסוכנת נוגה"}, {"t": "w", "code": "TRN-0684", "src": "students/wa/TRN-0684.jpg", "name": "דבורי חשין", "alt": "בניתי סוכן שותף ללאורח חיים בריא י והוא פשוט ליווה אותי בתהליך ברמה מטורפת אהבתי שהוא לא עושה במקום אני לומדת תוך כדי ההתנסות"}, {"t": "w", "code": "TRN-0210", "src": "students/wa/TRN-0210.jpg", "name": "ליטל יעקובוביץ דראי", "alt": "אלון שלח 42 תמונות. קלוד עשה סלקציה וניסה לסדר את הסדר, שאל מי זה מי מי חי ומי נפטר ועשה סדר בתמונות, אני חיברתי לאפליקציית מגניפיק, הוא העלה זוגות זוגות כתב פרומטים מרגשים ויצר רצף של סרטונים שתואמים את השיר"}, {"t": "w", "code": "TRN-0202", "src": "students/wa/TRN-0202.jpg", "name": "שימי חטואל", "alt": "\"כזה בניתי והוא גם מזכיר לי לפני הפגישה נק שצריך לעבור או סמול טוק על נושאים שעניינו מפגישה קודמת\""}, {"t": "w", "code": "TRN-0182", "src": "students/wa/TRN-0182.jpg", "name": "שפי", "alt": "הייתי היום בעזרה ראשונה לשינים, ובעיקבותיה 5 תורים עתידיים, שהסוכן שלי עדכן לי מהטלפון"}, {"t": "w", "code": "TRN-0567", "src": "students/wa/TRN-0567.jpg", "name": "אינדי יזמות בעמ", "alt": "זה פסיכי איך התקדמתי (ואני בטוחה שגם אתם) מאז השיעור הראשון!!! היכולת לבנות לבד צי של עובדים/סוכנים שיעשו את העבודה, ויעשו אותה יותר טוב ממני היא פשוט mind blowing 🤯."}]'><figure class="tm-shot"><button type="button" aria-label="הגדלת ההודעה של זיו עמר"><img src="students/wa/TRN-0736.jpg" alt="זיו עמר: קצת התחרפנתי מלעשות סטוריז ללקוחות, אז עכשיו הסוכן שלי עובר על 3 אלף קבצי המדיה שלי, בוחר סטוריז לחודש שלם, כותב קופי ובונה לי דף כזה לאישור." loading="lazy"></button></figure>
 <figure class="tm-shot"><button type="button" aria-label="הגדלת ההודעה של ירון"><img src="students/wa/TRN-0664.jpg" alt="ירון: חפצו&#x27; - הוא סוכן שמדבר עם מורות (מורה מתקנת) מקבל מהן בקשה ובונה עבורן מערך שיעור שלם לתלמיד לפי מה שהן ביקשו" loading="lazy"></button></figure>
@@ -1161,7 +1182,7 @@
 <!-- ====================== PRICE SECTION (WHITE) — אחרי מפת המסע, לפני סרטון נועם ====================== -->
 <section class="section section--white center" id="price">
   <div class="container">
-    <h2 class="price-promise"><span class="price-promise__kicker">זה לא קורס. זו תוכנית הכשרה מעמיקה.</span>תוך 5 שבועות אתם מקבלים בידיים את היכולת לברוא <span class="accent-blue">כל סוכן, כל מערכת, כל אוטומציה</span> - בידיים שלכם, לתמיד.</h2>
+    <h2 class="price-promise"><span class="price-promise__kicker">זה לא עוד קורס. זו תוכנית הכשרה מעמיקה.</span>תוך 5 שבועות אתם מקבלים בידיים את היכולת לברוא <span class="accent-blue">כל סוכן, כל מערכת, כל אוטומציה</span> - בידיים שלכם, לתמיד.</h2>
 
     <ul class="price-includes">
       <li><span><strong>5 מפגשי לייב אינטנסיביים</strong> - כל מפגש 3 שעות של למידה ובנייה משותפת</span></li>
@@ -1169,7 +1190,7 @@
       <li><span><strong>מעטפת פדגוגית שעוטפת אתכם מכל כיוון</strong> - ליווי צמוד יד ביד, חומרי למידה מעמיקים, וצוות סוכני AI של אִימפּרוּב שעוזר בלמידה, בנייה והטמעה - בכל שלב, בכל שאלה</span></li>
       <li><span><strong>לא משאירים אתכם לבד בין השיעורים</strong> - מפגשי חידוד שבועיים בזום להתייעצות, שאלות, ועזרה אישית</span></li>
       <li><span><strong>הכול נשאר אצלכם לנצח</strong> - הקלטות, אתר חומרי הלמידה, וכל מה שבניתם - בידיים שלכם, בלי הגבלת זמן</span></li>
-      <li><span><strong>ידע שלא מתיישן - שלכם לכל החיים</strong> - הקורס נבנה סביב מתודולוגיה ושיטות עבודה נצחיות. גם עם קצב השינויים המהיר ב-AI, מה שלמדתם נשאר רלוונטי לתמיד</span></li>
+      <li><span><strong>ידע שלא מתיישן - שלכם לכל החיים</strong> - הטירונות נבנתה סביב מתודולוגיה ושיטות עבודה נצחיות. גם עם קצב השינויים המהיר ב-AI, מה שלמדתם נשאר רלוונטי לתמיד</span></li>
     </ul>
 
     <div class="price-card">
@@ -1240,23 +1261,6 @@
 </section>
 
 
-<!-- ====================== TESTIMONIALS 5 - ביקורות גוגל לפני הכפתור (10-10-2026) ====================== -->
-<section class="tm-sec tm-sec--google center" id="tm-google">
-  <div class="container">
-    <span class="tm-google"><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg><span class="tm-stars" aria-hidden="true">★★★★★</span> 5 כוכבים</span>
-    <h2 class="tm-title" style="margin-top:18px">מה כתבו עלינו בגוגל</h2>
-    <div class="tm-reviews">
-      <div class="tm-slot" data-slot="google-reviews" data-items='[{"t": "r", "qid": "Q-0011", "name": "Tal Magnezi", "when": "אוקטובר 2026", "text": "תמיד חשבתי שבניית סוכנים דורשת רקע טכני כבד. ברגע שהסוכן הראשון עבד, תפיסת העבודה שלי השתנתה לחלוטין.", "mark": "הסוכן הראשון עבד"}, {"t": "r", "qid": "Q-0012", "name": "Daniel Marad", "when": "אוקטובר 2026", "text": "אחרי ארבעה שבועות יש לי שלושה סוכנים שבניתי. לראשונה אני מרגיש שאני על הגל ולא רודף.", "mark": "על הגל ולא רודף"}, {"t": "r", "qid": "Q-0013", "name": "Shany Haimy", "when": "אוקטובר 2026", "text": "העדתי על עצמי שאני ברמה גבוהה, ולמדתי עוד מלא. בניתי סוכן לקבלות וחשבוניות שחוסך לי שעות של עבודה סיזיפית.", "mark": "חוסך לי שעות"}, {"t": "r", "qid": "Q-0014", "name": "תמר שילון", "when": "ספטמבר 2026", "text": "חששתי שאני כבר יודעת הכל, כי כל העסק שלי מנוהל בכלים שבניתי. עכשיו אני קופצת לרמה חדשה.", "mark": "קופצת לרמה חדשה"}, {"t": "r", "qid": "Q-0015", "name": "Adi Dotan", "when": "ספטמבר 2026", "text": "הפחד שלי היה ללמוד עוד שיטה בלי להבין את הלוגיקה שמאחוריה. כאן קיבלתי מתודולוגיה סדורה ותשתית שלמה.", "mark": "מתודולוגיה סדורה"}, {"t": "r", "qid": "Q-0016", "name": "yaron yaroni", "when": "אוקטובר 2026", "text": "בניתי את גרייס - מערכת שמתחילה בצ&#39;אט עם המשתמש ומבצעת בהצלחה עדכונים במערכת מידע אמיתית.", "mark": "במערכת מידע אמיתית"}, {"t": "r", "qid": "Q-0301", "name": "תמר פיגנבלט", "when": "אוקטובר 2026", "text": "עוד לא סיימתי ללמוד, וכבר יש בשימוש אצלנו סקיל שבודק את כתיבת הצוות בסגנון שלי ורץ עבורם במקומי.", "mark": "רץ עבורם במקומי"}]'><article class="tm-review"><div class="tm-review__head"><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg><span><span class="tm-review__name">Tal Magnezi</span><span class="tm-review__meta"><span class="tm-stars" aria-label="5 כוכבים">★★★★★</span></span></span></div><p>"תמיד חשבתי שבניית סוכנים דורשת רקע טכני כבד. ברגע ש<span class="tm-hl">הסוכן הראשון עבד</span>, תפיסת העבודה שלי השתנתה לחלוטין."</p></article>
-<article class="tm-review"><div class="tm-review__head"><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg><span><span class="tm-review__name">Daniel Marad</span><span class="tm-review__meta"><span class="tm-stars" aria-label="5 כוכבים">★★★★★</span></span></span></div><p>"אחרי ארבעה שבועות יש לי שלושה סוכנים שבניתי. לראשונה אני מרגיש שאני <span class="tm-hl">על הגל ולא רודף</span>."</p></article>
-<article class="tm-review"><div class="tm-review__head"><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg><span><span class="tm-review__name">Shany Haimy</span><span class="tm-review__meta"><span class="tm-stars" aria-label="5 כוכבים">★★★★★</span></span></span></div><p>"העדתי על עצמי שאני ברמה גבוהה, ולמדתי עוד מלא. בניתי סוכן לקבלות וחשבוניות ש<span class="tm-hl">חוסך לי שעות</span> של עבודה סיזיפית."</p></article>
-<article class="tm-review"><div class="tm-review__head"><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg><span><span class="tm-review__name">תמר שילון</span><span class="tm-review__meta"><span class="tm-stars" aria-label="5 כוכבים">★★★★★</span></span></span></div><p>"חששתי שאני כבר יודעת הכל, כי כל העסק שלי מנוהל בכלים שבניתי. עכשיו אני <span class="tm-hl">קופצת לרמה חדשה</span>."</p></article>
-<article class="tm-review"><div class="tm-review__head"><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg><span><span class="tm-review__name">Adi Dotan</span><span class="tm-review__meta"><span class="tm-stars" aria-label="5 כוכבים">★★★★★</span></span></span></div><p>"הפחד שלי היה ללמוד עוד שיטה בלי להבין את הלוגיקה שמאחוריה. כאן קיבלתי <span class="tm-hl">מתודולוגיה סדורה</span> ותשתית שלמה."</p></article>
-<article class="tm-review"><div class="tm-review__head"><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg><span><span class="tm-review__name">yaron yaroni</span><span class="tm-review__meta"><span class="tm-stars" aria-label="5 כוכבים">★★★★★</span></span></span></div><p>"בניתי את גרייס - מערכת שמתחילה בצ&#x27;אט עם המשתמש ומבצעת בהצלחה עדכונים <span class="tm-hl">במערכת מידע אמיתית</span>."</p></article>
-<article class="tm-review"><div class="tm-review__head"><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg><span><span class="tm-review__name">תמר פיגנבלט</span><span class="tm-review__meta"><span class="tm-stars" aria-label="5 כוכבים">★★★★★</span></span></span></div><p>"עוד לא סיימתי ללמוד, וכבר יש בשימוש אצלנו סקיל שבודק את כתיבת הצוות בסגנון שלי ו<span class="tm-hl">רץ עבורם במקומי</span>."</p></article></div><!-- /tm-slot -->
-    </div>
-  </div>
-</section>
-
 <!-- ====================== FINAL CTA — TO NOAM (GOLD) ====================== -->
 <section class="section section--gold center final">
   <div class="container">
@@ -1282,7 +1286,7 @@
     <h2 class="tm-title">עדיין מתלבטים?</h2>
     <p class="tm-lead">בחרו מה הכי מעסיק אתכם, ותראו מה ענו על זה בוגרים שהתלבטו בדיוק כמוכם.</p>
     <div class="tm-chips" role="tablist" aria-label="מה מעסיק אתכם"><button type="button" class="tm-chip" role="tab" id="tm-tab-price" aria-controls="tm-panel-price" aria-selected="true" tabindex="0">המחיר</button><button type="button" class="tm-chip" role="tab" id="tm-tab-sessions" aria-controls="tm-panel-sessions" aria-selected="false" tabindex="-1">למה רק 5 מפגשים?</button><button type="button" class="tm-chip" role="tab" id="tm-tab-tech" aria-controls="tm-panel-tech" aria-selected="false" tabindex="-1">אני לא טכני/ת</button><button type="button" class="tm-chip" role="tab" id="tm-tab-build" aria-controls="tm-panel-build" aria-selected="false" tabindex="-1">אצליח לבנות מה שאני רוצה?</button><button type="button" class="tm-chip" role="tab" id="tm-tab-tried" aria-controls="tm-panel-tried" aria-selected="false" tabindex="-1">מה שונה כאן מקורסים אחרים?</button><button type="button" class="tm-chip" role="tab" id="tm-tab-change" aria-controls="tm-panel-change" aria-selected="false" tabindex="-1">ומה אם ה-AI ישתנה?</button><button type="button" class="tm-chip" role="tab" id="tm-tab-support" aria-controls="tm-panel-support" aria-selected="false" tabindex="-1">יהיה לי ליווי?</button></div>
-    <div class="tm-panel is-on" role="tabpanel" id="tm-panel-price" aria-labelledby="tm-tab-price"><p class="tm-panel__title">המחיר מרגיש גבוה. איך אדע שזה מחזיר את עצמו?</p><div class="tm-answer"><p class="tm-answer__lead">שאלה הוגנת. אז במקום לשכנע אתכם, הנה מה שקרה לתלמידים שלי. וכל מה שתקראו כאן - נבנה תוך כדי הקורס, כבר בשבועות הראשונים.</p><ul class="tm-results"><li><b>בת חן</b> בנתה בטירונות סוכן שחוסך לארגון שלה <strong>200 אלף ₪ בחודש</strong>. ומאז? עוד צוות סוכנים שמגיעים יחד לחיסכון של <strong>מיליונים</strong>.</li><li><b>אילנה</b> הייתה מוציאה <strong>100 אלף ₪ בחודש</strong> על משכורות. היום את העבודה הזאת עושים הסוכנים שהיא בנתה.</li><li><b>ירדן</b> בנתה <strong>6 מחלקות של סוכנים</strong> שמריצים לה חנות אינטרנטית בצורה אוטומטית, מקצה לקצה.</li><li><b>דולב</b> בנה <strong>56 סוכנים</strong> בפחות משלושה חודשים. הם חוסכים לו <strong>35-40 אלף ₪ בחודש</strong>.</li><li><b>ענת</b> בנתה סוכן שמנתח ומסכם מכרזים <strong>תוך דקות</strong>. זו העבודה שעשתה אצלה מזכירה שהוכשרה במיוחד בשביל זה.</li><li><b>ספיר</b> בנתה צוות סוכנים שעושים לה עבודה של <strong>33 שעות ב-7 שעות</strong>. הם מתרגמים ומכתבים סרטונים של לקוח מחו"ל, מכינים לה את תוכנית השיווק של כל החודש, ומייצרים פרומואים לטלוויזיה שעלו עד היום <strong>10,000 ₪</strong> כל אחד.</li><li><b>משה?</b> הפסיק לשלם לסוכנות דיגיטל <strong>1,500 יורו בחודש</strong>. הסוכן שהוא בנה עושה את זה יותר טוב.</li></ul><p>עכשיו תגידו לי שזה לא שווה את המחיר.</p><p class="tm-answer__close">אם יש דבר אחד השנה שבאמת שווה להוציא עליו כסף, זה טירונות סוכנים.</p></div><p class="tm-said">ומה אומרים מי שכבר עשו את זה</p><div class="tm-slot" data-slot="doubt-price" data-items='[{"t": "v", "id": "1223170597", "h": "4116d42c2d", "poster": "faq/images/cf-1223170597.jpg", "cap": "שקלתי והחלטתי - שווה 200% - עדויות מרוכבות", "who": "ירדן מנשרי סיני, מורן טאובר, ליטל יעקובוביץ דראי, דולב דרי, רון אלון, ועוד", "quote": "שווה את הכסף לא ב-100 אחוז, ב-200 אחוז. זה חיסכון מטורף בזמן, בכסף ובמלא דברים אחרים", "mark": "חיסכון מטורף בזמן, בכסף"}, {"t": "v", "id": "1223170818", "h": "1ceee5b64e", "poster": "faq/images/cf-1223170818.jpg", "cap": "יקר-שווה - חסכתי שנה שלמה", "who": "ירדן מנשרי סיני, מורן טאובר, ליטל יעקובוביץ דראי, ועוד", "quote": "איך לא היה לי את הקורס הזה לפני שנה? הייתי חוסכת לעצמי שנה שלמה.", "mark": "שנה שלמה"}, {"t": "v", "id": "1223170645", "h": "381f27ebdc", "poster": "faq/images/cf-1223170645.jpg", "cap": "חד משמעית שווה - עדויות מרוכבות", "who": "מעורבב - כמה דוברים, לא רלוונטי מי", "quote": "התלבטתי אם שווה לי להשקיע את כל הזמן והכסף. האם זה באמת ייתן לי את הקפיצה שאני צריכה? וכן.", "mark": "וכן"}, {"t": "v", "id": "1234045834", "h": "04735e81b5", "poster": "faq/images/cf-1234045834.jpg", "cap": "ירדן · בניתי את סוכן העל שלי", "who": "ירדן מנשרי סיני", "quote": "היום אני יודעת לבנות סוכנים שבאמת יודעים לקחת פעולה מקצה לקצה ולבצע אותה בשבילי בצורה מושלמת", "mark": "מקצה לקצה"}, {"t": "v", "id": "1202912177", "h": "d2b67196c1", "poster": "faq/images/cf-1202912177.jpg", "cap": "דולב דרי - פייפליין תוכן לכל הרשתות", "quote": "בשיעור השני של הקורס יצרתי את כל התהליך הזה שקורה אוטומטית, לא צריך להתעסק בזה", "mark": "קורה אוטומטית"}, {"t": "w", "code": "TRN-0052", "src": "students/wa/TRN-0052.jpg", "name": "בת חן לוי", "alt": "חוסך לי משרה שלמה של אנליסט בכיר, 30,000+ בחודש"}, {"t": "w", "code": "TRN-0010", "src": "students/wa/TRN-0010.jpg", "name": "אילנה וייס", "alt": "קלוד פשוט עושה את מה ששילמתי למזכירות שלי עשרות אלפי שקלים בחודש"}, {"t": "w", "code": "TRN-0586", "src": "students/wa/TRN-0586.jpg", "name": "משה לוי", "alt": "שילמתי לסוכנות דיגיטל, 1500 יורו בחודש, חתימה לשנה במינימום. \n\nקלוד ב-100€ לחודש מנצח כאן בלי למצמץ. ובונוס - קלוד עושה את זה טוב יותר אחרי שלמד מהדוחות שלהם ובלוחות הזמנים שלי, ובלי להעלב לי. תודה שלהבת."}, {"t": "w", "code": "TRN-0477", "src": "students/wa/TRN-0477.jpg", "name": "רון אלון", "alt": "אני משלם לקלוד מקס 200$ בחודש. בניתי משרד וירטואלי של אחד עשרה סוכני AI. זו ההוצאה הכי משתלמת בעסק שלי"}, {"t": "w", "code": "TRN-0685", "src": "students/wa/TRN-0685.jpg", "name": "Sapphire Ella", "alt": "יש לי לקוח בחו\"ל ששולח לנו כל חודש חבילה של סרטונים קצרים באנגלית, ואנחנו צריכים להוציא מהם פוסטים בעברית לרשת: כתוביות, כותרת, כיתוב לפוסט, תמונת טאמבנייל, ותזמון פרסום.\n\nידנית זה היה לוקח שעות (ואפילו כמה ימים), ורוב הזמן הלך על דברים מכניים: תמלול, תרגום, צריבה, גזירת פריימים, הכנת הפוסט עצמו, למצוא מתי להעלות וכו&#39;.\n\nאז בניתי סוכן שעושה את זה במקום."}, {"t": "w", "code": "TRN-0622", "src": "students/wa/TRN-0622.jpg", "name": "ענת", "alt": "בניתי את רז, סוכן שמנתח ומסכם עבורנו מכרזים בתוך דקות. עבודה שבעבר דרשה שעות של קריאה, ניתוח והכנת סיכומים, ובפועל בוצעה אצלנו על ידי מזכירה שהוכשרה במיוחד לכך. היום הסוכן רז עושה את העבודה וחוסך לנו בפועל כחצי משרה"}, {"t": "w", "code": "TRN-0623", "src": "students/wa/TRN-0623.jpg", "name": "Ron Alon | חוברת המתכונים שלי", "alt": "שילוב של 2 מערכות יחד קודקס וקלוד שעושים עבודה חוסכים לי כסף כל רגע!"}, {"t": "w", "code": "TRN-0128", "src": "students/wa/TRN-0128.jpg", "name": "נחמה לוי", "alt": "אם אני יכולה ללמוד ב 5 שבועות משהו שהייתי צריכה להשקיע בו חמש שנים, שווה לי להשקיע בזה כסף"}, {"t": "q", "qid": "Q-0001", "name": "אלי טל", "role": "מנהל כספים ורואה חשבון", "photo": "bogrim/images/eli.jpg", "text": "חודש אחרי שהתחלתי, התהליכים שבניתי חוסכים לחברה שלי כ-10,000 ₪ בחודש.", "mark": "10,000 ₪ בחודש"}, {"t": "r", "qid": "Q-0010", "name": "Noam Zarzevsky", "when": "אוקטובר 2026", "text": "אחרי לא מעט לבטים, ולמרות העלות ברף העליון, לקח בדיוק שבוע וחצי עד שהתחלתי לראות כמה אני יכול לייצר מזה.", "mark": "שבוע וחצי"}]'><div class="tm-dcf"><div class="coverflow" data-active="0" data-videos="[{&quot;id&quot;: &quot;1223170597&quot;, &quot;h&quot;: &quot;4116d42c2d&quot;, &quot;poster&quot;: &quot;faq/images/cf-1223170597.jpg&quot;, &quot;cap&quot;: &quot;&quot;}, {&quot;id&quot;: &quot;1223170818&quot;, &quot;h&quot;: &quot;1ceee5b64e&quot;, &quot;poster&quot;: &quot;faq/images/cf-1223170818.jpg&quot;, &quot;cap&quot;: &quot;&quot;}, {&quot;id&quot;: &quot;1223170645&quot;, &quot;h&quot;: &quot;381f27ebdc&quot;, &quot;poster&quot;: &quot;faq/images/cf-1223170645.jpg&quot;, &quot;cap&quot;: &quot;&quot;}, {&quot;id&quot;: &quot;1234045834&quot;, &quot;h&quot;: &quot;04735e81b5&quot;, &quot;poster&quot;: &quot;faq/images/cf-1234045834.jpg&quot;, &quot;cap&quot;: &quot;&quot;}, {&quot;id&quot;: &quot;1202912177&quot;, &quot;h&quot;: &quot;d2b67196c1&quot;, &quot;poster&quot;: &quot;faq/images/cf-1202912177.jpg&quot;, &quot;cap&quot;: &quot;&quot;}]"><div class="cf-stage"></div></div><div class="cf-nav"><div class="cf-dots"></div></div><div class="tm-cfqs"><div class="tm-cfq is-on" data-i="0"><p class="tm-vquote">"שווה את הכסף לא ב-100 אחוז, ב-200 אחוז. זה <span class="tm-hl">חיסכון מטורף בזמן, בכסף</span> ובמלא דברים אחרים"</p></div><div class="tm-cfq" data-i="1"><p class="tm-vquote">"איך לא היה לי את הקורס הזה לפני שנה? הייתי חוסכת לעצמי <span class="tm-hl">שנה שלמה</span>."</p></div><div class="tm-cfq" data-i="2"><p class="tm-vquote">"התלבטתי אם שווה לי להשקיע את כל הזמן והכסף. האם זה באמת ייתן לי את הקפיצה שאני צריכה? <span class="tm-hl">וכן</span>."</p></div><div class="tm-cfq" data-i="3"><p class="tm-vquote">"היום אני יודעת לבנות סוכנים שבאמת יודעים לקחת פעולה <span class="tm-hl">מקצה לקצה</span> ולבצע אותה בשבילי בצורה מושלמת"</p></div><div class="tm-cfq" data-i="4"><p class="tm-vquote">"בשיעור השני של הקורס יצרתי את כל התהליך הזה ש<span class="tm-hl">קורה אוטומטית</span>, לא צריך להתעסק בזה"</p></div></div></div><div class="tm-shots tm-dshots" data-strip="1"><figure class="tm-shot"><button type="button" aria-label="הגדלת ההודעה של בת חן לוי"><img src="students/wa/TRN-0052.jpg" alt="בת חן לוי: חוסך לי משרה שלמה של אנליסט בכיר, 30,000+ בחודש" loading="lazy"></button></figure><figure class="tm-shot"><button type="button" aria-label="הגדלת ההודעה של אילנה וייס"><img src="students/wa/TRN-0010.jpg" alt="אילנה וייס: קלוד פשוט עושה את מה ששילמתי למזכירות שלי עשרות אלפי שקלים בחודש" loading="lazy"></button></figure><figure class="tm-shot"><button type="button" aria-label="הגדלת ההודעה של משה לוי"><img src="students/wa/TRN-0586.jpg" alt="משה לוי: שילמתי לסוכנות דיגיטל, 1500 יורו בחודש, חתימה לשנה במינימום. 
+    <div class="tm-panel is-on" role="tabpanel" id="tm-panel-price" aria-labelledby="tm-tab-price"><p class="tm-panel__title">המחיר מרגיש גבוה. איך אדע שזה מחזיר את עצמו?</p><div class="tm-answer"><p class="tm-answer__lead">שאלה הוגנת. אז במקום לשכנע אתכם, הנה מה שקרה לתלמידים שלי. וכל מה שתקראו כאן - נבנה תוך כדי הטירונות, כבר בשבועות הראשונים.</p><ul class="tm-results"><li><b>בת חן</b> בנתה בטירונות סוכן שחוסך לארגון שלה <strong>200 אלף ₪ בחודש</strong>. ומאז? עוד צוות סוכנים שמגיעים יחד לחיסכון של <strong>מיליונים</strong>.</li><li><b>אילנה</b> הייתה מוציאה <strong>100 אלף ₪ בחודש</strong> על משכורות. היום את העבודה הזאת עושים הסוכנים שהיא בנתה.</li><li><b>ירדן</b> בנתה <strong>6 מחלקות של סוכנים</strong> שמריצים לה חנות אינטרנטית בצורה אוטומטית, מקצה לקצה.</li><li><b>דולב</b> בנה <strong>56 סוכנים</strong> בפחות משלושה חודשים. הם חוסכים לו <strong>35-40 אלף ₪ בחודש</strong>.</li><li><b>ענת</b> בנתה סוכן שמנתח ומסכם מכרזים <strong>תוך דקות</strong>. זו העבודה שעשתה אצלה מזכירה שהוכשרה במיוחד בשביל זה.</li><li><b>ספיר</b> בנתה צוות סוכנים שעושים לה עבודה של <strong>33 שעות ב-7 שעות</strong>. הם מתרגמים ומכתבים סרטונים של לקוח מחו"ל, מכינים לה את תוכנית השיווק של כל החודש, ומייצרים פרומואים לטלוויזיה שעלו עד היום <strong>10,000 ₪</strong> כל אחד.</li><li><b>משה?</b> הפסיק לשלם לסוכנות דיגיטל <strong>1,500 יורו בחודש</strong>. הסוכן שהוא בנה עושה את זה יותר טוב.</li></ul><p>עכשיו תגידו לי שזה לא שווה את המחיר.</p><p class="tm-answer__close">אם יש דבר אחד השנה שבאמת שווה להוציא עליו כסף, זה טירונות סוכנים.</p></div><p class="tm-said">ומה אומרים מי שכבר עשו את זה</p><div class="tm-slot" data-slot="doubt-price" data-items='[{"t": "v", "id": "1223170597", "h": "4116d42c2d", "poster": "faq/images/cf-1223170597.jpg", "cap": "שקלתי והחלטתי - שווה 200% - עדויות מרוכבות", "who": "ירדן מנשרי סיני, מורן טאובר, ליטל יעקובוביץ דראי, דולב דרי, רון אלון, ועוד", "quote": "שווה את הכסף לא ב-100 אחוז, ב-200 אחוז. זה חיסכון מטורף בזמן, בכסף ובמלא דברים אחרים", "mark": "חיסכון מטורף בזמן, בכסף"}, {"t": "v", "id": "1223170818", "h": "1ceee5b64e", "poster": "faq/images/cf-1223170818.jpg", "cap": "יקר-שווה - חסכתי שנה שלמה", "who": "ירדן מנשרי סיני, מורן טאובר, ליטל יעקובוביץ דראי, ועוד", "quote": "איך לא היה לי את הקורס הזה לפני שנה? הייתי חוסכת לעצמי שנה שלמה.", "mark": "שנה שלמה"}, {"t": "v", "id": "1223170645", "h": "381f27ebdc", "poster": "faq/images/cf-1223170645.jpg", "cap": "חד משמעית שווה - עדויות מרוכבות", "who": "מעורבב - כמה דוברים, לא רלוונטי מי", "quote": "התלבטתי אם שווה לי להשקיע את כל הזמן והכסף. האם זה באמת ייתן לי את הקפיצה שאני צריכה? וכן.", "mark": "וכן"}, {"t": "v", "id": "1234045834", "h": "04735e81b5", "poster": "faq/images/cf-1234045834.jpg", "cap": "ירדן · בניתי את סוכן העל שלי", "who": "ירדן מנשרי סיני", "quote": "היום אני יודעת לבנות סוכנים שבאמת יודעים לקחת פעולה מקצה לקצה ולבצע אותה בשבילי בצורה מושלמת", "mark": "מקצה לקצה"}, {"t": "v", "id": "1202912177", "h": "d2b67196c1", "poster": "faq/images/cf-1202912177.jpg", "cap": "דולב דרי - פייפליין תוכן לכל הרשתות", "quote": "בשיעור השני של הקורס יצרתי את כל התהליך הזה שקורה אוטומטית, לא צריך להתעסק בזה", "mark": "קורה אוטומטית"}, {"t": "w", "code": "TRN-0052", "src": "students/wa/TRN-0052.jpg", "name": "בת חן לוי", "alt": "חוסך לי משרה שלמה של אנליסט בכיר, 30,000+ בחודש"}, {"t": "w", "code": "TRN-0010", "src": "students/wa/TRN-0010.jpg", "name": "אילנה וייס", "alt": "קלוד פשוט עושה את מה ששילמתי למזכירות שלי עשרות אלפי שקלים בחודש"}, {"t": "w", "code": "TRN-0586", "src": "students/wa/TRN-0586.jpg", "name": "משה לוי", "alt": "שילמתי לסוכנות דיגיטל, 1500 יורו בחודש, חתימה לשנה במינימום. \n\nקלוד ב-100€ לחודש מנצח כאן בלי למצמץ. ובונוס - קלוד עושה את זה טוב יותר אחרי שלמד מהדוחות שלהם ובלוחות הזמנים שלי, ובלי להעלב לי. תודה שלהבת."}, {"t": "w", "code": "TRN-0477", "src": "students/wa/TRN-0477.jpg", "name": "רון אלון", "alt": "אני משלם לקלוד מקס 200$ בחודש. בניתי משרד וירטואלי של אחד עשרה סוכני AI. זו ההוצאה הכי משתלמת בעסק שלי"}, {"t": "w", "code": "TRN-0685", "src": "students/wa/TRN-0685.jpg", "name": "Sapphire Ella", "alt": "יש לי לקוח בחו\"ל ששולח לנו כל חודש חבילה של סרטונים קצרים באנגלית, ואנחנו צריכים להוציא מהם פוסטים בעברית לרשת: כתוביות, כותרת, כיתוב לפוסט, תמונת טאמבנייל, ותזמון פרסום.\n\nידנית זה היה לוקח שעות (ואפילו כמה ימים), ורוב הזמן הלך על דברים מכניים: תמלול, תרגום, צריבה, גזירת פריימים, הכנת הפוסט עצמו, למצוא מתי להעלות וכו&#39;.\n\nאז בניתי סוכן שעושה את זה במקום."}, {"t": "w", "code": "TRN-0622", "src": "students/wa/TRN-0622.jpg", "name": "ענת", "alt": "בניתי את רז, סוכן שמנתח ומסכם עבורנו מכרזים בתוך דקות. עבודה שבעבר דרשה שעות של קריאה, ניתוח והכנת סיכומים, ובפועל בוצעה אצלנו על ידי מזכירה שהוכשרה במיוחד לכך. היום הסוכן רז עושה את העבודה וחוסך לנו בפועל כחצי משרה"}, {"t": "w", "code": "TRN-0623", "src": "students/wa/TRN-0623.jpg", "name": "Ron Alon | חוברת המתכונים שלי", "alt": "שילוב של 2 מערכות יחד קודקס וקלוד שעושים עבודה חוסכים לי כסף כל רגע!"}, {"t": "w", "code": "TRN-0128", "src": "students/wa/TRN-0128.jpg", "name": "נחמה לוי", "alt": "אם אני יכולה ללמוד ב 5 שבועות משהו שהייתי צריכה להשקיע בו חמש שנים, שווה לי להשקיע בזה כסף"}, {"t": "q", "qid": "Q-0001", "name": "אלי טל", "role": "מנהל כספים ורואה חשבון", "photo": "bogrim/images/eli.jpg", "text": "חודש אחרי שהתחלתי, התהליכים שבניתי חוסכים לחברה שלי כ-10,000 ₪ בחודש.", "mark": "10,000 ₪ בחודש"}, {"t": "r", "qid": "Q-0010", "name": "Noam Zarzevsky", "when": "אוקטובר 2026", "text": "אחרי לא מעט לבטים, ולמרות העלות ברף העליון, לקח בדיוק שבוע וחצי עד שהתחלתי לראות כמה אני יכול לייצר מזה.", "mark": "שבוע וחצי"}]'><div class="tm-dcf"><div class="coverflow" data-active="0" data-videos="[{&quot;id&quot;: &quot;1223170597&quot;, &quot;h&quot;: &quot;4116d42c2d&quot;, &quot;poster&quot;: &quot;faq/images/cf-1223170597.jpg&quot;, &quot;cap&quot;: &quot;&quot;}, {&quot;id&quot;: &quot;1223170818&quot;, &quot;h&quot;: &quot;1ceee5b64e&quot;, &quot;poster&quot;: &quot;faq/images/cf-1223170818.jpg&quot;, &quot;cap&quot;: &quot;&quot;}, {&quot;id&quot;: &quot;1223170645&quot;, &quot;h&quot;: &quot;381f27ebdc&quot;, &quot;poster&quot;: &quot;faq/images/cf-1223170645.jpg&quot;, &quot;cap&quot;: &quot;&quot;}, {&quot;id&quot;: &quot;1234045834&quot;, &quot;h&quot;: &quot;04735e81b5&quot;, &quot;poster&quot;: &quot;faq/images/cf-1234045834.jpg&quot;, &quot;cap&quot;: &quot;&quot;}, {&quot;id&quot;: &quot;1202912177&quot;, &quot;h&quot;: &quot;d2b67196c1&quot;, &quot;poster&quot;: &quot;faq/images/cf-1202912177.jpg&quot;, &quot;cap&quot;: &quot;&quot;}]"><div class="cf-stage"></div></div><div class="cf-nav"><div class="cf-dots"></div></div><div class="tm-cfqs"><div class="tm-cfq is-on" data-i="0"><p class="tm-vquote">"שווה את הכסף לא ב-100 אחוז, ב-200 אחוז. זה <span class="tm-hl">חיסכון מטורף בזמן, בכסף</span> ובמלא דברים אחרים"</p></div><div class="tm-cfq" data-i="1"><p class="tm-vquote">"איך לא היה לי את הקורס הזה לפני שנה? הייתי חוסכת לעצמי <span class="tm-hl">שנה שלמה</span>."</p></div><div class="tm-cfq" data-i="2"><p class="tm-vquote">"התלבטתי אם שווה לי להשקיע את כל הזמן והכסף. האם זה באמת ייתן לי את הקפיצה שאני צריכה? <span class="tm-hl">וכן</span>."</p></div><div class="tm-cfq" data-i="3"><p class="tm-vquote">"היום אני יודעת לבנות סוכנים שבאמת יודעים לקחת פעולה <span class="tm-hl">מקצה לקצה</span> ולבצע אותה בשבילי בצורה מושלמת"</p></div><div class="tm-cfq" data-i="4"><p class="tm-vquote">"בשיעור השני של הקורס יצרתי את כל התהליך הזה ש<span class="tm-hl">קורה אוטומטית</span>, לא צריך להתעסק בזה"</p></div></div></div><div class="tm-shots tm-dshots" data-strip="1"><figure class="tm-shot"><button type="button" aria-label="הגדלת ההודעה של בת חן לוי"><img src="students/wa/TRN-0052.jpg" alt="בת חן לוי: חוסך לי משרה שלמה של אנליסט בכיר, 30,000+ בחודש" loading="lazy"></button></figure><figure class="tm-shot"><button type="button" aria-label="הגדלת ההודעה של אילנה וייס"><img src="students/wa/TRN-0010.jpg" alt="אילנה וייס: קלוד פשוט עושה את מה ששילמתי למזכירות שלי עשרות אלפי שקלים בחודש" loading="lazy"></button></figure><figure class="tm-shot"><button type="button" aria-label="הגדלת ההודעה של משה לוי"><img src="students/wa/TRN-0586.jpg" alt="משה לוי: שילמתי לסוכנות דיגיטל, 1500 יורו בחודש, חתימה לשנה במינימום. 
 
 קלוד ב-100€ לחודש מנצח כאן בלי למצמץ. ובונוס - קלוד עושה את זה טוב יותר אחרי שלמד מהדוחות שלהם ובלוחות הזמנים שלי, ובלי להעלב לי. תודה שלהבת." loading="lazy"></button></figure><figure class="tm-shot"><button type="button" aria-label="הגדלת ההודעה של רון אלון"><img src="students/wa/TRN-0477.jpg" alt="רון אלון: אני משלם לקלוד מקס 200$ בחודש. בניתי משרד וירטואלי של אחד עשרה סוכני AI. זו ההוצאה הכי משתלמת בעסק שלי" loading="lazy"></button></figure><figure class="tm-shot"><button type="button" aria-label="הגדלת ההודעה של Sapphire Ella"><img src="students/wa/TRN-0685.jpg" alt="Sapphire Ella: יש לי לקוח בחו&quot;ל ששולח לנו כל חודש חבילה של סרטונים קצרים באנגלית, ואנחנו צריכים להוציא מהם פוסטים בעברית לרשת: כתוביות, כותרת, כיתוב לפוסט, תמונת טאמבנייל, ותזמון פרסום.
 
@@ -1518,6 +1522,31 @@
       }
       return vimeoApiPromise;
     }
+    /* חימום (15-10-2026, "שהסרטון ייטען מהר"): כשכפתור סרטון מתקרב למסך, או ברגע הנגיעה בו, פותחים מראש את
+       החיבורים לשרתי Vimeo וטוענים את player.js - כך הלחיצה לא מחכה להם. פעם אחת לכל הדף */
+    var vimeoWarm = false;
+    function warmVimeo() {
+      if (vimeoWarm) return;
+      vimeoWarm = true;
+      ['https://player.vimeo.com', 'https://f.vimeocdn.com', 'https://i.vimeocdn.com', 'https://vod-adaptive-ak.vimeocdn.com']
+        .forEach(function (o) {
+          var l = document.createElement('link'); l.rel = 'preconnect'; l.href = o;
+          if (o.indexOf('vod-') !== -1) l.crossOrigin = 'anonymous';
+          document.head.appendChild(l);
+        });
+      loadVimeoApi().catch(function () {});
+    }
+    (function () {
+      var SEL = '.proof__more[data-v], .tm-video, .coverflow, .cf-item';
+      document.addEventListener('pointerdown', function (e) {
+        if (e.target.closest && e.target.closest(SEL)) warmVimeo();
+      }, true);
+      if (!('IntersectionObserver' in window)) return;
+      var io = new IntersectionObserver(function (es) {
+        if (es.some(function (en) { return en.isIntersecting; })) { warmVimeo(); io.disconnect(); }
+      }, { rootMargin: '700px 0px' });
+      document.querySelectorAll(SEL).forEach(function (n) { io.observe(n); });
+    })();
     /* refs = {holder, tap, icon, sound} - ארבעתם כבר ב-DOM (מודל או אריח).
        onReady (אופציונלי) נקרא עם הנגן מיד אחרי ready(). onFirstPlay
        (אופציונלי) נקרא ברגע שהניגון בפועל מתחיל - נמדד בדף החי: כ-2
@@ -1715,6 +1744,27 @@
        פותח את זה. (שונה מגרסה קודמת שקפצה למסך מלא בכל לחיצה - שלהבת
        15-08-2026: "אני לא רוצה שהוא יגדל... אם אני רוצה, אני אוכל
        ללחוץ ולהגדיל אותו".) */
+    /* כפתור "חזרה" של הטלפון סוגר סרטון או הודעה שנפתחו, ומשאיר בדף במקום לצאת ממנו (שלהבת, 15-10-2026).
+       פתיחה מוסיפה רשומה להיסטוריה; סגירה ב-X מורידה אותה, כך שאחרי הסגירה "חזרה" עובד כרגיל */
+    var overlayBack = (function () {
+      var active = null;
+      window.addEventListener('popstate', function () {
+        if (!active) return;
+        var a = active; active = null; a(true);
+      });
+      return {
+        opened: function (close) {
+          if (active) return;
+          try { history.pushState({ tmOverlay: 1 }, ''); active = close; } catch (e) {}
+        },
+        closed: function (fromBack) {
+          if (!active) return;
+          active = null;
+          if (!fromBack) history.back();
+        }
+      };
+    })();
+
     var LB = (function () {
       var el, frameEl, holder, iconEl, soundBtn, capEl, tapBtn, loadingEl, loadingImg;
       var opener = null, current = null;
@@ -1765,6 +1815,7 @@
         el.hidden = false;
         document.body.style.overflow = 'hidden';
         requestAnimationFrame(function () { el.classList.add('is-open'); });
+        overlayBack.opened(close);
 
         current = mountVimeoPlayer(
           { holder: holder, tap: tapBtn, icon: iconEl, sound: soundBtn },
@@ -1778,12 +1829,13 @@
         );
       }
 
-      function close() {
+      function close(fromBack) {
         if (!el || el.hidden) return;
         el.classList.remove('is-open');
         if (current) { current.stop(); current = null; }
         el.hidden = true;
         document.body.style.overflow = '';
+        overlayBack.closed(fromBack === true);
         if (opener && opener.focus) opener.focus();
         opener = null;
       }
@@ -1928,12 +1980,14 @@
         img.src = src; img.alt = alt || '';
         el.hidden = false;
         document.body.style.overflow = 'hidden';
+        overlayBack.opened(close);
         el.querySelector('button').focus();
       }
-      function close() {
+      function close(fromBack) {
         if (!el || el.hidden) return;
         el.hidden = true;
         document.body.style.overflow = '';
+        overlayBack.closed(fromBack === true);
         if (opener && opener.focus) opener.focus();
         opener = null;
       }
@@ -1986,77 +2040,14 @@
     });
 
     /* רצועות הודעות: אזור `.tm-shots[data-strip]` עם 3 הודעות ומעלה ← שתי רצועות זו מעל זו.
-       התנועה בגלילה (scrollLeft) ולא ב-transform, כדי שאותה רצועה גם תגלול ביד.
-       הרצועה בנויה מקבוצה שחוזרת על עצמה פעמיים וקופצת חצי אחורה ברגע שעברה חצי, והעין לא רואה קפיצה.
+       התנועה, ההחלקה ביד והעצירה ב-window.tmMarquee - המנוע המשותף לכל הרצועות, שנוצר יחד עם רצועות הציטוטים
+       ב-scripts/build_faq_quotes.py (הבלוק tm-qm-js בתחתית הדף). הוא נטען אחרי הקוד הזה, ולכן הבנייה הראשונה
+       רצה ב-DOMContentLoaded (למטה).
+       הרצועה בנויה מקבוצה שחוזרת על עצמה, וקופצת עותק אחד אחורה ברגע שעברה אותו, והעין לא רואה קפיצה.
        window.tmStrips() בונה מחדש מההודעות שבאזור עכשיו, ולכן בטוח להריץ שוב אחרי שהעורך החליף את תוכן ה-slot. */
-    var STRIP_SPEED = 22, STRIP_RESUME = 1600;
-    var stripRows = [], stripLast = 0, stripRaf = 0, stripWidth = window.innerWidth, stripIO = null;
-    var reduceMotion = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
-    var mouseDrag = null;
+    var STRIP_SPEED = 45;   /* פיקסלים בשנייה. היה 22, ושלהבת: "נגלל נורא לאט" (15-10-2026) */
+    var stripRows = [], stripWidth = window.innerWidth;
 
-    function stripWrap(r) {
-      if (r.half < 10) return;
-      if (r.pos >= r.half) r.pos -= r.half; else if (r.pos <= 0) r.pos += r.half;
-    }
-    function stripMeasure(r) {
-      var a = r.first, b = r.second;
-      var old = r.half;
-      r.half = (a && b && b.offsetParent) ? b.offsetLeft - a.offsetLeft : 0;
-      if (r.half < 10) return;
-      if (!r.pos) r.pos = r.dir > 0 ? 1 : r.half * 0.6;
-      else if (old >= 10 && Math.abs(old - r.half) > 1) r.pos = r.pos * r.half / old;
-      r.el.scrollLeft = r.pos; r.set = r.el.scrollLeft;
-    }
-    function stripGrab(r) { r.hold = true; }
-    function stripFree(r) { r.hold = false; r.resumeAt = performance.now() + STRIP_RESUME; }
-    function stripRow(el, dir, first, second) {
-      var r = { el: el, dir: dir, pos: 0, half: 0, hold: false, resumeAt: 0, set: -1, vis: true, first: first, second: second };
-      el.addEventListener('pointerdown', function (e) {
-        stripGrab(r);
-        if (e.pointerType === 'mouse' && e.button === 0) mouseDrag = { r: r, x: e.clientX, left: el.scrollLeft };
-      });
-      el.addEventListener('touchstart', function () { stripGrab(r); }, { passive: true });
-      el.addEventListener('pointerup', function () { stripFree(r); });
-      el.addEventListener('pointercancel', function () { stripFree(r); });
-      el.addEventListener('touchend', function () { stripFree(r); });
-      el.addEventListener('mouseenter', function () { stripGrab(r); });
-      el.addEventListener('mouseleave', function () { stripFree(r); });
-      el.addEventListener('wheel', function () { r.resumeAt = performance.now() + STRIP_RESUME; }, { passive: true });
-      el.addEventListener('scroll', function () {
-        if (Math.abs(el.scrollLeft - r.set) <= 1) return;
-        /* גלילה ביד: ממשיכים מהמקום שבו היא עצרה, לא חוזרים למקום הקודם */
-        r.pos = el.scrollLeft; r.resumeAt = performance.now() + STRIP_RESUME;
-        var before = r.pos; stripWrap(r);
-        if (r.pos !== before) el.scrollLeft = r.pos;
-        r.set = el.scrollLeft;
-      }, { passive: true });
-      if (stripIO) stripIO.observe(el);
-      el._stripRow = r;
-      return r;
-    }
-    document.addEventListener('pointermove', function (e) {
-      if (!mouseDrag) return;
-      var dx = e.clientX - mouseDrag.x;
-      if (Math.abs(dx) > 3) mouseDrag.r.el.scrollLeft = mouseDrag.left - dx;
-    });
-    ['pointerup', 'pointercancel'].forEach(function (t) {
-      document.addEventListener(t, function () { mouseDrag = null; });
-    });
-    if ('IntersectionObserver' in window) {
-      stripIO = new IntersectionObserver(function (entries) {
-        entries.forEach(function (en) { if (en.target._stripRow) en.target._stripRow.vis = en.isIntersecting; });
-      });
-    }
-    function stripTick(now) {
-      var dt = Math.min(64, now - stripLast) / 1000; stripLast = now;
-      var paused = document.hidden || document.body.style.overflow === 'hidden';
-      if (!reduceMotion && !paused) stripRows.forEach(function (r) {
-        if (r.hold || now < r.resumeAt || r.half < 10 || !r.vis || !r.el.isConnected) return;
-        r.pos += r.dir * STRIP_SPEED * dt; stripWrap(r);
-        r.el.scrollLeft = r.pos; r.set = r.el.scrollLeft;
-      });
-      stripRaf = requestAnimationFrame(stripTick);
-    }
     function stripClone(f) {
       var c = f.cloneNode(true);
       c.setAttribute('data-clone', '1'); c.setAttribute('aria-hidden', 'true');
@@ -2082,11 +2073,48 @@
     function stripRefit() {
       stripFitAll();
       markAll();
-      stripRows.forEach(stripMeasure);
+      stripRows.forEach(function (r) { r.remeasure(); });
     }
     function stripOnLoad() {
       if (stripFitTimer) return;
       stripFitTimer = setTimeout(function () { stripFitTimer = 0; stripRefit(); }, 0);
+    }
+    /* עותקי לולאה: k עותקים נוספים מעבר ל-k הראשונים, והלולאה היא המרחק מהכרטיס הראשון לעותק שלו בסיבוב ה-k */
+    function stripLoop(band, track, list, k, dir, speed) {
+      var firstCard = list[0], secondCard = null;
+      for (var rep = 1; rep < 2 * k; rep++) {
+        list.forEach(function (f, j) {
+          var c = stripClone(f);
+          if (rep === k && j === 0) secondCard = c;
+          track.appendChild(c);
+        });
+      }
+      return window.tmMarquee(band, track, { dir: dir, speed: speed, measure: function () {
+        return (secondCard && secondCard.offsetParent) ? secondCard.offsetLeft - firstCard.offsetLeft : 0;
+      } });
+    }
+    /* "מה כתבו עלינו בגוגל" (15-10-2026): רצועה אחת של ביקורות במקום רשימה אחת מתחת לשנייה, שהייתה ארוכה מדי.
+       `.tm-reviews[data-strip]` עם 2 ביקורות ומעלה. אותו מנגנון כמו רצועות ההודעות */
+    var REVIEW_SPEED = 42;
+    function reviewStripBuild(box) {
+      var host = box.querySelector('.tm-slot') || box;
+      var old = box.querySelector('.tm-strip');
+      var cards = [].slice.call(box.querySelectorAll('.tm-review')).filter(function (f) { return !f.hasAttribute('data-clone'); });
+      if (old) old.remove();
+      if (cards.length < 2) {
+        box.classList.remove('is-strip');
+        if (old) cards.forEach(function (f) { host.appendChild(f); });
+        return;
+      }
+      box.classList.add('is-strip');
+      var strip = document.createElement('div'), band = document.createElement('div'), track = document.createElement('div');
+      strip.className = 'tm-strip'; band.className = 'tm-band'; track.className = 'tm-track';
+      band.appendChild(track); strip.appendChild(band); host.appendChild(strip);
+      cards.forEach(function (f) { track.appendChild(f); });
+      var gap = parseFloat(getComputedStyle(track).columnGap) || 14;
+      var set = cards.reduce(function (n, f) { return n + f.offsetWidth + gap; }, 0) || 1;
+      var k = Math.max(1, Math.ceil(((box.clientWidth + 48) || window.innerWidth) / set));
+      stripRows.push(stripLoop(band, track, cards, k, 1, REVIEW_SPEED));
     }
     function stripBuild(box) {
       var host = box.querySelector('.tm-slot') || box;
@@ -2124,17 +2152,7 @@
         /* מחצית הלולאה חייבת לכסות את הרצועה גם אם כל הכרטיסים יתכווצו לרוחב המינימום */
         var per = (dims.min + gap) * list.length;
         var k = Math.max(1, Math.ceil((bandW + dims.max + gap) / per));
-        var firstCard = list[0], secondCard = null;
-        for (var rep = 0; rep < 2 * k; rep++) {
-          list.forEach(function (f, j) {
-            if (rep === 0) return;
-            var c = stripClone(f);
-            if (rep === k && j === 0) secondCard = c;
-            track.appendChild(c);
-          });
-        }
-        var r = stripRow(band, ri % 2 ? -1 : 1, firstCard, secondCard);
-        stripRows.push(r);
+        stripRows.push(stripLoop(band, track, list, k, ri % 2 ? -1 : 1, STRIP_SPEED));
       });
       strip.querySelectorAll('img').forEach(function (im) {
         im.loading = 'eager';
@@ -2144,24 +2162,23 @@
     }
     function tmStrips() {
       if (window.tmCoverflows) window.tmCoverflows();
-      stripRows = stripRows.filter(function (r) { return r.el.isConnected; });
-      document.querySelectorAll('.tm-shots[data-strip]').forEach(function (box) {
-        stripRows = stripRows.filter(function (r) { return !box.contains(r.el); });
-        stripBuild(box);
-      });
+      if (!window.tmMarquee) return;   /* המנוע עוד לא נטען - הבנייה הראשונה ב-DOMContentLoaded */
+      stripRows = stripRows.filter(function (r) { return r.band.isConnected; });
+      document.querySelectorAll('.tm-shots[data-strip]').forEach(stripBuild);
+      document.querySelectorAll('.tm-reviews[data-strip]').forEach(reviewStripBuild);
+      stripRows = stripRows.filter(function (r) { return r.band.isConnected; });
       stripFitAll();
       markAll();
-      stripRows.forEach(stripMeasure);
+      stripRows.forEach(function (r) { r.remeasure(); });
       if (window.tmDoubtTabs) window.tmDoubtTabs();
       if (window.tmQuoteMarquees) window.tmQuoteMarquees();   /* רצועות הציטוטים (scripts/build_faq_quotes.py) */
-      if (!stripRaf) { stripLast = performance.now(); stripRaf = requestAnimationFrame(stripTick); }
     }
     window.tmStrips = tmStrips;
-    document.addEventListener('visibilitychange', function () { stripLast = performance.now(); });
     window.addEventListener('resize', function () {
       if (window.innerWidth !== stripWidth) { stripWidth = window.innerWidth; tmStrips(); }
     });
-    tmStrips();
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', tmStrips);
+    else tmStrips();
     document.querySelectorAll('.proof__more').forEach(function (b) {
       b.addEventListener('click', function () {
         if (b.hasAttribute('data-v')) LB.open(JSON.parse(b.getAttribute('data-v')), b);
@@ -2503,20 +2520,119 @@ window.interdeal = {
 <script src="consent-banner.js"></script>
 
 <script id="tm-qm-js">
+/* tmMarquee (15-10-2026): המנוע של כל הרצועות הנעות - ציטוטים כאן, ובדף המכירה גם רצועות הוואטסאפ והגוגל.
+   window.tmMarquee(band, track, {dir, speed, measure}): band הוא החלון (overflow מוסתר), track זז בתוכו,
+   measure() מחזיר את אורך הלולאה (מרחק בין עותק לעותק). התנועה ב-transform ולא בגלילה: גלילה מעוגלת
+   בטלפון לפיקסל שלם, ובקצב של כמה עשרות פיקסלים בשנייה התנועה קופצת ("רועדת" - שלהבת, 15-10-2026).
+   החלקה לצדדים באצבע או בעכבר מזיזה ביד וממשיכה בתנופה; התנועה חוזרת אחרי RESUME. עכבר מעל הרצועה,
+   מקלדת בתוכה, לשונית מוסתרת או חלון שנפתח (overflow של body) - עוצרים. "פחות תנועה" במכשיר: רק ביד. */
+(function () {
+  if (window.tmMarquee) return;
+  var RESUME = 1800, rows = [], raf = 0, last = 0, io = null;
+  var reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  if ('IntersectionObserver' in window) io = new IntersectionObserver(function (es) {
+    es.forEach(function (e) { if (e.target._tmMq) e.target._tmMq.vis = e.isIntersecting; });
+  });
+  function wrap(r) { if (r.half >= 10) r.pos = ((r.pos % r.half) + r.half) % r.half; }
+  function draw(r) { r.track.style.transform = 'translate3d(' + (-r.pos).toFixed(2) + 'px,0,0)'; }
+  function tick(now) {
+    var dt = Math.min(64, now - last) / 1000; last = now;
+    var stopped = document.hidden || document.body.style.overflow === 'hidden';
+    rows = rows.filter(function (r) { return r.band.isConnected; });
+    rows.forEach(function (r) {
+      if (r.half < 10 || r.drag) return;
+      if (r.vel) {
+        r.pos += r.vel * dt; r.vel *= Math.exp(-4.5 * dt);
+        if (Math.abs(r.vel) < 8) { r.vel = 0; r.resumeAt = now + RESUME; }
+      } else if (!reduce && !stopped && r.vis && !r.hover && !r.focus && now >= r.resumeAt) {
+        r.pos += r.dir * r.speed * dt;
+      } else return;
+      wrap(r); draw(r);
+    });
+    raf = rows.length ? requestAnimationFrame(tick) : 0;
+  }
+  function start() { if (!raf) { last = performance.now(); raf = requestAnimationFrame(tick); } }
+  document.addEventListener('visibilitychange', function () { last = performance.now(); });
+  window.tmMarquee = function (band, track, o) {
+    var r = band._tmMq;
+    if (r) { r.track = track; r.measure = o.measure; r.remeasure(); return r; }
+    r = band._tmMq = { band: band, track: track, dir: o.dir || 1, speed: o.speed || 40, measure: o.measure,
+      pos: 0, half: 0, vel: 0, resumeAt: 0, vis: true, hover: false, focus: false, drag: null, dragged: false };
+    r.remeasure = function () {
+      var old = r.half; r.half = r.measure() || 0;
+      if (old >= 10 && r.half >= 10 && Math.abs(old - r.half) > 1) r.pos = r.pos * r.half / old;
+      wrap(r); draw(r);
+    };
+    band.addEventListener('pointerdown', function (e) {
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      r.vel = 0;
+      r.drag = { id: e.pointerId, x: e.clientX, y: e.clientY, pos: r.pos, on: false, lx: e.clientX, lt: e.timeStamp, v: 0 };
+    });
+    band.addEventListener('pointermove', function (e) {
+      var d = r.drag;
+      if (!d || e.pointerId !== d.id) return;
+      var dx = e.clientX - d.x;
+      if (!d.on) {
+        if (Math.abs(dx) < 6 || Math.abs(dx) < Math.abs(e.clientY - d.y)) return;
+        d.on = true; band.classList.add('is-dragging');
+        try { band.setPointerCapture(e.pointerId); } catch (err) {}
+      }
+      var dt = e.timeStamp - d.lt;
+      if (dt > 0) d.v = 0.7 * d.v + 0.3 * (-(e.clientX - d.lx) / dt * 1000);
+      d.lx = e.clientX; d.lt = e.timeStamp;
+      r.pos = d.pos - dx; wrap(r); draw(r);
+    });
+    function release(e) {
+      var d = r.drag;
+      if (!d || (e && e.pointerId !== d.id)) return;
+      r.drag = null; band.classList.remove('is-dragging');
+      if (!d.on) return;   // הקשה, או גלילה של הדף שהתחילה על הרצועה: ממשיכים לזוז מיד
+      r.dragged = true; setTimeout(function () { r.dragged = false; }, 400);
+      r.vel = (performance.now() - d.lt < 120) ? Math.max(-2500, Math.min(2500, d.v)) : 0;
+      r.resumeAt = performance.now() + RESUME;
+    }
+    band.addEventListener('pointerup', release);
+    band.addEventListener('pointercancel', release);
+    /* הקשה שהייתה בעצם החלקה לא פותחת את הכרטיס */
+    band.addEventListener('click', function (e) {
+      if (r.dragged) { r.dragged = false; e.preventDefault(); e.stopPropagation(); }
+    }, true);
+    band.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') r.hover = true; });
+    band.addEventListener('pointerleave', function (e) {
+      if (e.pointerType === 'mouse') { r.hover = false; r.resumeAt = performance.now() + 300; }
+    });
+    band.addEventListener('focusin', function () { r.focus = true; });
+    band.addEventListener('focusout', function (e) { if (!band.contains(e.relatedTarget)) r.focus = false; });
+    /* מקלדת: הדפדפן גולל את החלון כדי להראות כרטיס שקיבל פוקוס - מעבירים את הגלילה לתוך התנועה */
+    band.addEventListener('scroll', function () {
+      if (!band.scrollLeft) return;
+      r.pos += band.scrollLeft; band.scrollLeft = 0; wrap(r); draw(r);
+    });
+    band.addEventListener('wheel', function (e) {
+      if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
+      e.preventDefault(); r.vel = 0; r.pos += e.deltaX; wrap(r); draw(r);
+      r.resumeAt = performance.now() + RESUME;
+    }, { passive: false });
+    if (io) io.observe(band);
+    rows.push(r); r.remeasure(); start();
+    return r;
+  };
+})();
+
 /* רצועות ציטוטי הבוגרים (12-10-2026). נוצר ב-scripts/build_faq_quotes.py - לערוך שם.
-   כל רצועה (.tm-qm__row) מוכפלת עד שחצי ממנה ממלא את הרוחב, וזזה חצי אחורה בלולאה (CSS), כ-30 פיקסלים בשנייה.
-   הבנייה קורית כשהרצועה נראית (לשונית או תשובה סגורה ברוחב 0), ושוב כשהרוחב משתנה. מעבר עכבר או מקלדת עוצר.
+   כל רצועה (.tm-qm__row) מוכפלת עד שחצי ממנה ממלא את הרוחב, וזזה בלולאה ב-tmMarquee (למעלה), כ-42 פיקסלים בשנייה.
+   הבנייה קורית כשהרצועה נראית (לשונית או תשובה סגורה ברוחב 0), ושוב כשהרוחב משתנה.
    "פחות תנועה" במכשיר: בלי הכפלה ובלי תנועה, והרצועה נגללת ביד. לחיצה על כרטיס פותחת את הציטוט המלא.
    window.tmQuoteMarquees() מאתחל רצועות חדשות (למשל אחרי שהעורך בדשבורד החליף תוכן), ובטוח להריץ שוב. */
 (function () {
-  var SPEED = 30;
+  var SPEED = 42;
   var reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
   var fits = [];
   function setup(row) {
     var track = row.querySelector('.tm-qm__track');
     if (!track) return;
     var orig = [].slice.call(track.children).filter(function (c) { return !c.hasAttribute('data-clone'); });
-    var built = -1;
+    var built = -1, half = 0;
     function fit() {
       var w = row.clientWidth;
       if (!w || !orig.length || Math.abs(w - built) < 2) return;
@@ -2536,8 +2652,10 @@ window.interdeal = {
           track.appendChild(k);
         });
       }
-      row.style.setProperty('--qm-dur', Math.max(20, set * reps / SPEED).toFixed(1) + 's');
+      half = set * reps;
       row.classList.add('is-on');
+      window.tmMarquee(row, track, { dir: row.classList.contains('tm-qm__row--rev') ? -1 : 1, speed: SPEED,
+        measure: function () { return half; } });
     }
     fits.push(fit);
     if ('ResizeObserver' in window) new ResizeObserver(fit).observe(row);

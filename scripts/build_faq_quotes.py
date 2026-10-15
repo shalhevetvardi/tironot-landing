@@ -46,16 +46,10 @@ CSS = r"""
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
   mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
 .tm-qm__row::-webkit-scrollbar { display: none; }
-.tm-qm__row.is-on { overflow: hidden; }
+/* רצועה שזזה (tmMarquee): גלילה אנכית של הדף נשארת לדפדפן, החלקה לצדדים מזיזה את הרצועה */
+.tm-qm__row.is-on { overflow: hidden; touch-action: pan-y; cursor: grab; }
 .tm-qm__track { display: flex; align-items: stretch; width: max-content; padding: 5px 0; }
-.tm-qm__row.is-on .tm-qm__track { animation: tmQmSlide var(--qm-dur, 60s) linear infinite; }
-.tm-qm__row--rev.is-on .tm-qm__track { animation-direction: reverse; }
-.tm-qm__row:hover .tm-qm__track, .tm-qm__row:focus-within .tm-qm__track { animation-play-state: paused; }
-@keyframes tmQmSlide { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-@media (prefers-reduced-motion: reduce) {
-  .tm-qm__row.is-on { overflow-x: auto; }
-  .tm-qm__row.is-on .tm-qm__track { animation: none; }
-}
+.tm-qm__row.is-on .tm-qm__track { will-change: transform; }
 .tm-qm__card { direction: rtl; text-align: right; flex: 0 0 auto; width: 330px; margin: 0 8px; display: flex; flex-direction: column;
   background: #F4F2FB; border: 1px solid #E6E1F5; border-radius: 18px; padding: 20px; font: inherit; color: #14093B;
   line-height: 1.5; cursor: pointer; -webkit-appearance: none; appearance: none; }
@@ -98,20 +92,119 @@ CSS = r"""
 """
 
 JS = r"""
+/* tmMarquee (15-10-2026): המנוע של כל הרצועות הנעות - ציטוטים כאן, ובדף המכירה גם רצועות הוואטסאפ והגוגל.
+   window.tmMarquee(band, track, {dir, speed, measure}): band הוא החלון (overflow מוסתר), track זז בתוכו,
+   measure() מחזיר את אורך הלולאה (מרחק בין עותק לעותק). התנועה ב-transform ולא בגלילה: גלילה מעוגלת
+   בטלפון לפיקסל שלם, ובקצב של כמה עשרות פיקסלים בשנייה התנועה קופצת ("רועדת" - שלהבת, 15-10-2026).
+   החלקה לצדדים באצבע או בעכבר מזיזה ביד וממשיכה בתנופה; התנועה חוזרת אחרי RESUME. עכבר מעל הרצועה,
+   מקלדת בתוכה, לשונית מוסתרת או חלון שנפתח (overflow של body) - עוצרים. "פחות תנועה" במכשיר: רק ביד. */
+(function () {
+  if (window.tmMarquee) return;
+  var RESUME = 1800, rows = [], raf = 0, last = 0, io = null;
+  var reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  if ('IntersectionObserver' in window) io = new IntersectionObserver(function (es) {
+    es.forEach(function (e) { if (e.target._tmMq) e.target._tmMq.vis = e.isIntersecting; });
+  });
+  function wrap(r) { if (r.half >= 10) r.pos = ((r.pos % r.half) + r.half) % r.half; }
+  function draw(r) { r.track.style.transform = 'translate3d(' + (-r.pos).toFixed(2) + 'px,0,0)'; }
+  function tick(now) {
+    var dt = Math.min(64, now - last) / 1000; last = now;
+    var stopped = document.hidden || document.body.style.overflow === 'hidden';
+    rows = rows.filter(function (r) { return r.band.isConnected; });
+    rows.forEach(function (r) {
+      if (r.half < 10 || r.drag) return;
+      if (r.vel) {
+        r.pos += r.vel * dt; r.vel *= Math.exp(-4.5 * dt);
+        if (Math.abs(r.vel) < 8) { r.vel = 0; r.resumeAt = now + RESUME; }
+      } else if (!reduce && !stopped && r.vis && !r.hover && !r.focus && now >= r.resumeAt) {
+        r.pos += r.dir * r.speed * dt;
+      } else return;
+      wrap(r); draw(r);
+    });
+    raf = rows.length ? requestAnimationFrame(tick) : 0;
+  }
+  function start() { if (!raf) { last = performance.now(); raf = requestAnimationFrame(tick); } }
+  document.addEventListener('visibilitychange', function () { last = performance.now(); });
+  window.tmMarquee = function (band, track, o) {
+    var r = band._tmMq;
+    if (r) { r.track = track; r.measure = o.measure; r.remeasure(); return r; }
+    r = band._tmMq = { band: band, track: track, dir: o.dir || 1, speed: o.speed || 40, measure: o.measure,
+      pos: 0, half: 0, vel: 0, resumeAt: 0, vis: true, hover: false, focus: false, drag: null, dragged: false };
+    r.remeasure = function () {
+      var old = r.half; r.half = r.measure() || 0;
+      if (old >= 10 && r.half >= 10 && Math.abs(old - r.half) > 1) r.pos = r.pos * r.half / old;
+      wrap(r); draw(r);
+    };
+    band.addEventListener('pointerdown', function (e) {
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      r.vel = 0;
+      r.drag = { id: e.pointerId, x: e.clientX, y: e.clientY, pos: r.pos, on: false, lx: e.clientX, lt: e.timeStamp, v: 0 };
+    });
+    band.addEventListener('pointermove', function (e) {
+      var d = r.drag;
+      if (!d || e.pointerId !== d.id) return;
+      var dx = e.clientX - d.x;
+      if (!d.on) {
+        if (Math.abs(dx) < 6 || Math.abs(dx) < Math.abs(e.clientY - d.y)) return;
+        d.on = true; band.classList.add('is-dragging');
+        try { band.setPointerCapture(e.pointerId); } catch (err) {}
+      }
+      var dt = e.timeStamp - d.lt;
+      if (dt > 0) d.v = 0.7 * d.v + 0.3 * (-(e.clientX - d.lx) / dt * 1000);
+      d.lx = e.clientX; d.lt = e.timeStamp;
+      r.pos = d.pos - dx; wrap(r); draw(r);
+    });
+    function release(e) {
+      var d = r.drag;
+      if (!d || (e && e.pointerId !== d.id)) return;
+      r.drag = null; band.classList.remove('is-dragging');
+      if (!d.on) return;   // הקשה, או גלילה של הדף שהתחילה על הרצועה: ממשיכים לזוז מיד
+      r.dragged = true; setTimeout(function () { r.dragged = false; }, 400);
+      r.vel = (performance.now() - d.lt < 120) ? Math.max(-2500, Math.min(2500, d.v)) : 0;
+      r.resumeAt = performance.now() + RESUME;
+    }
+    band.addEventListener('pointerup', release);
+    band.addEventListener('pointercancel', release);
+    /* הקשה שהייתה בעצם החלקה לא פותחת את הכרטיס */
+    band.addEventListener('click', function (e) {
+      if (r.dragged) { r.dragged = false; e.preventDefault(); e.stopPropagation(); }
+    }, true);
+    band.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') r.hover = true; });
+    band.addEventListener('pointerleave', function (e) {
+      if (e.pointerType === 'mouse') { r.hover = false; r.resumeAt = performance.now() + 300; }
+    });
+    band.addEventListener('focusin', function () { r.focus = true; });
+    band.addEventListener('focusout', function (e) { if (!band.contains(e.relatedTarget)) r.focus = false; });
+    /* מקלדת: הדפדפן גולל את החלון כדי להראות כרטיס שקיבל פוקוס - מעבירים את הגלילה לתוך התנועה */
+    band.addEventListener('scroll', function () {
+      if (!band.scrollLeft) return;
+      r.pos += band.scrollLeft; band.scrollLeft = 0; wrap(r); draw(r);
+    });
+    band.addEventListener('wheel', function (e) {
+      if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
+      e.preventDefault(); r.vel = 0; r.pos += e.deltaX; wrap(r); draw(r);
+      r.resumeAt = performance.now() + RESUME;
+    }, { passive: false });
+    if (io) io.observe(band);
+    rows.push(r); r.remeasure(); start();
+    return r;
+  };
+})();
+
 /* רצועות ציטוטי הבוגרים (12-10-2026). נוצר ב-scripts/build_faq_quotes.py - לערוך שם.
-   כל רצועה (.tm-qm__row) מוכפלת עד שחצי ממנה ממלא את הרוחב, וזזה חצי אחורה בלולאה (CSS), כ-30 פיקסלים בשנייה.
-   הבנייה קורית כשהרצועה נראית (לשונית או תשובה סגורה ברוחב 0), ושוב כשהרוחב משתנה. מעבר עכבר או מקלדת עוצר.
+   כל רצועה (.tm-qm__row) מוכפלת עד שחצי ממנה ממלא את הרוחב, וזזה בלולאה ב-tmMarquee (למעלה), כ-42 פיקסלים בשנייה.
+   הבנייה קורית כשהרצועה נראית (לשונית או תשובה סגורה ברוחב 0), ושוב כשהרוחב משתנה.
    "פחות תנועה" במכשיר: בלי הכפלה ובלי תנועה, והרצועה נגללת ביד. לחיצה על כרטיס פותחת את הציטוט המלא.
    window.tmQuoteMarquees() מאתחל רצועות חדשות (למשל אחרי שהעורך בדשבורד החליף תוכן), ובטוח להריץ שוב. */
 (function () {
-  var SPEED = 30;
+  var SPEED = 42;
   var reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
   var fits = [];
   function setup(row) {
     var track = row.querySelector('.tm-qm__track');
     if (!track) return;
     var orig = [].slice.call(track.children).filter(function (c) { return !c.hasAttribute('data-clone'); });
-    var built = -1;
+    var built = -1, half = 0;
     function fit() {
       var w = row.clientWidth;
       if (!w || !orig.length || Math.abs(w - built) < 2) return;
@@ -131,8 +224,10 @@ JS = r"""
           track.appendChild(k);
         });
       }
-      row.style.setProperty('--qm-dur', Math.max(20, set * reps / SPEED).toFixed(1) + 's');
+      half = set * reps;
       row.classList.add('is-on');
+      window.tmMarquee(row, track, { dir: row.classList.contains('tm-qm__row--rev') ? -1 : 1, speed: SPEED,
+        measure: function () { return half; } });
     }
     fits.push(fit);
     if ('ResizeObserver' in window) new ResizeObserver(fit).observe(row);
