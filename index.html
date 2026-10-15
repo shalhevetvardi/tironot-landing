@@ -723,6 +723,8 @@
   .tm-vquote { font-size: 16px; line-height: 1.55; font-weight: 600; color: var(--navy); margin-top: 14px; text-align: center; }
   .tm-vwho { font-size: 13.5px; color: #5A5873; margin-top: 4px; text-align: center; }
   .tm-worth .tm-shots { margin-top: 30px; }
+  /* הודעה אחת ב"שווה את הכסף?" (15-10-2026, אחרי שההודעה של משה לוי ירדה): במרכז ולא בחצי הימני של שורה לשתיים */
+  @media (min-width: 681px) { .tm-worth .tm-shots:not(:has(.tm-shot + .tm-shot)) { grid-template-columns: minmax(0, 372px); justify-content: center; } }
   .tm-reviews--one { grid-template-columns: minmax(0, 1fr); max-width: 640px; margin: 22px auto 0; }
   .tm-stack--solo { max-width: 760px; margin: 0 auto; }
   span.tm-google { cursor: default; }
@@ -2568,11 +2570,30 @@ window.interdeal = {
       r.vel = 0;
       r.drag = { id: e.pointerId, x: e.clientX, y: e.clientY, pos: r.pos, on: false, lx: e.clientX, lt: e.timeStamp, v: 0 };
     });
+    /* מגע: ההכרעה אם התנועה אופקית או אנכית נעשית בתזוזה הראשונה, ואופקית מבטלת את גלילת הדף. בלי זה הדפדפן
+       לוקח את המגע (pointercancel) והרצועה לא נגררת: touch-action: pan-y לא חל כשהמגע מתחיל על אלמנט עם overflow
+       מוסתר בתוך הכרטיס (שורות מקוצרות, צילום חתוך), וכך זה נמדד ב-Chrome (15-10-2026) */
+    var touch = null;
+    band.addEventListener('touchstart', function (e) {
+      var t = e.touches[0];
+      touch = (t && e.touches.length === 1) ? { x: t.clientX, y: t.clientY, dir: '' } : null;
+    }, { passive: true });
+    band.addEventListener('touchmove', function (e) {
+      if (!touch || e.touches.length !== 1) return;
+      var t = e.touches[0];
+      if (!touch.dir) {
+        var tx = t.clientX - touch.x, ty = t.clientY - touch.y;
+        if (Math.abs(tx) < 3 && Math.abs(ty) < 3) return;
+        touch.dir = Math.abs(tx) > Math.abs(ty) ? 'h' : 'v';
+      }
+      if (touch.dir === 'h' && e.cancelable) e.preventDefault();
+    }, { passive: false });
     band.addEventListener('pointermove', function (e) {
       var d = r.drag;
       if (!d || e.pointerId !== d.id) return;
       var dx = e.clientX - d.x;
       if (!d.on) {
+        if (e.pointerType === 'touch' && touch && touch.dir === 'v') return;
         if (Math.abs(dx) < 6 || Math.abs(dx) < Math.abs(e.clientY - d.y)) return;
         d.on = true; band.classList.add('is-dragging');
         try { band.setPointerCapture(e.pointerId); } catch (err) {}

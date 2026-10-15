@@ -1977,11 +1977,30 @@ window.interdeal = {
       r.vel = 0;
       r.drag = { id: e.pointerId, x: e.clientX, y: e.clientY, pos: r.pos, on: false, lx: e.clientX, lt: e.timeStamp, v: 0 };
     });
+    /* מגע: ההכרעה אם התנועה אופקית או אנכית נעשית בתזוזה הראשונה, ואופקית מבטלת את גלילת הדף. בלי זה הדפדפן
+       לוקח את המגע (pointercancel) והרצועה לא נגררת: touch-action: pan-y לא חל כשהמגע מתחיל על אלמנט עם overflow
+       מוסתר בתוך הכרטיס (שורות מקוצרות, צילום חתוך), וכך זה נמדד ב-Chrome (15-10-2026) */
+    var touch = null;
+    band.addEventListener('touchstart', function (e) {
+      var t = e.touches[0];
+      touch = (t && e.touches.length === 1) ? { x: t.clientX, y: t.clientY, dir: '' } : null;
+    }, { passive: true });
+    band.addEventListener('touchmove', function (e) {
+      if (!touch || e.touches.length !== 1) return;
+      var t = e.touches[0];
+      if (!touch.dir) {
+        var tx = t.clientX - touch.x, ty = t.clientY - touch.y;
+        if (Math.abs(tx) < 3 && Math.abs(ty) < 3) return;
+        touch.dir = Math.abs(tx) > Math.abs(ty) ? 'h' : 'v';
+      }
+      if (touch.dir === 'h' && e.cancelable) e.preventDefault();
+    }, { passive: false });
     band.addEventListener('pointermove', function (e) {
       var d = r.drag;
       if (!d || e.pointerId !== d.id) return;
       var dx = e.clientX - d.x;
       if (!d.on) {
+        if (e.pointerType === 'touch' && touch && touch.dir === 'v') return;
         if (Math.abs(dx) < 6 || Math.abs(dx) < Math.abs(e.clientY - d.y)) return;
         d.on = true; band.classList.add('is-dragging');
         try { band.setPointerCapture(e.pointerId); } catch (err) {}
