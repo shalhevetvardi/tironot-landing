@@ -477,6 +477,11 @@ def apply_faq(page: str, placements: Dict[str, List[dict]], items: List[dict]) -
 
 def ensure_assets(page: str) -> str:
     """העיצוב לפני </head> והקוד לפני </body>, פעם אחת; הפעלה חוזרת מחליפה את הקיים."""
+    # התג הפותח מופיע יותר מפעם אחת (למשל בתוך הערה בקוד אחר בדף): ההחלפה הייתה תופסת את הראשון ומוחקת את כל מה
+    # שבינו לבין </script> הבא - כך נמחק חלק מהקוד הראשי של דף המכירה בעותק עבודה (15-10-2026). עוצרים במקום לנחש
+    for tag in ('<style id="tm-qm-css">', '<script id="tm-qm-js">'):
+        if page.count(tag) > 1:
+            raise ValueError(f"{tag} מופיע בדף {page.count(tag)} פעמים - צריך פעם אחת. אם הוא כתוב בהערה, לנסח אותה בלי התג")
     if CSS_RE.search(page):
         page = CSS_RE.sub(lambda _m: CSS_BLOCK, page, count=1)
     else:
