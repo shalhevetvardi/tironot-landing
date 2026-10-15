@@ -1,0 +1,35 @@
+# מודיע להרמס (סוכן המסרים) שנוספו כרטיסי בוגרים לדף, כדי שיבדוק אילו ציטוטים אפשר להוציא מהם.
+#
+# רקע: עוגן #31 של הרמס (Storyteling, 15-10-2026). כשהמחולל של כרטיסי הבוגרים פותח בקשת מיזוג מהענף
+# auto/bogrim-cards ושלהבת ממזגת אותה, הרמס עובר על הכרטיסים החדשים. השרת (sales-automation-webhook,
+# הכתובת /webhooks/hermes/cards-merged) משווה את הדף אחרי המיזוג לדף שלפניו, ולכן רק כרטיס שהמיזוג הזה
+# הוסיף נכנס לטיפול. רענון של כרטיס קיים לא מפעיל כלום.
+#
+# הסוד HERMES_HOOK_SECRET מוגדר גם כאן (סודות הריפו) וגם בשירות ב-Render. בלעדיו הקריאה נדחית (401)
+# והריצה מסומנת באדום. שום דבר לא נכתב לריפו מכאן.
+name: Hermes - graduate cards merged
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  notify-hermes:
+    if: github.event.pull_request.merged == true && github.event.pull_request.head.ref == 'auto/bogrim-cards'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Tell Hermes which merge added the cards
+        env:
+          HERMES_HOOK_SECRET: ${{ secrets.HERMES_HOOK_SECRET }}
+          MERGE_SHA: ${{ github.event.pull_request.merge_commit_sha }}
+        run: |
+          curl -fsS --retry 3 --retry-delay 20 --max-time 60 \
+            -X POST "https://sales-automation-webhook.onrender.com/webhooks/hermes/cards-merged" \
+            -H "Content-Type: application/json" \
+            -H "X-Hermes-Secret: ${HERMES_HOOK_SECRET}" \
+            -d "{\"sha\":\"${MERGE_SHA}\"}"
