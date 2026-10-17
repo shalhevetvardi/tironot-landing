@@ -2509,9 +2509,14 @@ window.interdeal = {
     }, true);
 
     /* ── 4. end - העומק שהושג וכמה זמן. פעם אחת, במה שקורה קודם. ── */
+    /* עד 17-10-2026 העומק נשלח פעם אחת, ביציאה הראשונה מהלשונית. בטלפון זו לרוב
+       קפיצה קצרה לוואטסאפ, ומי שחזר והמשיך לגלול נרשם כמי שעצר בפתיחה. עכשיו
+       הוא נשלח שוב בכל יציאה שבה המבקר הגיע רחוק יותר, ולכן לביקור יכולות להיות
+       כמה שורות end, וקוראים מהן את העמוקה ביותר. */
+    var endIdx = -2;
     function finish() {
-      if (sent.end) return;
-      sent.end = 1;
+      if (depthIdx <= endIdx) return;
+      endIdx = depthIdx;
       var name = (depthIdx >= 0 && SECTIONS[depthIdx]) ? SECTIONS[depthIdx][0] : 'hero';
       var secs = Math.round((Date.now() - t0) / 1000);
       if (!isFinite(secs) || secs < 0) secs = 0;
