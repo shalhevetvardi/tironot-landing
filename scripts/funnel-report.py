@@ -169,8 +169,11 @@ def main():
                 v["src"] = str(f["src"])
             if f.get("device_class"):
                 v["dev"] = str(f["device_class"])
+            # מ-17-10-2026 הדף שולח end שוב בכל יציאה שבה המבקר הגיע רחוק יותר,
+            # ולכן לביקור יכולות להיות כמה שורות end, והסדר שלהן מ-Airtable אינו
+            # מובטח. העומק כבר נלקח כמקסימום (למעלה); גם הזמן - האחרונה היא הארוכה.
             if f.get("seconds") is not None:
-                v["secs"] = f["seconds"]
+                v["secs"] = f["seconds"] if v["secs"] is None else max(v["secs"], f["seconds"])
         # מי שהגיע לסקשן המחיר נחשב כמי שראה אותו, גם אם שורת ה-price אבדה ביציאה
         for v in visits.values():
             if v["depth"] >= LADDER.index("price"):
