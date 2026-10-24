@@ -917,8 +917,8 @@
 </style>
 <style id="cold-css">
   .nav { padding-top: 18px; }
-  .nav__logo { height: 18px; opacity: .92; }
-  @media (max-width: 600px) { .nav__logo { height: 16px; } }
+  .nav__logo { height: 14px; opacity: .9; }
+  @media (max-width: 600px) { .nav__logo { height: 13px; } }
   .cold-cta { display: inline-flex; align-items: center; gap: 10px; }
   .cold-cta .wa-ic, .cold-price-cta .wa-ic { width: 22px; height: 22px; }
   .cold-noam { font-size: 14px; opacity: .9; margin: 12px 0 0; }
@@ -975,7 +975,27 @@
   @media (max-width: 520px) { .cold-wa-float__ic { width: 46px; height: 46px; } .cold-wa-float__ic svg { width: 25px; height: 25px; } .cold-wa-float__txt { font-size: 12px; } }
   @media (prefers-reduced-motion: reduce) { .cold-wa-float { transition: none; } .cold-wa-float:hover { transform: none; } }
   @media print { .cold-wa-float { display: none; } }
-  .cold-what-lead { max-width: 720px; margin-inline: auto; }
+  .cold-what-lead { max-width: 760px; margin-inline: auto; }
+  .cold-what-proof { margin: 24px auto 0; font-weight: 700; color: var(--navy); }
+  .cold-proof { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 14px; }
+  .cold-proof__chip { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 50px;
+    background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.28); color: #fff; font-size: 14px; font-weight: 600; }
+  .cold-proof__stars { color: var(--gold); letter-spacing: 1px; }
+  .cold-underline { text-decoration: underline; text-decoration-color: var(--gold); text-decoration-thickness: 3px; text-underline-offset: 6px; }
+  .price-promise { text-wrap: balance; }
+  .price-card__offer { text-wrap: balance; }
+  .tm-sec--inside { padding-top: 72px; }
+  .cold-legend { margin: 6px 0 26px; }
+  .cold-legend h3 { margin: 0 0 14px; font-size: 18px; line-height: 1.45; color: #fff; }
+  .cold-legend__grid { display: grid; gap: 12px; }
+  @media (min-width: 700px) { .cold-legend__grid { grid-template-columns: 1fr 1fr; } }
+  .cold-legend__item { display: flex; align-items: center; gap: 12px; color: rgba(255,255,255,.85); font-size: 15px; line-height: 1.45; }
+  .cold-legend__item b { color: #fff; }
+  .cold-legend__shape { flex: 0 0 auto; width: 24px; height: 24px; background: var(--gold); }
+  .cold-legend__shape--cube { border-radius: 5px; }
+  .cold-legend__shape--ring { background: none; box-sizing: border-box; border: 4px solid var(--gold); border-radius: 50%; }
+  .cold-legend__shape--cone { clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+  .cold-legend__shape--capsule { border-radius: 9999px; width: 14px; margin-inline: 5px; }
   .cold-what { display: grid; gap: 14px; max-width: 980px; margin: 28px auto 0; text-align: right; }
   @media (min-width: 760px) { .cold-what { grid-template-columns: 1fr 1fr; } }
   .cold-what__item { background: #fff; border: 1px solid rgba(20, 9, 59, .14); border-radius: 18px; padding: 20px 22px; }
@@ -985,7 +1005,7 @@
   .cold-what-more a { color: var(--blue); font-weight: 700; text-decoration: underline; text-underline-offset: 4px; }
   .cold-price-cta { display: inline-flex; align-items: center; gap: 10px; margin-top: 12px; }
   .cold-quote { display: grid; grid-template-columns: 52px 1fr; gap: 4px 12px; align-items: start; max-width: 640px; margin: 8px auto 28px; text-align: right; background: #f6f7fb; border: 1px solid rgba(20, 9, 59, .1); border-radius: 18px; padding: 16px; }
-  .cold-quote img { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; grid-row: span 2; }
+  .cold-quote__g { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; grid-row: span 2; background: #fff; border: 1px solid rgba(20,9,59,.12); color: #4285F4; font-weight: 800; font-size: 20px; }
   .cold-quote blockquote { margin: 0; line-height: 1.6; }
   .cold-quote figcaption { font-size: 14px; opacity: .75; }
 </style>
@@ -998,9 +1018,10 @@
   <div class="hero__inner">
     <div class="hero__text">
       <div class="hero__brand"><img class="hero__logo" src="tironot-logo-white.png" alt="טירונות סוכנים" /><span class="hero__brandname">טירונות סוכנים</span></div>
+      <div class="cold-proof"><span class="cold-proof__chip"><span class="cold-proof__stars" aria-hidden="true">★★★★★</span> 5 כוכבים בגוגל</span><span class="cold-proof__chip">מאות בוגרים</span><span class="cold-proof__chip">רובם לא מרקע טכני</span></div>
       <span class="eyebrow">תוכנית האצה של 5 שבועות</span>
       <h1>אחרי 5 שבועות -<br><span class="accent">יש לכם צוות AI</span> שעובד בשבילכם.</h1>
-      <p class="hero__sub">לומדים לבנות בעצמכם סוכנים שעושים עבודה אמיתית, עם ליווי צמוד ובלי לדעת לתכנת.</p>
+      <p class="hero__sub">שיטה מסודרת לבנות סוכני AI שמחוברים זה לזה ועובדים יחד, עם ליווי צמוד ובלי לדעת לתכנת.</p>
       <a href="https://wa.me/972559397247?text=%D7%A9%D7%9C%D7%97%D7%95%20%D7%90%D7%AA%20%D7%94%D7%94%D7%95%D7%93%D7%A2%D7%94%20%D7%94%D7%96%D7%95%20%D7%9B%D7%93%D7%99%20%D7%9C%D7%94%D7%AA%D7%97%D7%99%D7%9C%20%D7%9C%D7%93%D7%91%D7%A8%20%D7%A2%D7%9D%20%D7%A0%D7%95%D7%A2%D7%9D" class="btn btn--gold cold-cta" target="_blank" rel="noopener noreferrer"><svg class="wa-ic" viewBox="0 0 24 24" fill="#25D366" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg><span>לשיחה עם נועם בוואטסאפ</span></a>
       <p class="cold-noam">נועם הוא סוכן ה-AI של אִימפּרוּב בוואטסאפ.</p>
       <p class="cold-first"><a href="#what">אני רוצה להבין על מה מדובר קודם</a></p>
@@ -1038,13 +1059,14 @@
 <section class="section section--white center" id="what">
   <div class="container">
     <h2>מה בדיוק <span class="accent-blue">קונים כאן?</span></h2>
-    <p class="lead center cold-what-lead">תוכנית האצה של 5 שבועות, שבה אתם לומדים לבנות בעצמכם סוכני AI, ובונים אותם תוך כדי על העבודה שלכם.</p>
+    <p class="lead center cold-what-lead">תוכנית האצה של 5 שבועות, שבה בונים <strong>צוות של סוכני AI שמחוברים זה לזה ועובדים יחד</strong>, כמו מחלקות במשרד. לא עוד סוכן בודד, אלא מערכת שרצה בלעדיכם.</p>
     <div class="cold-what">
-      <div class="cold-what__item"><h3>5 שבועות של שיעורים וליווי שוטף</h3><p>שיעור בכל שבוע, בתל אביב או בזום, וליווי לאורך כל הדרך. בכל שיעור לומדים שלב ובונים אותו יחד.</p></div>
-      <div class="cold-what__item"><h3>הכנה לפני שמתחילים</h3><p>מקימים איתכם את סביבת העבודה, ובונים את הסוכן הראשון עוד לפני המפגש הראשון.</p></div>
-      <div class="cold-what__item"><h3>עזרה כשנתקעים</h3><p>מפגשי חידוד שבועיים בזום, צוות שעונה על שאלות, וסוכני AI של אִימפּרוּב שמלווים את הבנייה.</p></div>
-      <div class="cold-what__item"><h3>מה יוצאים איתו</h3><p>סוכנים ותהליכים שכבר עובדים בשבילכם, והשיטה לבנות לבד את הבאים.</p></div>
+      <div class="cold-what__item"><h3>שיטה, לא עוד כלי</h3><p>לומדים איך בונים מערכת: מה כל סוכן עושה, מה הוא יודע, ואיך הוא מתחבר לשאר. זה מה שנשאר איתכם גם כשהכלים מתחלפים.</p></div>
+      <div class="cold-what__item"><h3>בונים על העבודה שלכם, מהשבוע הראשון</h3><p>כל שבוע בונים שלב אמיתי בצוות שלכם. כבר בשבועיים הראשונים יש דברים שרצים ועושים עבודה במקומכם.</p></div>
+      <div class="cold-what__item"><h3>לא נשארים לבד בשום שלב</h3><p>הכנה לפני שמתחילים, מפגשי חידוד שבועיים, צוות שעונה על שאלות, וסוכני AI של אִימפּרוּב שמלווים את הבנייה.</p></div>
+      <div class="cold-what__item"><h3>בסוף 5 השבועות</h3><p>יש לכם צוות סוכנים שעובד בשבילכם, ואתם יודעים לבנות לבד את הסוכן הבא שתצטרכו.</p></div>
     </div>
+    <p class="cold-what-proof">דיברתם עם נועם בוואטסאפ? בנינו אותו בדיוק בשיטה הזאת.</p>
     <p class="cold-what-more"><a href="#price">לפרטים המלאים ולמחיר</a></p>
   </div>
 </section>
@@ -1162,6 +1184,15 @@
       <p>לא זורק עליכם עוד קורס מצולם שתעברו לבד "מתישהו". לא מציף אתכם בכלים. לוקח אתכם ביד - עם חומר לימודי ברור ומשימות מדויקות - וצעד אחרי צעד, אתם בונים משהו אמיתי משלכם:</p>
       <p>סוכנים שעושים את העבודה שאתם הכי שונאים לעשות. תהליכים שרצים בלי שאתם נוגעים בהם. צוות שלם שעובד בשבילכם - ואתם אלה שבניתם אותו.</p>
       <p>ותוך כדי, קורה הדבר הכי חשוב: <span class="hl">אתם לומדים את השיטה.</span> לא "איך מפעילים את הכלי הזה". את השיטה שלפיה בונים סוכנים ותהליכים שרצים לבד, והיא ממשיכה לעבוד גם כשהכלים משתנים.</p>
+      <div class="cold-legend">
+        <h3>כל ריבוע במשרד הוא סוכן, ואפשר לראות לאיזה ידע ויכולות הוא מחובר</h3>
+        <div class="cold-legend__grid">
+          <div class="cold-legend__item"><span class="cold-legend__shape cold-legend__shape--cube" aria-hidden="true"></span><span><b>קובייה</b> - סוכן. עובד עם תפקיד מוגדר, שיושב במחלקה שלו</span></div>
+          <div class="cold-legend__item"><span class="cold-legend__shape cold-legend__shape--capsule" aria-hidden="true"></span><span><b>גלולה</b> - מסמך ידע. מה שהסוכן יודע על העבודה שלכם</span></div>
+          <div class="cold-legend__item"><span class="cold-legend__shape cold-legend__shape--cone" aria-hidden="true"></span><span><b>חרוט</b> - סקיל. מה שהסוכן יודע לעשות</span></div>
+          <div class="cold-legend__item"><span class="cold-legend__shape cold-legend__shape--ring" aria-hidden="true"></span><span><b>טבעת</b> - תהליך אוטומטי. סדר פעולות שהסוכן מריץ לבד</span></div>
+        </div>
+      </div>
       <p class="story__payoff">ופתאום אתם שוב האדם שיודע.<br>שלא תקוע ולא תלוי באף אחד, ויודע לבנות לעצמו את מה שהוא צריך.</p>
       <p class="cold-office__enter"><button type="button" class="cold-office__hint">להיכנס למשרד של אִימפּרוּב ולשחק בו <span aria-hidden="true">←</span></button></p>
       <p class="cold-office__hint-sub">זה המשרד האמיתי של שלהבת. מסתובבים בו, לוחצים על כל סוכן ורואים מה הוא עושה ולמה הוא מחובר.</p>
@@ -1297,24 +1328,24 @@
 <!-- ====================== PRICE SECTION (WHITE) — אחרי מפת המסע, לפני סרטון נועם ====================== -->
 <section class="section section--white center" id="price">
   <div class="container">
-    <h2 class="price-promise"><span class="price-promise__kicker">זה לא עוד קורס. זו תוכנית האצה של 5 שבועות.</span>5 שבועות שבהם אתם לומדים את כל מה שצריך <span class="accent-blue">כדי לבנות את מה שאתם רוצים</span>, ובונים כבר תוך כדי.</h2>
+    <h2 class="price-promise"><span class="price-promise__kicker">זה לא עוד קורס. זו <span class="cold-underline">תוכנית האצה</span> של <span class="cold-nowrap">5 שבועות.</span></span>5 שבועות שבהם בונים <span class="accent-blue">צוות סוכני AI שעובד בשבילכם</span>, ויוצאים עם שיטה לבנות לבד את מה שתצטרכו אחר כך.</h2>
 
     <ul class="price-includes">
-      <li><span><strong>5 שבועות של שיעורים וליווי שוטף</strong> - שיעור בכל שבוע, בימי רביעי 18:30-21:30, בתל אביב או בזום. בכל שיעור לומדים ובונים יחד</span></li>
+      <li><span><strong>5 שבועות של שיעורים וליווי שוטף</strong> - בתל אביב או בזום. בכל שבוע לומדים שלב חדש ובונים אותו יחד, על העבודה שלכם</span></li>
       <li><span><strong>דואגים שתגיעו מוכנים</strong> - הכנה אישית מסודרת, מקימים איתכם את סביבת העבודה ובונים את הסוכן הראשון שלכם - עוד לפני המפגש הראשון בטירונות</span></li>
       <li><span><strong>מעטפת פדגוגית שעוטפת אתכם מכל כיוון</strong> - ליווי צמוד יד ביד, חומרי למידה מעמיקים, וצוות סוכני AI של אִימפּרוּב שעוזר בלמידה, בבנייה ובהטמעה</span></li>
       <li><span><strong>לא משאירים אתכם לבד בין המפגשים</strong> - מפגשי חידוד שבועיים בזום להתייעצות, שאלות ועזרה אישית</span></li>
       <li><span><strong>העבודה האמיתית קורית בין המפגשים</strong> - בשבועיים הראשונים זה לפחות כמה שעות טובות בשבוע, כי המטרה היא שכבר אז תבנו דברים אמיתיים לעבודה שלכם</span></li>
       <li><span><strong>מה שבניתם נשאר שלכם</strong> - ההקלטות, אתר חומרי הלמידה וכל מה שבניתם נשארים אצלכם, בלי הגבלת זמן</span></li>
     </ul>
-    <figure class="cold-quote"><img src="bogrim/images/adidotan1.jpg" alt="עדי דותן" loading="lazy"><blockquote>"צריך להבין שיש פה השקעה, בטח בשבועיים הראשונים, לא מבוטלת. [...] <span class="tm-hl">אחרי שבועיים הצלחתי כבר לראות פירות.</span>"</blockquote><figcaption>עדי דותן · שכירה בהייטק</figcaption></figure>
+    <figure class="cold-quote"><span class="cold-quote__g" aria-hidden="true">G</span><blockquote>"עוד לא סיימתי ללמוד, וכבר יש בשימוש אצלנו סקיל שבודק את כתיבת הצוות בסגנון שלי <span class="tm-hl">ורץ עבורם במקומי.</span>"</blockquote><figcaption>תמר פיגנבלט · ביקורת בגוגל, ★★★★★</figcaption></figure>
 
     <div class="price-card">
       <div class="price-card__label">עלות ההשקעה בעצמכם</div>
       <div class="price-card__main"><span class="num">9,300</span><span class="nis">₪</span></div>
       <div class="price-card__sub">ניתן לפרוס עד 12 תשלומים</div>
       <div class="price-card__divider"></div>
-      <div class="price-card__offer">הטבה של <span class="nowrap">1,400&nbsp;₪</span> ניתנת בשיחה עם נועם</div>
+      <div class="price-card__offer">הטבה של <span class="nowrap">1,400&nbsp;₪</span> <span class="nowrap">ניתנת בשיחה עם נועם</span></div>
       <a href="https://wa.me/972559397247?text=%D7%A9%D7%9C%D7%97%D7%95%20%D7%90%D7%AA%20%D7%94%D7%94%D7%95%D7%93%D7%A2%D7%94%20%D7%94%D7%96%D7%95%20%D7%9B%D7%93%D7%99%20%D7%9C%D7%94%D7%AA%D7%97%D7%99%D7%9C%20%D7%9C%D7%93%D7%91%D7%A8%20%D7%A2%D7%9D%20%D7%A0%D7%95%D7%A2%D7%9D" class="btn btn--gold cold-price-cta" target="_blank" rel="noopener noreferrer"><svg class="wa-ic" viewBox="0 0 24 24" fill="#25D366" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg><span>לשיחה עם נועם</span></a>
     </div>
 

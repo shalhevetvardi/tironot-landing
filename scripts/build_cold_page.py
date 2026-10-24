@@ -61,13 +61,16 @@ def new(s):
     return s
 
 
-ADI_QUOTE = ('<figure class="cold-quote"><img src="bogrim/images/adidotan1.jpg" alt="עדי דותן" loading="lazy">'
-             '<blockquote>"צריך להבין שיש פה השקעה, בטח בשבועיים הראשונים, לא מבוטלת. [...] '
-             '<span class="tm-hl">אחרי שבועיים הצלחתי כבר לראות פירות.</span>"</blockquote>'
-             '<figcaption>עדי דותן · שכירה בהייטק</figcaption></figure>')
+PROOF_CHIPS = """
+      <div class="cold-proof"><span class="cold-proof__chip"><span class="cold-proof__stars" aria-hidden="true">★★★★★</span> 5 כוכבים בגוגל</span><span class="cold-proof__chip">מאות בוגרים</span><span class="cold-proof__chip">רובם לא מרקע טכני</span></div>"""
+
+ADI_QUOTE = ('<figure class="cold-quote"><span class="cold-quote__g" aria-hidden="true">G</span>'
+             '<blockquote>"עוד לא סיימתי ללמוד, וכבר יש בשימוש אצלנו סקיל שבודק את כתיבת הצוות בסגנון שלי '
+             '<span class="tm-hl">ורץ עבורם במקומי.</span>"</blockquote>'
+             '<figcaption>תמר פיגנבלט · ביקורת בגוגל, ★★★★★</figcaption></figure>')
 
 PRICE_LIST = """<ul class="price-includes">
-      <li><span><strong>5 שבועות של שיעורים וליווי שוטף</strong> - שיעור בכל שבוע, בימי רביעי 18:30-21:30, בתל אביב או בזום. בכל שיעור לומדים ובונים יחד</span></li>
+      <li><span><strong>5 שבועות של שיעורים וליווי שוטף</strong> - בתל אביב או בזום. בכל שבוע לומדים שלב חדש ובונים אותו יחד, על העבודה שלכם</span></li>
       <li><span><strong>דואגים שתגיעו מוכנים</strong> - הכנה אישית מסודרת, מקימים איתכם את סביבת העבודה ובונים את הסוכן הראשון שלכם - עוד לפני המפגש הראשון בטירונות</span></li>
       <li><span><strong>מעטפת פדגוגית שעוטפת אתכם מכל כיוון</strong> - ליווי צמוד יד ביד, חומרי למידה מעמיקים, וצוות סוכני AI של אִימפּרוּב שעוזר בלמידה, בבנייה ובהטמעה</span></li>
       <li><span><strong>לא משאירים אתכם לבד בין המפגשים</strong> - מפגשי חידוד שבועיים בזום להתייעצות, שאלות ועזרה אישית</span></li>
@@ -97,6 +100,17 @@ OFFICE_ANIM = """
         <figcaption>לוחצים על כל סוכן ורואים למה הוא מחובר: הידע, הכלים והתהליכים שהוא מריץ.</figcaption>
       </figure>"""
 
+OFFICE_LEGEND = """
+      <div class="cold-legend">
+        <h3>כל ריבוע במשרד הוא סוכן, ואפשר לראות לאיזה ידע ויכולות הוא מחובר</h3>
+        <div class="cold-legend__grid">
+          <div class="cold-legend__item"><span class="cold-legend__shape cold-legend__shape--cube" aria-hidden="true"></span><span><b>קובייה</b> - סוכן. עובד עם תפקיד מוגדר, שיושב במחלקה שלו</span></div>
+          <div class="cold-legend__item"><span class="cold-legend__shape cold-legend__shape--capsule" aria-hidden="true"></span><span><b>גלולה</b> - מסמך ידע. מה שהסוכן יודע על העבודה שלכם</span></div>
+          <div class="cold-legend__item"><span class="cold-legend__shape cold-legend__shape--cone" aria-hidden="true"></span><span><b>חרוט</b> - סקיל. מה שהסוכן יודע לעשות</span></div>
+          <div class="cold-legend__item"><span class="cold-legend__shape cold-legend__shape--ring" aria-hidden="true"></span><span><b>טבעת</b> - תהליך אוטומטי. סדר פעולות שהסוכן מריץ לבד</span></div>
+        </div>
+      </div>"""
+
 OFFICE_HINT = """
       <p class="cold-office__enter"><button type="button" class="cold-office__hint">להיכנס למשרד של אִימפּרוּב ולשחק בו <span aria-hidden="true">←</span></button></p>
       <p class="cold-office__hint-sub">זה המשרד האמיתי של שלהבת. מסתובבים בו, לוחצים על כל סוכן ורואים מה הוא עושה ולמה הוא מחובר.</p>"""
@@ -107,13 +121,14 @@ WA_FLOAT = ('<a class="cold-wa-float" href="{wa}" target="_blank" rel="noopener 
 WHAT_SECTION = """<section class="section section--white center" id="what">
   <div class="container">
     <h2>מה בדיוק <span class="accent-blue">קונים כאן?</span></h2>
-    <p class="lead center cold-what-lead">תוכנית האצה של 5 שבועות, שבה אתם לומדים לבנות בעצמכם סוכני AI, ובונים אותם תוך כדי על העבודה שלכם.</p>
+    <p class="lead center cold-what-lead">תוכנית האצה של 5 שבועות, שבה בונים <strong>צוות של סוכני AI שמחוברים זה לזה ועובדים יחד</strong>, כמו מחלקות במשרד. לא עוד סוכן בודד, אלא מערכת שרצה בלעדיכם.</p>
     <div class="cold-what">
-      <div class="cold-what__item"><h3>5 שבועות של שיעורים וליווי שוטף</h3><p>שיעור בכל שבוע, בתל אביב או בזום, וליווי לאורך כל הדרך. בכל שיעור לומדים שלב ובונים אותו יחד.</p></div>
-      <div class="cold-what__item"><h3>הכנה לפני שמתחילים</h3><p>מקימים איתכם את סביבת העבודה, ובונים את הסוכן הראשון עוד לפני המפגש הראשון.</p></div>
-      <div class="cold-what__item"><h3>עזרה כשנתקעים</h3><p>מפגשי חידוד שבועיים בזום, צוות שעונה על שאלות, וסוכני AI של אִימפּרוּב שמלווים את הבנייה.</p></div>
-      <div class="cold-what__item"><h3>מה יוצאים איתו</h3><p>סוכנים ותהליכים שכבר עובדים בשבילכם, והשיטה לבנות לבד את הבאים.</p></div>
+      <div class="cold-what__item"><h3>שיטה, לא עוד כלי</h3><p>לומדים איך בונים מערכת: מה כל סוכן עושה, מה הוא יודע, ואיך הוא מתחבר לשאר. זה מה שנשאר איתכם גם כשהכלים מתחלפים.</p></div>
+      <div class="cold-what__item"><h3>בונים על העבודה שלכם, מהשבוע הראשון</h3><p>כל שבוע בונים שלב אמיתי בצוות שלכם. כבר בשבועיים הראשונים יש דברים שרצים ועושים עבודה במקומכם.</p></div>
+      <div class="cold-what__item"><h3>לא נשארים לבד בשום שלב</h3><p>הכנה לפני שמתחילים, מפגשי חידוד שבועיים, צוות שעונה על שאלות, וסוכני AI של אִימפּרוּב שמלווים את הבנייה.</p></div>
+      <div class="cold-what__item"><h3>בסוף 5 השבועות</h3><p>יש לכם צוות סוכנים שעובד בשבילכם, ואתם יודעים לבנות לבד את הסוכן הבא שתצטרכו.</p></div>
     </div>
+    <p class="cold-what-proof">דיברתם עם נועם בוואטסאפ? בנינו אותו בדיוק בשיטה הזאת.</p>
     <p class="cold-what-more"><a href="#price">לפרטים המלאים ולמחיר</a></p>
   </div>
 </section>"""
@@ -202,8 +217,8 @@ COLD_JS = """<script id="cold-js">
 
 COLD_CSS = """<style id="cold-css">
   .nav { padding-top: 18px; }
-  .nav__logo { height: 18px; opacity: .92; }
-  @media (max-width: 600px) { .nav__logo { height: 16px; } }
+  .nav__logo { height: 14px; opacity: .9; }
+  @media (max-width: 600px) { .nav__logo { height: 13px; } }
   .cold-cta { display: inline-flex; align-items: center; gap: 10px; }
   .cold-cta .wa-ic, .cold-price-cta .wa-ic { width: 22px; height: 22px; }
   .cold-noam { font-size: 14px; opacity: .9; margin: 12px 0 0; }
@@ -260,7 +275,27 @@ COLD_CSS = """<style id="cold-css">
   @media (max-width: 520px) { .cold-wa-float__ic { width: 46px; height: 46px; } .cold-wa-float__ic svg { width: 25px; height: 25px; } .cold-wa-float__txt { font-size: 12px; } }
   @media (prefers-reduced-motion: reduce) { .cold-wa-float { transition: none; } .cold-wa-float:hover { transform: none; } }
   @media print { .cold-wa-float { display: none; } }
-  .cold-what-lead { max-width: 720px; margin-inline: auto; }
+  .cold-what-lead { max-width: 760px; margin-inline: auto; }
+  .cold-what-proof { margin: 24px auto 0; font-weight: 700; color: var(--navy); }
+  .cold-proof { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 14px; }
+  .cold-proof__chip { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 50px;
+    background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.28); color: #fff; font-size: 14px; font-weight: 600; }
+  .cold-proof__stars { color: var(--gold); letter-spacing: 1px; }
+  .cold-underline { text-decoration: underline; text-decoration-color: var(--gold); text-decoration-thickness: 3px; text-underline-offset: 6px; }
+  .price-promise { text-wrap: balance; }
+  .price-card__offer { text-wrap: balance; }
+  .tm-sec--inside { padding-top: 72px; }
+  .cold-legend { margin: 6px 0 26px; }
+  .cold-legend h3 { margin: 0 0 14px; font-size: 18px; line-height: 1.45; color: #fff; }
+  .cold-legend__grid { display: grid; gap: 12px; }
+  @media (min-width: 700px) { .cold-legend__grid { grid-template-columns: 1fr 1fr; } }
+  .cold-legend__item { display: flex; align-items: center; gap: 12px; color: rgba(255,255,255,.85); font-size: 15px; line-height: 1.45; }
+  .cold-legend__item b { color: #fff; }
+  .cold-legend__shape { flex: 0 0 auto; width: 24px; height: 24px; background: var(--gold); }
+  .cold-legend__shape--cube { border-radius: 5px; }
+  .cold-legend__shape--ring { background: none; box-sizing: border-box; border: 4px solid var(--gold); border-radius: 50%; }
+  .cold-legend__shape--cone { clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+  .cold-legend__shape--capsule { border-radius: 9999px; width: 14px; margin-inline: 5px; }
   .cold-what { display: grid; gap: 14px; max-width: 980px; margin: 28px auto 0; text-align: right; }
   @media (min-width: 760px) { .cold-what { grid-template-columns: 1fr 1fr; } }
   .cold-what__item { background: #fff; border: 1px solid rgba(20, 9, 59, .14); border-radius: 18px; padding: 20px 22px; }
@@ -270,7 +305,7 @@ COLD_CSS = """<style id="cold-css">
   .cold-what-more a { color: var(--blue); font-weight: 700; text-decoration: underline; text-underline-offset: 4px; }
   .cold-price-cta { display: inline-flex; align-items: center; gap: 10px; margin-top: 12px; }
   .cold-quote { display: grid; grid-template-columns: 52px 1fr; gap: 4px 12px; align-items: start; max-width: 640px; margin: 8px auto 28px; text-align: right; background: #f6f7fb; border: 1px solid rgba(20, 9, 59, .1); border-radius: 18px; padding: 16px; }
-  .cold-quote img { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; grid-row: span 2; }
+  .cold-quote__g { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; grid-row: span 2; background: #fff; border: 1px solid rgba(20,9,59,.12); color: #4285F4; font-weight: 800; font-size: 20px; }
   .cold-quote blockquote { margin: 0; line-height: 1.6; }
   .cold-quote figcaption { font-size: 14px; opacity: .75; }
 </style>
@@ -284,9 +319,9 @@ def build():
 
     # 1. המסך הראשון
     h = once(h, '<span class="eyebrow">הופכים אתכם למי שבונה סוכני AI לבד.</span>',
-             new('<span class="eyebrow">תוכנית האצה של 5 שבועות</span>'), "התווית במסך הראשון")
+             new(PROOF_CHIPS.strip() + '\n      <span class="eyebrow">תוכנית האצה של 5 שבועות</span>'), "התווית במסך הראשון")
     h = once(h, '<p class="hero__sub">ואת השיטה והכלים לבנות כל סוכן, מערכת ותהליך שתצטרכו - לבד, בלי להיתקע.</p>',
-             new('<p class="hero__sub">לומדים לבנות בעצמכם סוכנים שעושים עבודה אמיתית, עם ליווי צמוד ובלי לדעת לתכנת.</p>'),
+             new('<p class="hero__sub">שיטה מסודרת לבנות סוכני AI שמחוברים זה לזה ועובדים יחד, עם ליווי צמוד ובלי לדעת לתכנת.</p>'),
              "שורת המשנה")
     # 2. הכפתור לנועם, ו"איך זה עובד" כקישור
     h = once(h, '<a href="#intro" class="btn btn--gold">איך זה עובד</a>',
@@ -306,6 +341,8 @@ def build():
     story = once(story, opener, '<section class="section section--navy cold-office-sec" id="story">\n' + OFFICE_BG, "פתיחת הסיפור")
     story = once(story, '<span class="accent-gold cold-nowrap">משרד ה-AI שלכם.</span></h2>',
                  '<span class="accent-gold cold-nowrap">משרד ה-AI שלכם.</span></h2>' + new(OFFICE_ANIM), "הסרטון בטלפון")
+    k = story.find('<p class="story__payoff">')
+    story = story[:k] + new(OFFICE_LEGEND).strip() + "\n      " + story[k:]
     k = story.find('</p>', story.find('<p class="story__payoff">')) + len('</p>')
     story = story[:k] + new(OFFICE_HINT) + story[k:]
     h = h[:i] + story + h[j:]
@@ -334,14 +371,14 @@ def build():
     i = h.find('<h2 class="price-promise">')
     old_h2 = h[i:h.find('</h2>', i) + 5]
     h = once(h, old_h2, new(
-        '<h2 class="price-promise"><span class="price-promise__kicker">זה לא עוד קורס. זו תוכנית האצה של 5 שבועות.</span>'
-        '5 שבועות שבהם אתם לומדים את כל מה שצריך <span class="accent-blue">כדי לבנות את מה שאתם רוצים</span>, ובונים כבר תוך כדי.</h2>'),
+        '<h2 class="price-promise"><span class="price-promise__kicker">זה לא עוד קורס. זו <span class="cold-underline">תוכנית האצה</span> של <span class="cold-nowrap">5 שבועות.</span></span>'
+        '5 שבועות שבהם בונים <span class="accent-blue">צוות סוכני AI שעובד בשבילכם</span>, ויוצאים עם שיטה לבנות לבד את מה שתצטרכו אחר כך.</h2>'),
         "כותרת המחיר")
     i = h.find('<ul class="price-includes">')
     old_list = h[i:h.find('</ul>', i) + 5]
     h = once(h, old_list, new(PRICE_LIST) + ADI_QUOTE, "רשימת מה כלול")
     h = once(h, '<div class="price-card__offer">רוצים הטבה של <span class="nowrap">1,400&nbsp;₪</span>?</div>',
-             new('<div class="price-card__offer">הטבה של <span class="nowrap">1,400&nbsp;₪</span> ניתנת בשיחה עם נועם</div>'),
+             new('<div class="price-card__offer">הטבה של <span class="nowrap">1,400&nbsp;₪</span> <span class="nowrap">ניתנת בשיחה עם נועם</span></div>'),
              "ההטבה")
     h = once(h, '<a href="#video-noam" class="price-card__cta">צפו בסרטון למטה</a>',
              noam_button("btn--gold cold-price-cta", "לשיחה עם נועם"), "הכפתור בכרטיס המחיר")
@@ -360,7 +397,7 @@ def build():
     h = once(h, "var PAGE = 'index';", "var PAGE = 'hatzaa';", "שם הדף במדידה")
 
     for bad in ("—", "–", "→"):
-        if any(bad in s for s in NEW_COPY + [COLD_CSS, ADI_QUOTE, OFFICE_BG, COLD_JS, WA_FLOAT]):
+        if any(bad in s for s in NEW_COPY + [COLD_CSS, ADI_QUOTE, OFFICE_BG, COLD_JS, WA_FLOAT, PROOF_CHIPS, OFFICE_LEGEND]):
             raise BuildError(f"בטקסט החדש יש את התו האסור {bad!r}")
     OUT.write_text(h, encoding="utf-8")
     print(f"נכתב {OUT.name}: {len(h):,} תווים, {h.count('<section')} סקשנים")
