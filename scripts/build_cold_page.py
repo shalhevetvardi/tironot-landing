@@ -105,7 +105,7 @@ ADI_QUOTE = ('<figure class="cold-quote"><img src="bogrim/images/dmarad.jpg" alt
 # כי באותו סקשן יש גם את נועם סוכן ה-AI
 WORTH_IG = ('<figure class="cold-igshot"><img src="students/ig/ig-noam_zarzevsky.png" width="1040" height="280" loading="lazy" '
             'alt="נועם זרז\'בסקי: לדעתי מעל שנה חיפשתי לאן ללכת, המוני קורסים ומדריכים במחירים מצחיקים. כבוגר הקורס כבר אחרי שני מפגשים היה תהליך באוויר, היום יש משרד וירטואלי שלם שעובד">'
-            '<figcaption>נועם זרז\'בסקי, בוגר הטירונות · תגובה באינסטגרם</figcaption></figure>')
+            '</figure>')
 
 # רצועת תגובות האינסטגרם ב"נעים להכיר" נמצאת ב-index.html עצמו (scripts/build_ig_strip.py), ולכן היא מגיעה לכאן משם
 
@@ -162,7 +162,7 @@ WA_FLOAT = ('<a class="cold-wa-float" href="{wa}" target="_blank" rel="noopener 
 WHAT_SECTION = """<section class="section section--white center" id="what">
   <div class="container">
     <h2>זה לא עוד קורס. זו <span class="accent-blue">תוכנית האצה</span> של <span class="cold-nowrap">5 שבועות.</span></h2>
-    <p class="lead center cold-what-lead">בתוכנית בונים <strong>צוות של סוכני AI שמחוברים זה לזה ועובדים יחד</strong>, כמו מחלקות במשרד. לא עוד סוכן בודד, אלא מערכת שלמה.</p>
+    <p class="lead center cold-what-lead">בתוכנית בונים <strong>צוות של סוכני AI שמחוברים זה לזה ועובדים יחד</strong>, כמו מחלקות במשרד.<br>לא עוד סוכן בודד, אלא מערכת שלמה.</p>
     <p class="cold-what-example">למשל, ירדן, ד״ר לחקר המוח ויזמת, בנתה את הסוכנים שמנהלים לה חנות אינטרנטית מקצה לקצה: סוכן שכותב את הדפים של המוצרים בחנות, סוכן אמנות שמחזיק את הקו העיצובי ומייצר הדמיות וכיתובים לתמונות ולסרטונים, וסוכנת מנהלת משרד שמכנסת ישיבות צוות ומתזמרת את כל העבודה על החנות.</p>
     <div class="cold-what">
       <div class="cold-what__item"><h3>שיטה, לא עוד כלי</h3><p>לומדים איך בונים מערכת: מה כל סוכן עושה, מה הוא יודע, ואיך הוא מתחבר לשאר. זה מה שנשאר איתכם גם כשהכלים מתחלפים.</p></div>
@@ -362,16 +362,57 @@ COLD_CSS = """<style id="cold-css">
   .cold-quote img { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; grid-row: span 2; }
   .cold-quote blockquote { margin: 0; line-height: 1.6; }
   .cold-quote figcaption { font-size: 14px; opacity: .75; }
+  @media (max-width: 899px) { .cold-legend { display: none; } }
+  .cold-cta, .cold-price-cta { white-space: nowrap; }
+  @media (max-width: 520px) { .cold-cta, .cold-price-cta { font-size: 18px; padding: 14px 26px; } }
+  /* שלהבת, 24-10-2026: אין מילה שיורדת לבד לשורה הבאה. כותרות מאוזנות, ופסקאות בלי מילה יתומה בסוף */
+  h1, h2, h3, .price-promise, .tm-title { text-wrap: balance; }
+  p, li, blockquote, figcaption, .lead, .tm-lead { text-wrap: pretty; }
   /* שני סקשנים לבנים ברצף בראש הדף (שלהבת, 24-10-2026): "למי זה מתאים" ו"בוגרים מספרים" בגוון הבהיר של "וזה כבר קורה" */
   .cold-tint, #tm-quick { background: #EDF2F9; }
   .cold-tint .cold-fit__card { background: #fff; }
   .cold-fit__emp { max-width: 720px; margin: 22px auto 0; font-size: 16.5px; line-height: 1.6; color: var(--navy); }
-  .price-card__who { font-size: 14px; color: rgba(255,255,255,.85); margin: 2px 0 10px; position: relative; z-index: 1; }
+  .price-card__who { font-size: 13px; color: rgba(255,255,255,.62); margin: 10px 0 0; position: relative; z-index: 1; }
   .cold-igshot { max-width: 520px; margin: 22px auto 0; }
   .cold-igshot img { display: block; width: 100%; height: auto; border-radius: 14px; box-shadow: 0 8px 24px -12px rgba(20,9,59,.35); }
   .cold-igshot figcaption { margin-top: 8px; font-size: 14px; opacity: .75; }
 </style>
 """
+
+
+# שלהבת, 24-10-2026: "שאין מילה שבורחת פתאום לשורה מתחת". text-wrap בעיצוב לא מספיק (נמדד: הכותרות עם <br>
+# והציטוטים המקוצרים בכרטיסי הבוגרים נשארו עם מילה לבד), ולכן בין שתי המילים האחרונות בכל כותרת, בתפקיד
+# ובציטוט שבכרטיס בוגר יש רווח שלא נשבר. מחוץ ל-<script> ול-<style> בלבד.
+NO_ORPHAN = (re.compile(r'(<(h1|h2|h3)\b[^>]*>)(.*?)(</\2>)', re.S),
+             re.compile(r'(<(p|span) class="proof__(?:quote|role)"[^>]*>)(.*?)(</\2>)', re.S))
+
+
+def _glue_last_space(inner):
+    parts = re.split(r'(<[^>]+>)', inner)
+    seen_word = False
+    for k in range(len(parts) - 1, -1, -1):
+        part = parts[k]
+        if part.startswith('<'):
+            if re.match(r'<br\b', part):
+                return inner
+            continue
+        j = len(part)
+        while j > 0:
+            j -= 1
+            if part[j] == ' ' and seen_word:
+                parts[k] = part[:j] + '&nbsp;' + part[j + 1:]
+                return ''.join(parts)
+            if not part[j].isspace():
+                seen_word = True
+    return inner
+
+
+def no_orphans(h):
+    chunks = re.split(r'(<script\b.*?</script>|<style\b.*?</style>)', h, flags=re.S)
+    for k in range(0, len(chunks), 2):
+        for rx in NO_ORPHAN:
+            chunks[k] = rx.sub(lambda m: m.group(1) + _glue_last_space(m.group(3)) + m.group(4), chunks[k])
+    return ''.join(chunks)
 
 
 def build():
@@ -394,7 +435,7 @@ def build():
     # 2. הכפתור לנועם, ו"איך זה עובד" כקישור
     h = once(h, '<a href="#intro" class="btn btn--gold">איך זה עובד</a>',
              noam_button("btn--gold cold-cta", "לשיחה עם נועם בוואטסאפ") +
-             new('\n      <p class="cold-noam">נועם הוא סוכן ה-AI של אִימפּרוּב בוואטסאפ.</p>'
+             new('\n      <p class="cold-noam">נועם הוא סוכן ה-AI של אִימפּרוּב.</p>'
                  '\n      <p class="cold-first"><a href="#fit">אני רוצה להבין על מה מדובר קודם</a></p>'),
              "הכפתור במסך הראשון")
 
@@ -478,11 +519,11 @@ def build():
     h = once(h, old_list, new(PRICE_LIST) + ADI_QUOTE, "רשימת מה כלול")
     h = once(h, '<div class="price-card__offer">רוצים הטבה של <span class="nowrap">1,400&nbsp;₪</span>?</div>',
              new('<div class="price-card__offer">הטבה של <span class="nowrap">1,400&nbsp;₪</span> <span class="nowrap">ניתנת בשיחה עם נועם</span></div>'
-                 '\n      <p class="price-card__who">נועם הוא סוכן ה-AI של אִימפּרוּב בוואטסאפ.</p>'
                  '\n      <p class="price-card__after">כלומר <span class="nowrap">7,900&nbsp;₪</span> אחרי ההטבה</p>'),
              "ההטבה")
     h = once(h, '<a href="#video-noam" class="price-card__cta">צפו בסרטון למטה</a>',
-             noam_button("btn--gold cold-price-cta", "לשיחה עם נועם"), "הכפתור בכרטיס המחיר")
+             noam_button("btn--gold cold-price-cta", "לשיחה עם נועם") +
+             new('\n      <p class="price-card__who">נועם הוא סוכן ה-AI של אִימפּרוּב.</p>'), "הכפתור בכרטיס המחיר")
     # 3. הלשונית בשאלות
     h = once(h, 'aria-selected="false" tabindex="-1">למה רק 5 מפגשים?</button>',
              new('aria-selected="false" tabindex="-1">רק 5 שבועות?</button>'), "הלשונית של 5 המפגשים")
@@ -508,6 +549,7 @@ def build():
     for bad in ("—", "–", "→"):
         if any(bad in s for s in NEW_COPY + [COLD_CSS, ADI_QUOTE, WORTH_IG, OFFICE_BG, COLD_JS, WA_FLOAT, OFFICE_LEGEND]):
             raise BuildError(f"בטקסט החדש יש את התו האסור {bad!r}")
+    h = no_orphans(h)
     OUT.write_text(h, encoding="utf-8")
     print(f"נכתב {OUT.name}: {len(h):,} תווים, {h.count('<section')} סקשנים")
 
