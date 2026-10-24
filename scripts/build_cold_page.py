@@ -545,6 +545,11 @@ def build():
     h = once(h, "</head>", COLD_CSS + "</head>", "העיצוב של התוספות")
     h = once(h, "</body>", WA_FLOAT.format(wa=WA, icon=WA_ICON) + COLD_JS + "</body>", "הכפתור הצף והסקריפט")
     h = once(h, "var PAGE = 'index';", "var PAGE = 'hatzaa';", "שם הדף במדידה")
+    # שני הסקשנים שקיימים רק כאן נמדדים גם הם (שלהבת, 24-10-2026). בלעדיהם מי שעזב בהם נרשם כמי שעזב במסך הראשון.
+    # השרת (aimprove-redirector, EV_DEPTHS) והדוח (funnel-report.py, LADDER) מכירים את השמות
+    h = once(h, "      ['hero',    '.hero'],\n      ['intro',   '#intro'],",
+             "      ['hero',    '.hero'],\n      ['fit',     '#fit'],\n      ['what',    '#what'],\n      ['intro',   '#intro'],",
+             "הסקשנים במדידה")
 
     for bad in ("—", "–", "→"):
         if any(bad in s for s in NEW_COPY + [COLD_CSS, ADI_QUOTE, WORTH_IG, OFFICE_BG, COLD_JS, WA_FLOAT, OFFICE_LEGEND]):
