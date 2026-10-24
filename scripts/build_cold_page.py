@@ -64,7 +64,24 @@ def new(s):
 
 
 PROOF_CHIPS = """
-      <div class="cold-proof"><span class="cold-proof__chip"><span class="cold-proof__stars" aria-hidden="true">★★★★★</span> 5 כוכבים בגוגל</span><span class="cold-proof__chip">מאות בוגרים</span><span class="cold-proof__chip">רובם לא מרקע טכני</span></div>"""
+      <div class="cold-proof"><span class="cold-proof__chip"><span class="cold-proof__stars" aria-hidden="true">★★★★★</span> 5 כוכבים בגוגל</span><span class="cold-proof__chip">רוב הבוגרים לא מרקע טכני</span></div>"""
+
+# "למי זה מתאים": הכאב לפני ההצעה. הכאבים מבנק המסרים המוכחים (זה לא רץ בלעדיי, עובדים, כלים בלי שיטה)
+# ומהפרסונה שאושרה (רעיון בראש בלי לדעת אם יצליח; לא מתכנת; מי שרוצה שיבנו לו - לא מתאים)
+FIT_SECTION = """<section class="section section--white center cold-fit" id="fit">
+  <div class="container">
+    <h2>למי זה <span class="accent-blue">מתאים?</span></h2>
+    <p class="lead center cold-fit__lead">לבעלי עסקים, לעצמאים ולשכירים שמכירים לפחות אחד מאלה:</p>
+    <ul class="cold-fit__list">
+      <li><strong>אתם עובדים עם AI כל יום, ועדיין הכול עובר דרככם.</strong> בלי ההעתק-הדבק שלכם, שום דבר לא זז.</li>
+      <li><strong>יש לכם רעיון למשהו שתרצו לבנות.</strong> ראיתם מה אחרים עושים עם סוכנים, ולא ברור לכם מאיפה מתחילים, ואם בכלל תצליחו.</li>
+      <li><strong>ניסיתם לבד.</strong> סרטונים, מדריכים, עוד כלי חדש כל שבוע. נשארתם עם הרבה חלקים, ובלי משהו שעובד ביחד.</li>
+      <li><strong>יש עבודה שחוזרת על עצמה ושורפת לכם שעות כל שבוע,</strong> ואתם כבר שואלים את עצמכם אם לגייס מישהו בשבילה.</li>
+      <li><strong>אתם לא מתכנתים,</strong> ולא מתכוונים להיות.</li>
+    </ul>
+    <p class="cold-fit__not">ומי שמחפש שמישהו יבנה בשבילו - זה לא המקום. כאן בונים בעצמכם, עם ליווי צמוד.</p>
+  </div>
+</section>"""
 
 # תגובה מאינסטגרם (Q-0316 במאגר "ציטוטים לדפים"): ליד המחיר, כי היא עונה על "שווה את הכסף?" מפי מי שלא טכנית
 ADI_QUOTE = ('<figure class="cold-quote"><img src="bogrim/images/sigal.jpg" alt="סיגל יער" loading="lazy">'
@@ -294,7 +311,14 @@ COLD_CSS = """<style id="cold-css">
   .cold-proof__chip { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 50px;
     background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.28); color: #fff; font-size: 14px; font-weight: 600; }
   .cold-proof__stars { color: var(--gold); letter-spacing: 1px; }
-  @media (max-width: 520px) { .cold-proof { gap: 6px; } .cold-proof__chip { font-size: 12.5px; padding: 4px 10px; } .cold-proof__chip:nth-child(3) { display: none; } }
+  @media (max-width: 520px) { .cold-proof { gap: 6px; } .cold-proof__chip { font-size: 12.5px; padding: 4px 10px; } }
+  .cold-brand { display: flex; flex-direction: column; gap: 8px; }
+  .cold-brand__sub { color: rgba(255,255,255,.88); font-weight: 700; font-size: clamp(16px, 2vw, 20px); line-height: 1.2; }
+  .cold-fit__lead { max-width: 720px; margin-inline: auto; }
+  .cold-fit__list { list-style: none; padding: 0; margin: 26px auto 0; max-width: 760px; display: grid; gap: 12px; text-align: right; }
+  .cold-fit__list li { background: #f6f7fb; border: 1px solid rgba(20, 9, 59, .1); border-radius: 16px; padding: 14px 18px; line-height: 1.6; color: var(--navy); }
+  .cold-fit__list strong { color: var(--navy); }
+  .cold-fit__not { max-width: 720px; margin: 22px auto 0; font-size: 15.5px; color: var(--navy); opacity: .75; }
   .cold-underline { white-space: nowrap; text-decoration: underline; text-decoration-color: var(--gold); text-decoration-thickness: 3px; text-underline-offset: 6px; }
   .price-promise { text-wrap: balance; }
   .price-card__offer { text-wrap: balance; }
@@ -337,7 +361,11 @@ def build():
 
     # 1. המסך הראשון
     h = once(h, '<span class="eyebrow">הופכים אתכם למי שבונה סוכני AI לבד.</span>',
-             new(PROOF_CHIPS.strip() + '\n      <span class="eyebrow">תוכנית האצה של 5 שבועות</span>'), "התווית במסך הראשון")
+             new(PROOF_CHIPS.strip()), "התווית במסך הראשון")
+    # "תוכנית האצה" היא תת-כותרת של השם, לא תג באותה שורה עם ההוכחות
+    h = once(h, '<span class="hero__brandname">טירונות סוכנים</span></div>',
+             new('<span class="cold-brand"><span class="hero__brandname">טירונות סוכנים</span>'
+                 '<span class="cold-brand__sub">תוכנית האצה של 5 שבועות</span></span></div>'), "השם במסך הראשון")
     h = once(h, '<p class="hero__sub">ואת השיטה והכלים לבנות כל סוכן, מערכת ותהליך שתצטרכו - לבד, בלי להיתקע.</p>',
              new('<p class="hero__sub">שיטה מסודרת לבנות סוכני AI שמחוברים זה לזה ועובדים יחד, עם ליווי צמוד ובלי לדעת לתכנת.</p>'),
              "שורת המשנה")
@@ -345,7 +373,7 @@ def build():
     h = once(h, '<a href="#intro" class="btn btn--gold">איך זה עובד</a>',
              noam_button("btn--gold cold-cta", "לשיחה עם נועם בוואטסאפ") +
              new('\n      <p class="cold-noam">נועם הוא סוכן ה-AI של אִימפּרוּב בוואטסאפ.</p>'
-                 '\n      <p class="cold-first"><a href="#what">אני רוצה להבין על מה מדובר קודם</a></p>'),
+                 '\n      <p class="cold-first"><a href="#fit">אני רוצה להבין על מה מדובר קודם</a></p>'),
              "הכפתור במסך הראשון")
 
     # הסיפור ליד המשרד, וסקשן "מה בדיוק קונים כאן" אחריו
@@ -365,9 +393,9 @@ def build():
     story = story[:k] + new(OFFICE_HINT) + story[k:]
     h = h[:i] + story + h[j:]
 
-    # "מה בדיוק קונים כאן" מיד אחרי המסך הראשון: קורא קר צריך קודם להבין מה ההצעה
+    # אחרי המסך הראשון: קודם "למי זה מתאים" (הכאב), ואז "מה בדיוק קונים כאן" (ההצעה)
     hero_end = h.find('</section>', h.find('<section class="hero">')) + len('</section>')
-    h = h[:hero_end] + "\n\n" + new(WHAT_SECTION) + h[hero_end:]
+    h = h[:hero_end] + "\n\n" + new(FIT_SECTION) + "\n\n" + new(WHAT_SECTION) + h[hero_end:]
 
     # רצועת אינסטגרם מתחת לרצועת ההודעות ב"נעים להכיר"
     i = h.find('data-slot="intro-shots"')

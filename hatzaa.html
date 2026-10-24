@@ -982,7 +982,14 @@
   .cold-proof__chip { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 50px;
     background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.28); color: #fff; font-size: 14px; font-weight: 600; }
   .cold-proof__stars { color: var(--gold); letter-spacing: 1px; }
-  @media (max-width: 520px) { .cold-proof { gap: 6px; } .cold-proof__chip { font-size: 12.5px; padding: 4px 10px; } .cold-proof__chip:nth-child(3) { display: none; } }
+  @media (max-width: 520px) { .cold-proof { gap: 6px; } .cold-proof__chip { font-size: 12.5px; padding: 4px 10px; } }
+  .cold-brand { display: flex; flex-direction: column; gap: 8px; }
+  .cold-brand__sub { color: rgba(255,255,255,.88); font-weight: 700; font-size: clamp(16px, 2vw, 20px); line-height: 1.2; }
+  .cold-fit__lead { max-width: 720px; margin-inline: auto; }
+  .cold-fit__list { list-style: none; padding: 0; margin: 26px auto 0; max-width: 760px; display: grid; gap: 12px; text-align: right; }
+  .cold-fit__list li { background: #f6f7fb; border: 1px solid rgba(20, 9, 59, .1); border-radius: 16px; padding: 14px 18px; line-height: 1.6; color: var(--navy); }
+  .cold-fit__list strong { color: var(--navy); }
+  .cold-fit__not { max-width: 720px; margin: 22px auto 0; font-size: 15.5px; color: var(--navy); opacity: .75; }
   .cold-underline { white-space: nowrap; text-decoration: underline; text-decoration-color: var(--gold); text-decoration-thickness: 3px; text-underline-offset: 6px; }
   .price-promise { text-wrap: balance; }
   .price-card__offer { text-wrap: balance; }
@@ -1023,14 +1030,13 @@
   <nav class="nav"><div class="nav__brand"><img class="nav__logo" src="aimprove-logo-he-white.png" width="439" height="76" alt="אימפרוב"></div></nav>
   <div class="hero__inner">
     <div class="hero__text">
-      <div class="hero__brand"><img class="hero__logo" src="tironot-logo-white.png" alt="טירונות סוכנים" /><span class="hero__brandname">טירונות סוכנים</span></div>
-      <div class="cold-proof"><span class="cold-proof__chip"><span class="cold-proof__stars" aria-hidden="true">★★★★★</span> 5 כוכבים בגוגל</span><span class="cold-proof__chip">מאות בוגרים</span><span class="cold-proof__chip">רובם לא מרקע טכני</span></div>
-      <span class="eyebrow">תוכנית האצה של 5 שבועות</span>
+      <div class="hero__brand"><img class="hero__logo" src="tironot-logo-white.png" alt="טירונות סוכנים" /><span class="cold-brand"><span class="hero__brandname">טירונות סוכנים</span><span class="cold-brand__sub">תוכנית האצה של 5 שבועות</span></span></div>
+      <div class="cold-proof"><span class="cold-proof__chip"><span class="cold-proof__stars" aria-hidden="true">★★★★★</span> 5 כוכבים בגוגל</span><span class="cold-proof__chip">רוב הבוגרים לא מרקע טכני</span></div>
       <h1>אחרי 5 שבועות -<br><span class="accent">יש לכם צוות AI</span> שעובד בשבילכם.</h1>
       <p class="hero__sub">שיטה מסודרת לבנות סוכני AI שמחוברים זה לזה ועובדים יחד, עם ליווי צמוד ובלי לדעת לתכנת.</p>
       <a href="https://wa.me/972559397247?text=%D7%A9%D7%9C%D7%97%D7%95%20%D7%90%D7%AA%20%D7%94%D7%94%D7%95%D7%93%D7%A2%D7%94%20%D7%94%D7%96%D7%95%20%D7%9B%D7%93%D7%99%20%D7%9C%D7%94%D7%AA%D7%97%D7%99%D7%9C%20%D7%9C%D7%93%D7%91%D7%A8%20%D7%A2%D7%9D%20%D7%A0%D7%95%D7%A2%D7%9D" class="btn btn--gold cold-cta" target="_blank" rel="noopener noreferrer"><svg class="wa-ic" viewBox="0 0 24 24" fill="#25D366" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg><span>לשיחה עם נועם בוואטסאפ</span></a>
       <p class="cold-noam">נועם הוא סוכן ה-AI של אִימפּרוּב בוואטסאפ.</p>
-      <p class="cold-first"><a href="#what">אני רוצה להבין על מה מדובר קודם</a></p>
+      <p class="cold-first"><a href="#fit">אני רוצה להבין על מה מדובר קודם</a></p>
     </div>
     <div class="hero__visual">
       <div class="hero-office">
@@ -1059,6 +1065,21 @@
         <p class="hero-office__cap">זה משרד ה-AI שמריץ את אימפרוב בלי עובדים. כזה תבנו גם אתם.</p>
       </div>
     </div>
+  </div>
+</section>
+
+<section class="section section--white center cold-fit" id="fit">
+  <div class="container">
+    <h2>למי זה <span class="accent-blue">מתאים?</span></h2>
+    <p class="lead center cold-fit__lead">לבעלי עסקים, לעצמאים ולשכירים שמכירים לפחות אחד מאלה:</p>
+    <ul class="cold-fit__list">
+      <li><strong>אתם עובדים עם AI כל יום, ועדיין הכול עובר דרככם.</strong> בלי ההעתק-הדבק שלכם, שום דבר לא זז.</li>
+      <li><strong>יש לכם רעיון למשהו שתרצו לבנות.</strong> ראיתם מה אחרים עושים עם סוכנים, ולא ברור לכם מאיפה מתחילים, ואם בכלל תצליחו.</li>
+      <li><strong>ניסיתם לבד.</strong> סרטונים, מדריכים, עוד כלי חדש כל שבוע. נשארתם עם הרבה חלקים, ובלי משהו שעובד ביחד.</li>
+      <li><strong>יש עבודה שחוזרת על עצמה ושורפת לכם שעות כל שבוע,</strong> ואתם כבר שואלים את עצמכם אם לגייס מישהו בשבילה.</li>
+      <li><strong>אתם לא מתכנתים,</strong> ולא מתכוונים להיות.</li>
+    </ul>
+    <p class="cold-fit__not">ומי שמחפש שמישהו יבנה בשבילו - זה לא המקום. כאן בונים בעצמכם, עם ליווי צמוד.</p>
   </div>
 </section>
 
