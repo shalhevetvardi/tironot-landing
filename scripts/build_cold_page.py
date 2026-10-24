@@ -112,7 +112,7 @@ OFFICE_LEGEND = """
       </div>"""
 
 OFFICE_HINT = """
-      <p class="cold-office__enter"><button type="button" class="cold-office__hint">להיכנס למשרד של אִימפּרוּב ולשחק בו <span aria-hidden="true">←</span></button></p>
+      <p class="cold-office__enter"><button type="button" class="cold-office__hint">להיכנס למשרד של אִימפּרוּב ולשחק בו</button></p>
       <p class="cold-office__hint-sub">זה המשרד האמיתי של שלהבת. מסתובבים בו, לוחצים על כל סוכן ורואים מה הוא עושה ולמה הוא מחובר.</p>"""
 
 WA_FLOAT = ('<a class="cold-wa-float" href="{wa}" target="_blank" rel="noopener noreferrer" aria-label="שאלות? לשיחה עם נועם בוואטסאפ">'
