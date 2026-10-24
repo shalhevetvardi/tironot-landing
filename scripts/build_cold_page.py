@@ -16,6 +16,8 @@
 
 הרצה: python3 scripts/build_cold_page.py
 """
+import html
+import json
 import re
 import sys
 from pathlib import Path
@@ -64,10 +66,19 @@ def new(s):
 PROOF_CHIPS = """
       <div class="cold-proof"><span class="cold-proof__chip"><span class="cold-proof__stars" aria-hidden="true">★★★★★</span> 5 כוכבים בגוגל</span><span class="cold-proof__chip">מאות בוגרים</span><span class="cold-proof__chip">רובם לא מרקע טכני</span></div>"""
 
-ADI_QUOTE = ('<figure class="cold-quote"><span class="cold-quote__g" aria-hidden="true">G</span>'
-             '<blockquote>"עוד לא סיימתי ללמוד, וכבר יש בשימוש אצלנו סקיל שבודק את כתיבת הצוות בסגנון שלי '
-             '<span class="tm-hl">ורץ עבורם במקומי.</span>"</blockquote>'
-             '<figcaption>תמר פיגנבלט · ביקורת בגוגל, ★★★★★</figcaption></figure>')
+# תגובה מאינסטגרם (Q-0316 במאגר "ציטוטים לדפים"): ליד המחיר, כי היא עונה על "שווה את הכסף?" מפי מי שלא טכנית
+ADI_QUOTE = ('<figure class="cold-quote"><img src="bogrim/images/sigal.jpg" alt="סיגל יער" loading="lazy">'
+             '<blockquote>"לפני הקורס תכננתי להביא איש מקצוע. '
+             '<span class="tm-hl">אחרי שבועיים של טירונות</span> הרגשתי שאני נוסקת לגג העולם."</blockquote>'
+             '<figcaption>סיגל יער, עורכת דין, בת 58 · תגובה באינסטגרם</figcaption></figure>')
+
+# רצועה שנייה ב"נעים להכיר": תגובות בוגרים באינסטגרם (Q-0308 עד Q-0319). אותו מנגנון רצועה כמו ההודעות (data-strip)
+IG_COMMENTS = json.loads((Path(__file__).parent / "cold-page-data" / "ig-comments.json").read_text(encoding="utf-8"))
+IG_STRIP = ('\n    <p class="tm-strip-cap">ומה בוגרים כותבים עליי באינסטגרם</p>'
+            '\n    <div class="tm-shots tm-shots--ig" data-strip="1">' + "".join(
+                f'<figure class="tm-shot"><button type="button" aria-label="הגדלת התגובה של {html.escape(c["name"])}">'
+                f'<img src="{c["src"]}" alt="{html.escape(c["name"] + ": " + c["alt"])}" loading="lazy"></button></figure>'
+                for c in IG_COMMENTS) + '</div>')
 
 PRICE_LIST = """<ul class="price-includes">
       <li><span><strong>5 שבועות של שיעורים וליווי שוטף</strong> - בתל אביב או בזום. בכל שבוע לומדים שלב חדש ובונים אותו יחד, על העבודה שלכם</span></li>
@@ -306,7 +317,11 @@ COLD_CSS = """<style id="cold-css">
   .cold-what-more a { color: var(--blue); font-weight: 700; text-decoration: underline; text-underline-offset: 4px; }
   .cold-price-cta { display: inline-flex; align-items: center; gap: 10px; margin-top: 12px; }
   .cold-quote { display: grid; grid-template-columns: 52px 1fr; gap: 4px 12px; align-items: start; max-width: 640px; margin: 8px auto 28px; text-align: right; background: #f6f7fb; border: 1px solid rgba(20, 9, 59, .1); border-radius: 18px; padding: 16px; }
-  .cold-quote__g { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; grid-row: span 2; background: #fff; border: 1px solid rgba(20,9,59,.12); color: #4285F4; font-weight: 800; font-size: 20px; }
+  .cold-quote img { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; grid-row: span 2; }
+  /* תגובות אינסטגרם הן צילומים רחבים ונמוכים: כרטיס נמוך ולבן, ולא בגובה של הודעת וואטסאפ */
+  .tm-shots--ig.is-strip { --strip-h: 116px; }
+  .tm-shots--ig.is-strip .tm-shot, .tm-shots--ig.is-strip .tm-shot button { background: #fff; }
+  @media (min-width: 900px) { .tm-shots--ig.is-strip { --strip-h: 146px; } }
   .cold-quote blockquote { margin: 0; line-height: 1.6; }
   .cold-quote figcaption { font-size: 14px; opacity: .75; }
 </style>
@@ -351,6 +366,13 @@ def build():
     # "מה בדיוק קונים כאן" מיד אחרי המסך הראשון: קורא קר צריך קודם להבין מה ההצעה
     hero_end = h.find('</section>', h.find('<section class="hero">')) + len('</section>')
     h = h[:hero_end] + "\n\n" + new(WHAT_SECTION) + h[hero_end:]
+
+    # רצועת אינסטגרם מתחת לרצועת ההודעות ב"נעים להכיר"
+    i = h.find('data-slot="intro-shots"')
+    j = h.find('<!-- /tm-slot --></div>', i) + len('<!-- /tm-slot --></div>')
+    if i < 0 or j < len('<!-- /tm-slot --></div>'):
+        raise BuildError("רצועת ההודעות ב'נעים להכיר' לא נמצאה")
+    h = h[:j] + new(IG_STRIP) + h[j:]
 
     # 5. בלי הבטחות מוחלטות בטקסט של אִימפּרוּב
     h = once(h, 'את השיטה השלמה - לבנות כל סוכן, כל תהליך, כל דבר שרץ אוטומטית. כל מה שתצטרכו, גם בעוד שנה, גם משהו שעוד לא קיים.',
