@@ -32,6 +32,10 @@ BASE = "app5fKvxuzbFb0stR"
 T_CLICKS = "tblhpYSrbQyXwhen7"
 T_LEADS = "tblWrBSnk2GxQYOXI"
 EVENTS_TABLE_NAME = "אירועי משפך - דף נחיתה"
+# מ-24-10-2026 טבלת האירועים בבסיס משלה (אותו שם): "כל הלידים" עבר את מגבלת 50,000 השורות,
+# והטבלה הזו גדלה בכ-19,000 שורות בחודש. הקליקים והלידים נשארו ב-BASE.
+EVENTS_BASE = "appsmXIiJbUfepFhC"
+_EVENTS_TABLE_IDS = set()
 
 # סדר הסקשנים בדף - חייב להתאים ל-SECTIONS בביקון שב-index.html
 LADDER = ["hero", "intro", "story", "proofs", "roadmap", "price", "video", "final"]
@@ -70,7 +74,8 @@ def fetch_all(table):
             p["filterByFormula"] = "NOT({bot})"
         if offset:
             p["offset"] = offset
-        d = _get(f"{BASE}/{urllib.parse.quote(table)}", p)
+        base = EVENTS_BASE if table in _EVENTS_TABLE_IDS else BASE
+        d = _get(f"{base}/{urllib.parse.quote(table)}", p)
         out += d.get("records", [])
         offset = d.get("offset")
         if not offset:
@@ -78,8 +83,9 @@ def fetch_all(table):
 
 
 def find_events_table():
-    for t in _get(f"meta/bases/{BASE}/tables")["tables"]:
+    for t in _get(f"meta/bases/{EVENTS_BASE}/tables")["tables"]:
         if t["name"] == EVENTS_TABLE_NAME:
+            _EVENTS_TABLE_IDS.add(t["id"])
             return t["id"]
     return None
 
