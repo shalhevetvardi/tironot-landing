@@ -123,7 +123,11 @@
 
        ⚖️ התנאים שנשמרים: הפיקסל והאנליטיקס נטענים רק אחרי אישור, הסירוב קל
        בדיוק כמו האישור (אותו גודל, לחיצה אחת), ומי שלא בחר מקבל את הדף במלואו.
-       בפס יש קישור למדיניות הפרטיות, שלא היה בחלון. */
+       בפס יש קישור למדיניות הפרטיות, שלא היה בחלון.
+
+       24-10-2026, מאוחר יותר: הפס הוגדל לגיליון בתחתית, שתופס כשליש מהמסך בטלפון,
+       לבקשת שלהבת ("הוא צריך יותר להציק"), כדי שיותר מבקרים יבחרו. המסך הראשון
+       עדיין נראה מעליו, והגלילה לא נחסמת. */
     function showBanner() {
       if (bar) return;
       bar = document.createElement('div');
@@ -132,15 +136,20 @@
       bar.setAttribute('aria-label', 'הסכמה לעוגיות שיווקיות');
       bar.style.cssText = 'position:fixed;left:0;right:0;bottom:0;z-index:2147483000;'
         + 'background:#14093B;color:#fff;box-shadow:0 -6px 24px rgba(0,0,0,.28);'
-        + 'padding:12px 16px calc(12px + env(safe-area-inset-bottom));'
-        + 'font-family:"Rubik",Arial,sans-serif;font-size:13.5px;line-height:1.5;'
+        + 'border-radius:20px 20px 0 0;min-height:min(36vh,320px);display:flex;align-items:center;'
+        + 'padding:22px 20px calc(22px + env(safe-area-inset-bottom));'
+        + 'font-family:"Rubik",Arial,sans-serif;font-size:15.5px;line-height:1.55;'
         + (reduceMotion ? '' : 'transform:translateY(100%);transition:transform .3s ease-out;');
 
       var inner = document.createElement('div');
-      inner.style.cssText = 'max-width:960px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;';
+      inner.style.cssText = 'width:100%;max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:16px;text-align:right;';
+
+      var title = document.createElement('div');
+      title.textContent = 'רגע לפני שנתחיל';
+      title.style.cssText = 'font-size:20px;font-weight:700;color:#fff;margin-bottom:-6px;';
 
       var text = document.createElement('div');
-      text.style.cssText = 'flex:1 1 320px;color:rgba(255,255,255,.9);';
+      text.style.cssText = 'color:rgba(255,255,255,.9);';
       text.appendChild(document.createTextNode('אנחנו משתמשים בעוגיות שיווקיות (פייסבוק, גוגל) כדי להבין מה עובד. הדף עובד גם בלי. '));
       var policy = document.createElement('a');
       policy.href = 'https://aimprove.co.il/privacy-policy/';
@@ -151,19 +160,19 @@
       text.appendChild(policy);
 
       var btnRow = document.createElement('div');
-      btnRow.style.cssText = 'display:flex;gap:8px;flex:0 0 auto;';
+      btnRow.style.cssText = 'display:flex;gap:10px;';
 
       var accept = document.createElement('button');
       accept.type = 'button';
       accept.textContent = 'מאשר/ת';
-      accept.style.cssText = 'min-width:96px;background:#FFD747;color:#14093B;border:1px solid #FFD747;border-radius:10px;'
-        + 'padding:8px 16px;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit;';
+      accept.style.cssText = 'flex:1;background:#FFD747;color:#14093B;border:1px solid #FFD747;border-radius:12px;'
+        + 'padding:14px 16px;font-weight:700;font-size:16px;cursor:pointer;font-family:inherit;';
 
       var decline = document.createElement('button');
       decline.type = 'button';
       decline.textContent = 'לא תודה';
-      decline.style.cssText = 'min-width:96px;background:transparent;color:#fff;border:1px solid rgba(255,255,255,.55);'
-        + 'border-radius:10px;padding:8px 16px;font-weight:600;font-size:14px;cursor:pointer;font-family:inherit;';
+      decline.style.cssText = 'flex:1;background:transparent;color:#fff;border:1px solid rgba(255,255,255,.55);'
+        + 'border-radius:12px;padding:14px 16px;font-weight:600;font-size:16px;cursor:pointer;font-family:inherit;';
 
       function close() {
         try { bar.remove(); } catch (e) {}
@@ -185,6 +194,7 @@
 
       btnRow.appendChild(accept);
       btnRow.appendChild(decline);
+      inner.appendChild(title);
       inner.appendChild(text);
       inner.appendChild(btnRow);
       bar.appendChild(inner);
