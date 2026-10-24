@@ -76,10 +76,13 @@ def fetch_d1_events(page=None):
             return out
     raise RuntimeError("events API stopped at 400 pages")
 
-# סדר הסקשנים בדף - חייב להתאים ל-SECTIONS בביקון שב-index.html
-LADDER = ["hero", "intro", "story", "proofs", "roadmap", "price", "video", "final"]
+# סדר הסקשנים בדף - חייב להתאים ל-SECTIONS בביקון שב-index.html. "fit" ו-"what" קיימים רק בגרסה לקהל קר
+# (hatzaa.html, מ-24-10-2026), מיד אחרי המסך הראשון. הדף הקיים לא שולח אותם, ולכן אצלו הסולם לא משתנה
+LADDER = ["hero", "fit", "what", "intro", "story", "proofs", "roadmap", "price", "video", "final"]
 HEB = {
     "hero": "הכותרת הראשית (לא גללו כמעט בכלל)",
+    "fit": "למי זה מתאים (רק בגרסה לקהל קר)",
+    "what": "מה בדיוק קונים כאן (רק בגרסה לקהל קר)",
     "intro": "פתיח - למי זה מיועד",
     "story": "הסיפור",
     "proofs": "המלצות והוכחות",
