@@ -281,7 +281,8 @@ COLD_CSS = """<style id="cold-css">
   .cold-proof__chip { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 50px;
     background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.28); color: #fff; font-size: 14px; font-weight: 600; }
   .cold-proof__stars { color: var(--gold); letter-spacing: 1px; }
-  .cold-underline { text-decoration: underline; text-decoration-color: var(--gold); text-decoration-thickness: 3px; text-underline-offset: 6px; }
+  @media (max-width: 520px) { .cold-proof { gap: 6px; } .cold-proof__chip { font-size: 12.5px; padding: 4px 10px; } .cold-proof__chip:nth-child(3) { display: none; } }
+  .cold-underline { white-space: nowrap; text-decoration: underline; text-decoration-color: var(--gold); text-decoration-thickness: 3px; text-underline-offset: 6px; }
   .price-promise { text-wrap: balance; }
   .price-card__offer { text-wrap: balance; }
   .tm-sec--inside { padding-top: 72px; }
