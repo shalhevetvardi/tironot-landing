@@ -916,10 +916,36 @@
 .tm-qm-modal .tm-qm__who { padding-top: 16px; }
 </style>
 <style id="cold-css">
+  .nav { padding-top: 18px; }
+  .nav__logo { height: 18px; opacity: .92; }
+  @media (max-width: 600px) { .nav__logo { height: 16px; } }
   .cold-cta { display: inline-flex; align-items: center; gap: 10px; }
   .cold-cta .wa-ic, .cold-price-cta .wa-ic { width: 22px; height: 22px; }
   .cold-noam { font-size: 14px; opacity: .9; margin: 12px 0 0; }
-  .cold-noam a { color: inherit; text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; }
+  .cold-first { margin: 14px 0 0; font-size: 15px; }
+  .cold-first a { color: inherit; text-decoration: underline; text-underline-offset: 4px; }
+  .cold-nowrap { white-space: nowrap; }
+  #story h2 { text-wrap: balance; }
+  .cold-story-office { display: none; margin: 0; }
+  @media (min-width: 900px) {
+    .cold-story-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; align-items: center; max-width: 1180px; margin: 0 auto; }
+    .cold-story-grid .story { max-width: none; margin: 0; }
+    .cold-story-grid .story h2, .cold-story-grid .story__payoff { text-align: right; }
+    .cold-story-office { display: block; position: relative; aspect-ratio: 16 / 10; }
+    .cold-story-office picture, .cold-story-office img { display: block; width: 100%; height: 100%; object-fit: contain; }
+    .cold-story-office iframe { position: absolute; inset: 0 0 34px; width: 100%; height: calc(100% - 34px); border: 0; border-radius: 18px; opacity: 0; transition: opacity .5s; pointer-events: none; }
+    .cold-story-office.is-live iframe { opacity: 1; }
+    .cold-story-office.is-live picture { opacity: 0; }
+    .cold-story-office figcaption { position: absolute; inset-inline: 0; bottom: 0; text-align: center; font-size: 14px; color: rgba(255,255,255,.8); }
+  }
+  .cold-what-lead { max-width: 720px; margin-inline: auto; }
+  .cold-what { display: grid; gap: 14px; max-width: 980px; margin: 28px auto 0; text-align: right; }
+  @media (min-width: 760px) { .cold-what { grid-template-columns: 1fr 1fr; } }
+  .cold-what__item { background: #fff; border: 1px solid rgba(20, 9, 59, .14); border-radius: 18px; padding: 20px 22px; }
+  .cold-what__item h3 { margin: 0 0 6px; font-size: 19px; color: var(--navy); }
+  .cold-what__item p { margin: 0; line-height: 1.65; }
+  .cold-what-more { margin-top: 22px; }
+  .cold-what-more a { color: var(--blue); font-weight: 700; text-decoration: underline; text-underline-offset: 4px; }
   .cold-price-cta { display: inline-flex; align-items: center; gap: 10px; margin-top: 12px; }
   .cold-quote { display: grid; grid-template-columns: 52px 1fr; gap: 4px 12px; align-items: start; max-width: 640px; margin: 8px auto 28px; text-align: right; background: #f6f7fb; border: 1px solid rgba(20, 9, 59, .1); border-radius: 18px; padding: 16px; }
   .cold-quote img { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; grid-row: span 2; }
@@ -939,7 +965,8 @@
       <h1>אחרי 5 שבועות -<br><span class="accent">יש לכם צוות AI</span> שעובד בשבילכם.</h1>
       <p class="hero__sub">לומדים לבנות בעצמכם סוכנים שעושים עבודה אמיתית, עם ליווי צמוד ובלי לדעת לתכנת.</p>
       <a href="https://wa.me/972559397247?text=%D7%A9%D7%9C%D7%97%D7%95%20%D7%90%D7%AA%20%D7%94%D7%94%D7%95%D7%93%D7%A2%D7%94%20%D7%94%D7%96%D7%95%20%D7%9B%D7%93%D7%99%20%D7%9C%D7%94%D7%AA%D7%97%D7%99%D7%9C%20%D7%9C%D7%93%D7%91%D7%A8%20%D7%A2%D7%9D%20%D7%A0%D7%95%D7%A2%D7%9D" class="btn btn--gold cold-cta" target="_blank" rel="noopener noreferrer"><svg class="wa-ic" viewBox="0 0 24 24" fill="#25D366" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg><span>לשיחה עם נועם בוואטסאפ</span></a>
-      <p class="cold-noam">נועם הוא סוכן ה-AI של אִימפּרוּב. <a href="#intro">קודם לראות איך זה עובד</a></p>
+      <p class="cold-noam">נועם הוא סוכן ה-AI של אִימפּרוּב בוואטסאפ.</p>
+      <p class="cold-first"><a href="#what">אני רוצה להבין על מה מדובר קודם</a></p>
     </div>
     <div class="hero__visual">
       <div class="hero-office">
@@ -1065,13 +1092,33 @@
     <i style="width:120px;height:120px;bottom:30px;right:6%;background:var(--purple);opacity:.1;transform:rotate(-12deg)"></i>
   </div>
   <div class="container">
+    <div class="cold-story-grid">
     <div class="story">
-      <h2>תארו לכם שמישהו לוקח אתכם ביד ועוזר לכם לבנות את <span class="accent-gold">משרד ה-AI שלכם.</span></h2>
+      <h2>תארו לכם שמישהו לוקח אתכם ביד ועוזר לכם לבנות את <span class="accent-gold cold-nowrap">משרד ה-AI שלכם.</span></h2>
       <p>לא זורק עליכם עוד קורס מצולם שתעברו לבד "מתישהו". לא מציף אתכם בכלים. לוקח אתכם ביד - עם חומר לימודי ברור ומשימות מדויקות - וצעד אחרי צעד, אתם בונים משהו אמיתי משלכם:</p>
       <p>סוכנים שעושים את העבודה שאתם הכי שונאים לעשות. תהליכים שרצים בלי שאתם נוגעים בהם. צוות שלם שעובד בשבילכם - ואתם אלה שבניתם אותו.</p>
       <p>ותוך כדי, קורה הדבר הכי חשוב: <span class="hl">אתם לומדים את השיטה.</span> לא "איך מפעילים את הכלי הזה". את השיטה שלפיה בונים סוכנים ותהליכים שרצים לבד, והיא ממשיכה לעבוד גם כשהכלים משתנים.</p>
       <p class="story__payoff">ופתאום אתם שוב האדם שיודע.<br>שלא תקוע ולא תלוי באף אחד, ויודע לבנות לעצמו את מה שהוא צריך.</p>
     </div>
+    <figure class="cold-story-office" id="cold-office">
+      <picture><source srcset="office-hero-desktop.webp" type="image/webp"><img src="office-hero-desktop.png" width="1920" height="1080" alt="המשרד הווירטואלי של אִימפּרוּב: מחלקות של סוכני AI" loading="lazy"></picture>
+      <figcaption>זה המשרד שמריץ את אִימפּרוּב. כל מחלקה בו מלאה בסוכנים שעושים עבודה.</figcaption>
+    </figure>
+    </div>
+  </div>
+</section>
+
+<section class="section section--white center" id="what">
+  <div class="container">
+    <h2>מה בדיוק <span class="accent-blue">קונים כאן?</span></h2>
+    <p class="lead center cold-what-lead">תוכנית האצה של 5 שבועות, שבה אתם לומדים לבנות בעצמכם סוכני AI, ובונים אותם תוך כדי על העבודה שלכם.</p>
+    <div class="cold-what">
+      <div class="cold-what__item"><h3>5 מפגשי לייב עם שלהבת</h3><p>פעם בשבוע, 3 שעות, בתל אביב או בזום. בכל מפגש לומדים שלב ובונים אותו יחד.</p></div>
+      <div class="cold-what__item"><h3>הכנה לפני שמתחילים</h3><p>מקימים איתכם את סביבת העבודה, ובונים את הסוכן הראשון עוד לפני המפגש הראשון.</p></div>
+      <div class="cold-what__item"><h3>ליווי בין המפגשים</h3><p>מפגשי חידוד שבועיים בזום, צוות שעוזר כשנתקעים, וסוכני AI של אִימפּרוּב שמלווים את הבנייה.</p></div>
+      <div class="cold-what__item"><h3>מה יוצאים איתו</h3><p>סוכנים ותהליכים שכבר עובדים בשבילכם, והשיטה לבנות לבד את הבאים.</p></div>
+    </div>
+    <p class="cold-what-more"><a href="#price">לפרטים המלאים ולמחיר</a></p>
   </div>
 </section>
 
@@ -2761,6 +2808,53 @@ window.interdeal = {
   });
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', window.tmQuoteMarquees);
   else window.tmQuoteMarquees();
+})();
+</script>
+<script id="cold-js">
+(function () {
+  try {
+    var host = document.getElementById('cold-office');
+    if (!host || !window.matchMedia) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (!window.matchMedia('(min-width: 900px) and (pointer: fine)').matches) return;
+    var started = false, dead = false, lastBeat = 0, f = null, watch = null;
+    function fail() {
+      if (dead) return; dead = true;
+      if (watch) clearInterval(watch);
+      if (f) f.remove();
+      host.classList.remove('is-live');
+    }
+    function mount() {
+      if (started) return; started = true;
+      f = document.createElement('iframe');
+      f.src = 'https://virtualoffice.aimprove.co.il/scene-embed';
+      f.title = 'המשרד הווירטואלי - סצנה תלת-ממדית';
+      f.setAttribute('aria-hidden', 'true');
+      f.setAttribute('tabindex', '-1');
+      host.appendChild(f);
+      addEventListener('message', function (e) {
+        if (!e.data || dead) return;
+        if (e.data.type === 'vo-scene-ready') { lastBeat = Date.now(); host.classList.add('is-live'); }
+        else if (e.data.type === 'vo-scene-alive') lastBeat = Date.now();
+        else if (e.data.type === 'vo-scene-failed') fail();
+      });
+      var t0 = Date.now();
+      watch = setInterval(function () {
+        if (dead) return;
+        if (!lastBeat && Date.now() - t0 > 22000) return fail();
+        if (lastBeat && Date.now() - lastBeat > 15000) return fail();
+      }, 3000);
+    }
+    function near() {
+      var r = host.getBoundingClientRect();
+      return r.top < (window.innerHeight || 0) + 400 && r.bottom > -400;
+    }
+    if (near()) mount();
+    addEventListener('scroll', function onScroll() {
+      if (started) return removeEventListener('scroll', onScroll);
+      if (near()) { removeEventListener('scroll', onScroll); mount(); }
+    }, { passive: true });
+  } catch (e) {}
 })();
 </script>
 </body>
