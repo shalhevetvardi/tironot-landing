@@ -67,7 +67,7 @@ ADI_QUOTE = ('<figure class="cold-quote"><img src="bogrim/images/adidotan1.jpg" 
              '<figcaption>עדי דותן · שכירה בהייטק</figcaption></figure>')
 
 PRICE_LIST = """<ul class="price-includes">
-      <li><span><strong>5 שבועות, מפגש לייב אחד בכל שבוע</strong> - בימי רביעי, 18:30-21:30, בתל אביב או בזום. בכל מפגש לומדים ובונים יחד</span></li>
+      <li><span><strong>5 שבועות של שיעורים וליווי שוטף</strong> - שיעור בכל שבוע, בימי רביעי 18:30-21:30, בתל אביב או בזום. בכל שיעור לומדים ובונים יחד</span></li>
       <li><span><strong>דואגים שתגיעו מוכנים</strong> - הכנה אישית מסודרת, מקימים איתכם את סביבת העבודה ובונים את הסוכן הראשון שלכם - עוד לפני המפגש הראשון בטירונות</span></li>
       <li><span><strong>מעטפת פדגוגית שעוטפת אתכם מכל כיוון</strong> - ליווי צמוד יד ביד, חומרי למידה מעמיקים, וצוות סוכני AI של אִימפּרוּב שעוזר בלמידה, בבנייה ובהטמעה</span></li>
       <li><span><strong>לא משאירים אתכם לבד בין המפגשים</strong> - מפגשי חידוד שבועיים בזום להתייעצות, שאלות ועזרה אישית</span></li>
@@ -76,23 +76,42 @@ PRICE_LIST = """<ul class="price-includes">
     </ul>
     """
 
-# הסיפור על רקע סרטון של המשרד, על כל רוחב הסקשן (הכרעת שלהבת, 24-10-2026: "לא בתוך ריבוע",
-# והטקסט על שכבה כהה). הסרטונים מתיקיית "אימפרוב - נכסי המשרד לסושיאל", בגרסה קלה ב-office-film/:
-# לרוחב במחשב, לאורך בטלפון. שני קטעים ברצף: סיבוב על כל המשרד, ואז לחיצה על נועם.
-STORY_FILM = """  <div class="cold-film" aria-hidden="true">
-    <video class="cold-film__video" muted playsinline preload="none" poster="office-film/office-wide.webp"></video>
-    <p class="cold-film__cap"></p>
+# סקשן הסיפור בנוי כמו סקשן המשרד בדף המפתח (הכרעת שלהבת, 24-10-2026: "כל החלק הזה הייתי
+# עושה אותו כמו במפתח"). במחשב: המשרד התלת-ממדי החי ברקע של כל הסקשן, מסתובב לבד, והקישור
+# "להיכנס למשרד ולשחק בו" פותח אותו על כל המסך. אם הוא לא עולה, נשארת התמונה. בטלפון: הסרטון של
+# הלחיצות על סוכנים בכרטיס בראש הטקסט, כמו בדף המפתח (סצנה תלת-ממדית כבדה מדי לטלפון).
+OFFICE_BG = """  <div class="cold-office" id="cold-office">
+    <picture><source srcset="office-hero-desktop.webp" type="image/webp"><img src="office-hero-desktop.png" width="1920" height="1080" alt="" loading="lazy"></picture>
+    <div class="cold-office__bar">
+      <p class="cold-office__bar-hint"><b>זה המשרד האמיתי של שלהבת - וכזה אתם הולכים לבנות.</b>
+        <span>גררו כדי לסובב · גלגלו כדי להתקרב · לחצו על כל סוכן כדי לראות למה הוא מחובר</span></p>
+      <button type="button" class="cold-office__close">יציאה מהמשרד (Esc)</button>
+    </div>
   </div>
+  <div class="cold-office__scrim" aria-hidden="true"></div>
 """
+
+OFFICE_ANIM = """
+      <figure class="cold-office__anim">
+        <video src="office-film/clicks.mp4" poster="office-film/clicks.webp" muted loop playsinline preload="metadata" aria-label="סיבוב במשרד, עם לחיצות על כמה סוכנים"></video>
+        <figcaption>לוחצים על כל סוכן ורואים למה הוא מחובר: הידע, הכלים והתהליכים שהוא מריץ.</figcaption>
+      </figure>"""
+
+OFFICE_HINT = """
+      <p class="cold-office__enter"><button type="button" class="cold-office__hint">להיכנס למשרד של אִימפּרוּב ולשחק בו <span aria-hidden="true">←</span></button></p>
+      <p class="cold-office__hint-sub">זה המשרד האמיתי של שלהבת. מסתובבים בו, לוחצים על כל סוכן ורואים מה הוא עושה ולמה הוא מחובר.</p>"""
+
+WA_FLOAT = ('<a class="cold-wa-float" href="{wa}" target="_blank" rel="noopener noreferrer" aria-label="שאלות? לשיחה עם נועם בוואטסאפ">'
+            '<span class="cold-wa-float__ic">{icon}</span><span class="cold-wa-float__txt">שאלות?</span></a>\n')
 
 WHAT_SECTION = """<section class="section section--white center" id="what">
   <div class="container">
     <h2>מה בדיוק <span class="accent-blue">קונים כאן?</span></h2>
     <p class="lead center cold-what-lead">תוכנית האצה של 5 שבועות, שבה אתם לומדים לבנות בעצמכם סוכני AI, ובונים אותם תוך כדי על העבודה שלכם.</p>
     <div class="cold-what">
-      <div class="cold-what__item"><h3>5 מפגשי לייב עם שלהבת</h3><p>פעם בשבוע, 3 שעות, בתל אביב או בזום. בכל מפגש לומדים שלב ובונים אותו יחד.</p></div>
+      <div class="cold-what__item"><h3>5 שבועות של שיעורים וליווי שוטף</h3><p>שיעור בכל שבוע, בתל אביב או בזום, וליווי לאורך כל הדרך. בכל שיעור לומדים שלב ובונים אותו יחד.</p></div>
       <div class="cold-what__item"><h3>הכנה לפני שמתחילים</h3><p>מקימים איתכם את סביבת העבודה, ובונים את הסוכן הראשון עוד לפני המפגש הראשון.</p></div>
-      <div class="cold-what__item"><h3>ליווי בין המפגשים</h3><p>מפגשי חידוד שבועיים בזום, צוות שעוזר כשנתקעים, וסוכני AI של אִימפּרוּב שמלווים את הבנייה.</p></div>
+      <div class="cold-what__item"><h3>עזרה כשנתקעים</h3><p>מפגשי חידוד שבועיים בזום, צוות שעונה על שאלות, וסוכני AI של אִימפּרוּב שמלווים את הבנייה.</p></div>
       <div class="cold-what__item"><h3>מה יוצאים איתו</h3><p>סוכנים ותהליכים שכבר עובדים בשבילכם, והשיטה לבנות לבד את הבאים.</p></div>
     </div>
     <p class="cold-what-more"><a href="#price">לפרטים המלאים ולמחיר</a></p>
@@ -102,35 +121,80 @@ WHAT_SECTION = """<section class="section section--white center" id="what">
 COLD_JS = """<script id="cold-js">
 (function () {
   try {
-    var sec = document.querySelector('.cold-film-sec');
-    var video = sec && sec.querySelector('.cold-film__video');
-    var cap = sec && sec.querySelector('.cold-film__cap');
-    if (!video) return;
-    var tall = window.matchMedia && window.matchMedia('(max-width: 899px)').matches;
-    var kind = tall ? 'tall' : 'wide';
-    var clips = [
-      { src: 'office-film/office-' + kind + '.mp4', cap: 'זה המשרד שמריץ את אִימפּרוּב. כל קובייה בו היא סוכן AI שעושה עבודה.' },
-      { src: 'office-film/noam-' + kind + '.mp4', cap: 'לוחצים על נועם, סוכן המכירות, ורואים למה הוא מחובר: הידע, הכלים והתהליכים שהוא מריץ.' }
-    ];
-    video.poster = 'office-film/office-' + kind + '.webp';
-    cap.textContent = clips[0].cap;
+    var sec = document.querySelector('.cold-office-sec');
+    var host = document.getElementById('cold-office');
+    if (!sec || !host) return;
     var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduce) return;
-    var n = 0, loaded = false;
-    function show(k) {
-      n = k % clips.length;
-      video.src = clips[n].src;
-      cap.textContent = clips[n].cap;
-      var p = video.play(); if (p && p.catch) p.catch(function () {});
+
+    /* טלפון: הסרטון בכרטיס מתנגן רק כשהוא במסך */
+    var vid = sec.querySelector('.cold-office__anim video');
+    if (vid) {
+      if (reduce) { vid.controls = true; }
+      else if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (es) {
+          if (es[0].isIntersecting) { var p = vid.play(); if (p && p.catch) p.catch(function () {}); } else vid.pause();
+        }, { threshold: 0.3 }).observe(vid);
+      }
     }
-    video.addEventListener('ended', function () { show(n + 1); });
-    function onView(inView) {
-      if (inView) { if (!loaded) { loaded = true; show(0); } else { var p = video.play(); if (p && p.catch) p.catch(function () {}); } }
-      else if (loaded) video.pause();
+
+    /* מחשב: המשרד החי ברקע, כמו בדף המפתח */
+    if (reduce || !window.matchMedia('(min-width: 900px) and (pointer: fine)').matches) return;
+    var started = false, dead = false, lastBeat = 0, f = null, watch = null, scrollY = 0;
+    var hint = sec.querySelector('.cold-office__hint');
+    var closeBtn = host.querySelector('.cold-office__close');
+    function open() {
+      if (dead || host.classList.contains('is-full')) return;
+      scrollY = window.scrollY;
+      host.classList.add('is-full'); sec.classList.add('is-full');
+      document.body.style.overflow = 'hidden';
+      if (closeBtn) closeBtn.focus();
     }
-    if ('IntersectionObserver' in window) {
-      new IntersectionObserver(function (es) { onView(es[0].isIntersecting); }, { threshold: 0.15 }).observe(sec);
-    } else { onView(true); }
+    function close() {
+      if (!host.classList.contains('is-full')) return;
+      host.classList.remove('is-full'); sec.classList.remove('is-full');
+      document.body.style.overflow = '';
+      window.scrollTo(0, scrollY);
+      if (hint) hint.focus();
+    }
+    function fail() {
+      if (dead) return; dead = true;
+      if (watch) clearInterval(watch);
+      close();
+      if (f) f.remove();
+      sec.classList.remove('is-live');
+    }
+    function mount() {
+      if (started) return; started = true;
+      f = document.createElement('iframe');
+      f.src = 'https://virtualoffice.aimprove.co.il/scene-embed';
+      f.title = 'המשרד הווירטואלי - סצנה תלת-ממדית';
+      f.setAttribute('tabindex', '-1');
+      host.appendChild(f);
+      addEventListener('message', function (e) {
+        if (!e.data || dead) return;
+        if (e.data.type === 'vo-scene-ready') { lastBeat = Date.now(); sec.classList.add('is-live'); }
+        else if (e.data.type === 'vo-scene-alive') lastBeat = Date.now();
+        else if (e.data.type === 'vo-scene-failed') fail();
+      });
+      var t0 = Date.now();
+      watch = setInterval(function () {
+        if (dead) return;
+        if (!lastBeat && Date.now() - t0 > 22000) return fail();
+        if (lastBeat && Date.now() - lastBeat > 15000) return fail();
+      }, 3000);
+    }
+    if (hint) hint.addEventListener('click', function (e) { e.preventDefault(); open(); });
+    if (closeBtn) closeBtn.addEventListener('click', function (e) { e.preventDefault(); close(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+    function near() {
+      var r = sec.getBoundingClientRect();
+      return r.top < (window.innerHeight || 0) + 400 && r.bottom > -400;
+    }
+    if (near()) mount();
+    addEventListener('scroll', function onScroll() {
+      if (started) return removeEventListener('scroll', onScroll);
+      if (near()) { removeEventListener('scroll', onScroll); mount(); }
+    }, { passive: true });
   } catch (e) {}
 })();
 </script>
@@ -147,29 +211,55 @@ COLD_CSS = """<style id="cold-css">
   .cold-first a { color: inherit; text-decoration: underline; text-underline-offset: 4px; }
   .cold-nowrap { white-space: nowrap; }
   #story h2 { text-wrap: balance; }
-  .cold-film-sec { position: relative; overflow: hidden; isolation: isolate; }
-  .cold-film-sec .deco { display: none; }
-  .cold-film__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-  .cold-film__cap { position: absolute; z-index: 1; inset-inline: 16px; bottom: 18px; margin: 0 auto; max-width: 560px; text-align: center;
-    font-size: 14px; line-height: 1.5; color: #fff; background: rgba(20,9,59,.55); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(255,255,255,.22); border-radius: 14px; padding: 8px 14px; }
-  /* טלפון: הטקסט על הרקע הכהה, והסרטון מתחתיו ברוחב מלא, בלי מסגרת, עם מעבר רך מהכהה */
-  @media (max-width: 899px) {
-    .cold-film-sec { display: flex; flex-direction: column; padding-bottom: 0; }
-    .cold-film { position: relative; order: 2; width: 100%; aspect-ratio: 9 / 16; max-height: 88vh; margin-top: 28px; }
-    .cold-film::after { content: ""; position: absolute; inset: 0; pointer-events: none;
-      background: linear-gradient(to bottom, rgba(20,9,59,1) 0%, rgba(20,9,59,0) 22%); }
-  }
-  /* מחשב: הסרטון על כל הסקשן, והטקסט בצד ימין על שכבה כהה שנפתחת לסרטון בצד שמאל */
+  .cold-office-sec { position: relative; overflow: hidden; }
+  .cold-office-sec .deco { display: none; }
+  .cold-office-sec > .container { position: relative; z-index: 2; }
+  .cold-office { position: absolute; inset: 0; z-index: 0; }
+  .cold-office picture, .cold-office img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .cold-office__scrim { position: absolute; inset: 0; z-index: 1; pointer-events: none; background: rgba(20,9,59,.86); }
+  .cold-office__bar, .cold-office__enter, .cold-office__hint-sub { display: none; }
+  .cold-office__anim { margin: 6px 0 22px; }
+  .cold-office__anim video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; border-radius: 14px; background: #1a1450; object-fit: cover; }
+  .cold-office__anim figcaption { margin-top: 8px; font-size: 14px; line-height: 1.5; color: rgba(255,255,255,.8); }
   @media (min-width: 900px) {
-    .cold-film { position: absolute; inset: 0; z-index: -1; }
-    .cold-film::after { content: ""; position: absolute; inset: 0; pointer-events: none;
-      background: linear-gradient(to left, rgba(20,9,59,.94) 0%, rgba(20,9,59,.88) 38%, rgba(20,9,59,.35) 58%, rgba(20,9,59,0) 72%); }
-    .cold-film-sec { padding-bottom: 96px; min-height: 640px; }
-    .cold-film-sec .story { margin: 0; margin-inline-start: max(24px, calc((100% - var(--maxw)) / 2)); max-width: 560px; }
-    .cold-film-sec .story h2, .cold-film-sec .story__payoff { text-align: right; }
-    .cold-film__cap { inset-inline-start: auto; inset-inline-end: 4%; width: 34%; max-width: 440px; bottom: 28px; }
+    .cold-office-sec { min-height: min(92vh, 900px); display: flex; align-items: center; padding-block: 80px; }
+    .cold-office-sec > .container { width: 100%; }
+    .cold-office-sec .story { margin: 0; max-width: 560px; }
+    .cold-office-sec .story h2, .cold-office-sec .story__payoff { text-align: right; }
+    .cold-office__scrim { background: linear-gradient(to left, rgba(20,9,59,.95) 0%, rgba(20,9,59,.9) 36%, rgba(20,9,59,.4) 58%, rgba(20,9,59,0) 74%); }
+    .cold-office__anim { display: none; }
+    .cold-office iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; opacity: 0; transition: opacity .5s; pointer-events: none; }
+    .cold-office-sec.is-live .cold-office iframe { opacity: 1; }
+    .cold-office-sec.is-live .cold-office picture { opacity: 0; }
+    .cold-office-sec.is-live .cold-office__enter, .cold-office-sec.is-live .cold-office__hint-sub { display: block; }
+    .cold-office__enter { margin: 26px 0 4px; }
+    .cold-office__hint { font: inherit; font-size: 18px; font-weight: 700; color: var(--gold); background: none; border: 0; padding: 0;
+      cursor: pointer; text-decoration: underline; text-underline-offset: 5px; white-space: nowrap; }
+    .cold-office__hint:focus-visible { outline: 3px solid #fff; outline-offset: 4px; border-radius: 6px; }
+    .cold-office__hint-sub { font-size: 14px; color: rgba(255,255,255,.72); margin: 0; }
+    .cold-office.is-full { position: fixed; inset: 0; z-index: 9999; background: var(--navy); }
+    .cold-office.is-full iframe { pointer-events: auto; }
+    .cold-office.is-full .cold-office__bar { display: flex; position: absolute; z-index: 3; inset-block-start: 0; inset-inline: 0; align-items: center;
+      justify-content: space-between; gap: 16px; padding: 16px 22px; background: linear-gradient(to bottom, rgba(20,9,59,.88), rgba(20,9,59,0)); }
+    .cold-office__bar-hint { margin: 0; color: #fff; font-weight: 600; font-size: 16px; line-height: 1.5; }
+    .cold-office__bar-hint b { color: var(--gold); }
+    .cold-office__bar-hint span { display: block; font-weight: 400; color: rgba(255,255,255,.78); font-size: .92em; margin-top: 3px; }
+    .cold-office__close { flex: 0 0 auto; font: inherit; font-weight: 700; font-size: 15px; color: var(--navy); background: var(--gold);
+      border: 0; border-radius: 50px; padding: 10px 20px; cursor: pointer; }
   }
+  .cold-wa-float { position: fixed; z-index: 800; left: max(16px, env(safe-area-inset-left, 0px)); bottom: calc(58px + env(safe-area-inset-bottom, 0px));
+    display: flex; flex-direction: column; align-items: center; gap: 4px; text-decoration: none; font-family: inherit; transition: transform .15s ease; }
+  .cold-wa-float:hover { transform: translateY(-2px); }
+  .cold-wa-float:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; border-radius: 12px; }
+  .cold-wa-float__ic { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; background: #25D366;
+    box-shadow: 0 0 0 2px #fff, 0 10px 24px -8px rgba(20,9,59,.55); }
+  .cold-wa-float__ic svg { width: 28px; height: 28px; }
+  .cold-wa-float__ic svg path { fill: #fff; }
+  .cold-wa-float__txt { padding: 2px 9px; border-radius: 50px; background: #fff; color: var(--navy); font-weight: 700; font-size: 13px; line-height: 1.4;
+    box-shadow: 0 4px 12px -6px rgba(20,9,59,.45); }
+  @media (max-width: 520px) { .cold-wa-float__ic { width: 46px; height: 46px; } .cold-wa-float__ic svg { width: 25px; height: 25px; } .cold-wa-float__txt { font-size: 12px; } }
+  @media (prefers-reduced-motion: reduce) { .cold-wa-float { transition: none; } .cold-wa-float:hover { transform: none; } }
+  @media print { .cold-wa-float { display: none; } }
   .cold-what-lead { max-width: 720px; margin-inline: auto; }
   .cold-what { display: grid; gap: 14px; max-width: 980px; margin: 28px auto 0; text-align: right; }
   @media (min-width: 760px) { .cold-what { grid-template-columns: 1fr 1fr; } }
@@ -213,9 +303,16 @@ def build():
     i = h.find(opener)
     j = h.find('</section>', i) + len('</section>')
     story = h[i:j]
-    story = once(story, opener, '<section class="section section--navy cold-film-sec" id="story">\n' + new(STORY_FILM),
-                 "פתיחת הסיפור")
-    h = h[:i] + story + "\n\n" + new(WHAT_SECTION) + h[j:]
+    story = once(story, opener, '<section class="section section--navy cold-office-sec" id="story">\n' + OFFICE_BG, "פתיחת הסיפור")
+    story = once(story, '<span class="accent-gold cold-nowrap">משרד ה-AI שלכם.</span></h2>',
+                 '<span class="accent-gold cold-nowrap">משרד ה-AI שלכם.</span></h2>' + new(OFFICE_ANIM), "הסרטון בטלפון")
+    k = story.find('</p>', story.find('<p class="story__payoff">')) + len('</p>')
+    story = story[:k] + new(OFFICE_HINT) + story[k:]
+    h = h[:i] + story + h[j:]
+
+    # "מה בדיוק קונים כאן" מיד אחרי המסך הראשון: קורא קר צריך קודם להבין מה ההצעה
+    hero_end = h.find('</section>', h.find('<section class="hero">')) + len('</section>')
+    h = h[:hero_end] + "\n\n" + new(WHAT_SECTION) + h[hero_end:]
 
     # 5. בלי הבטחות מוחלטות בטקסט של אִימפּרוּב
     h = once(h, 'את השיטה השלמה - לבנות כל סוכן, כל תהליך, כל דבר שרץ אוטומטית. כל מה שתצטרכו, גם בעוד שנה, גם משהו שעוד לא קיים.',
@@ -259,11 +356,11 @@ def build():
              "<title>טירונות סוכנים - תוכנית האצה של 5 שבועות</title>\n"
              '<meta name="robots" content="noindex, nofollow">', "כותרת הדף")
     h = once(h, "</head>", COLD_CSS + "</head>", "העיצוב של התוספות")
-    h = once(h, "</body>", COLD_JS + "</body>", "הסקריפט של המשרד ליד הסיפור")
+    h = once(h, "</body>", WA_FLOAT.format(wa=WA, icon=WA_ICON) + COLD_JS + "</body>", "הכפתור הצף והסקריפט")
     h = once(h, "var PAGE = 'index';", "var PAGE = 'hatzaa';", "שם הדף במדידה")
 
     for bad in ("—", "–", "→"):
-        if any(bad in s for s in NEW_COPY + [COLD_CSS, ADI_QUOTE, STORY_FILM, COLD_JS]):
+        if any(bad in s for s in NEW_COPY + [COLD_CSS, ADI_QUOTE, OFFICE_BG, COLD_JS, WA_FLOAT]):
             raise BuildError(f"בטקסט החדש יש את התו האסור {bad!r}")
     OUT.write_text(h, encoding="utf-8")
     print(f"נכתב {OUT.name}: {len(h):,} תווים, {h.count('<section')} סקשנים")
