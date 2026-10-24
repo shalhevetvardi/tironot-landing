@@ -11,6 +11,12 @@
 5. ההבטחות של אִימפּרוּב נשארות, ואחרי חלקן נוספה הוכחה מהדף (ר' ההערה בשלב 5 למטה).
 6. "בעבודה" ולא "לעסק" בטקסט החדש.
 
+סבב ההערות של שלהבת (24-10-2026, בדף ההערות שב-Storyteling): התיקונים שלה לטקסט נכנסו כמו שכתבה,
+"זה לא עוד קורס. זו תוכנית האצה" עבר מכרטיס המחיר לכותרת "מה בדיוק קונים כאן", הליווי האנושי הודגש,
+ליד המחיר דניאל מראד במקום סיגל יער, לפני הסרטונים של "שווה את הכסף?" התגובה של נועם זרז'בסקי,
+ב"נעים להכיר" האינסטגרם לפני הוואטסאפ, ושני הסקשנים הלבנים שבראש הדף קיבלו רקע בהיר.
+מאז שהסבב הזה עלה לאוויר, ההשוואה של חצי מול חצי נספרת מיום העלייה (funnel-report.py --ab --since).
+
 הדף נגזר מ-index.html ולא נערך ביד, כי הציטוטים מגיעים מדשבורד ההמלצות שכותב רק
 ל-index.html. ההחלטות: Storyteling, פרויקטים/חיפוש-SEO-GEO/06-אסטרטגיית-הדף-הקר.md.
 
@@ -66,40 +72,48 @@ def new(s):
 # "למי זה מתאים": הכאב לפני ההצעה, במילים שתלמידים אמרו בשיחות האונבורדינג (מיפוי-קהל-ומסרים/1-אונבורדינג.md,
 # חלקים ב ו-ה): "בלאגן", "טלאי על טלאי", "מיליון צ'אטים פתוחים", "הגעתי לתקרה", "לחבר את הדבר הזה למשהו אחד",
 # "העבודה היא רק כשאני נמצאת", "יותר מדי מידע". שלהבת: לא משנה אם ניסו לבד או לא, הם רוצים מאוד
-FIT_SECTION = """<section class="section section--white center cold-fit" id="fit">
+FIT_SECTION = """<section class="section section--white center cold-fit cold-tint" id="fit">
   <div class="container">
     <h2>למי זה <span class="accent-blue">מתאים?</span></h2>
-    <p class="lead center cold-fit__lead">לבעלי עסקים, לעצמאים ולשכירים שממש רוצים שה-AI יעבוד בשבילם. בין אם כבר ניסיתם לבד, ובין אם עוד לא.</p>
+    <p class="lead center cold-fit__lead">לבעלי עסקים, לעצמאים ולשכירים שממש רוצים <span class="nowrap">שה-AI</span> יעבוד במקומם.<br>בין אם כבר ניסיתם לבד, ובין אם עוד לא.</p>
     <div class="cold-fit__cards">
-      <div class="cold-fit__card"><h3>כבר ניסיתם לבד, והגעתם לתקרה</h3><p>מיליון צ'אטים פתוחים, פרומפטים ואוטומציות שעובדים חצי. הכול טלאי על טלאי, ולא ברור איך מחברים את זה למשהו אחד שעובד.</p></div>
-      <div class="cold-fit__card"><h3>עוד לא התחלתם, ויש לכם רעיון בראש</h3><p>משהו שתרצו שירוץ גם כשאתם לא שם. אבל יש כל כך הרבה מידע וכלים, שלא ברור מאיפה מתחילים, ואם בכלל תצליחו.</p></div>
+      <div class="cold-fit__card"><h3>כבר ניסיתם לבד, והגעתם לתקרה</h3><p>מיליון צ'אטים פתוחים, פרומפטים וסקילים שעובדים חצי. הכול טלאי על טלאי, ולא ברור איך מחברים את זה למשהו אחד שעובד.</p></div>
+      <div class="cold-fit__card"><h3>עוד לא התחלתם, אבל ממש בא לכם</h3><p>אתם חולמים ש-AI ירוץ גם כשאתם לא שם. אבל יש כל כך הרבה מידע וכלים, שלא ברור מאיפה מתחילים, ואם בכלל תצליחו.</p></div>
     </div>
     <p class="cold-fit__pain">ובשני המקרים, הבלגן נשאר בראש שלכם, והעבודה עדיין קורית רק כשאתם נמצאים.</p>
-    <p class="cold-fit__not">ומי שמחפש שמישהו יבנה בשבילו - זה לא המקום. כאן בונים בעצמכם, עם ליווי צמוד.</p>
+    <p class="cold-fit__emp">וגם שכירים בונים כאן סוכנים לעבודה שלהם בארגון. בת חן, סמנכ"לית פיתוח עסקי בחברה בינלאומית, בנתה צוותי סוכנים למחלקות שונות בארגון שבו היא עובדת. במילים שלה: "יש לי סוכן שמנתח לי דוחות רווחיות מה-ERP - מוצא בעצמו טעויות וחוסך לי משרה שלמה של אנליסט בכיר, 30,000+ בחודש."</p>
+    <p class="cold-fit__not">השיטה שלי הופכת אתכם למי שיודע לבנות פתרון AI מקצה לקצה לכל בעיה עסקית -<br>מהר, בלי לרדוף אחרי הזנב של עצמכם.</p>
   </div>
 </section>"""
 
 # "שווה את הכסף?": שני הסרטונים גלויים, ושאר העדויות נפתחות למי שרוצה לקרוא עוד
 WORTH_MORE_OPEN = '<div class="cold-more" id="cold-worth-more" inert>\n      '
 WORTH_MORE_CLOSE = ('</div>\n      <p class="cold-more__btn"><button type="button" class="btn btn--outline" '
-                    'aria-controls="cold-worth-more" aria-expanded="false">לעוד עדויות של בוגרים</button></p>'
+                    'aria-controls="cold-worth-more" aria-expanded="false">מה עוד בוגרים אומרים על המחיר?</button></p>'
                     "<script>(function () { var b = document.querySelector('.cold-more__btn button'), m = document.getElementById('cold-worth-more');"
                     " if (!b || !m) return; b.addEventListener('click', function () { m.classList.add('is-open'); m.inert = false;"
                     " b.setAttribute('aria-expanded', 'true'); b.parentNode.hidden = true; }); })();</script>")
 
-# תגובה מאינסטגרם (Q-0316 במאגר "ציטוטים לדפים"): ליד המחיר, כי היא עונה על "שווה את הכסף?" מפי מי שלא טכנית
-ADI_QUOTE = ('<figure class="cold-quote"><img src="bogrim/images/sigal.jpg" alt="סיגל יער" loading="lazy">'
-             '<blockquote>"לפני הקורס תכננתי להביא איש מקצוע. '
-             '<span class="tm-hl">אחרי שבועיים של טירונות</span> הרגשתי שאני נוסקת לגג העולם."</blockquote>'
-             '<figcaption>סיגל יער, עורכת דין, בת 58 · תגובה באינסטגרם</figcaption></figure>')
+# ביקורת בגוגל (אותה ביקורת שברצועת "מה כתבו עלינו בגוגל"): ליד המחיר, כי יש בה זמן ותוצאה מול "5 שבועות".
+# קודם היה כאן הציטוט של סיגל יער, ושלהבת החליפה אותו (24-10-2026): "גג העולם" כללי ולא מראה יכולת
+ADI_QUOTE = ('<figure class="cold-quote"><img src="bogrim/images/dmarad.jpg" alt="דניאל מראד" loading="lazy">'
+             '<blockquote>"אחרי ארבעה שבועות יש לי שלושה סוכנים שבניתי. '
+             'לראשונה אני מרגיש שאני <span class="tm-hl">על הגל ולא רודף</span>."</blockquote>'
+             '<figcaption>דניאל מראד, בעל סוכנות שיווק דיגיטלי · ביקורת בגוגל</figcaption></figure>')
+
+# "שווה את הכסף?": לפני הסרטונים, תגובה שמדברת על הכסף עצמו (שלהבת, 24-10-2026). שמו המלא ותפקידו כתובים,
+# כי באותו סקשן יש גם את נועם סוכן ה-AI
+WORTH_IG = ('<figure class="cold-igshot"><img src="students/ig/ig-noam_zarzevsky.png" width="1040" height="280" loading="lazy" '
+            'alt="נועם זרז\'בסקי: לדעתי מעל שנה חיפשתי לאן ללכת, המוני קורסים ומדריכים במחירים מצחיקים. כבוגר הקורס כבר אחרי שני מפגשים היה תהליך באוויר, היום יש משרד וירטואלי שלם שעובד">'
+            '</figure>')
 
 # רצועת תגובות האינסטגרם ב"נעים להכיר" נמצאת ב-index.html עצמו (scripts/build_ig_strip.py), ולכן היא מגיעה לכאן משם
 
 
 PRICE_LIST = """<ul class="price-includes">
-      <li><span><strong>5 שבועות של שיעורים וליווי שוטף</strong> - בתל אביב או בזום. בכל שבוע לומדים שלב חדש ובונים אותו יחד, על העבודה שלכם</span></li>
+      <li><span><strong>5 שבועות של שיעורים חיים עם שלהבת, וליווי שוטף</strong> - בתל אביב או בזום. בכל שבוע לומדים שלב חדש ובונים אותו יחד, על העבודה שלכם</span></li>
       <li><span><strong>דואגים שתגיעו מוכנים</strong> - הכנה אישית מסודרת, מקימים איתכם את סביבת העבודה ובונים את הסוכן הראשון שלכם - עוד לפני המפגש הראשון בטירונות</span></li>
-      <li><span><strong>מעטפת פדגוגית שעוטפת אתכם מכל כיוון</strong> - ליווי צמוד יד ביד, חומרי למידה מעמיקים, וצוות סוכני AI של אִימפּרוּב שעוזר בלמידה, בבנייה ובהטמעה</span></li>
+      <li><span><strong>מעטפת פדגוגית שעוטפת אתכם מכל כיוון</strong> - ליווי צמוד יד ביד של שלהבת וצוות אנושי שעונה על שאלות, חומרי למידה מעמיקים, וצוות סוכני AI של אִימפּרוּב שעוזר בלמידה, בבנייה ובהטמעה</span></li>
       <li><span><strong>לא משאירים אתכם לבד בין המפגשים</strong> - מפגשי חידוד שבועיים בזום להתייעצות, שאלות ועזרה אישית</span></li>
       <li><span><strong>העבודה האמיתית קורית בין המפגשים</strong> - בשבועיים הראשונים זה לפחות כמה שעות טובות בשבוע, כי המטרה היא שכבר אז תבנו דברים אמיתיים לעבודה שלכם</span></li>
       <li><span><strong>מה שבניתם נשאר שלכם</strong> - ההקלטות, אתר חומרי הלמידה וכל מה שבניתם נשארים אצלכם, בלי הגבלת זמן</span></li>
@@ -147,16 +161,15 @@ WA_FLOAT = ('<a class="cold-wa-float" href="{wa}" target="_blank" rel="noopener 
 
 WHAT_SECTION = """<section class="section section--white center" id="what">
   <div class="container">
-    <h2>מה בדיוק <span class="accent-blue">קונים כאן?</span></h2>
-    <p class="lead center cold-what-lead">תוכנית האצה של 5 שבועות, שבה בונים <strong>צוות של סוכני AI שמחוברים זה לזה ועובדים יחד</strong>, כמו מחלקות במשרד. לא עוד סוכן בודד, אלא מערכת שלמה.</p>
-    <p class="cold-what-example">למשל, דולב, בעל משרד פרסום, בנה צוות סוכנים שמקבל פניות, מתאם פגישות ומעביר עבודה לגרפיקה ולניהול קמפיינים.</p>
+    <h2>זה לא עוד קורס. זו <span class="accent-blue">תוכנית האצה</span> של <span class="cold-nowrap">5 שבועות.</span></h2>
+    <p class="lead center cold-what-lead">בתוכנית בונים <strong>צוות של סוכני AI שמחוברים זה לזה ועובדים יחד</strong>, כמו מחלקות במשרד.<br>לא עוד סוכן בודד, אלא מערכת שלמה.</p>
+    <p class="cold-what-example">למשל, ירדן, ד״ר לחקר המוח ויזמת, בנתה את הסוכנים שמנהלים לה חנות אינטרנטית מקצה לקצה: סוכן שכותב את הדפים של המוצרים בחנות, סוכן אמנות שמחזיק את הקו העיצובי ומייצר הדמיות וכיתובים לתמונות ולסרטונים, וסוכנת מנהלת משרד שמכנסת ישיבות צוות ומתזמרת את כל העבודה על החנות.</p>
     <div class="cold-what">
       <div class="cold-what__item"><h3>שיטה, לא עוד כלי</h3><p>לומדים איך בונים מערכת: מה כל סוכן עושה, מה הוא יודע, ואיך הוא מתחבר לשאר. זה מה שנשאר איתכם גם כשהכלים מתחלפים.</p></div>
-      <div class="cold-what__item"><h3>בונים על העבודה שלכם, מהשבוע הראשון</h3><p>כל שבוע בונים שלב אמיתי בצוות שלכם. כבר בשבועיים הראשונים יש דברים שרצים ועושים עבודה במקומכם.</p></div>
-      <div class="cold-what__item"><h3>לא נשארים לבד בשום שלב</h3><p>הכנה לפני שמתחילים, מפגשי חידוד שבועיים, צוות שעונה על שאלות, וסוכני AI של אִימפּרוּב שמלווים את הבנייה.</p></div>
-      <div class="cold-what__item"><h3>עם מה אתם יוצאים?</h3><p>עם צוות סוכנים שבניתם בעצמכם, ועם שיטה להמשיך ולבנות את הסוכן הבא שתצטרכו.</p></div>
+      <div class="cold-what__item"><h3>בונים סוכנים לעבודה שלכם, מהשבוע הראשון</h3><p>וכל שבוע נוסיף עוד סוכנים אמיתיים לצוות שלכם. כבר בשבועיים הראשונים יהיו לכם דברים שרצים ועושים עבודה במקומכם. ובסוף התוכנית - צוות שלם.</p></div>
+      <div class="cold-what__item"><h3>לא נשארים לבד בשום שלב - ליווי עוטף, יד ביד</h3><p>את השיעורים מעבירה שלהבת בעצמה, בלייב. ולצדם: הכנה מסודרת לפני שמתחילים, מפגשי תגבור בין השיעורים, צוות אנושי שעונה על שאלות וזמין 24/7, סוכני AI של אִימפּרוּב שמלווים אתכם בכל שלבי בניית הסוכנים.</p></div>
+      <div class="cold-what__item"><h3>עם מה אתם יוצאים?</h3><p>עם צוות סוכנים שבניתם בעצמכם, ואת השיטה והכלים לבנות כל סוכן, מערכת ותהליך שתצטרכו בעתיד - לבד, בלי להיתקע.</p></div>
     </div>
-    <p class="cold-what-proof">דיברתם עם נועם בוואטסאפ? בנינו אותו בדיוק בשיטה הזאת.</p>
     <p class="cold-what-more"><a href="#price">לפרטים המלאים ולמחיר</a></p>
   </div>
 </section>"""
@@ -349,8 +362,57 @@ COLD_CSS = """<style id="cold-css">
   .cold-quote img { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; grid-row: span 2; }
   .cold-quote blockquote { margin: 0; line-height: 1.6; }
   .cold-quote figcaption { font-size: 14px; opacity: .75; }
+  @media (max-width: 899px) { .cold-legend { display: none; } }
+  .cold-cta, .cold-price-cta { white-space: nowrap; }
+  @media (max-width: 520px) { .cold-cta, .cold-price-cta { font-size: 18px; padding: 14px 26px; } }
+  /* שלהבת, 24-10-2026: אין מילה שיורדת לבד לשורה הבאה. כותרות מאוזנות, ופסקאות בלי מילה יתומה בסוף */
+  h1, h2, h3, .price-promise, .tm-title { text-wrap: balance; }
+  p, li, blockquote, figcaption, .lead, .tm-lead { text-wrap: pretty; }
+  /* שני סקשנים לבנים ברצף בראש הדף (שלהבת, 24-10-2026): "למי זה מתאים" ו"בוגרים מספרים" בגוון הבהיר של "וזה כבר קורה" */
+  .cold-tint, #tm-quick { background: #EDF2F9; }
+  .cold-tint .cold-fit__card { background: #fff; }
+  .cold-fit__emp { max-width: 720px; margin: 22px auto 0; font-size: 16.5px; line-height: 1.6; color: var(--navy); }
+  .price-card__who { font-size: 13px; color: rgba(255,255,255,.62); margin: 10px 0 0; position: relative; z-index: 1; }
+  .cold-igshot { max-width: 520px; margin: 22px auto 0; }
+  .cold-igshot img { display: block; width: 100%; height: auto; border-radius: 14px; box-shadow: 0 8px 24px -12px rgba(20,9,59,.35); }
+  .cold-igshot figcaption { margin-top: 8px; font-size: 14px; opacity: .75; }
 </style>
 """
+
+
+# שלהבת, 24-10-2026: "שאין מילה שבורחת פתאום לשורה מתחת". text-wrap בעיצוב לא מספיק (נמדד: הכותרות עם <br>
+# והציטוטים המקוצרים בכרטיסי הבוגרים נשארו עם מילה לבד), ולכן בין שתי המילים האחרונות בכל כותרת, בתפקיד
+# ובציטוט שבכרטיס בוגר יש רווח שלא נשבר. מחוץ ל-<script> ול-<style> בלבד.
+NO_ORPHAN = (re.compile(r'(<(h1|h2|h3)\b[^>]*>)(.*?)(</\2>)', re.S),
+             re.compile(r'(<(p|span) class="proof__(?:quote|role)"[^>]*>)(.*?)(</\2>)', re.S))
+
+
+def _glue_last_space(inner):
+    parts = re.split(r'(<[^>]+>)', inner)
+    seen_word = False
+    for k in range(len(parts) - 1, -1, -1):
+        part = parts[k]
+        if part.startswith('<'):
+            if re.match(r'<br\b', part):
+                return inner
+            continue
+        j = len(part)
+        while j > 0:
+            j -= 1
+            if part[j] == ' ' and seen_word:
+                parts[k] = part[:j] + '&nbsp;' + part[j + 1:]
+                return ''.join(parts)
+            if not part[j].isspace():
+                seen_word = True
+    return inner
+
+
+def no_orphans(h):
+    chunks = re.split(r'(<script\b.*?</script>|<style\b.*?</style>)', h, flags=re.S)
+    for k in range(0, len(chunks), 2):
+        for rx in NO_ORPHAN:
+            chunks[k] = rx.sub(lambda m: m.group(1) + _glue_last_space(m.group(3)) + m.group(4), chunks[k])
+    return ''.join(chunks)
 
 
 def build():
@@ -366,12 +428,14 @@ def build():
              new('<span class="cold-brand"><span class="hero__brandname">טירונות סוכנים</span>'
                  '<span class="cold-brand__sub">תוכנית האצה של 5 שבועות</span></span></div>'), "השם במסך הראשון")
     h = once(h, '<p class="hero__sub">ואת השיטה והכלים לבנות כל סוכן, מערכת ותהליך שתצטרכו - לבד, בלי להיתקע.</p>',
-             new('<p class="hero__sub">שיטה מסודרת לבנות סוכני AI שמחוברים זה לזה ועובדים יחד. בונים כבר בתוכנית, עם ליווי צמוד ובלי לדעת לתכנת, וממשיכים לבנות עם השיטה גם אחריה. <span class="nowrap">מקבלים אותה פעם אחת</span> <span class="nowrap">ולתמיד.</span></p>'),
+             new('<p class="hero__sub">תקבלו שיטה לבנות סוכני AI שמחוברים זה לזה ועובדים יחד.<br>והכל עם ליווי צמוד ובלי לדעת לתכנת.</p>'),
              "שורת המשנה")
+    h = once(h, '<p class="hero-office__cap">זה משרד ה-AI שמריץ את אימפרוב בלי עובדים. כזה תבנו גם אתם.</p>',
+             new('<p class="hero-office__cap">זה משרד ה-AI שמריץ את אימפרוב.<br>כזה תבנו גם אתם.</p>'), "הכיתוב מתחת למשרד")
     # 2. הכפתור לנועם, ו"איך זה עובד" כקישור
     h = once(h, '<a href="#intro" class="btn btn--gold">איך זה עובד</a>',
              noam_button("btn--gold cold-cta", "לשיחה עם נועם בוואטסאפ") +
-             new('\n      <p class="cold-noam">נועם הוא סוכן ה-AI של אִימפּרוּב בוואטסאפ.</p>'
+             new('\n      <p class="cold-noam">נועם הוא סוכן ה-AI של אִימפּרוּב.</p>'
                  '\n      <p class="cold-first"><a href="#fit">אני רוצה להבין על מה מדובר קודם</a></p>'),
              "הכפתור במסך הראשון")
 
@@ -405,6 +469,17 @@ def build():
     if s < 0 or not (s < a < z < sec_end):
         raise BuildError("המבנה של 'שווה את הכסף?' השתנה, צריך לעדכן את הסקריפט")
     h = h[:a] + WORTH_MORE_OPEN + h[a:z] + "\n      " + new(WORTH_MORE_CLOSE) + h[z:]
+    h = once(h, '<p class="tm-lead">הבוגרים עונים על זה בעצמם.</p>',
+             '<p class="tm-lead">הבוגרים עונים על זה בעצמם.</p>\n      ' + WORTH_IG, "התגובה לפני הסרטונים")
+
+    # "נעים להכיר": קודם התגובות מאינסטגרם, קצרות ופומביות, ואחריהן הודעות הוואטסאפ (שלהבת, 24-10-2026)
+    a = h.index('<!-- ig-strip -->')
+    z = h.index('<!-- /ig-strip -->') + len('<!-- /ig-strip -->')
+    ig = once(h[a:z], '<p class="tm-strip-cap">ומה בוגרים כותבים עליי באינסטגרם</p>',
+              new('<p class="tm-strip-cap">מה בוגרים כתבו באינסטגרם</p>'), "הכותרת של רצועת האינסטגרם")
+    h = h[:a] + h[z:]
+    wa_cap = '<p class="tm-strip-cap">ככה תלמידים מרגישים בטירונות</p>'
+    h = once(h, wa_cap, ig + "\n    " + wa_cap, "הסדר ב'נעים להכיר'")
 
     # 5. ההבטחות נשארות כמו בדף הקיים, ואחריהן הוכחה מהדף עצמו (שלהבת, 24-10-2026: "זה נכון... לתת את ההבטחה,
     #    ואחרי זה להמשיך את המשפט עם משהו שמוכיח את זה"). קודם רוככו לפי המלצה של קודקס, והיא לא הסכימה.
@@ -436,7 +511,7 @@ def build():
     i = h.find('<h2 class="price-promise">')
     old_h2 = h[i:h.find('</h2>', i) + 5]
     h = once(h, old_h2, new(
-        '<h2 class="price-promise"><span class="price-promise__kicker">זה לא עוד קורס. זו <span class="cold-underline">תוכנית האצה</span> של <span class="cold-nowrap">5 שבועות.</span></span>'
+        '<h2 class="price-promise">'
         '5 שבועות שבהם בונים <span class="accent-blue">צוות סוכני AI שעובד בשבילכם</span>, ויוצאים עם שיטה לבנות לבד את מה שתצטרכו אחר כך.</h2>'),
         "כותרת המחיר")
     i = h.find('<ul class="price-includes">')
@@ -447,7 +522,8 @@ def build():
                  '\n      <p class="price-card__after">כלומר <span class="nowrap">7,900&nbsp;₪</span> אחרי ההטבה</p>'),
              "ההטבה")
     h = once(h, '<a href="#video-noam" class="price-card__cta">צפו בסרטון למטה</a>',
-             noam_button("btn--gold cold-price-cta", "לשיחה עם נועם"), "הכפתור בכרטיס המחיר")
+             noam_button("btn--gold cold-price-cta", "לשיחה עם נועם") +
+             new('\n      <p class="price-card__who">נועם הוא סוכן ה-AI של אִימפּרוּב.</p>'), "הכפתור בכרטיס המחיר")
     # 3. הלשונית בשאלות
     h = once(h, 'aria-selected="false" tabindex="-1">למה רק 5 מפגשים?</button>',
              new('aria-selected="false" tabindex="-1">רק 5 שבועות?</button>'), "הלשונית של 5 המפגשים")
@@ -471,8 +547,9 @@ def build():
     h = once(h, "var PAGE = 'index';", "var PAGE = 'hatzaa';", "שם הדף במדידה")
 
     for bad in ("—", "–", "→"):
-        if any(bad in s for s in NEW_COPY + [COLD_CSS, ADI_QUOTE, OFFICE_BG, COLD_JS, WA_FLOAT, OFFICE_LEGEND]):
+        if any(bad in s for s in NEW_COPY + [COLD_CSS, ADI_QUOTE, WORTH_IG, OFFICE_BG, COLD_JS, WA_FLOAT, OFFICE_LEGEND]):
             raise BuildError(f"בטקסט החדש יש את התו האסור {bad!r}")
+    h = no_orphans(h)
     OUT.write_text(h, encoding="utf-8")
     print(f"נכתב {OUT.name}: {len(h):,} תווים, {h.count('<section')} סקשנים")
 
