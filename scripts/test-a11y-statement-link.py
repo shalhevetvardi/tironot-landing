@@ -11,7 +11,7 @@ from html.parser import HTMLParser
 U = {"privacy": ("https://aimprove.co.il/privacy-policy/", "מדיניות פרטיות"),
      "terms": ("https://aimprove.co.il/terms-of-use/", "תקנון"),
      "a11y": ("https://aimprove.co.il/accessibility-statement/", "הצהרת נגישות")}
-FIVE = {"index.html", "bogrim/index.html", "faq/index.html", "usa/index.html", "usa/en/index.html"}
+FIVE = {"index.html", "hatzaa.html", "bogrim/index.html", "faq/index.html", "usa/index.html", "usa/en/index.html"}  # hatzaa: הגרסה לקהל קר, נבנית מ-index.html
 OTHER = {"stories.html", "referral-program/index.html"}
 PREEXISTING_EXTRA = {("faq/index.html", "terms"): 1}
 VOID = {"meta", "link", "img", "br", "hr", "input", "source", "area", "base", "col", "embed", "wbr", "track", "param"}
