@@ -63,25 +63,29 @@ def new(s):
     return s
 
 
-PROOF_CHIPS = """
-      <div class="cold-proof"><span class="cold-proof__chip"><span class="cold-proof__stars" aria-hidden="true">★★★★★</span> 5 כוכבים בגוגל</span><span class="cold-proof__chip">רוב הבוגרים לא מרקע טכני</span></div>"""
-
-# "למי זה מתאים": הכאב לפני ההצעה. הכאבים מבנק המסרים המוכחים (זה לא רץ בלעדיי, עובדים, כלים בלי שיטה)
-# ומהפרסונה שאושרה (רעיון בראש בלי לדעת אם יצליח; לא מתכנת; מי שרוצה שיבנו לו - לא מתאים)
+# "למי זה מתאים": הכאב לפני ההצעה, במילים שתלמידים אמרו בשיחות האונבורדינג (מיפוי-קהל-ומסרים/1-אונבורדינג.md,
+# חלקים ב ו-ה): "בלאגן", "טלאי על טלאי", "מיליון צ'אטים פתוחים", "הגעתי לתקרה", "לחבר את הדבר הזה למשהו אחד",
+# "העבודה היא רק כשאני נמצאת", "יותר מדי מידע". שלהבת: לא משנה אם ניסו לבד או לא, הם רוצים מאוד
 FIT_SECTION = """<section class="section section--white center cold-fit" id="fit">
   <div class="container">
     <h2>למי זה <span class="accent-blue">מתאים?</span></h2>
-    <p class="lead center cold-fit__lead">לבעלי עסקים, לעצמאים ולשכירים שמכירים לפחות אחד מאלה:</p>
-    <ul class="cold-fit__list">
-      <li><strong>אתם עובדים עם AI כל יום, ועדיין הכול עובר דרככם.</strong> בלי ההעתק-הדבק שלכם, שום דבר לא זז.</li>
-      <li><strong>יש לכם רעיון למשהו שתרצו לבנות.</strong> ראיתם מה אחרים עושים עם סוכנים, ולא ברור לכם מאיפה מתחילים, ואם בכלל תצליחו.</li>
-      <li><strong>ניסיתם לבד.</strong> סרטונים, מדריכים, עוד כלי חדש כל שבוע. נשארתם עם הרבה חלקים, ובלי משהו שעובד ביחד.</li>
-      <li><strong>יש עבודה שחוזרת על עצמה ושורפת לכם שעות כל שבוע,</strong> ואתם כבר שואלים את עצמכם אם לגייס מישהו בשבילה.</li>
-      <li><strong>אתם לא מתכנתים,</strong> ולא מתכוונים להיות.</li>
-    </ul>
+    <p class="lead center cold-fit__lead">לבעלי עסקים, לעצמאים ולשכירים שממש רוצים שה-AI יעבוד בשבילם. בין אם כבר ניסיתם לבד, ובין אם עוד לא.</p>
+    <div class="cold-fit__cards">
+      <div class="cold-fit__card"><h3>כבר ניסיתם לבד, והגעתם לתקרה</h3><p>מיליון צ'אטים פתוחים, פרומפטים ואוטומציות שעובדים חצי. הכול טלאי על טלאי, ולא ברור איך מחברים את זה למשהו אחד שעובד.</p></div>
+      <div class="cold-fit__card"><h3>עוד לא התחלתם, ויש לכם רעיון בראש</h3><p>משהו שתרצו שירוץ גם כשאתם לא שם. אבל יש כל כך הרבה מידע וכלים, שלא ברור מאיפה מתחילים, ואם בכלל תצליחו.</p></div>
+    </div>
+    <p class="cold-fit__pain">ובשני המקרים, הבלגן נשאר בראש שלכם, והעבודה עדיין קורית רק כשאתם נמצאים.</p>
     <p class="cold-fit__not">ומי שמחפש שמישהו יבנה בשבילו - זה לא המקום. כאן בונים בעצמכם, עם ליווי צמוד.</p>
   </div>
 </section>"""
+
+# "שווה את הכסף?": שני הסרטונים גלויים, ושאר העדויות נפתחות למי שרוצה לקרוא עוד
+WORTH_MORE_OPEN = '<div class="cold-more" id="cold-worth-more" inert>\n      '
+WORTH_MORE_CLOSE = ('</div>\n      <p class="cold-more__btn"><button type="button" class="btn btn--outline" '
+                    'aria-controls="cold-worth-more" aria-expanded="false">לעוד עדויות של בוגרים</button></p>'
+                    "<script>(function () { var b = document.querySelector('.cold-more__btn button'), m = document.getElementById('cold-worth-more');"
+                    " if (!b || !m) return; b.addEventListener('click', function () { m.classList.add('is-open'); m.inert = false;"
+                    " b.setAttribute('aria-expanded', 'true'); b.parentNode.hidden = true; }); })();</script>")
 
 # תגובה מאינסטגרם (Q-0316 במאגר "ציטוטים לדפים"): ליד המחיר, כי היא עונה על "שווה את הכסף?" מפי מי שלא טכנית
 ADI_QUOTE = ('<figure class="cold-quote"><img src="bogrim/images/sigal.jpg" alt="סיגל יער" loading="lazy">'
@@ -307,17 +311,21 @@ COLD_CSS = """<style id="cold-css">
   .cold-what-lead { max-width: 760px; margin-inline: auto; }
   .cold-what-example { max-width: 680px; margin: 10px auto 0; font-size: 16px; color: var(--navy); opacity: .85; }
   .cold-what-proof { margin: 24px auto 0; font-weight: 700; color: var(--navy); }
-  .cold-proof { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 14px; }
-  .cold-proof__chip { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 50px;
-    background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.28); color: #fff; font-size: 14px; font-weight: 600; }
-  .cold-proof__stars { color: var(--gold); letter-spacing: 1px; }
-  @media (max-width: 520px) { .cold-proof { gap: 6px; } .cold-proof__chip { font-size: 12.5px; padding: 4px 10px; } }
   .cold-brand { display: flex; flex-direction: column; gap: 8px; }
   .cold-brand__sub { color: rgba(255,255,255,.88); font-weight: 700; font-size: clamp(16px, 2vw, 20px); line-height: 1.2; }
   .cold-fit__lead { max-width: 720px; margin-inline: auto; }
-  .cold-fit__list { list-style: none; padding: 0; margin: 26px auto 0; max-width: 760px; display: grid; gap: 12px; text-align: right; }
-  .cold-fit__list li { background: #f6f7fb; border: 1px solid rgba(20, 9, 59, .1); border-radius: 16px; padding: 14px 18px; line-height: 1.6; color: var(--navy); }
-  .cold-fit__list strong { color: var(--navy); }
+  .cold-fit__cards { display: grid; gap: 14px; margin: 28px auto 0; max-width: 860px; text-align: right; }
+  @media (min-width: 760px) { .cold-fit__cards { grid-template-columns: 1fr 1fr; } }
+  .cold-fit__card { background: #f6f7fb; border: 1px solid rgba(20, 9, 59, .1); border-radius: 18px; padding: 18px 20px; }
+  .cold-fit__card h3 { margin: 0 0 8px; font-size: 19px; line-height: 1.35; color: var(--navy); }
+  .cold-fit__card p { margin: 0; line-height: 1.65; color: var(--navy); opacity: .85; }
+  @media (min-width: 760px) { .cold-fit__card h3 { font-size: 21px; } .cold-fit__card p { font-size: 17px; } .cold-fit__not { font-size: 16.5px; } }
+  .cold-fit__pain { max-width: 720px; margin: 26px auto 0; font-size: clamp(19px, 2.3vw, 23px); font-weight: 800; line-height: 1.45; color: var(--navy); text-wrap: balance; }
+  .cold-more { max-height: 0; overflow: hidden; }
+  .cold-more.is-open { max-height: none; overflow: visible; }
+  .cold-more__btn { margin: 26px 0 0; text-align: center; }
+  .cold-more__btn .btn { background: #fff; color: var(--navy); border: 1.5px solid rgba(20, 9, 59, .25); }
+  .price-card__after { font-size: 14px; color: rgba(255,255,255,.75); margin: -6px 0 14px; position: relative; z-index: 1; }
   .cold-fit__not { max-width: 720px; margin: 22px auto 0; font-size: 15.5px; color: var(--navy); opacity: .75; }
   .cold-underline { white-space: nowrap; text-decoration: underline; text-decoration-color: var(--gold); text-decoration-thickness: 3px; text-underline-offset: 6px; }
   .price-promise { text-wrap: balance; }
@@ -360,8 +368,8 @@ def build():
     WA = wa_link(h)
 
     # 1. המסך הראשון
-    h = once(h, '<span class="eyebrow">הופכים אתכם למי שבונה סוכני AI לבד.</span>',
-             new(PROOF_CHIPS.strip()), "התווית במסך הראשון")
+    # בלי תוויות מעל הכותרת: יותר מדי טקסט במסך הראשון (שלהבת, 24-10-2026)
+    h = once(h, '<span class="eyebrow">הופכים אתכם למי שבונה סוכני AI לבד.</span>', '', "התווית במסך הראשון")
     # "תוכנית האצה" היא תת-כותרת של השם, לא תג באותה שורה עם ההוכחות
     h = once(h, '<span class="hero__brandname">טירונות סוכנים</span></div>',
              new('<span class="cold-brand"><span class="hero__brandname">טירונות סוכנים</span>'
@@ -404,6 +412,15 @@ def build():
         raise BuildError("רצועת ההודעות ב'נעים להכיר' לא נמצאה")
     h = h[:j] + new(IG_STRIP) + h[j:]
 
+    # "שווה את הכסף?": מה שאחרי שני הסרטונים נפתח רק למי שרוצה לקרוא עוד
+    s = h.find('<div class="tm-worth" id="tm-worth">')
+    sec_end = h.find('</section>', s)
+    a = h.find('<div class="tm-shots">', s)
+    z = h.rfind('\n    </div>\n  </div>\n', s, sec_end)
+    if s < 0 or not (s < a < z < sec_end):
+        raise BuildError("המבנה של 'שווה את הכסף?' השתנה, צריך לעדכן את הסקריפט")
+    h = h[:a] + WORTH_MORE_OPEN + h[a:z] + "\n      " + new(WORTH_MORE_CLOSE) + h[z:]
+
     # 5. בלי הבטחות מוחלטות בטקסט של אִימפּרוּב
     h = once(h, 'את השיטה השלמה - לבנות כל סוכן, כל תהליך, כל דבר שרץ אוטומטית. כל מה שתצטרכו, גם בעוד שנה, גם משהו שעוד לא קיים.',
              new('את השיטה שלפיה בונים סוכנים ותהליכים שרצים לבד, והיא ממשיכה לעבוד גם כשהכלים משתנים.'),
@@ -442,7 +459,8 @@ def build():
     old_list = h[i:h.find('</ul>', i) + 5]
     h = once(h, old_list, new(PRICE_LIST) + ADI_QUOTE, "רשימת מה כלול")
     h = once(h, '<div class="price-card__offer">רוצים הטבה של <span class="nowrap">1,400&nbsp;₪</span>?</div>',
-             new('<div class="price-card__offer">הטבה של <span class="nowrap">1,400&nbsp;₪</span> <span class="nowrap">ניתנת בשיחה עם נועם</span></div>'),
+             new('<div class="price-card__offer">הטבה של <span class="nowrap">1,400&nbsp;₪</span> <span class="nowrap">ניתנת בשיחה עם נועם</span></div>'
+                 '\n      <p class="price-card__after">כלומר <span class="nowrap">7,900&nbsp;₪</span> אחרי ההטבה</p>'),
              "ההטבה")
     h = once(h, '<a href="#video-noam" class="price-card__cta">צפו בסרטון למטה</a>',
              noam_button("btn--gold cold-price-cta", "לשיחה עם נועם"), "הכפתור בכרטיס המחיר")
@@ -461,7 +479,7 @@ def build():
     h = once(h, "var PAGE = 'index';", "var PAGE = 'hatzaa';", "שם הדף במדידה")
 
     for bad in ("—", "–", "→"):
-        if any(bad in s for s in NEW_COPY + [COLD_CSS, ADI_QUOTE, OFFICE_BG, COLD_JS, WA_FLOAT, PROOF_CHIPS, OFFICE_LEGEND]):
+        if any(bad in s for s in NEW_COPY + [COLD_CSS, ADI_QUOTE, OFFICE_BG, COLD_JS, WA_FLOAT, OFFICE_LEGEND]):
             raise BuildError(f"בטקסט החדש יש את התו האסור {bad!r}")
     OUT.write_text(h, encoding="utf-8")
     print(f"נכתב {OUT.name}: {len(h):,} תווים, {h.count('<section')} סקשנים")
