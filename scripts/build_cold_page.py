@@ -93,13 +93,8 @@ ADI_QUOTE = ('<figure class="cold-quote"><img src="bogrim/images/sigal.jpg" alt=
              '<span class="tm-hl">אחרי שבועיים של טירונות</span> הרגשתי שאני נוסקת לגג העולם."</blockquote>'
              '<figcaption>סיגל יער, עורכת דין, בת 58 · תגובה באינסטגרם</figcaption></figure>')
 
-# רצועה שנייה ב"נעים להכיר": תגובות בוגרים באינסטגרם (Q-0308 עד Q-0319). אותו מנגנון רצועה כמו ההודעות (data-strip)
-IG_COMMENTS = json.loads((Path(__file__).parent / "cold-page-data" / "ig-comments.json").read_text(encoding="utf-8"))
-IG_STRIP = ('\n    <p class="tm-strip-cap">ומה בוגרים כותבים עליי באינסטגרם</p>'
-            '\n    <div class="tm-shots tm-shots--ig" data-strip="1">' + "".join(
-                f'<figure class="tm-shot"><button type="button" aria-label="הגדלת התגובה של {html.escape(c["name"])}">'
-                f'<img src="{c["src"]}" alt="{html.escape(c["name"] + ": " + c["alt"])}" loading="lazy"></button></figure>'
-                for c in IG_COMMENTS) + '</div>')
+# רצועת תגובות האינסטגרם ב"נעים להכיר" נמצאת ב-index.html עצמו (scripts/build_ig_strip.py), ולכן היא מגיעה לכאן משם
+
 
 PRICE_LIST = """<ul class="price-includes">
       <li><span><strong>5 שבועות של שיעורים וליווי שוטף</strong> - בתל אביב או בזום. בכל שבוע לומדים שלב חדש ובונים אותו יחד, על העבודה שלכם</span></li>
@@ -134,7 +129,7 @@ OFFICE_ANIM = """
 
 OFFICE_LEGEND = """
       <div class="cold-legend">
-        <h3>כל ריבוע במשרד הוא סוכן, ואפשר לראות לאיזה ידע ויכולות הוא מחובר</h3>
+        <h3>כל קובייה במשרד היא סוכן, ואפשר לראות לאיזה ידע ויכולות היא מחוברת</h3>
         <div class="cold-legend__grid">
           <div class="cold-legend__item"><span class="cold-legend__shape cold-legend__shape--cube" aria-hidden="true"></span><span><b>קובייה</b> - סוכן. עובד עם תפקיד מוגדר, שיושב במחלקה שלו</span></div>
           <div class="cold-legend__item"><span class="cold-legend__shape cold-legend__shape--capsule" aria-hidden="true"></span><span><b>גלולה</b> - מסמך ידע. מה שהסוכן יודע על העבודה שלכם</span></div>
@@ -352,10 +347,6 @@ COLD_CSS = """<style id="cold-css">
   .cold-price-cta { display: inline-flex; align-items: center; gap: 10px; margin-top: 12px; }
   .cold-quote { display: grid; grid-template-columns: 52px 1fr; gap: 4px 12px; align-items: start; max-width: 640px; margin: 8px auto 28px; text-align: right; background: #f6f7fb; border: 1px solid rgba(20, 9, 59, .1); border-radius: 18px; padding: 16px; }
   .cold-quote img { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; grid-row: span 2; }
-  /* תגובות אינסטגרם הן צילומים רחבים ונמוכים: כרטיס נמוך ולבן, ולא בגובה של הודעת וואטסאפ */
-  .tm-shots--ig.is-strip { --strip-h: 116px; }
-  .tm-shots--ig.is-strip .tm-shot, .tm-shots--ig.is-strip .tm-shot button { background: #fff; }
-  @media (min-width: 900px) { .tm-shots--ig.is-strip { --strip-h: 146px; } }
   .cold-quote blockquote { margin: 0; line-height: 1.6; }
   .cold-quote figcaption { font-size: 14px; opacity: .75; }
 </style>
@@ -375,7 +366,7 @@ def build():
              new('<span class="cold-brand"><span class="hero__brandname">טירונות סוכנים</span>'
                  '<span class="cold-brand__sub">תוכנית האצה של 5 שבועות</span></span></div>'), "השם במסך הראשון")
     h = once(h, '<p class="hero__sub">ואת השיטה והכלים לבנות כל סוכן, מערכת ותהליך שתצטרכו - לבד, בלי להיתקע.</p>',
-             new('<p class="hero__sub">שיטה מסודרת לבנות סוכני AI שמחוברים זה לזה ועובדים יחד. בונים עם ליווי צמוד, בלי לדעת לתכנת, ויוצאים עם השיטה לבנות לבד <span class="nowrap">את מה שתרצו.</span></p>'),
+             new('<p class="hero__sub">שיטה מסודרת לבנות סוכני AI שמחוברים זה לזה ועובדים יחד. בונים כבר בתוכנית, עם ליווי צמוד ובלי לדעת לתכנת, וממשיכים לבנות עם השיטה גם אחריה. <span class="nowrap">מקבלים אותה פעם אחת</span> <span class="nowrap">ולתמיד.</span></p>'),
              "שורת המשנה")
     # 2. הכפתור לנועם, ו"איך זה עובד" כקישור
     h = once(h, '<a href="#intro" class="btn btn--gold">איך זה עובד</a>',
@@ -405,12 +396,6 @@ def build():
     hero_end = h.find('</section>', h.find('<section class="hero">')) + len('</section>')
     h = h[:hero_end] + "\n\n" + new(FIT_SECTION) + "\n\n" + new(WHAT_SECTION) + h[hero_end:]
 
-    # רצועת אינסטגרם מתחת לרצועת ההודעות ב"נעים להכיר"
-    i = h.find('data-slot="intro-shots"')
-    j = h.find('<!-- /tm-slot --></div>', i) + len('<!-- /tm-slot --></div>')
-    if i < 0 or j < len('<!-- /tm-slot --></div>'):
-        raise BuildError("רצועת ההודעות ב'נעים להכיר' לא נמצאה")
-    h = h[:j] + new(IG_STRIP) + h[j:]
 
     # "שווה את הכסף?": מה שאחרי שני הסרטונים נפתח רק למי שרוצה לקרוא עוד
     s = h.find('<div class="tm-worth" id="tm-worth">')
