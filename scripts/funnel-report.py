@@ -3,6 +3,7 @@
 
     . ~/קוד/sales-automation/.env && python3 scripts/funnel-report.py
     python3 scripts/funnel-report.py --days 7
+    python3 scripts/funnel-report.py --ab        # חצי מול חצי: הדף הקיים (a) מול הגרסה לקהל קר (b)
 
 הדוח מדבר בעברית פשוטה ובמספרים בלבד, ומציג את שני צדי המנגנון זה מול זה
 (דרישת שלהבת, 23-08): כמה נוטשים בדף, מול כמה ממשיכים לנועם ומקבלים את
@@ -113,10 +114,14 @@ def bar(n, total, width=28):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--days", type=int, default=30, help="כמה ימים אחורה (ברירת מחדל 30)")
+    ap.add_argument("--ab", action="store_true", help="חצי מול חצי: index (a) מול hatzaa (b)")
+    ap.add_argument("--since", default="", help="עם --ab: מאיזה תאריך (YYYY-MM-DD). ברירת מחדל: הביקור הראשון ב-b")
     args = ap.parse_args()
 
     if not os.environ.get("AIRTABLE_API_KEY"):
         sys.exit("חסר AIRTABLE_API_KEY. הריצי:  . ~/קוד/sales-automation/.env")
+    if args.ab:
+        return ab_report(args)
 
     since = dt.datetime.now(dt.timezone.utc) - dt.timedelta(days=args.days)
     since_s = since.isoformat()
@@ -297,6 +302,104 @@ def main():
         print()
         print("    ואת המספר שבאמצע - מי מבין הנכנסים לדף ראה את המחיר -")
         print("    אף אחד משני המקורות האלה לא יודע. בשביל זה נבנתה המדידה.")
+    print("=" * 62)
+    print()
+
+
+# ── חצי מול חצי (24-10-2026) ─────────────────────────────────────────────────
+# index.html מגריל כל מבקר חדש ל-a (הדף הקיים) או ל-b (hatzaa.html), ומסמן את ההודעה לנועם
+# ב-#ab-a או ב-#ab-b. הצד של הדף נספר מאירועי המשפך לפי page, והצד של נועם לפי הסימון
+# בשורה הראשונה של noam_chat_log. ההחלטות: Storyteling, פרויקטים/חיפוש-SEO-GEO/06-אסטרטגיית-הדף-הקר.md.
+AB_PAGES = {"index": "a", "hatzaa": "b"}
+AB_NAMES = {"a": "הדף הקיים", "b": "הגרסה לקהל קר"}
+
+
+def _ab_z(x1, n1, x2, n2):
+    """מבחן z לשני שיעורים. |z| מתחת ל-1.96 = ההבדל עדיין יכול להיות מקרי."""
+    if not n1 or not n2:
+        return 0.0
+    p = (x1 + x2) / (n1 + n2)
+    se = (p * (1 - p) * (1 / n1 + 1 / n2)) ** 0.5
+    return (x2 / n2 - x1 / n1) / se if se else 0.0
+
+
+def ab_report(args):
+    tid = find_events_table()
+    raw = fetch_all(tid) if tid else []
+    test_vids = {str(r["fields"].get("vid", "")) for r in raw if is_test_src(r["fields"].get("src"))}
+    rows = [r["fields"] for r in raw
+            if str(r["fields"].get("page") or "index") in AB_PAGES
+            and str(r["fields"].get("vid", "")) not in test_vids]
+    starts = sorted(str(f.get("ts", "")) for f in rows
+                    if str(f.get("page")) == "hatzaa" and f.get("event") == "view")
+    start = args.since or (starts[0] if starts else "")
+    print()
+    print("=" * 62)
+    if not start:
+        print("  חצי מול חצי: עוד אין אף ביקור בגרסה לקהל קר, ולכן אין מה להשוות.")
+        print("=" * 62)
+        return
+    print(f"  חצי מול חצי - מ-{start[:10]}")
+    print("=" * 62)
+
+    groups = {"a": {}, "b": {}}
+    for f in rows:
+        if str(f.get("ts", "")) < start:
+            continue
+        g = AB_PAGES[str(f.get("page") or "index")]
+        v = groups[g].setdefault(str(f.get("vid", "")), {"price": False, "noam": False})
+        if f.get("event") == "price" or (f.get("event") == "end" and str(f.get("depth", "")) in LADDER
+                                         and LADDER.index(str(f["depth"])) >= LADDER.index("price")):
+            v["price"] = True
+        if f.get("event") == "cta" and f.get("cta_kind") == "noam":
+            v["noam"] = True
+
+    leads = {"a": [], "b": []}
+    for r in fetch_all(T_LEADS):
+        if str(r.get("createdTime", "")) < start:
+            continue
+        first = str(r["fields"].get("noam_chat_log") or "").strip().splitlines()[:1]
+        for g in ("a", "b"):
+            if first and f"#ab-{g}" in first[0]:
+                leads[g].append(r["fields"])
+
+    stats = {}
+    print()
+    print(f"  {'':<26}{AB_NAMES['a']:>14}{AB_NAMES['b']:>18}")
+    for g in ("a", "b"):
+        vs = groups[g].values()
+        stats[g] = {
+            "n": len(groups[g]),
+            "price": sum(1 for v in vs if v["price"]),
+            "noam": sum(1 for v in vs if v["noam"]),
+            "chats": len(leads[g]),
+            "code": sum(1 for f in leads[g] if str(f.get("קוד הטבה", "")).strip()),
+            "enrolled": sum(1 for f in leads[g] if str(f.get("סטטוס", "")) == "נרשם לקורס"),
+        }
+
+    def line(label, key, of=None):
+        cells = []
+        for g in ("a", "b"):
+            s = stats[g]
+            cells.append(f"{s[key]} ({pct(s[key], s[of])})" if of else str(s[key]))
+        print(f"  {label:<26}{cells[0]:>14}{cells[1]:>18}")
+
+    line("נכנסו לדף", "n")
+    line("ראו את המחיר", "price", "n")
+    line("לחצו לדבר עם נועם", "noam", "n")
+    line("שיחות שנפתחו אצל נועם", "chats")
+    line("קיבלו קוד הטבה", "code")
+    line("נרשמו לקורס", "enrolled")
+
+    z = _ab_z(stats["a"]["noam"], stats["a"]["n"], stats["b"]["noam"], stats["b"]["n"])
+    print()
+    if abs(z) < 1.96:
+        print("  ההבדל בלחיצות לנועם עדיין יכול להיות מקרי. ממשיכים לאסוף.")
+    else:
+        better = "b" if z > 0 else "a"
+        print(f"  ההבדל בלחיצות לנועם כבר לא מקרי: {AB_NAMES[better]} מביא יותר.")
+    print("  המדד שמכריע הוא הרשמות, ולא לחיצות (מסמך 06, סעיף 8). בהרשמות צריך")
+    print("  הרבה יותר זמן עד שאפשר לומר משהו, כי יש מעט מהן.")
     print("=" * 62)
     print()
 
