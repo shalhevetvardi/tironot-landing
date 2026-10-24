@@ -22,6 +22,7 @@
       if (p.indexOf('/bogrim') !== -1) return 'bogrim';
       if (p.indexOf('/referral-program') !== -1) return 'referral';
       if (p.indexOf('/usa') !== -1) return 'usa';
+      if (p.indexOf('/hatzaa') !== -1) return 'hatzaa';
       return 'index';
     }
     var PAGE = detectPage();
@@ -106,77 +107,68 @@
     }
 
     var bar = null;
+    var reopener = null;
     var reduceMotion = false;
-    var prevOverflow = '';
     try { reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
 
     /* בונים ב-JS ולא ב-HTML קבוע, כדי שלא יהיה שום הבזק (flash) של הבאנר
        למי שכבר החליט בעבר.
 
-       07-09-2026: הפך מפס-תחתון לחלון חוסם. הסיבה במספרים - מתוך 456 ביקורים
-       בדף הראשי, רק 161 (35%) בכלל לחצו על כפתור; 295 גללו הלאה בלי להחליט
-       כלום. פס בתחתית תמיד יאפשר את זה, זו התכונה שלו.
+       24-10-2026: חזר להיות פס קטן בתחתית, בהחלטה של שלהבת. בין 07-09 ל-24-10
+       זה היה חלון שמכסה את כל המסך, כי עם פס רק 161 מתוך 456 ביקורים (35%)
+       בחרו משהו, והשאר גללו הלאה בלי שהפיקסל והאנליטיקס נטענו. החלון כיסה
+       בטלפון את המסך הראשון בדיוק בשניות שבהן קורא חדש מחליט אם להישאר,
+       והיא בחרה במסך הראשון על פני אחוז המאשרים, בידיעה שהאחוז צפוי לרדת.
+       אחוז המאשרים נמדד מאירועי ההסכמה (e: 'consent') מול הכניסות במשפך.
 
-       ⚖️ מותר, ובתנאי אחד שנשמר כאן במפורש: הסירוב קל בדיוק כמו האישור
-       (אותו גודל, אותה לחיצה אחת), ומי שסירב מקבל את הדף במלואו. מה שאסור
-       הוא להתנות את הגישה באישור - וזה בדיוק מה שלא עושים כאן. אין X ואין
-       סגירה בלחיצה בחוץ, כי המטרה היא החלטה - לא לכידה. */
+       ⚖️ התנאים שנשמרים: הפיקסל והאנליטיקס נטענים רק אחרי אישור, הסירוב קל
+       בדיוק כמו האישור (אותו גודל, לחיצה אחת), ומי שלא בחר מקבל את הדף במלואו.
+       בפס יש קישור למדיניות הפרטיות, שלא היה בחלון. */
     function showBanner() {
       if (bar) return;
       bar = document.createElement('div');
       bar.setAttribute('dir', 'rtl');
-      bar.setAttribute('role', 'dialog');
-      bar.setAttribute('aria-modal', 'true');
+      bar.setAttribute('role', 'region');
       bar.setAttribute('aria-label', 'הסכמה לעוגיות שיווקיות');
-      bar.style.cssText = 'position:fixed;inset:0;z-index:2147483000;'
-        + 'background:rgba(9,4,26,.72);display:flex;align-items:center;justify-content:center;padding:20px;'
-        + 'font-family:"Rubik",Arial,sans-serif;'
-        + (reduceMotion ? '' : 'opacity:0;transition:opacity .28s ease-out;');
+      bar.style.cssText = 'position:fixed;left:0;right:0;bottom:0;z-index:2147483000;'
+        + 'background:#14093B;color:#fff;box-shadow:0 -6px 24px rgba(0,0,0,.28);'
+        + 'padding:12px 16px calc(12px + env(safe-area-inset-bottom));'
+        + 'font-family:"Rubik",Arial,sans-serif;font-size:13.5px;line-height:1.5;'
+        + (reduceMotion ? '' : 'transform:translateY(100%);transition:transform .3s ease-out;');
 
-      var card = document.createElement('div');
-      card.style.cssText = 'background:#14093B;color:#fff;border-radius:18px;padding:28px 26px;'
-        + 'max-width:520px;width:100%;box-shadow:0 24px 60px rgba(0,0,0,.45);'
-        + 'font-size:15.5px;line-height:1.6;text-align:right;'
-        + (reduceMotion ? '' : 'transform:translateY(14px) scale(.98);transition:transform .32s cubic-bezier(.16,1,.3,1);');
-
-      var title = document.createElement('div');
-      title.textContent = 'רגע לפני שנתחיל';
-      title.style.cssText = 'font-size:20px;font-weight:700;margin-bottom:10px;';
+      var inner = document.createElement('div');
+      inner.style.cssText = 'max-width:960px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;';
 
       var text = document.createElement('div');
-      text.style.cssText = 'margin-bottom:22px;color:rgba(255,255,255,.88);';
-      text.textContent = 'אנחנו משתמשים בעוגיות שיווקיות (פייסבוק, גוגל) כדי להבין מה עובד ולהראות לכם תוכן רלוונטי. אפשר לאשר או לסרב - הדף יעבוד בכל מקרה.';
+      text.style.cssText = 'flex:1 1 320px;color:rgba(255,255,255,.9);';
+      text.appendChild(document.createTextNode('אנחנו משתמשים בעוגיות שיווקיות (פייסבוק, גוגל) כדי להבין מה עובד. הדף עובד גם בלי. '));
+      var policy = document.createElement('a');
+      policy.href = 'https://aimprove.co.il/privacy-policy/';
+      policy.target = '_blank';
+      policy.rel = 'noopener noreferrer';
+      policy.textContent = 'מדיניות הפרטיות';
+      policy.style.cssText = 'color:#fff;text-decoration:underline;text-underline-offset:2px;';
+      text.appendChild(policy);
 
       var btnRow = document.createElement('div');
-      btnRow.style.cssText = 'display:flex;gap:10px;flex-wrap:wrap;';
+      btnRow.style.cssText = 'display:flex;gap:8px;flex:0 0 auto;';
 
       var accept = document.createElement('button');
       accept.type = 'button';
       accept.textContent = 'מאשר/ת';
-      accept.style.cssText = 'flex:1;min-width:140px;background:#FFD747;color:#14093B;border:none;border-radius:10px;'
-        + 'padding:13px 26px;font-weight:700;font-size:15.5px;cursor:pointer;font-family:inherit;';
+      accept.style.cssText = 'min-width:96px;background:#FFD747;color:#14093B;border:1px solid #FFD747;border-radius:10px;'
+        + 'padding:8px 16px;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit;';
 
       var decline = document.createElement('button');
       decline.type = 'button';
       decline.textContent = 'לא תודה';
-      decline.style.cssText = 'flex:1;min-width:140px;background:transparent;color:#fff;border:1px solid rgba(255,255,255,.45);'
-        + 'border-radius:10px;padding:13px 26px;font-weight:600;font-size:15.5px;cursor:pointer;font-family:inherit;';
-
-      /* מקלדת: Tab מסתובב בין שני הכפתורים בלבד כל עוד החלון פתוח. */
-      function trap(e) {
-        if (e.key !== 'Tab') return;
-        var focusables = [accept, decline];
-        var i = focusables.indexOf(document.activeElement);
-        e.preventDefault();
-        var next = e.shiftKey ? (i <= 0 ? focusables.length - 1 : i - 1) : (i === focusables.length - 1 ? 0 : i + 1);
-        focusables[next].focus();
-      }
+      decline.style.cssText = 'min-width:96px;background:transparent;color:#fff;border:1px solid rgba(255,255,255,.55);'
+        + 'border-radius:10px;padding:8px 16px;font-weight:600;font-size:14px;cursor:pointer;font-family:inherit;';
 
       function close() {
-        try { document.removeEventListener('keydown', trap, true); } catch (e) {}
-        try { document.body.style.overflow = prevOverflow; } catch (e) {}
         try { bar.remove(); } catch (e) {}
         bar = null;
+        if (reopener) reopener.style.display = '';
       }
 
       accept.addEventListener('click', function () {
@@ -193,29 +185,19 @@
 
       btnRow.appendChild(accept);
       btnRow.appendChild(decline);
-      card.appendChild(title);
-      card.appendChild(text);
-      card.appendChild(btnRow);
-      bar.appendChild(card);
+      inner.appendChild(text);
+      inner.appendChild(btnRow);
+      bar.appendChild(inner);
       document.body.appendChild(bar);
-
-      try { prevOverflow = document.body.style.overflow; document.body.style.overflow = 'hidden'; } catch (e) {}
-      document.addEventListener('keydown', trap, true);
-      /* מפקסים על החלון עצמו ולא על "מאשר/ת" - פוקוס על כפתור האישור הופך
-         Enter לאישור בהיסח הדעת, וזו הטיה לטובת צד אחד. */
-      card.setAttribute('tabindex', '-1');
-      try { card.focus({ preventScroll: true }); } catch (e) {}
+      /* כפתור "פרטיות" יושב באותה פינה, ולכן מוסתר כל עוד הפס פתוח */
+      if (reopener) reopener.style.display = 'none';
 
       if (!reduceMotion) {
         requestAnimationFrame(function () {
-          requestAnimationFrame(function () {
-            bar.style.opacity = '1';
-            card.style.transform = 'translateY(0) scale(1)';
-          });
+          requestAnimationFrame(function () { if (bar) bar.style.transform = 'translateY(0)'; });
         });
       }
     }
-
     /* כפתור-פינה קבוע וצנוע - מאפשר לשנות החלטה גם אחרי שכבר נבחרה. */
     function addReopener() {
       var link = document.createElement('button');
@@ -227,7 +209,11 @@
         + 'padding:7px 14px;font-size:12.5px;font-family:"Rubik",Arial,sans-serif;'
         + 'cursor:pointer;';
       link.addEventListener('click', showBanner);
-      function mount() { document.body.appendChild(link); }
+      reopener = link;
+      function mount() {
+        if (bar) link.style.display = 'none';
+        document.body.appendChild(link);
+      }
       if (document.body) mount();
       else document.addEventListener('DOMContentLoaded', mount);
     }
