@@ -37,6 +37,44 @@ EVENTS_TABLE_NAME = "אירועי משפך - דף נחיתה"
 # והטבלה הזו גדלה בכ-19,000 שורות בחודש. הקליקים והלידים נשארו ב-BASE.
 EVENTS_BASE = "appsmXIiJbUfepFhC"
 _EVENTS_TABLE_IDS = set()
+# מ-24-10-2026 האירועים נשמרים ב-D1 (מסד הנתונים של Cloudflare), ונקראים דרך GET /events בשירות
+# הקליטה (aimprove-redirector). עם מפתח קריאה הדוח קורא משם; בלעדיו, מ-Airtable כמו קודם.
+EVENTS_API = os.environ.get("EVENTS_API_URL", "https://r.aimprove.co.il/events")
+EVENTS_FROM_D1 = "d1"
+
+
+def _events_key():
+    k = os.environ.get("EVENTS_READ_KEY", "")
+    if k:
+        return k
+    f = os.path.expanduser("~/.claude/secrets/funnel-events.env")
+    if os.path.exists(f):
+        for line in open(f, encoding="utf-8"):
+            if line.startswith("EVENTS_READ_KEY="):
+                return line.split("=", 1)[1].strip()
+    return ""
+
+
+def fetch_d1_events(page=None):
+    """כל האירועים של דף אחד מ-D1, בצורה של שורות Airtable ({"fields": ...}), כדי ששאר הדוח לא ישתנה."""
+    out, after = [], ""
+    for _ in range(400):
+        q = {"page": page} if page else {}
+        if after:
+            q["after"] = after
+        req = urllib.request.Request(
+            f"{EVENTS_API}?{urllib.parse.urlencode(q)}",
+            headers={"x-events-key": _events_key(), "User-Agent": "Mozilla/5.0"},
+        )
+        with urllib.request.urlopen(req, timeout=60) as r:
+            body = json.loads(r.read())
+        for row in body.get("rows", []):
+            f = {k: v for k, v in row.items() if k not in ("id",) and v not in ("", None)}
+            out.append({"id": row.get("id"), "fields": f})
+        after = body.get("next") or ""
+        if not after:
+            return out
+    raise RuntimeError("events API stopped at 400 pages")
 
 # סדר הסקשנים בדף - חייב להתאים ל-SECTIONS בביקון שב-index.html
 LADDER = ["hero", "intro", "story", "proofs", "roadmap", "price", "video", "final"]
@@ -64,6 +102,9 @@ def _get(path, params=None):
 
 
 def fetch_all(table):
+    if table == EVENTS_FROM_D1:
+        # כל הדפים, כמו מ-Airtable: הדוח מסנן לבד, ומציג כמה ביקורים בדפים אחרים לא נספרו.
+        return fetch_d1_events(None)
     out, offset = [], None
     while True:
         p = {"pageSize": 100}
@@ -84,6 +125,8 @@ def fetch_all(table):
 
 
 def find_events_table():
+    if _events_key():
+        return EVENTS_FROM_D1
     for t in _get(f"meta/bases/{EVENTS_BASE}/tables")["tables"]:
         if t["name"] == EVENTS_TABLE_NAME:
             _EVENTS_TABLE_IDS.add(t["id"])
