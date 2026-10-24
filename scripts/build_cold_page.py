@@ -132,7 +132,7 @@ WA_FLOAT = ('<a class="cold-wa-float" href="{wa}" target="_blank" rel="noopener 
 WHAT_SECTION = """<section class="section section--white center" id="what">
   <div class="container">
     <h2>מה בדיוק <span class="accent-blue">קונים כאן?</span></h2>
-    <p class="lead center cold-what-lead">תוכנית האצה של 5 שבועות, שבה בונים <strong>צוות של סוכני AI שמחוברים זה לזה ועובדים יחד</strong>, כמו מחלקות במשרד. לא עוד סוכן בודד, אלא מערכת שבונים על העבודה שלכם.</p>
+    <p class="lead center cold-what-lead">תוכנית האצה של 5 שבועות, שבה בונים <strong>צוות של סוכני AI שמחוברים זה לזה ועובדים יחד</strong>, כמו מחלקות במשרד. לא עוד סוכן בודד, אלא מערכת שלמה.</p>
     <p class="cold-what-example">למשל, דולב, בעל משרד פרסום, בנה צוות סוכנים שמקבל פניות, מתאם פגישות ומעביר עבודה לגרפיקה ולניהול קמפיינים.</p>
     <div class="cold-what">
       <div class="cold-what__item"><h3>שיטה, לא עוד כלי</h3><p>לומדים איך בונים מערכת: מה כל סוכן עושה, מה הוא יודע, ואיך הוא מתחבר לשאר. זה מה שנשאר איתכם גם כשהכלים מתחלפים.</p></div>
