@@ -46,8 +46,13 @@ def visit(pg, url, pat, who, events):
     bad = [t for t in texts if not re.search(pat, t or "") or not (t or "").endswith(tail)]
     ev_vids = {e.get("vid") for e in events}
     ev_who = {e.get("who", "") for e in events}
-    ok = bool(texts) and not bad and ev_vids <= {vid} and bool(events) and ev_who == {who}
-    return ok, f"links={len(texts)} bad={len(bad)} vid_len={len(vid or '')} events={len(events)} event_vids_match={ev_vids <= {vid}} event_who={sorted(ev_who)}", bad
+    # הקוד האישי יוצא מהכתובת (שיתוף הקישור לא מעביר אותו), ושאר הפרמטרים נשארים
+    query = pg.evaluate("location.search")
+    kept = all(f"{k}={v}" in query for k, v in urllib.parse.parse_qsl(urllib.parse.urlsplit(url).query) if k != "who")
+    clean_url = "who=" not in query and kept
+    ok = bool(texts) and not bad and ev_vids <= {vid} and bool(events) and ev_who == {who} and clean_url
+    return ok, (f"links={len(texts)} bad={len(bad)} vid_len={len(vid or '')} events={len(events)} event_vids_match={ev_vids <= {vid}} "
+                f"event_who={sorted(ev_who)} url_without_who={clean_url}"), bad
 
 
 with sync_playwright() as p:

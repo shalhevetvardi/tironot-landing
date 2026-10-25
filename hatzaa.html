@@ -2528,8 +2528,8 @@ window.interdeal = {
    (עד איפה גלל, אם ראה את המחיר), מכל מקור. המספר יוצא מהדף רק כשהאדם עצמו שולח את ההודעה; טבלת הביקורים נשארת
    אנונימית, והחיבור נעשה בדוח ב-sales-automation (modules/landing_visits.py). הוא אחרון בהודעה, אחרי #ab-, ובונה כרטיס
    המסע מדלג על #v-. מי שסימן את המכשיר "זו אני" (aim_optout) לא מקבל מספר ביקור, ולכן גם לא סימון.
-   קוד אישי (25-10-2026): מי שהגיע מקישור אישי (?who=, למשל מ-ManyChat) שולח בסוף גם #w-<הקוד>, אחרי #v-. כך הבדיקה
-   הלילית ב-sales-automation מחברת בוודאות את הליד בוואטסאפ לכרטיס שלו באינסטגרם. גם על #w- בונה המסע מדלג. */
+   קוד אישי (25-10-2026): מי שהגיע מקישור אישי (?who=, למשל מ-ManyChat) שולח בסוף גם #w-<הקוד>, אחרי #v-. כך אפשר לחבר
+   בוודאות את הליד בוואטסאפ לכרטיס שלו באינסטגרם (בדוח ב-sales-automation; חיבור לילי עוד לא נבנה). גם על #w- בונה המסע מדלג. */
 (function () {
   function tag() {
     try {
@@ -2595,6 +2595,20 @@ window.interdeal = {
     var ENDPOINT = 'https://r.aimprove.co.il/e';
     var PAGE = 'hatzaa';
 
+    /* הקוד האישי (?who=, ר' למטה) יוצא מהכתובת מיד, לפני כל דבר אחר (25-10-2026). בלי זה מי ששיתף את הקישור היה מקבל
+       את הביקור ואת השיחה עם נועם של מי שקיבל ממנו, והקוד היה יוצא לפייסבוק ולגוגל עם כתובת הדף (consent-banner.js
+       נטען אחרי הסקריפט הזה). רק who יוצא; src והשאר נשארים. גם במכשיר שסומן "זו אני". */
+    var whoParam = '';
+    try {
+      var qs = new URLSearchParams(location.search);
+      if (qs.has('who')) {
+        whoParam = String(qs.get('who') || '').replace(/[^a-z0-9_-]/gi, '').slice(0, 40);
+        qs.delete('who');
+        var rest = qs.toString();
+        history.replaceState(history.state, '', location.pathname + (rest ? '?' + rest : '') + location.hash);
+      }
+    } catch (e) {}
+
     /* ── דילוג-מדידה לשלהבת ולצוות (נוסף 24-08-2026) ──
        שלהבת נכנסת לדף הרבה - לבדוק, להראות, לערוך - וכל כניסה כזו נספרה
        כמבקר. במדגם קטן זה מטה משמעותית דווקא את המספר שהכי חשוב: "כמה
@@ -2653,10 +2667,9 @@ window.interdeal = {
 
     /* קוד אישי (25-10-2026): ?who= בקישור אישי ששלחנו לאדם מסוים (מ-ManyChat: mc<מספר הכרטיס>). כך מחברים את
        הביקור לאדם גם כשהוא לא כתב לנועם. נשמר רק לביקור הזה (sessionStorage), ולא כמו src לביקורים הבאים, כדי
-       שלא יהפוך למזהה קבוע בדפדפן. נשלח עם כל אירוע, ו-ab-tag מוסיף אותו להודעה לנועם (#w-). */
-    var who = '';
+       שלא יהפוך למזהה קבוע בדפדפן. נשלח עם כל אירוע, ו-ab-tag מוסיף אותו להודעה לנועם (#w-). מהכתובת הוא כבר יצא, למעלה. */
+    var who = whoParam;
     try {
-      who = String(new URLSearchParams(location.search).get('who') || '').replace(/[^a-z0-9_-]/gi, '').slice(0, 40);
       if (who) sessionStorage.setItem('aim_who', who);
       else who = String(sessionStorage.getItem('aim_who') || '').replace(/[^a-z0-9_-]/gi, '').slice(0, 40);
     } catch (e) {}
