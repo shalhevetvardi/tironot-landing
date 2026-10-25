@@ -2523,12 +2523,20 @@ window.interdeal = {
 /* סימון הגרסה בהודעה לנועם (24-10-2026): מי שהוגרל לחצי מול חצי שולח לנועם הודעה שמסתיימת ב-#ab-a או ב-#ab-b,
    וכך אפשר לספור אחר כך שיחות, קודי הטבה והרשמות לכל גרסה (scripts/funnel-report.py --ab, לפי noam_chat_log).
    הסימון בא אחרי קוד המקור (#p99), כי בונה כרטיס המסע ב-sales-automation לוקח את ה-# הראשון אחרי "כמו שהיא".
-   רץ אחרי שהדף נטען, ולכן תופס גם כפתור שנוסף בסוף הדף (הכפתור הצף ב-hatzaa), ומוסיף לו גם את קוד המקור. */
+   רץ אחרי שהדף נטען, ולכן תופס גם כפתור שנוסף בסוף הדף (הכפתור הצף ב-hatzaa), ומוסיף לו גם את קוד המקור.
+   מספר הביקור (25-10-2026): בסוף ההודעה גם #v-<מספר הביקור במדידה>, כדי שכל ליד שכתב לנועם מהדף יחובר לביקור שלו
+   (עד איפה גלל, אם ראה את המחיר), מכל מקור. המספר יוצא מהדף רק כשהאדם עצמו שולח את ההודעה; טבלת הביקורים נשארת
+   אנונימית, והחיבור נעשה בדוח ב-sales-automation (modules/landing_visits.py). הוא אחרון בהודעה, אחרי #ab-, ובונה כרטיס
+   המסע מדלג על #v-. מי שסימן את המכשיר "זו אני" (aim_optout) לא מקבל מספר ביקור, ולכן גם לא סימון. */
 (function () {
   function tag() {
     try {
-      var ab = localStorage.getItem('aim_ab');
-      var src = String(localStorage.getItem('aim_src') || '').replace(/[^a-z0-9_-]/gi, '').slice(0, 40);
+      var ab = '', src = '', vid = '';
+      try { ab = localStorage.getItem('aim_ab') || ''; src = String(localStorage.getItem('aim_src') || ''); } catch (e) {}
+      src = src.replace(/[^a-z0-9_-]/gi, '').slice(0, 40);
+      try { vid = sessionStorage.getItem('aim_vid') || ''; } catch (e) {}
+      if (!vid) vid = String(window.__aimVid || '');
+      vid = vid.replace(/[^a-f0-9]/gi, '').slice(0, 32);
       var mark = /hatzaa/.test(location.pathname) ? '#ab-b' : '#ab-a';
       var links = document.querySelectorAll('a[href*="wa.me/972559397247"]');
       for (var i = 0; i < links.length; i++) {
@@ -2536,6 +2544,7 @@ window.interdeal = {
         var t = u.searchParams.get('text') || '';
         if (src && t.indexOf('#' + src) === -1) t = 'שלחו הודעה זו בדיוק כמו שהיא כדי להתחיל לדבר עם נועם #' + src;
         if ((ab === 'a' || ab === 'b') && t.indexOf('#ab-') === -1) t += ' ' + mark;
+        if (vid.length >= 8 && t.indexOf('#v-') === -1) t += ' #v-' + vid;
         if (t !== (u.searchParams.get('text') || '')) { u.searchParams.set('text', t); links[i].href = u.toString(); }
       }
     } catch (e) { /* לעולם לא שובר את הדף */ }
@@ -2625,6 +2634,8 @@ window.interdeal = {
       vid = (Math.random().toString(16).slice(2) + Math.random().toString(16).slice(2)).slice(0, 16);
       try { sessionStorage.setItem('aim_vid', vid); } catch (e) {}
     }
+    /* לסימון מספר הביקור בהודעה לנועם (ab-tag), כשהדפדפן חוסם את sessionStorage. */
+    window.__aimVid = vid;
 
     /* קוד-מקור הקמפיין - אותה קריאה בדיוק כמו סקריפט ייחוס-המקור שמעליי. */
     var src = '';
