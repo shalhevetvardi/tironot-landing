@@ -2527,16 +2527,21 @@ window.interdeal = {
    מספר הביקור (25-10-2026): בסוף ההודעה גם #v-<מספר הביקור במדידה>, כדי שכל ליד שכתב לנועם מהדף יחובר לביקור שלו
    (עד איפה גלל, אם ראה את המחיר), מכל מקור. המספר יוצא מהדף רק כשהאדם עצמו שולח את ההודעה; טבלת הביקורים נשארת
    אנונימית, והחיבור נעשה בדוח ב-sales-automation (modules/landing_visits.py). הוא אחרון בהודעה, אחרי #ab-, ובונה כרטיס
-   המסע מדלג על #v-. מי שסימן את המכשיר "זו אני" (aim_optout) לא מקבל מספר ביקור, ולכן גם לא סימון. */
+   המסע מדלג על #v-. מי שסימן את המכשיר "זו אני" (aim_optout) לא מקבל מספר ביקור, ולכן גם לא סימון.
+   קוד אישי (25-10-2026): מי שהגיע מקישור אישי (?who=, למשל מ-ManyChat) שולח בסוף גם #w-<הקוד>, אחרי #v-. כך הבדיקה
+   הלילית ב-sales-automation מחברת בוודאות את הליד בוואטסאפ לכרטיס שלו באינסטגרם. גם על #w- בונה המסע מדלג. */
 (function () {
   function tag() {
     try {
-      var ab = '', src = '', vid = '';
+      var ab = '', src = '', vid = '', who = '';
       try { ab = localStorage.getItem('aim_ab') || ''; src = String(localStorage.getItem('aim_src') || ''); } catch (e) {}
       src = src.replace(/[^a-z0-9_-]/gi, '').slice(0, 40);
       try { vid = sessionStorage.getItem('aim_vid') || ''; } catch (e) {}
       if (!vid) vid = String(window.__aimVid || '');
       vid = vid.replace(/[^a-f0-9]/gi, '').slice(0, 32);
+      try { who = sessionStorage.getItem('aim_who') || ''; } catch (e) {}
+      if (!who) who = String(window.__aimWho || '');
+      who = who.replace(/[^a-z0-9_-]/gi, '').slice(0, 40);
       var mark = /hatzaa/.test(location.pathname) ? '#ab-b' : '#ab-a';
       var links = document.querySelectorAll('a[href*="wa.me/972559397247"]');
       for (var i = 0; i < links.length; i++) {
@@ -2545,6 +2550,7 @@ window.interdeal = {
         if (src && t.indexOf('#' + src) === -1) t = 'שלחו הודעה זו בדיוק כמו שהיא כדי להתחיל לדבר עם נועם #' + src;
         if ((ab === 'a' || ab === 'b') && t.indexOf('#ab-') === -1) t += ' ' + mark;
         if (vid.length >= 8 && t.indexOf('#v-') === -1) t += ' #v-' + vid;
+        if (who && t.indexOf('#w-') === -1) t += ' #w-' + who;
         if (t !== (u.searchParams.get('text') || '')) { u.searchParams.set('text', t); links[i].href = u.toString(); }
       }
     } catch (e) { /* לעולם לא שובר את הדף */ }
@@ -2645,6 +2651,17 @@ window.interdeal = {
       src = String(src).replace(/[^a-z0-9_-]/gi, '').slice(0, 40);
     } catch (e) { src = ''; }
 
+    /* קוד אישי (25-10-2026): ?who= בקישור אישי ששלחנו לאדם מסוים (מ-ManyChat: mc<מספר הכרטיס>). כך מחברים את
+       הביקור לאדם גם כשהוא לא כתב לנועם. נשמר רק לביקור הזה (sessionStorage), ולא כמו src לביקורים הבאים, כדי
+       שלא יהפוך למזהה קבוע בדפדפן. נשלח עם כל אירוע, ו-ab-tag מוסיף אותו להודעה לנועם (#w-). */
+    var who = '';
+    try {
+      who = String(new URLSearchParams(location.search).get('who') || '').replace(/[^a-z0-9_-]/gi, '').slice(0, 40);
+      if (who) sessionStorage.setItem('aim_who', who);
+      else who = String(sessionStorage.getItem('aim_who') || '').replace(/[^a-z0-9_-]/gi, '').slice(0, 40);
+    } catch (e) {}
+    window.__aimWho = who;
+
     var t0 = Date.now();
     var depthIdx = -1;   /* האינדקס העמוק ביותר שנראה בפועל */
     var sent = {};       /* מה כבר נשלח - סופרים אנשים, לא קליקים */
@@ -2653,6 +2670,7 @@ window.interdeal = {
       try {
         var body = { v: 1, vid: vid, e: ev, p: PAGE };
         if (src) body.src = src;
+        if (who) body.who = who;
         if (extra) for (var k in extra) { if (extra.hasOwnProperty(k)) body[k] = extra[k]; }
         var payload = JSON.stringify(body);
         /* text/plain = בקשה פשוטה, בלי preflight. sendBeacon שורד יציאה מהדף. */
