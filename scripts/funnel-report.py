@@ -321,7 +321,7 @@ def main():
             continue
         human.add((f.get("ip_hash", ""), f.get("slug"), str(f.get("ts", ""))[:10]))
 
-    # הצד השני של המנגנון: ההטבה של 2,500 ₪ ניתנת רק דרך נועם, אז "קיבל
+    # הצד השני של המנגנון: ההטבה של 1,400 ₪ ניתנת רק דרך נועם, אז "קיבל
     # קוד הטבה" הוא המדד לכך שהשיחה הגיעה עד ההצעה עצמה.
     got_code = [
         r for r in leads if str(r["fields"].get("קוד הטבה", "")).strip()
@@ -339,7 +339,7 @@ def main():
     print()
     print("  והצד השני של המנגנון - מה קורה אצל נועם:")
     print(f"    שיחות חדשות שנפתחו           {len(leads):>5}")
-    print(f"    קיבלו קוד הטבה (2,500 ₪)     {len(got_code):>5}   ({pct(len(got_code), len(leads))} מהשיחות)")
+    print(f"    קיבלו קוד הטבה (1,400 ₪)     {len(got_code):>5}   ({pct(len(got_code), len(leads))} מהשיחות)")
     print(f"    נרשמו לקורס                  {len(enrolled):>5}")
     print()
     print("    שימי לב: שיחות נועם מגיעות גם מאינסטגרם ומקישורים ישירים,")
