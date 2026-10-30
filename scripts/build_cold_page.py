@@ -517,9 +517,9 @@ def build():
     i = h.find('<ul class="price-includes">')
     old_list = h[i:h.find('</ul>', i) + 5]
     h = once(h, old_list, new(PRICE_LIST) + ADI_QUOTE, "רשימת מה כלול")
-    h = once(h, '<div class="price-card__offer">רוצים הטבה של <span class="nowrap">1,400&nbsp;₪</span>?</div>',
-             new('<div class="price-card__offer">הטבה של <span class="nowrap">1,400&nbsp;₪</span> <span class="nowrap">ניתנת בשיחה עם נועם</span></div>'
-                 '\n      <p class="price-card__after">כלומר <span class="nowrap">7,900&nbsp;₪</span> אחרי ההטבה</p>'),
+    h = once(h, '<div class="price-card__offer">רוצים הטבה של <span class="nowrap">2,500&nbsp;₪</span>?</div>',
+             new('<div class="price-card__offer">הטבה של <span class="nowrap">2,500&nbsp;₪</span> <span class="nowrap">ניתנת בשיחה עם נועם</span></div>'
+                 '\n      <p class="price-card__after">כלומר <span class="nowrap">9,300&nbsp;₪</span> אחרי ההטבה</p>'),
              "ההטבה")
     h = once(h, '<a href="#video-noam" class="price-card__cta">צפו בסרטון למטה</a>',
              noam_button("btn--gold cold-price-cta", "לשיחה עם נועם") +
