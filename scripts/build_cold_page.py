@@ -111,7 +111,7 @@ WORTH_IG = ('<figure class="cold-igshot"><img src="students/ig/ig-noam_zarzevsky
 
 
 PRICE_LIST = """<ul class="price-includes">
-      <li><span><strong>5 שבועות של שיעורים חיים עם שלהבת, וליווי שוטף</strong> - בתל אביב או בזום. בכל שבוע לומדים שלב חדש ובונים אותו יחד, על העבודה שלכם</span></li>
+      <li><span><strong>5 שבועות של שיעורים חיים עם שלהבת, וליווי שוטף</strong> - בתל אביב או בזום (במחזור ינואר: בזום, ופיזית רק בניו יורק). בכל שבוע לומדים שלב חדש ובונים אותו יחד, על העבודה שלכם</span></li>
       <li><span><strong>דואגים שתגיעו מוכנים</strong> - הכנה אישית מסודרת, מקימים איתכם את סביבת העבודה ובונים את הסוכן הראשון שלכם - עוד לפני המפגש הראשון בטירונות</span></li>
       <li><span><strong>מעטפת פדגוגית שעוטפת אתכם מכל כיוון</strong> - ליווי צמוד יד ביד של שלהבת וצוות אנושי שעונה על שאלות, חומרי למידה מעמיקים, וצוות סוכני AI של אִימפּרוּב שעוזר בלמידה, בבנייה ובהטמעה</span></li>
       <li><span><strong>לא משאירים אתכם לבד בין המפגשים</strong> - מפגשי חידוד שבועיים בזום להתייעצות, שאלות ועזרה אישית</span></li>
@@ -519,7 +519,7 @@ def build():
     h = once(h, old_list, new(PRICE_LIST) + ADI_QUOTE, "רשימת מה כלול")
     h = once(h, '<div class="price-card__offer">רוצים הטבה של <span class="nowrap">1,400&nbsp;₪</span>?</div>',
              new('<div class="price-card__offer">הטבה של <span class="nowrap">1,400&nbsp;₪</span> <span class="nowrap">ניתנת בשיחה עם נועם</span></div>'
-                 '\n      <p class="price-card__after">כלומר <span class="nowrap">7,900&nbsp;₪</span> אחרי ההטבה</p>'),
+                 '\n      <p class="price-card__after">כלומר <span class="nowrap">9,300&nbsp;₪</span> אחרי ההטבה</p>'),
              "ההטבה")
     h = once(h, '<a href="#video-noam" class="price-card__cta">צפו בסרטון למטה</a>',
              noam_button("btn--gold cold-price-cta", "לשיחה עם נועם") +
