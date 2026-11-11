@@ -1,5 +1,5 @@
 """בדיקה שכל כפתור לנועם ב-index וב-hatzaa נושא את מספר הביקור (#v-) בסוף ההודעה, בסדר הנכון (25-10-2026),
-וגם את הקוד האישי (#w-) כשהגיעו מקישור אישי (?who=), רק לביקור הזה.
+וגם את הקוד האישי (#w-) כשהגיעו מקישור אישי (?who=), ומ-12-11-2026 גם בביקור חוזר מאותו דפדפן עד 30 יום.
 
 מגיש את הריפו מקומית, פותח כל דף בדפדפן שמרנדר באמת (playwright), ובודק את ההודעה בכל כפתור לנועם ואת האירועים
 שהמדידה שולחת. שום בקשה לא יוצאת מהמחשב: האוסף, הפיקסל והאנליטיקס חסומים, וגוף האירועים נלכד.
@@ -78,23 +78,56 @@ with sync_playwright() as p:
             print(("OK  " if ok else "FAIL"), url, info)
             if bad: print("   example:", bad[0][-80:])
         ctx.close()
-    # בקרה: לשונית חדשה בלי ?who= לא יורשת קוד אישי
-    ctx = b.new_context(viewport={"width": 390, "height": 844})
-    events = []
-    def route2(r):
-        u = r.request.url
-        if u.startswith(base):
-            return r.continue_()
-        if "r.aimprove.co.il/e" in u and r.request.post_data:
-            events.append(json.loads(r.request.post_data))
-        return r.abort()
-    ctx.route("**/*", route2)
-    pg = ctx.new_page()
+    # ביקור חוזר (12-11-2026): הדפדפן זוכר את הקוד 30 יום אחרי כניסה מקישור. כל תרחיש בדפדפן נקי משלו.
+    def fresh():
+        c = b.new_context(viewport={"width": 390, "height": 844})
+        ev = []
+        def rt(r):
+            u = r.request.url
+            if u.startswith(base):
+                return r.continue_()
+            if "r.aimprove.co.il/e" in u and r.request.post_data:
+                ev.append(json.loads(r.request.post_data))
+            return r.abort()
+        c.route("**/*", rt)
+        return c, ev
+
+    def check(name, ok, info=""):
+        global fails
+        fails += not ok
+        print(("OK  " if ok else "FAIL"), name, info)
+
+    DAY = 86400000
+    # 1. לשונית חדשה בלי ?who=, בתוך 30 יום: הקוד חוזר, בהודעה ובאירועים
+    ctx, events = fresh(); pg = ctx.new_page()
     pg.goto(f"{base}/index.html?ab=a&who=test-who9", wait_until="domcontentloaded"); pg.wait_for_timeout(800)
     pg2 = ctx.new_page(); events.clear()
-    ok, info, bad = visit(pg2, f"{base}/index.html?ab=a", r"#ab-a " + V + "$", "", events)
-    fails += not ok
-    print(("OK  " if ok else "FAIL"), "new tab without who", info)
+    ok, info, bad = visit(pg2, f"{base}/index.html?ab=a", r"#ab-a " + V + " #w-test-who9$", "test-who9", events)
+    check("return visit within 30 days keeps the code", ok, info)
+    # 2. קישור של אדם אחר מחליף את מה שנזכר
+    pg3 = ctx.new_page(); events.clear()
+    ok, info, bad = visit(pg3, f"{base}/hatzaa.html?ab=b&who=test-whoB", r"#ab-b " + V + " #w-test-whoB$", "test-whoB", events)
+    kept = pg3.evaluate("JSON.parse(localStorage.getItem('aim_who_kept')||'null')")
+    check("a link of another person replaces it", ok and kept and kept.get("w") == "test-whoB", info)
+    # 3. "זו אני" מוחק את מה שנזכר
+    pg3.goto(f"{base}/index.html?aim_optout=1", wait_until="domcontentloaded"); pg3.wait_for_timeout(500)
+    gone = pg3.evaluate("localStorage.getItem('aim_who_kept')") is None
+    check("this-is-me device forgets it", gone)
+    ctx.close()
+    # 4. אחרי 30 יום: לא חוזר, ונמחק. 5. תאריך עתידי (זיוף או שעון שגוי): לא חוזר.
+    for label, shift in (("older than 30 days", -31 * DAY), ("timestamp in the future", 1 * DAY)):
+        ctx, events = fresh(); pg = ctx.new_page()
+        pg.goto(f"{base}/index.html?ab=a", wait_until="domcontentloaded"); pg.wait_for_timeout(300)
+        pg.evaluate(f"localStorage.setItem('aim_who_kept', JSON.stringify({{w: 'test-whoOld', t: Date.now() + ({shift})}}))")
+        pg2 = ctx.new_page(); events.clear()
+        ok, info, bad = visit(pg2, f"{base}/index.html?ab=a", r"#ab-a " + V + "$", "", events)
+        removed = pg2.evaluate("localStorage.getItem('aim_who_kept')") is None
+        check(label + ": not used, and removed", ok and removed, info)
+        ctx.close()
+    # 6. בקרה: דפדפן אחר (בלי שום כניסה מקישור) לא מקבל קוד
+    ctx, events = fresh(); pg = ctx.new_page(); events.clear()
+    ok, info, bad = visit(pg, f"{base}/index.html?ab=a", r"#ab-a " + V + "$", "", events)
+    check("another browser gets no code", ok, info)
     ctx.close()
     b.close()
 srv.shutdown()
