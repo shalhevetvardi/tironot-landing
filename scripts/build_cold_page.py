@@ -16,6 +16,7 @@
 ליד המחיר דניאל מראד במקום סיגל יער, לפני הסרטונים של "שווה את הכסף?" התגובה של נועם זרז'בסקי,
 ב"נעים להכיר" האינסטגרם לפני הוואטסאפ, ושני הסקשנים הלבנים שבראש הדף קיבלו רקע בהיר.
 מאז שהסבב הזה עלה לאוויר, ההשוואה של חצי מול חצי נספרת מיום העלייה (funnel-report.py --ab --since).
+12-11-2026: נוסף משפט הקשר אחד מעל "למי זה מתאים?" (ר' FIT_SECTION). שינוי קטן, ולכן ההשוואה לא מתאפסת בגללו.
 
 הדף נגזר מ-index.html ולא נערך ביד, כי הציטוטים מגיעים מדשבורד ההמלצות שכותב רק
 ל-index.html. ההחלטות: Storyteling, פרויקטים/חיפוש-SEO-GEO/06-אסטרטגיית-הדף-הקר.md.
@@ -72,8 +73,11 @@ def new(s):
 # "למי זה מתאים": הכאב לפני ההצעה, במילים שתלמידים אמרו בשיחות האונבורדינג (מיפוי-קהל-ומסרים/1-אונבורדינג.md,
 # חלקים ב ו-ה): "בלאגן", "טלאי על טלאי", "מיליון צ'אטים פתוחים", "הגעתי לתקרה", "לחבר את הדבר הזה למשהו אחד",
 # "העבודה היא רק כשאני נמצאת", "יותר מדי מידע". שלהבת: לא משנה אם ניסו לבד או לא, הם רוצים מאוד
+# המשפט שמעל הכותרת (12-11-2026): הקישור "אני רוצה להבין על מה מדובר קודם" מוביל לכאן, ובלעדיו נפתח ישר
+# ב"למי זה מתאים?". שלהבת: "חסר הקשר, צריך עוד משפט אחד למעלה, משהו על מה התוכנית הזאת"
 FIT_SECTION = """<section class="section section--white center cold-fit cold-tint" id="fit">
   <div class="container">
+    <p class="cold-fit__about"><strong>בקצרה, על מה מדובר:</strong> טירונות סוכנים היא תוכנית האצה של 5 שבועות, שבה אתם בונים בעצמכם צוות של סוכני AI שעושה בשבילכם את העבודה, עם ליווי צמוד לאורך כל&nbsp;הדרך.</p>
     <h2>למי זה <span class="accent-blue">מתאים?</span></h2>
     <p class="lead center cold-fit__lead">לבעלי עסקים, לעצמאים ולשכירים שממש רוצים <span class="nowrap">שה-AI</span> יעבוד במקומם.<br>בין אם כבר ניסיתם לבד, ובין אם עוד לא.</p>
     <div class="cold-fit__cards">
@@ -321,6 +325,7 @@ COLD_CSS = """<style id="cold-css">
   .cold-what-proof { margin: 24px auto 0; font-weight: 700; color: var(--navy); }
   .cold-brand { display: flex; flex-direction: column; gap: 8px; }
   .cold-brand__sub { color: rgba(255,255,255,.88); font-weight: 700; font-size: clamp(16px, 2vw, 20px); line-height: 1.2; }
+  .cold-fit__about { max-width: 760px; margin: 0 auto 30px; font-size: clamp(18px, 2vw, 21px); line-height: 1.6; color: var(--navy); text-wrap: pretty; }
   .cold-fit__lead { max-width: 720px; margin-inline: auto; }
   .cold-fit__cards { display: grid; gap: 14px; margin: 28px auto 0; max-width: 860px; text-align: right; }
   @media (min-width: 760px) { .cold-fit__cards { grid-template-columns: 1fr 1fr; } }
