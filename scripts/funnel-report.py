@@ -24,6 +24,7 @@ import collections
 import datetime as dt
 import json
 import os
+import re
 import sys
 import urllib.error
 import urllib.parse
@@ -143,6 +144,10 @@ TEST_SRC_EXACT = {"vo-checkout", "deploy-e2e2"}
 TEST_SRC_PREFIX = "test-"
 
 
+# האתרים המפנים של הצ'אטים (ChatGPT, Perplexity, Gemini, Claude, Copilot), לסימון בפילוח לפי אתר מפנה.
+AI_REF = re.compile(r"(^|\.)(chatgpt\.com|openai\.com|perplexity\.ai|gemini\.google\.com|claude\.ai|copilot\.microsoft\.com)$")
+
+
 def is_test_src(src):
     s = str(src or "")
     return s in TEST_SRC_EXACT or s.startswith(TEST_SRC_PREFIX)
@@ -209,7 +214,7 @@ def main():
             and str(r["fields"].get("page") or "index") == "index"
         ]
         visits = collections.defaultdict(
-            lambda: {"price": False, "cta": set(), "depth": -1, "src": "", "dev": "", "secs": None}
+            lambda: {"price": False, "cta": set(), "depth": -1, "src": "", "ref": "", "dev": "", "secs": None}
         )
         for r in rows:
             f = r["fields"]
@@ -224,6 +229,8 @@ def main():
                 v["depth"] = max(v["depth"], LADDER.index(d))
             if f.get("src"):
                 v["src"] = str(f["src"])
+            if f.get("ref"):
+                v["ref"] = str(f["ref"])
             if f.get("device_class"):
                 v["dev"] = str(f["device_class"])
             # מ-17-10-2026 הדף שולח end שוב בכל יציאה שבה המבקר הגיע רחוק יותר,
@@ -289,6 +296,18 @@ def main():
                 sp = sum(1 for v in visits.values() if v["src"] == s and v["price"])
                 cn = sum(1 for v in visits.values() if v["src"] == s and "noam" in v["cta"])
                 print(f"    {s:<12} {c:>4} ביקורים · {sp} ראו מחיר · {cn} לחצו על נועם")
+
+        # מ-18-11-2026 הדף שולח גם מאיזה אתר המבקר הגיע (ref: שם האתר המפנה, או utm_source כשאין אתר מפנה).
+        # כך רואים כניסות מהצ'אטים ומחיפוש, שלא מגיעות עם ?src=. ביקורים מלפני השינוי לא מופיעים כאן.
+        by_ref = collections.Counter(v["ref"] for v in visits.values() if v["ref"])
+        if by_ref:
+            print()
+            print("  מאיזה אתר הגיעו (האתר המפנה; * = צ'אט AI):")
+            for s, c in by_ref.most_common(10):
+                sp = sum(1 for v in visits.values() if v["ref"] == s and v["price"])
+                cn = sum(1 for v in visits.values() if v["ref"] == s and "noam" in v["cta"])
+                name = s + (" *" if AI_REF.search(s) else "")
+                print(f"    {name:<22} {c:>4} ביקורים · {sp} ראו מחיר · {cn} לחצו על נועם")
 
     # ── 2. הקשר: כמה הגיעו לדף, וכמה שיחות נפתחו ─────────────────────────────
     clicks = [
