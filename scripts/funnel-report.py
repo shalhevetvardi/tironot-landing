@@ -144,8 +144,8 @@ TEST_SRC_EXACT = {"vo-checkout", "deploy-e2e2"}
 TEST_SRC_PREFIX = "test-"
 
 
-# האתרים המפנים של הצ'אטים (ChatGPT, Perplexity, Gemini, Claude, Copilot), לסימון בפילוח לפי אתר מפנה.
-AI_REF = re.compile(r"(^|\.)(chatgpt\.com|openai\.com|perplexity\.ai|gemini\.google\.com|claude\.ai|copilot\.microsoft\.com)$")
+# האתרים המפנים של הצ'אטים (ChatGPT, Perplexity, Gemini, Claude, Copilot, Grok, DeepSeek, You, Meta AI, Mistral), לסימון בפילוח לפי אתר מפנה.
+AI_REF = re.compile(r"(^|\.)(chatgpt\.com|openai\.com|perplexity\.ai|gemini\.google\.com|claude\.ai|copilot\.microsoft\.com|grok\.com|deepseek\.com|you\.com|meta\.ai|mistral\.ai)$")
 
 
 def is_test_src(src):
